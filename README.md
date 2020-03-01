@@ -7,7 +7,18 @@ This is an Excalibur+Electron prototype of the TXTNET.
 * [x] cleanup yarn/npm
 * [x] copy minimal electron
 * [ ] find a way to run it on server
-* [ ] console interface stub
+
+## Generic console interface
+* [ ] readline cycle
+* [ ] command/subcommand mapping
+
+## Development
+* [ ] interfaces
+* [ ] events
+* [ ] overall approach (think of)
+* [ ] network / no-network configuration
+
+
 
 
 
