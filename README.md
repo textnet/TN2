@@ -4,15 +4,15 @@ This is an Excalibur+Electron prototype of the TXTNET.
 
 ## Boilerplate setup
 
-* [ ] cleanup yarn/npm
-* [ ] copy minimal electron
-* [ ] find a way to run nodejs on server
+* [x] cleanup yarn/npm
+* [x] copy minimal electron
+* [ ] find a way to run it on server
 * [ ] console interface stub
 
 
 
 ## Old things
-    npm install
-    ./start.sh
-    yarn dist
+    npm install   -- after cloning the repo
+    ./start.sh    -- to enter the debug cycle
+    yarn dist     -- to make distro package
 
