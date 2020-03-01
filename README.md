@@ -2,15 +2,10 @@
 
 This is an Excalibur+Electron prototype of the TXTNET.
 
-## Boilerplate setup
-
-* [x] cleanup yarn/npm
-* [x] copy minimal electron
-* [ ] find a way to run it on server
-
 ## Generic console interface
 * [ ] readline cycle
 * [ ] command/subcommand mapping
+* [ ] check both electron and node
 
 ## Development
 * [ ] interfaces

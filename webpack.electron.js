@@ -4,6 +4,7 @@ const modeConfig = env => require(`./build-utils/webpack.${env}`)(env);
 
 const CopyPlugin = require('copy-webpack-plugin');
 
+
 const baseConfig = {
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -42,6 +43,14 @@ const commonConfig = Object.assign(baseConfig, modeConfig);
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = [
+  Object.assign(
+    {
+      target: 'node',
+      entry: { headless: './src/headless/headless.ts' },
+      plugins: [
+      ]
+    },
+    commonConfig),
   Object.assign(
     {
       target: 'electron-main',

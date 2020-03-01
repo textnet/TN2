@@ -12,6 +12,9 @@
     "prestart": "yarn run build",
     "start": "electron . debug",
 
+    "preheadless": "yarn run build",
+    "headless": "node dist/headless.js",
+
     "predist": "yarn run builddist",
     "builddist": "webpack --config webpack.electron.js  --mode production",
     "dist": "electron-builder",
