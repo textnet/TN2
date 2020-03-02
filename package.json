@@ -6,19 +6,14 @@
   "main": "dist/main.js",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-
     "build": "webpack --config webpack.electron.js  --mode development",
-
     "prestart": "yarn run build",
     "start": "electron . debug",
-
     "preheadless": "yarn run build",
     "headless": "node dist/headless.js",
-
     "predist": "yarn run builddist",
     "builddist": "webpack --config webpack.electron.js  --mode production",
     "dist": "electron-builder",
-
     "pack": "electron-builder --dir",
     "rebuild": "electron-rebuild"
   },
@@ -71,9 +66,12 @@
     "@types/jquery": "^3.3.31",
     "better-sqlite3": "^5.4.3",
     "brace": "^0.11.1",
+    "chalk": "^3.0.0",
     "excalibur": "0.23.0",
     "jquery": "^3.4.1",
     "lowdb": "^1.0.0",
+    "readline-promise": "^1.0.4",
+    "splitargs": "0.0.7",
     "ste-events": "^1.6.4",
     "ste-simple-events": "^1.6.4",
     "strongly-typed-events": "^1.6.4"

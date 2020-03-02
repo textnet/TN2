@@ -5,8 +5,10 @@
  */
 import { existsSync } from "fs"
 import { app, BrowserWindow } from 'electron'
+import * as commandline from "../commandline/commandline"
 
 function onReady() {
+    commandline.init(()=>{ app.quit() });
 }
 
 function onQuit() {
