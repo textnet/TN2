@@ -1,31 +1,32 @@
 import readline from 'readline-promise'
 import { script } from "./script"
 import * as baseCommands from "./base"
+import { NodeServer } from "../network/node"
+import { config } from "../config"
 
 const chalk = require('chalk');
 const splitargs = require('splitargs');
 
 
-export function init(exitHandler) {
+export function init(node: NodeServer, exitHandler) {
         baseCommands.setup();
-        register("test", function(params) { console.log(params) })
-        register("exit", function() { 
+        register("test", function(n, params) { console.log(params) })
+        register("exit", function(n, params) { 
             ok("Exit.")
             exitHandler();
         })
-        script().then(commandInput);
-
+        script(node).then(()=>{ commandInput(node) });
 }
 
 
-export function commandInput() {
+export function commandInput(node: NodeServer,) {
     const rl = readline.createInterface({
         terminal: true,
         input: process.stdin,
         output: process.stdout,
     });
     async function handleCommand(input?: string) {
-        if (input) await parseCommand(input);
+        if (input) await parseCommand(node, input);
         rl.questionAsync(':) ').then(handleCommand);
     }
 
@@ -43,6 +44,12 @@ export function log(what) {
     console.log(chalk.yellow(">> "+what))
 }
 
+export function verboseLog(what) {
+    if (config.debug.verboseConsole) {
+        console.log(chalk.grey(">> "+what))
+    }
+}
+
 
 const commands: Record<string, any> = {}
 
@@ -50,15 +57,16 @@ export function register(command: string, handler: any) {
     commands[command] = handler;
 }
 
-export function call(commandString) {
-    return parseCommand(commandString);
+export function call(node: NodeServer, commandString) {
+    return parseCommand(node, commandString);
 }
 
 
-async function parseCommand(input: string) {
+async function parseCommand(node, input: string) {
     for (let command in commands) {
         if (command == input || command+" " == input.substr(0, command.length+1)) {
-            return commands[command](parseParams(input.substr(command.length+1)));
+            verboseLog(`:) ${input}`);
+            return commands[command](node, parseParams(input.substr(command.length+1)));
         }
     }
     error(`Unknown command: ${input}`)

@@ -1,27 +1,28 @@
 
 
 
-export interface Planet {
+export interface PlanetData {
     id: string;
 }
 
-export interface Console {
+export interface ConsoleData {
     id: string;
     thingId?: string;
 }
 
-export interface Thing {
+export interface ThingData {
     id: string;
     hostPlaneId: string;
     name: string;
-    planes: Record<string, Plane>;
+    planes: Record<string, PlaneData>;
 }
 
-export interface Plane {
+export interface PlaneData {
     id: string;
     ownerId: string;
     things: Record<string, Position>;
 }
+
 
 export interface Position {
     x: number;

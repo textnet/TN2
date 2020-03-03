@@ -7,8 +7,14 @@ import { existsSync } from "fs"
 import { app, BrowserWindow } from 'electron'
 import * as commandline from "../commandline/commandline"
 
+import { NodeServer } from "../network/node"
+
+
 function onReady() {
-    commandline.init(()=>{ app.quit() });
+    const node = new NodeServer();
+    node.start().then(()=>{
+        commandline.init(node, ()=>{ node.finish().then(()=>{ app.quit() }) });    
+    })
 }
 
 function onQuit() {

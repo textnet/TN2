@@ -2,16 +2,13 @@
 
 This is an Excalibur+Electron prototype of the TXTNET.
 
-## Generic console interface
-* [x] readline cycle
-* [x] command/subcommand mapping
-* [x] check both electron and node
 
 ## Boilerplate
-* [x] baseline interfaces
-* [ ] storage abstraction
+* [x] storage abstraction
+* [ ] network layer
+    - discovery
 * [ ] network / no-network configuration
-* [ ] discovery
+* [ ] discovery and messaging
 
 
 ## Stages

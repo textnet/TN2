@@ -1,11 +1,11 @@
-import { ok, error, log, register, call } from "./commandLine";
+import { ok, error, log, register, call } from "./commandline";
 
-export async function script() {
+export async function script(node) {
     const lines = setupScript.split("\n");
     for (let line of lines) {
         line = line.replace(/^\s+/, "").replace(/\s+$/, "");
         if (line != "") {
-            await call(line);
+            await call(node, line);
         }
     }
 }
