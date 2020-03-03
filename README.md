@@ -5,10 +5,14 @@ This is an Excalibur+Electron prototype of the TXTNET.
 
 ## Boilerplate
 * [x] storage abstraction
-* [ ] network layer
-    - discovery
-* [ ] network / no-network configuration
-* [ ] discovery and messaging
+* [x] basic Node: create/destroy naive planets
+* [x] basic Node: create/destroy consoles (w/o binding)
+* [ ] network layer for Planets
+    - discovery: p2p and local
+    - local planets: skip p2p
+    - network planets
+    - cross-planet messaging
+
 
 
 ## Stages

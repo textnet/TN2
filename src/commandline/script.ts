@@ -26,13 +26,15 @@ create planet Saturn
 destroy planet Saturn
 destroy thing WrongChair
 
-create console Player
-connect Player
+create console C1
+bind C1 Player
+connect C1
 disconnect
 
 where Chair1
 where Player
 
+connect C1
 player move right 10
 player kneel
 
