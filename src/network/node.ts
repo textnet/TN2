@@ -22,6 +22,7 @@ export class NodeServer {
             id: id || createPlanetId(),
         }
         return this.planets.save(data);
+        // TODO create Planet-Thing to represent this planet. Put it in its limbo (should be fun).
     }
     async destroyPlanet(id: string) {
         return this.planets.remove(id);
