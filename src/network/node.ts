@@ -1,20 +1,33 @@
 import { config }  from "../config"
 import { PlanetData, ConsoleData } from "../model/interfaces";
 import { Repository } from "../storage/repo";
-import { createPlanetId } from "../model/planet"
+import { createPlanetId, PlanetServer } from "../model/planet"
 
 
 export class NodeServer {
     planets: Repository<PlanetData>;
     consoles: Repository<ConsoleData>;
+    planetServers: PlanetServer[];
 
     constructor() {
         this.planets  = new Repository<PlanetData>("planets");
         this.consoles = new Repository<ConsoleData>("consoles");
+        this.planetServers = [];
     }
 
-    async start() {}
+    async start() {
+        // start up all planet servers
+        const data = await this.planets.all();
+        for (let id in data) {
+            const server = new PlanetServer(this, data[id]);
+            await server.online();
+            this.planetServers.push(server)
+        }
+    }
     async finish() {
+        for (let server of this.planetServers) {
+            await server.offline();
+        }
         await this.planets.free();
     }
 
@@ -24,15 +37,19 @@ export class NodeServer {
             id: id || createPlanetId(),
         }
         return this.planets.save(data);
+        // TODO start PlanetServer!
         // TODO create Planet-Thing to represent this planet. Put it in its limbo (should be fun).
     }
     async destroyPlanet(id: string) {
         return this.planets.remove(id);
+        // TODO stop PlanetServer!
     }
     async listPlanets() {
         return this.planets.all();
     }
     async reset() {
+        // destroyPlanets one by one.
+        // destroyConsoles one by one
         await this.planets.clear();
         await this.consoles.clear();
     }

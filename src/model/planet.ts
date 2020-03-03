@@ -2,6 +2,7 @@ import * as crypto from "crypto";
 import { PlanetData, ThingData, PlaneData } from "./interfaces"
 import { NodeServer } from "../network/node"
 import { Repository } from "../storage/repo"
+import * as network from "../network/discovery"
 
 export function getPlanetId(id: string) {
     return id.split(".")[0]
@@ -19,13 +20,49 @@ export class PlanetServer {
     things: Repository<ThingData>;
     planes: Repository<PlaneData>;
 
+    handlers: network.NetworkHandlers;
+
     constructor(node: NodeServer, data: PlanetData) {
         this.data = data;
         this.things = new Repository<ThingData>("things", this.data.id);
         this.planes = new Repository<PlaneData>("planes", this.data.id);
     }
 
-    connect() {}
-    disconnect() {}
+    async online() {
+        this.handlers = await network.connect(this);
+    }
+    async offline() {
+        this.handlers.disconnect()
+    }
+
+    // will be used to send events and to issue commands
+    async sendMessage(targetPlanetId: string, fullPayload: any) {
+        return this.handlers.message(targetPlanetId, fullPayload);
+    }
+
+    async receiveConnection(peerPlanetId: string) {
+        // move all my guests on this planet (back from limbo)
+    }
+    async receiveDisconnect(peerPlanetId: string) {
+        // remove all my guests from the planet, put them into their limbo
+    }
+    async receiveMessage(fromPlanetId: string, fullPayload: any) {
+        // incoming events regarding my guests that are visiting that planet
+        // incoming commands from guests from that planet that are visiting ours
+    }
 
 }
+
+/*
+export function message(connectionInfo: ConnectionInfo, fullPayload) {
+export async function connect( id:string, onMessage?, onConnect?, onClose? ) {
+
+
+какие методы мне нужно поддержать:
+    
+    - отправка сообщения планете Х
+    - пришло сообщение от планеты Х
+    - установлено соединение с планетой Х (оба два)
+    - закрыто соединение с планетой Х
+
+*/
