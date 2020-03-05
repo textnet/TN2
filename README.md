@@ -3,18 +3,16 @@
 This is an Excalibur+Electron prototype of the TXTNET.
 
 
-## Boilerplate
-* [x] storage abstraction
-* [x] basic Node: create/destroy naive planets
-* [x] basic Node: create/destroy consoles (w/o binding)
-* [x] basic Node: create/destroy ALL consoles: one by one
-* [x] basic Node: put a planet online once created
-* [x] basic Node: put a planet offline before destroying
-* [x] network layer for Planets: trace output
-* [x] network layer for Planets: make sure it works
-* [x] wait permission: make sure it works in Electron
-* [x] make sure stuff is saved and loaded
-* [x] commands online/offline
+## Model: Things and Planes
+* [ ] document physics and sprite approaches
+* [ ] thing model with sprites and physics
+* [ ] plane model
+* [ ] thing templates
+* [ ] create Planet-Thing and place it in the right place
+* [ ] create thing command
+* [ ] destroy thing command
+
+
 
 
 ## TODO: Interplanet operations:
@@ -28,12 +26,12 @@ This is an Excalibur+Electron prototype of the TXTNET.
 ## Stages
 1. (+) Node stub
 2. (+) Naive planets on the node
-3. Network of planets (discovery, online, offline)
+3. (+) Network of planets (discovery, online, offline)
 5. Things (create, destroy) — with Planes
-6. Consoles (create, destroy, connect, disconnect)
-7. Text commands
-8. Limbo
-9. Anima
+6. Text consoles (connect, disconnect)
+7. Text controls over things (A LOT OF WORK HERE: events, collisions, network communication)
+8. Limbo (=off-planet behaviour)
+9. Anima (written word)
 10. GUI
 
 
