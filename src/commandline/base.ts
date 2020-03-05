@@ -2,6 +2,7 @@ import { ok, error, log, register, call } from "./commandline";
 import { NodeServer } from "../network/node";
 import { debugPeers } from "../network/discovery"
 import { PlanetServer } from "../model/planet"
+import { config } from "../config"
 
 
 export function setup() {
@@ -23,6 +24,10 @@ export function setup() {
 
 
 function network() {
+    if (config.debug.forceOffline) {
+        console.log("Force offline mode is on. All local nodes are connected to each other.")
+        return;
+    }
     for (let host in debugPeers) {
         console.log(`HOST: ${host}`);
         for (let peer in debugPeers[host]["sockets"]) {

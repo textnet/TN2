@@ -107,7 +107,7 @@ export async function localConnect( planet: PlanetServer, onMessage?, onConnect?
     for (let id in planet.node.planetServers) {
         if (id != planet.data.id) {
             const server = planet.node.planetServers[id];
-            verboseLog(`Network-Local: (${planet.data.id}) <-> (${server.data.id}).`)
+            // verboseLog(`Network-Local: (${planet.data.id}) <-> (${server.data.id}).`)
             await server.receiveConnection( planet.data.id )
             await planet.receiveConnection( server.data.id )            
         }
@@ -123,9 +123,10 @@ export async function localConnect( planet: PlanetServer, onMessage?, onConnect?
             }    
         },
         disconnect: async function() {
+            verboseLog(`Network-Local: (${planet.data.id}) leaving discovery channel.`)
             for (let id in planet.node.planetServers) {
                 if (id != planet.data.id) {
-                    verboseLog(`Network: Planet(${id}) >/< by Planet(${planet.data.id})`)
+                    // verboseLog(`Network: Planet(${id}) >/< by Planet(${planet.data.id})`)
                     const server = planet.node.planetServers[id];
                     await server.receiveDisconnect( planet.data.id )
                 }
