@@ -1,10 +1,10 @@
 import { ok, error, log, register, call } from "./commandline";
 import { NodeServer } from "../network/node";
+import { debugPeers } from "../network/discovery"
 
 
 export function setup() {
 
-    register("reset", reset)
     register("create planet", createPlanet)
     register("destroy planet", destroyPlanet)
     register("planets", listPlanets)
@@ -14,8 +14,24 @@ export function setup() {
     register("consoles", listConsoles)
     // TODO: bind, unbind, connect, disconnect
 
+
+    register("network", network);
 }
 
+
+function network() {
+    for (let host in debugPeers) {
+        console.log(`HOST: ${host}`);
+        for (let peer in debugPeers[host]["sockets"]) {
+            console.log(`      - ${peer}`);
+            if (debugPeers[host]["sockets"][peer] != null) {
+                for (let socket of debugPeers[host]["sockets"][peer]) {
+                    console.log(`        ^ :${socket.address().port} -> `+ (socket.destroyed?"destroyed":"alive"))
+                }
+            }
+        }
+    }
+}
 
 function mapParams(params, mapping) {
     const result = {};
@@ -28,9 +44,6 @@ function mapParams(params, mapping) {
 
 function logObj(kind, item) { log(`${kind}(${item.id})`) }
 
-export async function reset(node: NodeServer) {
-    return node.reset();
-}
 // PLANETS
 export async function createPlanet(node: NodeServer, paramList) {
     const params = mapParams(paramList, ["id"])

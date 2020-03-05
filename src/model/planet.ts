@@ -22,22 +22,32 @@ export class PlanetServer {
 
     handlers: network.NetworkHandlers;
 
+    _online: boolean;
+
     constructor(node: NodeServer, data: PlanetData) {
         this.data = data;
+        this.node = node;
         this.things = new Repository<ThingData>("things", this.data.id);
         this.planes = new Repository<PlaneData>("planes", this.data.id);
+        this._online = false;
     }
 
     async online() {
-        this.handlers = await network.connect(this);
+        if (!this._online) {
+            this.handlers = await network.connect(this);
+            this._online = true;            
+        }
     }
     async offline() {
-        this.handlers.disconnect()
+        if (this._online) {
+            await this.handlers.disconnect()
+            this._online = false;    
+        }
     }
 
     // will be used to send events and to issue commands
     async sendMessage(targetPlanetId: string, fullPayload: any) {
-        return this.handlers.message(targetPlanetId, fullPayload);
+        return await this.handlers.message(targetPlanetId, fullPayload);
     }
 
     async receiveConnection(peerPlanetId: string) {

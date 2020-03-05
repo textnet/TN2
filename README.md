@@ -7,30 +7,20 @@ This is an Excalibur+Electron prototype of the TXTNET.
 * [x] storage abstraction
 * [x] basic Node: create/destroy naive planets
 * [x] basic Node: create/destroy consoles (w/o binding)
-* [ ] network layer for Planets
-    - discovery: p2p and local
-    - local planets: skip p2p
-    - network planets
-    - cross-planet messaging
+* [x] basic Node: create/destroy ALL consoles: one by one
+* [x] basic Node: put a planet online once created
+* [x] basic Node: put a planet offline before destroying
+* [x] network layer for Planets: trace output
+* [x] network layer for Planets: make sure it works
+* [x] wait permission: make sure it works in Electron
+* [x] make sure stuff is saved and loaded
 
-## На чём остановился
 
-- удалять планеты и консоли по одной
-- при создании планеты запускать её
-- при удалении планеты останавливать её
-- отладочный вывод соединений планет
-
-Что непонятно: что планета должна делать, когда к ней прилетает сообщение и т.п.
-
-## Когда какая-то планета пропадает с горизонта
-- нужно перевести в лимбо всех своих персонажей, которые гостили на этой планете!
-
-## Когда какая-то планета появляется на горизонте
-- нужно вывести из лимбо персонажей, которые были на этой планете ранее
-
-## Когда надо посылать сообщения и кому?
-- если на текущем плане есть персонаж с чужой планеты, то надо посылать в эту планету сообщения с этого плана.
-- если планета недоступна, то ничего никуда посылать не нужно.
+## TODO: Interplanet operations:
+- peer planet goes offline: move all my guests to limbo
+- peer planet goes online: move guests back
+- send message: event happens on the plane where are guests from other planets
+- send message: console/anima issues a command to my guest visiting another planet
 
 
 
@@ -50,4 +40,20 @@ This is an Excalibur+Electron prototype of the TXTNET.
     npm install   -- after cloning the repo
     ./start.sh    -- to enter the debug cycle
     yarn dist     -- to make distro package
+
+# Until found a way to split into to different builders
+### Before launching Electron
+    ./node_modules/.bin/electron-rebuild
+### Before launching Headless
+
+
+## Console commands supported
+    exit
+    network
+    create planet <id>
+    destroy planet <id>
+    planets
+    create console <id> <thingId>
+    destroy console <id>
+    consoles
 

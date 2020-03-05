@@ -21,7 +21,7 @@ export const config: Configuration = {} as Configuration;
 config.version = "1";
 
 config.debug = {} as Debug;
-config.debug.forceOffline = true;
+config.debug.forceOffline = false;
 config.debug.verboseConsole = true;
 
 config.network = {} as Network;

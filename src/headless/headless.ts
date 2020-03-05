@@ -1,6 +1,7 @@
 import * as commandline from "../commandline/commandline"
 import { config } from "../config"
 import { NodeServer } from "../network/node"
+import { waitPermission } from "../network/permission";
 
 function setupServer() {
     const http = require('http');
@@ -15,11 +16,12 @@ function setupServer() {
 
     server.listen(port, hostname, () => {
         console.log(`TN2 Headless Server. Version ${config.version}.`)
-        const node = new NodeServer();
-        node.start().then(()=>{
-            commandline.init(node, ()=>{ node.finish().then(()=>{ process.exit() }); });    
-        })
-        // console.log(`Server running at http://${hostname}:${port}/`);
+        // waitPermission(function(){
+            const node = new NodeServer();
+            node.start().then(()=>{
+                commandline.init(node, async function(){ await node.finish(); await process.exit() });    
+            })           
+        // })
     });    
 }
 

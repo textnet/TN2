@@ -8,12 +8,15 @@ import { app, BrowserWindow } from 'electron'
 import * as commandline from "../commandline/commandline"
 
 import { NodeServer } from "../network/node"
+import { waitPermission } from "../network/permission"
 
 
 function onReady() {
-    const node = new NodeServer();
-    node.start().then(()=>{
-        commandline.init(node, ()=>{ node.finish().then(()=>{ app.quit() }) });    
+    waitPermission(function(){
+        const node = new NodeServer();
+        node.start().then(()=>{
+            commandline.init(node, ()=>{ node.finish().then(()=>{ app.quit() }) });    
+        })
     })
 }
 

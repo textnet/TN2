@@ -11,9 +11,9 @@ const splitargs = require('splitargs');
 export function init(node: NodeServer, exitHandler) {
         baseCommands.setup();
         register("test", function(n, params) { console.log(params) })
-        register("exit", function(n, params) { 
+        register("exit", async function(n, params) { 
             ok("Exit.")
-            exitHandler();
+            await exitHandler();
         })
         script(node).then(()=>{ commandInput(node) });
 }
@@ -50,6 +50,12 @@ export function verboseLog(what) {
     }
 }
 
+export function message(what) {
+    if (config.debug.verboseConsole) {
+        console.log(chalk.blue(">> "+what))
+    }
+}
+
 
 const commands: Record<string, any> = {}
 
@@ -65,7 +71,7 @@ export function call(node: NodeServer, commandString) {
 async function parseCommand(node, input: string) {
     for (let command in commands) {
         if (command == input || command+" " == input.substr(0, command.length+1)) {
-            verboseLog(`:) ${input}`);
+            message(`:) ${input}`);
             return commands[command](node, parseParams(input.substr(command.length+1)));
         }
     }

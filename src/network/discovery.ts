@@ -17,31 +17,36 @@ export interface NetworkHandlers {
 }
 
 
+export const debugPeers: Record<string, any> = {};
+
 export async function connect( planet: PlanetServer ) {
     if (config.debug.forceOffline) {
-        return localConnect( planet );
+        return await localConnect( planet );
     } else {
         // P2P code =============
         const id = planet.data.id;
         const swarm = new Swarm(defaults({
             id: Buffer.from(id, 'utf8')
         }))
-        const socketMap: Record<string,Socket> = {};
+        let socketMap: Record<string,Socket[]> = {};
         const port = await getPort()
         swarm.listen(port);
-        // console.log(`P2P: join "${discoveryChannel}" at port ${port}`);
+        debugPeers[id] = { sockets: {} }
+        // verboseLog(`Network: (${id}) joining discovery channel.`)
         swarm.on("connection", (conn: Socket, info) => {
-            // console.log(`(p2p) start connection ${id}---${info.id}`)
+            verboseLog(`Network: (${id}) <-- by (${info.id}).`)
             // keep alive ---------------------------------------
             if (info.initiator) {
-                // console.log(`(p2p) ${id} keep alive!`)
+                // verboseLog(`Network: (${id}) ^ initiated.`)
                 try {
                     conn.setKeepAlive(true, 600)
                 } catch (exception) {
                     error(`P2P Connect Exception: ${exception}`);
                 }
             }
-            socketMap[info.id] = conn;
+            if (!socketMap[info.id]) socketMap[info.id] = [];
+            socketMap[info.id].push(conn)
+            debugPeers[id]["sockets"] = socketMap;
             planet.receiveConnection(info.id)
             // incoming -----------------------------------------
             let connectionDataTail = "";
@@ -58,27 +63,38 @@ export async function connect( planet: PlanetServer ) {
                 connectionDataTail = messages[messages.length-1]
             })
             // close --------------------------------------------
-            conn.on('close', () => {
-                // console.log(`(p2p) close connection ${id}-/-${info.id}`);
-                planet.receiveDisconnect(info.id);
-                socketMap[info.id] = null;
+            conn.on('close', (hadError) => {
+                // verboseLog(`Network: (${id}) >/< by (${info.id})`)
+                let newMap = [];
+                for (let socket of socketMap[info.id]) {
+                    if (!socket.destroyed) newMap.push(socket);
+                }
+                socketMap[info.id] = newMap;
+                debugPeers[id]["sockets"] = socketMap;
             })
         })
+        swarm.on('connection-closed', (conn: Socket, peer)=> {
+            // verboseLog(`Network: (${id}) closed connection with (${peer.id})`)
+            planet.receiveDisconnect(peer.id);
+        })
+
         await swarm.join(config.network.discoveryChannel);
         return {
             message: function(targetPlanetId: string, fullPayload: any) {
                 let data = JSON.stringify(fullPayload);
-                let socket = socketMap[targetPlanetId];
-                if (socket) {
-                    socket.write(data+"\n\n");
-                } else {
-                    error(`P2P Message: no socket!`);
+                let sockets = socketMap[targetPlanetId];
+                for (let socket of sockets) {
+                    if (!socket.destroyed) {
+                        socket.write(data+"\n\n");
+                    }
                 }
             },
             disconnect: function() {
-                for (let id in socketMap) {
-                    if (socketMap[id] && !socketMap[id].destroyed) {
-                        socketMap[id].destroy();
+                swarm.leave(config.network.discoveryChannel)
+                for (let socketId in socketMap) {
+                    for (let socket of socketMap[socketId]) {
+                        // verboseLog(`Network: (${id}) closing (${peer.id})`)
+                        socket.end();
                     }
                 }
             },
@@ -90,22 +106,32 @@ export async function connect( planet: PlanetServer ) {
 
 
 export async function localConnect( planet: PlanetServer, onMessage?, onConnect?, onClose? ) {
-    for (let server of planet.node.planetServers) {
-        await server.receiveConnection( planet.data.id )
-        await planet.receiveConnection( server.data.id )
+    verboseLog(`Network-Local: (${planet.data.id}) joining discovery channel.`)   
+    for (let id in planet.node.planetServers) {
+        if (id != planet.data.id) {
+            const server = planet.node.planetServers[id];
+            verboseLog(`Network-Local: (${planet.data.id}) <-> (${server.data.id}).`)
+            await server.receiveConnection( planet.data.id )
+            await planet.receiveConnection( server.data.id )            
+        }
     }
     // ----------
     return {
         message: async function(targetPlanetId: string, fullPayload: any) {
-            for (let server of planet.node.planetServers) {
-                if (server.data.id == targetPlanetId) {
+            for (let id in planet.node.planetServers) {
+                const server = planet.node.planetServers[id];
+                if (server.data.id != planet.data.id && server.data.id == targetPlanetId) {
                     await server.receiveMessage( planet.data.id, fullPayload );
                 }
             }    
         },
         disconnect: async function() {
-            for (let server of planet.node.planetServers) {
-                await server.receiveDisconnect( planet.data.id )
+            for (let id in planet.node.planetServers) {
+                if (id != planet.data.id) {
+                    verboseLog(`Network: Planet(${id}) >/< by Planet(${planet.data.id})`)
+                    const server = planet.node.planetServers[id];
+                    await server.receiveDisconnect( planet.data.id )
+                }
             }             
         },
     } as NetworkHandlers
