@@ -32,9 +32,9 @@ export async function connect( planet: PlanetServer ) {
         const port = await getPort()
         swarm.listen(port);
         debugPeers[id] = { sockets: {} }
-        // verboseLog(`Network: (${id}) joining discovery channel.`)
+        verboseLog(`Network: (${id}) joining discovery channel.`)
         swarm.on("connection", (conn: Socket, info) => {
-            verboseLog(`Network: (${id}) <-- by (${info.id}).`)
+            // verboseLog(`Network: (${id}) <-- by (${info.id}).`)
             // keep alive ---------------------------------------
             if (info.initiator) {
                 // verboseLog(`Network: (${id}) ^ initiated.`)
@@ -74,8 +74,10 @@ export async function connect( planet: PlanetServer ) {
             })
         })
         swarm.on('connection-closed', (conn: Socket, peer)=> {
-            // verboseLog(`Network: (${id}) closed connection with (${peer.id})`)
-            planet.receiveDisconnect(peer.id);
+            if (peer.id) {
+                // verboseLog(`Network: (${id}) closed connection with (${peer.id}).`)
+                planet.receiveDisconnect(peer.id);
+            }
         })
 
         await swarm.join(config.network.discoveryChannel);
@@ -90,13 +92,8 @@ export async function connect( planet: PlanetServer ) {
                 }
             },
             disconnect: function() {
-                swarm.leave(config.network.discoveryChannel)
-                for (let socketId in socketMap) {
-                    for (let socket of socketMap[socketId]) {
-                        // verboseLog(`Network: (${id}) closing (${peer.id})`)
-                        socket.end();
-                    }
-                }
+                verboseLog(`Network: (${id}) leaving discovery channel.`)
+                swarm.destroy();
             },
         } as NetworkHandlers
         // ======================

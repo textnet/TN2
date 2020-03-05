@@ -14,6 +14,7 @@ This is an Excalibur+Electron prototype of the TXTNET.
 * [x] network layer for Planets: make sure it works
 * [x] wait permission: make sure it works in Electron
 * [x] make sure stuff is saved and loaded
+* [x] commands online/offline
 
 
 ## TODO: Interplanet operations:
@@ -25,8 +26,8 @@ This is an Excalibur+Electron prototype of the TXTNET.
 
 
 ## Stages
-1. Node stub
-2. Planets on the node
+1. (+) Node stub
+2. (+) Naive planets on the node
 3. Network of planets (discovery, online, offline)
 5. Things (create, destroy) — with Planes
 6. Consoles (create, destroy, connect, disconnect)
@@ -50,9 +51,13 @@ This is an Excalibur+Electron prototype of the TXTNET.
 ## Console commands supported
     exit
     network
+
     create planet <id>
     destroy planet <id>
+    online <planetId>
+    offline <planetId>
     planets
+
     create console <id> <thingId>
     destroy console <id>
     consoles

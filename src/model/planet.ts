@@ -3,6 +3,7 @@ import { PlanetData, ThingData, PlaneData } from "./interfaces"
 import { NodeServer } from "../network/node"
 import { Repository } from "../storage/repo"
 import * as network from "../network/discovery"
+import { log, error, ok, verboseLog } from "../commandline/commandline"
 
 export function getPlanetId(id: string) {
     return id.split(".")[0]

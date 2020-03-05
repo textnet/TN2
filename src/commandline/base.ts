@@ -1,12 +1,15 @@
 import { ok, error, log, register, call } from "./commandline";
 import { NodeServer } from "../network/node";
 import { debugPeers } from "../network/discovery"
+import { PlanetServer } from "../model/planet"
 
 
 export function setup() {
 
     register("create planet", createPlanet)
     register("destroy planet", destroyPlanet)
+    register("online",  onlinePlanet)
+    register("offline", offlinePlanet)
     register("planets", listPlanets)
 
     register("create console", createConsole)
@@ -42,12 +45,28 @@ function mapParams(params, mapping) {
     return result;
 }
 
-function logObj(kind, item) { log(`${kind}(${item.id})`) }
+function logObj(item, more) { log(`(${item.id})-`+more) }
 
 // PLANETS
 export async function createPlanet(node: NodeServer, paramList) {
     const params = mapParams(paramList, ["id"])
     return node.createPlanet(params["id"]);
+}
+export async function onlinePlanet(node: NodeServer, paramList) {
+    const params = mapParams(paramList, ["id"])
+    if (node.planetServers[params["id"]]) {
+        node.planetServers[params["id"]].online()
+    } else {
+        error(`Unknown planet: ${params["id"]})`);
+    }
+}
+export async function offlinePlanet(node: NodeServer, paramList) {
+    const params = mapParams(paramList, ["id"])
+    if (node.planetServers[params["id"]]) {
+        node.planetServers[params["id"]].offline()
+    } else {
+        error(`Unknown planet: ${params["id"]})`);
+    }
 }
 export async function destroyPlanet(node: NodeServer, paramList) {
     const params = mapParams(paramList, ["id"])
@@ -59,9 +78,9 @@ export async function destroyPlanet(node: NodeServer, paramList) {
     }
 }
 export async function listPlanets(node: NodeServer) {
-    const planets = await node.listPlanets();
-    for (let id in planets) {
-        logObj("Planet", planets[id]);
+    const servers = node.planetServers;
+    for (let id in servers) {
+        logObj(servers[id].data, (servers[id]._online?"ONLINE":"offline"));
     }
 }
 
