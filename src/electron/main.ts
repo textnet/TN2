@@ -7,15 +7,15 @@ import { existsSync } from "fs"
 import { app, BrowserWindow } from 'electron'
 import * as commandline from "../commandline/commandline"
 
-import { NodeServer } from "../network/node"
+import { LibraryServer } from "../network/library"
 import { waitPermission } from "../network/permission"
 
 
 function onReady() {
     waitPermission(function(){
-        const node = new NodeServer();
-        node.start().then(()=>{
-            commandline.init(node, ()=>{ node.finish().then(()=>{ app.quit() }) });    
+        const library = new LibraryServer();
+        library.start().then(()=>{
+            commandline.init(library, ()=>{ library.finish().then(()=>{ app.quit() }) });    
         })
     })
 }

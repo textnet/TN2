@@ -1,11 +1,11 @@
 import { ok, error, log, register, call } from "./commandline";
 
-export async function script(node) {
+export async function script(library) {
     const lines = setupScript.split("\n");
     for (let line of lines) {
         line = line.replace(/^\s+/, "").replace(/\s+$/, "");
         if (line != "") {
-            await call(node, line);
+            await call(library, line);
         }
     }
 }
@@ -17,11 +17,11 @@ const setupScript = `
 
 
 const remainder = `
-create planet Earth
-create planet Mars
+create book Earth
+create book Mars
 
-create planet Saturn
-destroy planet Saturn
+create book Saturn
+destroy book Saturn
 
 
 exit

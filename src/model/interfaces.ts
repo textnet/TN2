@@ -1,7 +1,7 @@
 
 
 
-export interface PlanetData {
+export interface BookData {
     id: string;
 }
 

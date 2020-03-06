@@ -1,6 +1,6 @@
 import * as commandline from "../commandline/commandline"
 import { config } from "../config"
-import { NodeServer } from "../network/node"
+import { LibraryServer } from "../network/library"
 import { waitPermission } from "../network/permission";
 
 function setupServer() {
@@ -17,9 +17,9 @@ function setupServer() {
     server.listen(port, hostname, () => {
         console.log(`TN2 Headless Server. Version ${config.version}.`)
         // waitPermission(function(){
-            const node = new NodeServer();
-            node.start().then(()=>{
-                commandline.init(node, async function(){ await node.finish(); await process.exit() });    
+            const library = new LibraryServer();
+            library.start().then(()=>{
+                commandline.init(library, async function(){ await library.finish(); await process.exit() });    
             })           
         // })
     });    

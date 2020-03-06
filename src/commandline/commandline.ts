@@ -1,32 +1,32 @@
 import readline from 'readline-promise'
 import { script } from "./script"
 import * as baseCommands from "./base"
-import { NodeServer } from "../network/node"
+import { LibraryServer } from "../network/library"
 import { config } from "../config"
 
 const chalk = require('chalk');
 const splitargs = require('splitargs');
 
 
-export function init(node: NodeServer, exitHandler) {
+export function init(library: LibraryServer, exitHandler) {
         baseCommands.setup();
         register("test", function(n, params) { console.log(params) })
         register("exit", async function(n, params) { 
             ok("Exit.")
             await exitHandler();
         })
-        script(node).then(()=>{ commandInput(node) });
+        script(library).then(()=>{ commandInput(library) });
 }
 
 
-export function commandInput(node: NodeServer,) {
+export function commandInput(library: LibraryServer,) {
     const rl = readline.createInterface({
         terminal: true,
         input: process.stdin,
         output: process.stdout,
     });
     async function handleCommand(input?: string) {
-        if (input) await parseCommand(node, input);
+        if (input) await parseCommand(library, input);
         rl.questionAsync(':) ').then(handleCommand);
     }
 
@@ -63,16 +63,16 @@ export function register(command: string, handler: any) {
     commands[command] = handler;
 }
 
-export function call(node: NodeServer, commandString) {
-    return parseCommand(node, commandString);
+export function call(library: LibraryServer, commandString) {
+    return parseCommand(library, commandString);
 }
 
 
-async function parseCommand(node, input: string) {
+async function parseCommand(library, input: string) {
     for (let command in commands) {
         if (command == input || command+" " == input.substr(0, command.length+1)) {
             message(`:) ${input}`);
-            return commands[command](node, parseParams(input.substr(command.length+1)));
+            return commands[command](library, parseParams(input.substr(command.length+1)));
         }
     }
     error(`Unknown command: ${input}`)

@@ -2,7 +2,7 @@
  * Generalised object storage based on an abstracted key-value storage
  */
 import { Storage, createStorage } from "./abstraction"
-import { getPlanetId } from "../model/planet"
+import { getBookId } from "../model/book"
 
 /**
  * Repository of objects with interface <T>.
@@ -12,13 +12,13 @@ export class Repository<T> {
     storage: Storage;
     cache: Record<string, T>;
     prefix: string;
-    planetId: string;
+    bookId: string;
     isFree: boolean;
 
-    constructor(prefix: string, planetId?: string) {
+    constructor(prefix: string, bookId?: string) {
         this.prefix = prefix;
-        this.planetId = planetId || "";
-        this.storage = createStorage(this.planetId+"."+this.prefix);
+        this.bookId = bookId || "";
+        this.storage = createStorage(this.bookId+"."+this.prefix);
         this.isFree = false;
     }
     free() { 
@@ -27,12 +27,12 @@ export class Repository<T> {
     }
 
     isLocal(id: string) {
-        return this.planetId ? (getPlanetId(id) == this.planetId) : true;
+        return this.bookId ? (getBookId(id) == this.bookId) : true;
     }
 
     async load(id: string)   { 
         if (!this.isLocal(id)) {
-            console.log(`REMOTE LOAD(${this.planetId}.${this.prefix})->`, id)
+            console.log(`REMOTE LOAD(${this.bookId}.${this.prefix})->`, id)
             // const data = await remote.load(this.persistence, this.prefix, id);
             // await this.save(data);
         } else {

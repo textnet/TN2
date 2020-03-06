@@ -7,8 +7,8 @@ import { Socket } from "net"
 import { ok, error, log, verboseLog } from "../commandline/commandline"
 
 import { config } from "../config"
-import { NodeServer } from "./node"
-import { PlanetServer } from "../model/planet"
+import { LibraryServer } from "./library"
+import { BookServer } from "../model/book"
 
 
 export interface NetworkHandlers {
@@ -19,12 +19,12 @@ export interface NetworkHandlers {
 
 export const debugPeers: Record<string, any> = {};
 
-export async function connect( planet: PlanetServer ) {
+export async function connect( book: BookServer ) {
     if (config.debug.forceOffline) {
-        return await localConnect( planet );
+        return await localConnect( book );
     } else {
         // P2P code =============
-        const id = planet.data.id;
+        const id = book.data.id;
         const swarm = new Swarm(defaults({
             id: Buffer.from(id, 'utf8')
         }))
@@ -47,7 +47,7 @@ export async function connect( planet: PlanetServer ) {
             if (!socketMap[info.id]) socketMap[info.id] = [];
             socketMap[info.id].push(conn)
             debugPeers[id]["sockets"] = socketMap;
-            planet.receiveConnection(info.id)
+            book.receiveConnection(info.id)
             // incoming -----------------------------------------
             let connectionDataTail = "";
             conn.on('data', data => {
@@ -58,7 +58,7 @@ export async function connect( planet: PlanetServer ) {
                 const messages = (connectionDataTail+data.toString()).split("\n\n");
                 for (let i=0; i<messages.length-1; i++) {
                     const fullPayload = JSON.parse(messages[i])    
-                    planet.receiveMessage(info.id, fullPayload);
+                    book.receiveMessage(info.id, fullPayload);
                 }
                 connectionDataTail = messages[messages.length-1]
             })
@@ -76,15 +76,15 @@ export async function connect( planet: PlanetServer ) {
         swarm.on('connection-closed', (conn: Socket, peer)=> {
             if (peer.id) {
                 // verboseLog(`Network: (${id}) closed connection with (${peer.id}).`)
-                planet.receiveDisconnect(peer.id);
+                book.receiveDisconnect(peer.id);
             }
         })
 
         await swarm.join(config.network.discoveryChannel);
         return {
-            message: function(targetPlanetId: string, fullPayload: any) {
+            message: function(targetBookId: string, fullPayload: any) {
                 let data = JSON.stringify(fullPayload);
-                let sockets = socketMap[targetPlanetId];
+                let sockets = socketMap[targetBookId];
                 for (let socket of sockets) {
                     if (!socket.destroyed) {
                         socket.write(data+"\n\n");
@@ -102,33 +102,33 @@ export async function connect( planet: PlanetServer ) {
 
 
 
-export async function localConnect( planet: PlanetServer, onMessage?, onConnect?, onClose? ) {
-    verboseLog(`Network-Local: (${planet.data.id}) joining discovery channel.`)   
-    for (let id in planet.node.planetServers) {
-        if (id != planet.data.id) {
-            const server = planet.node.planetServers[id];
-            // verboseLog(`Network-Local: (${planet.data.id}) <-> (${server.data.id}).`)
-            await server.receiveConnection( planet.data.id )
-            await planet.receiveConnection( server.data.id )            
+export async function localConnect( book: BookServer, onMessage?, onConnect?, onClose? ) {
+    verboseLog(`Network-Local: (${book.data.id}) joining discovery channel.`)   
+    for (let id in book.library.bookServers) {
+        if (id != book.data.id) {
+            const server = book.library.bookServers[id];
+            // verboseLog(`Network-Local: (${book.data.id}) <-> (${server.data.id}).`)
+            await server.receiveConnection( book.data.id )
+            await book.receiveConnection( server.data.id )            
         }
     }
     // ----------
     return {
-        message: async function(targetPlanetId: string, fullPayload: any) {
-            for (let id in planet.node.planetServers) {
-                const server = planet.node.planetServers[id];
-                if (server.data.id != planet.data.id && server.data.id == targetPlanetId) {
-                    await server.receiveMessage( planet.data.id, fullPayload );
+        message: async function(targetBookId: string, fullPayload: any) {
+            for (let id in book.library.bookServers) {
+                const server = book.library.bookServers[id];
+                if (server.data.id != book.data.id && server.data.id == targetBookId) {
+                    await server.receiveMessage( book.data.id, fullPayload );
                 }
             }    
         },
         disconnect: async function() {
-            verboseLog(`Network-Local: (${planet.data.id}) leaving discovery channel.`)
-            for (let id in planet.node.planetServers) {
-                if (id != planet.data.id) {
-                    // verboseLog(`Network: Planet(${id}) >/< by Planet(${planet.data.id})`)
-                    const server = planet.node.planetServers[id];
-                    await server.receiveDisconnect( planet.data.id )
+            verboseLog(`Network-Local: (${book.data.id}) leaving discovery channel.`)
+            for (let id in book.library.bookServers) {
+                if (id != book.data.id) {
+                    // verboseLog(`Network: Book(${id}) >/< by Book(${book.data.id})`)
+                    const server = book.library.bookServers[id];
+                    await server.receiveDisconnect( book.data.id )
                 }
             }             
         },

@@ -1,22 +1,22 @@
 import * as crypto from "crypto";
-import { PlanetData, ThingData, PlaneData } from "./interfaces"
-import { NodeServer } from "../network/node"
+import { BookData, ThingData, PlaneData } from "./interfaces"
+import { LibraryServer } from "../network/library"
 import { Repository } from "../storage/repo"
 import * as network from "../network/discovery"
 import { log, error, ok, verboseLog } from "../commandline/commandline"
 
-export function getPlanetId(id: string) {
+export function getBookId(id: string) {
     return id.split(".")[0]
 }
-export function createPlanetId() {
+export function createBookId() {
     return crypto.randomBytes(32).toString('hex')
 }
 
 
-// serves a planet
-export class PlanetServer {
-    data: PlanetData; // NB: planet data is static!
-    node: NodeServer;
+// serves a book
+export class BookServer {
+    data: BookData; // NB: book data is static!
+    library: LibraryServer;
 
     things: Repository<ThingData>;
     planes: Repository<PlaneData>;
@@ -25,9 +25,9 @@ export class PlanetServer {
 
     _online: boolean;
 
-    constructor(node: NodeServer, data: PlanetData) {
+    constructor(library: LibraryServer, data: BookData) {
         this.data = data;
-        this.node = node;
+        this.library = library;
         this.things = new Repository<ThingData>("things", this.data.id);
         this.planes = new Repository<PlaneData>("planes", this.data.id);
         this._online = false;
@@ -47,19 +47,19 @@ export class PlanetServer {
     }
 
     // will be used to send events and to issue commands
-    async sendMessage(targetPlanetId: string, fullPayload: any) {
-        return await this.handlers.message(targetPlanetId, fullPayload);
+    async sendMessage(targetBookId: string, fullPayload: any) {
+        return await this.handlers.message(targetBookId, fullPayload);
     }
 
-    async receiveConnection(peerPlanetId: string) {
-        // move all my guests on this planet (back from limbo)
+    async receiveConnection(peerBookId: string) {
+        // move all my guests on this book (back from limbo)
     }
-    async receiveDisconnect(peerPlanetId: string) {
-        // remove all my guests from the planet, put them into their limbo
+    async receiveDisconnect(peerBookId: string) {
+        // remove all my guests from the book, put them into their limbo
     }
-    async receiveMessage(fromPlanetId: string, fullPayload: any) {
-        // incoming events regarding my guests that are visiting that planet
-        // incoming commands from guests from that planet that are visiting ours
+    async receiveMessage(fromBookId: string, fullPayload: any) {
+        // incoming events regarding my guests that are visiting that book
+        // incoming commands from guests from that book that are visiting ours
     }
 
 }
