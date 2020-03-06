@@ -3,23 +3,19 @@
 This is an Excalibur+Electron prototype of the TXTNET.
 
 
-## WORDS MATTER
-* [x] rename Planets into Books
-* [x] rename Nodes into Libraries
-
 ## Model: Things and Planes
-* [ ] document physics and sprite approaches
+* [x] document physics and sprite approaches
 * [ ] thing model with sprites and physics
 * [ ] plane model
 * [ ] thing templates
-* [ ] create Planet-Thing and place it in the right place
+* [ ] create Book-Thing and place it in the right place
 * [ ] create thing command
 * [ ] destroy thing command
 
 
 
 
-## TODO: Interplanet operations:
+## TODO: Operations between libraries
 - peer book goes offline: move all my guests to limbo
 - peer book goes online: move guests back
 - send message: event happens on the plane where are guests from other book
@@ -29,8 +25,8 @@ This is an Excalibur+Electron prototype of the TXTNET.
 
 ## Stages
 1. (+) Library stub
-2. (+) Naive books in the library
-3. (+) Network of libraries (discovery, online, offline)
+2. (+) Naive Books in the Library
+3. (+) Network of Books (discovery, online, offline)
 5. Things (create, destroy) — with Planes
 6. Text consoles (connect, disconnect)
 7. Text controls over things (A LOT OF WORK HERE: events, collisions, network communication)
