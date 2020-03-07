@@ -1,4 +1,5 @@
-
+import { Position, Direction, Box } from "./geometry"
+import { Sprite } from "./sprites"
 
 
 export interface BookData {
@@ -14,6 +15,7 @@ export interface ThingData {
     id: string;
     hostPlaneId: string;
     name: string;
+    sprite: Sprite;
     planes: Record<string, PlaneData>;
 }
 
@@ -23,14 +25,3 @@ export interface PlaneData {
     things: Record<string, Position>;
 }
 
-
-export interface Position {
-    x: number;
-    y: number;
-    direction: Direction;
-}
-
-export interface Direction {
-    dx: number;
-    dy: number;
-}
