@@ -5,12 +5,39 @@ This is an Excalibur+Electron prototype of the TXTNET.
 
 ## Model: Things and Planes
 * [x] document physics and sprite approaches
-* [ ] thing model with sprites and physics
-* [ ] plane model
-* [ ] thing templates
+* [x] thing model with sprites and physics
+* [x] plane model
+* [>] thing templates
 * [ ] create Book-Thing and place it in the right place
 * [ ] create thing command
 * [ ] destroy thing command
+
+## To think about
+
+* how to setup planes in things? who owns that setup? book? how meta-players can change that?
+* how to inherit gravity etc.? When placing a thing onto a plane — take properties of the thing above?
+    * still, how do we start?
+    * need special commands?
+
+I need to implement many commands here
+--------------------------------------
+    create plane <name> on <thingId>
+    destroy plane <name> on <thingId>
+    create thing <thingId> as <thingTemplate>
+    copy thing <thingId> <newId>
+    destroy thing <thingId>
+    on <planetId> gravity <name> is (<x>,<y>,<z>) acceleration <number> minimal <mass>
+    on <planetId> gravity <name> clear
+    on <planetId> season <name> [clear]
+    thing <thingId> has mass <name> <number>
+    thing <thingId> has force <name> <number>
+    thing <thingId> is called <name>
+    thing <thingId> has box (<x>,<y>)
+    thing <thingId> has <property> <value>
+    thing <thingId> is [not] <property>
+
+
+
 
 
 

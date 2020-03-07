@@ -10,14 +10,36 @@ export interface ThingPhysics {
 }
 
 export interface PlanePhysics {
-    gravity?: Record<string, number>;
-    seasons?: PlaneSeason[];
+    gravity?: Record<string, PlaneGravity>;
+    seasons?: Record<string, PlaneSeason>;
+}
+
+export interface PlaneGravity {
+    direction:     Direction;
+    velocity?:     number;    // sets things in movement with constant velocity
+    acceleration?: number;    // accelerate things
+    minimalMass?:  number;    // don't trigger if the mass is lighter
+
 }
 
 export interface PlaneSeason {
-    name:  string;
     times: number[];
     names: string[];
+}
+
+export const GRAVITY: Record<string, PlaneGravity> = {
+    TOPDOWN: {
+        direction: { dx:0, dy:0, dz:-1 },
+        acceleration: 1,
+    },
+    MARIO: {
+        direction: { dx:0, dy:1 },
+        acceleration: 1,        
+    },
+    WIND: {
+        direction: { dx:1, dy:0 },
+        velocity: 1,
+    },
 }
 
 export const DURATION: Record<string, number> = {
@@ -32,15 +54,15 @@ export const DURATION: Record<string, number> = {
 }
 
 export const SEASON: Record<string, PlaneSeason> = {
-    DAY: { name: "Day", 
+    DAY: { 
            times: [DURATION.HOUR*6, DURATION.HOUR*6, DURATION.HOUR*6, DURATION.HOUR*6],
            names: ["Night", "Morning", "Day", "Evening"],
     },
-    SEASONS: { name: "Year", 
+    SEASONS: { 
             times: [DURATION.SEASON, DURATION.SEASON, DURATION.SEASON, DURATION.SEASON],
             names: ["Winter", "Spring", "Summer", "Autumn"],
     },
-    MONTHS: { name: "Year", 
+    MONTHS: { 
               times: [DURATION.MONTH, DURATION.MONTH, DURATION.MONTH, DURATION.MONTH, 
                       DURATION.MONTH, DURATION.MONTH, DURATION.MONTH, DURATION.MONTH, 
                       DURATION.MONTH, DURATION.MONTH, DURATION.MONTH, DURATION.MONTH, ],

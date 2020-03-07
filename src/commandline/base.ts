@@ -18,7 +18,6 @@ export function setup() {
     register("consoles", listConsoles)
     // TODO: bind, unbind, connect, disconnect
 
-
     register("network", network);
 }
 
