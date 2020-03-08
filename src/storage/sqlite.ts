@@ -14,7 +14,7 @@ export class Storage {
     private statements: Record<string, Database.Statement>;
     constructor(kind: string) {
         this.kind = kind;
-        this.db = new Database("./.storage/"+kind+".db", {});
+        this.db = new Database("./_storage/"+kind+".db", {});
     }
 
     /**

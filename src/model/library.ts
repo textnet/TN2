@@ -1,7 +1,9 @@
 import { config }  from "../config"
-import { BookData, ConsoleData } from "../model/interfaces";
+import { BookData, ConsoleData } from "./interfaces";
 import { Repository } from "../storage/repo";
-import { createBookId, BookServer } from "../model/book"
+import { BookServer } from "./book"
+import { createFromTemplate, TEMPLATE_BOOK } from "./create"
+import { createBookId } from "./identity"
 import { ok, log, error, verboseLog } from "../commandline/commandline"
 
 
@@ -11,8 +13,8 @@ export class LibraryServer {
     bookServers: Record<string, BookServer>;
 
     constructor() {
-        this.books  = new Repository<BookData>("books");
-        this.consoles = new Repository<ConsoleData>("consoles");
+        this.books  = new Repository<BookData>("books", "library");
+        this.consoles = new Repository<ConsoleData>("consoles", "library");
         this.bookServers = {};
     }
 
@@ -43,14 +45,20 @@ export class LibraryServer {
         const data: BookData = {
             id: id || createBookId(),
         }
+        const tempServer = new BookServer(this, data);
+        const thing = await createFromTemplate(tempServer, TEMPLATE_BOOK, "*");
         const result = await this.books.save(data);
         await this.startBook(data)
         return result;
-        // TODO create Book-Thing to represent this book. Put it in its limbo (should be fun).
+    }
+    async updateBook(data: BookData) {
+        return await this.books.save(data);
     }
     async destroyBook(id: string) {
         if (this.bookServers[id]) {
             await this.bookServers[id].offline();
+            // TODO destroy all things and planes
+            delete this.bookServers[id];
         }
         return this.books.remove(id);
     }

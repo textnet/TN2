@@ -7,7 +7,7 @@ import { existsSync } from "fs"
 import { app, BrowserWindow } from 'electron'
 import * as commandline from "../commandline/commandline"
 
-import { LibraryServer } from "../network/library"
+import { LibraryServer } from "../model/library"
 import { waitPermission } from "../network/permission"
 
 

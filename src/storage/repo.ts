@@ -2,7 +2,7 @@
  * Generalised object storage based on an abstracted key-value storage
  */
 import { Storage, createStorage } from "./abstraction"
-import { getBookId } from "../model/book"
+import { getBookId } from "../model/identity"
 
 /**
  * Repository of objects with interface <T>.

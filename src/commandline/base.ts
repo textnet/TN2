@@ -1,5 +1,5 @@
 import { ok, error, log, register, call } from "./commandline";
-import { LibraryServer } from "../network/library";
+import { LibraryServer } from "../model/library";
 import { debugPeers } from "../network/discovery"
 import { BookServer } from "../model/book"
 import { config } from "../config"
@@ -21,6 +21,18 @@ export function setup() {
     register("network", network);
 }
 
+export async function getBookServers(L: LibraryServer, id?: string) {
+    const books = [];   
+    if (id && L.bookServers[id]) {
+        books.push(L.bookServers[id])
+    } else {
+        for (let id in L.bookServers) {
+            books.push(L.bookServers[id])
+        }
+    }
+    return books;
+}
+
 
 function network() {
     if (config.debug.forceOffline) {
@@ -40,7 +52,7 @@ function network() {
     }
 }
 
-function mapParams(params, mapping) {
+export function mapParams(params, mapping) {
     const result = {};
     for (let i in mapping) {
         if (i == params.length) break;
@@ -49,9 +61,9 @@ function mapParams(params, mapping) {
     return result;
 }
 
-function logObj(item, more) { log(`(${item.id})-`+more) }
+export function logObj(item, more) { log(`(${item.id})-`+more) }
 
-// PLANETS
+// BOOKS
 export async function createBook(library: LibraryServer, paramList) {
     const params = mapParams(paramList, ["id"])
     return library.createBook(params["id"]);

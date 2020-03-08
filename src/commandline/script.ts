@@ -11,7 +11,12 @@ export async function script(library) {
 }
 
 const setupScript = `
-
+create book Alphabet
+create book Bible
+things
+planes
+things in Alphabet
+planes in Bible.*
 
 `;
 

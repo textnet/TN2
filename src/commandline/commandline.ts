@@ -1,8 +1,12 @@
 import readline from 'readline-promise'
 import { script } from "./script"
-import * as baseCommands from "./base"
-import { LibraryServer } from "../network/library"
+import { LibraryServer } from "../model/library"
 import { config } from "../config"
+
+import * as baseCommands from "./base"
+import * as thingCommands from "./things"
+import * as planeCommands from "./planes"
+
 
 const chalk = require('chalk');
 const splitargs = require('splitargs');
@@ -10,6 +14,8 @@ const splitargs = require('splitargs');
 
 export function init(library: LibraryServer, exitHandler) {
         baseCommands.setup();
+        thingCommands.setup();
+        planeCommands.setup();
         register("test", function(n, params) { console.log(params) })
         register("exit", async function(n, params) { 
             ok("Exit.")
@@ -59,20 +65,38 @@ export function message(what) {
 
 const commands: Record<string, any> = {}
 
-export function register(command: string, handler: any) {
-    commands[command] = handler;
+export function register(command: string, handler: any, paramsRe?: RegExp, mapping?: string[]) {
+    commands[command] = { handler: handler, paramsRe: paramsRe, mapping:mapping };
 }
 
 export function call(library: LibraryServer, commandString) {
     return parseCommand(library, commandString);
 }
 
+export function mapParams(params, mapping) {
+    const result = {};
+    for (let i in mapping) {
+        if (i == params.length) break;
+        result[mapping[i]] = params[i]
+    }
+    return result;
+}
+
 
 async function parseCommand(library, input: string) {
     for (let command in commands) {
         if (command == input || command+" " == input.substr(0, command.length+1)) {
-            message(`:) ${input}`);
-            return commands[command](library, parseParams(input.substr(command.length+1)));
+            message(`${input}`);
+            if (commands[command]["paramsRe"]) {
+                const re = commands[command]["paramsRe"] as RegExp;
+                const h  = commands[command]["handler"];
+                const map = commands[command]["mapping"];
+                const paramsList = input.substr(command.length+1).match(re).splice(1) || []; 
+                return h(library, mapParams(paramsList, map));    
+            } else {
+                return commands[command]["handler"](library, parseParams(input.substr(command.length+1)));    
+            }
+            
         }
     }
     error(`Unknown command: ${input}`)

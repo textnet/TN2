@@ -1,16 +1,11 @@
-import * as crypto from "crypto";
 import { BookData, ThingData, PlaneData } from "./interfaces"
-import { LibraryServer } from "../network/library"
+import { LibraryServer } from "./library"
 import { Repository } from "../storage/repo"
 import * as network from "../network/discovery"
 import { log, error, ok, verboseLog } from "../commandline/commandline"
+import { pushDefaults } from "../utils"
+import { getBookId, createBookId } from "./identity"
 
-export function getBookId(id: string) {
-    return id.split(".")[0]
-}
-export function createBookId() {
-    return crypto.randomBytes(32).toString('hex')
-}
 
 
 // serves a book

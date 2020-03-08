@@ -23,6 +23,17 @@ export interface Direction {
     dz?: number;
 }
 
+export const DIRECTION: Record<string,Direction> = {
+    UP:    { dx: 0, dy:-1, dz:0 },
+    DOWN:  { dx: 0, dy: 1, dz:0 },
+    LEFT:  { dx:-1, dy: 0, dz:0 },
+    RIGHT: { dx: 1, dy: 0, dz:0 }, 
+    UL:    { dx:-1, dy:-1, dz:0 }, 
+    DL:    { dx:-1, dy: 1, dz:0 }, 
+    UR:    { dx: 1, dy:-1, dz:0 }, 
+    DR:    { dx: 1, dy: 1, dz:0 }, 
+}
+
 /*
 need helper functions for position and direction:
 - isIdle, isUp, isDown, isLeft, isRight, -isUpLeft,... -isDir()

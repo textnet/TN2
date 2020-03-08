@@ -27,6 +27,7 @@ export interface PlaneSeason {
     names: string[];
 }
 
+
 export const GRAVITY: Record<string, PlaneGravity> = {
     TOPDOWN: {
         direction: { dx:0, dy:0, dz:-1 },
@@ -69,4 +70,9 @@ export const SEASON: Record<string, PlaneSeason> = {
               names: ["January", "February", "March", "April", "May", "June", 
                       "July", "August", "September", "October", "November", "December"],
     },
+}
+
+export const PLANE_PHYSICS_DEFAULT: PlanePhysics = {
+    gravity: { mass: GRAVITY.TOPDOWN },
+    seasons: { day: SEASON.DAY },
 }

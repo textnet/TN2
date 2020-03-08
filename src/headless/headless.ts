@@ -1,6 +1,6 @@
 import * as commandline from "../commandline/commandline"
 import { config } from "../config"
-import { LibraryServer } from "../network/library"
+import { LibraryServer } from "../model/library"
 import { waitPermission } from "../network/permission";
 
 function setupServer() {

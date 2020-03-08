@@ -1,13 +1,14 @@
-import { Position, Direction, Box } from "./geometry"
+import { Position, Direction, Box, DIRECTION } from "./geometry"
 import { Sprite } from "./sprites"
-import { ThingPhysics, PlanePhysics } from "./physics"
+import { ThingPhysics, PlanePhysics, PLANE_PHYSICS_DEFAULT } from "./physics"
+import { deepCopy } from "../utils"
 
 // Structures that are saved in the Book storage.
 // Should not have circular references or references to deeper objects.
 
 export interface BookData {
     id: string;
-    setupPlanes?: string[]; // TODO use!
+    thingId?: string;
 }
 
 export interface ConsoleData {
@@ -20,10 +21,10 @@ export interface ThingData {
     hostPlaneId: string;
     name: string;
     colors: Record<string,string>; // e.g. text, floor, title, skin, eyes. use constants as keys!
-    constraints: Record<string,boolean|ThingConstraint>; // constraints like "pushable" etc. true/false or min mass
+    constraints?: Record<string,boolean|ThingConstraint>; // constraints like "pushable" etc. true/false or min mass
     sprite: Sprite;
     physics: ThingPhysics;
-    planes: Record<string, PlaneData>;
+    planes: Record<string, string>;
 }
 
 export interface ThingConstraint {
@@ -34,21 +35,57 @@ export interface ThingConstraint {
 export interface PlaneData {
     id: string;
     ownerId: string;
-    physics: PlanePhysics;
+    physics?: PlanePhysics;
     things: Record<string, Position>;
+    text: string;
+    format?: string;
+    spawn?: Position;
 }
 
-export const CONSTRAINT = {
-    pushable: "Can this thing be pushed?",
-    passable: "Can this thing be passed through?",
-    pickable: "Can this thing be picked up?",
-    locked:   "Can someone enter inside this thing?"
+export interface ThingTemplate {
+    name:  string;
+    thing: ThingData,
+    plane: PlaneData,
 }
+
+export function fixThingDefaults(data) {
+    data.constraints = data.constraints || deepCopy(CONSTRAINTS_DEFAULT);
+}
+export function fixPlaneDefaults(data) {
+    data.physics = data.physics   || deepCopy(PLANE_PHYSICS_DEFAULT);
+    data.format  = data.format    || FORMAT_DEFAULT;
+    data.spawn   = data.spawn     || deepCopy(SPAWN_DEFAULT);
+}
+
+export const SPAWN_DEFAULT: Position = {
+    x:100, y:100, z:0,
+    direction: DIRECTION.DOWN,
+}
+
+export const CONSTRAINTS = {
+    PUSHABLE: "pushable", // Can this thing be pushed?
+    PASSABLE: "passable", // Can this thing be passed through?
+    PICKABLE: "pickable", // Can this thing be picked up?
+    LOCKED:   "locked",   // Can someone enter inside this thing?"
+}
+export const CONSTRAINTS_DEFAULT = {
+    pushable: true,
+    passable: false,
+    pickable: true,
+    locked:   false,
+}
+
+export const FORMAT = {
+    MARKDOWN: "markdown",
+    WRITTEN:  "lua",
+}
+export const FORMAT_DEFAULT = FORMAT.MARKDOWN;
+
 
 export const PLANE: Record<string,string> = {
-    LIMBO:     "Limbo plane where all lost things are.",
-    MATERIAL:  "Material plane that everybody starts with. See: Democritus.",
-    THOUGHT:   "Thought plane is where thinking mechanics happens. See: Schedrovitski.",
+    LIMBO:     "limbo",    // Limbo plane where all lost things are.
+    MATERIAL:  "material", // Material plane that everybody starts with. See: Democritus
+    THOUGHT:   "thought",  // Thought plane is where thinking mechanics happens. See: Schedrovitski.
 }
 export const PLANE_DEFAULT = PLANE.MATERIAL;
 

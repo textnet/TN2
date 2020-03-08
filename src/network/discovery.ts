@@ -7,7 +7,7 @@ import { Socket } from "net"
 import { ok, error, log, verboseLog } from "../commandline/commandline"
 
 import { config } from "../config"
-import { LibraryServer } from "./library"
+import { LibraryServer } from "../model/library"
 import { BookServer } from "../model/book"
 
 
