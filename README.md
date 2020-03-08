@@ -3,15 +3,10 @@
 This is an Excalibur+Electron prototype of the TXTNET.
 
 
-## Model: Things and Planes
-* [x] document physics and sprite approaches
-* [x] thing model with sprites and physics
-* [x] plane model
-* [x] thing templates
-* [x] create Book-Thing and place it in the right place
-* [x] create thing command
-
-
+## Text console
+[ ] concept of console compatible with text, GUI, and Anima
+[ ] connect <thing>
+[ ] disconnect
 
 ## TODO: Document
 - Book is created from a default template
