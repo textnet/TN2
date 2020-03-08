@@ -9,37 +9,7 @@ This is an Excalibur+Electron prototype of the TXTNET.
 * [x] plane model
 * [x] thing templates
 * [x] create Book-Thing and place it in the right place
-* [ ] create thing command
-* [ ] destroy thing command
-
-## To think about
-
-* how to setup planes in things? who owns that setup? book? how meta-players can change that?
-    - 
-* how to inherit gravity etc.? When placing a thing onto a plane — take properties of the thing above?
-    * still, how do we start?
-    * need special commands?
-
-I need to implement many commands here
---------------------------------------
-    see sources
-    create thing <id>
-    destroy thing <full-id>
-
-    create plane <name> on <thingId>
-    destroy plane <name> on <thingId>
-    create thing <thingId> as <thingTemplate>
-    copy thing <thingId> <newId>
-    destroy thing <thingId>
-    on <planetId> gravity <name> is (<x>,<y>,<z>) acceleration <number> minimal <mass>
-    on <planetId> gravity <name> clear
-    on <planetId> season <name> [clear]
-    thing <thingId> has mass <name> <number>
-    thing <thingId> has force <name> <number>
-    thing <thingId> is called <name>
-    thing <thingId> has box (<x>,<y>)
-    thing <thingId> has <property> <value>
-    thing <thingId> is [not] <property>
+* [x] create thing command
 
 
 
@@ -62,7 +32,7 @@ I need to implement many commands here
 1. (+) Library stub
 2. (+) Naive Books in the Library
 3. (+) Network of Books (discovery, online, offline)
-5. Things (create, destroy) — with Planes
+5. (+) Things (create, destroy) — with Planes
 6. Text consoles (connect, disconnect)
 7. Text controls over things (A LOT OF WORK HERE: events, collisions, network communication)
 8. Imagination Limbo (=off-book behaviour)
@@ -95,3 +65,17 @@ I need to implement many commands here
     destroy console <id>
     consoles
 
+    inspect <id>
+
+    things
+    things in <book>
+    create thing <id>
+    create thing <id> in <book>
+    copy thing <id> from <id> in <book>
+
+    planes
+
+## Not supported commands
+    destroy thing <id>
+    add plane <name> to <thing>
+    remove plane <name> from <thing>

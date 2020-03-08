@@ -5,7 +5,6 @@ import { BookServer } from "../model/book"
 import { ThingData } from "../model/interfaces"
 import { getBookServers } from "./base"
 
-
 export function setup() {
     const NA = undefined;
     register("planes", list, /\s*(in\s+(\S+))?\s*/, [NA, "id"]);

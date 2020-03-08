@@ -13,11 +13,12 @@ export async function script(library) {
 const setupScript = `
 create book Alphabet
 create book Bible
-things
-planes
+create thing X
+create thing Y in Alphabet
+copy Alphabet.X to Z
+
 things in Alphabet
 planes in Bible.*
-
 `;
 
 

@@ -27,7 +27,7 @@ export class Repository<T> {
     }
 
     isLocal(id: string) {
-        return this.bookId ? (getBookId(id) == this.bookId) : true;
+        return (this.bookId && this.bookId != "library") ? (getBookId(id) == this.bookId) : true;
     }
 
     async load(id: string)   { 

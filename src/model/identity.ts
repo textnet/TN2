@@ -1,10 +1,14 @@
 import * as crypto from "crypto";
+import { BookData, ThingData, PlaneData } from "./interfaces"
 
 export function getBookId(id: string) {
     return id.split(".")[0]
 }
 export function isBookId(id: string) {
     return id.indexOf(".") < 0;
+}
+export function isThingId(id: string) {
+    return id.split(".").length < 3;
 }
 
 export function createBookId() {

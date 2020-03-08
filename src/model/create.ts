@@ -10,11 +10,13 @@ import { createThingId, createPlaneId } from "./identity"
 
 
 const templateRegistry: Record<string, ThingTemplate> = {};
-export const TEMPLATE_DEFAULT = "Book";
+export const TEMPLATE_DEFAULT = "Something";
 export const TEMPLATE_BOOK    = "Book";
-import * as tBook from "../things/book"
+import * as tBook      from "../things/book"
+import * as tSomething from "../things/something"
 export function registerAllTemplates() {
     registerTemplate(tBook.template);
+    registerTemplate(tSomething.template);
 }
 export function registerTemplate(t: ThingTemplate) {
     templateRegistry[t.name] = t;
@@ -25,21 +27,14 @@ export function getTemplate(name) {
 registerAllTemplates();
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-export async function createFromTemplate(B: BookServer, templateName: string, id?:string, differences?:any) {
-    if (!B.data.thingId) {
-        return createFromScratch(B, id, templateName, differences);
-    } else {
-        return createFromThing(B, B.data.thingId, id, templateName, differences);
-    }
-}
-
-export async function createFromThing(B: BookServer, thingId: string, id?: string, templateName?: string, differences?: any) {
-    const modelThing = await B.things.load(thingId);
+export async function createFromThing(B: BookServer, fromId: string, id?: string, templateName?: string, differences?: any) {
+    const modelThing = await B.things.load(fromId);
     if (!modelThing) {
-        return createFromScratch(B, templateName, id, differences);
+        return createFromTemplate(B, templateName, id, differences);
     } else {
         const thingId = createThingId(B.data.id, id);
-        const thing = modelThing;
+        const thing = deepCopy(modelThing);
+        thing.id = thingId;
         thing.planes = {}
         for (let planeName in modelThing.planes) {
             const modelPlane = await B.planes.load(modelThing.planes[planeName])
@@ -61,11 +56,12 @@ export async function createFromThing(B: BookServer, thingId: string, id?: strin
             }
         }
         fixThingDefaults(thing)
-        return await B.things.save(thing);
+        await B.things.save(thing)
+        return thing;
     }
 }
 
-export async function createFromScratch(B: BookServer, id?: string, templateName?: string, differences?: any) {
+export async function createFromTemplate(B: BookServer, templateName?: string, id?: string, differences?: any) {
     const template = getTemplate(templateName);
     const thingId = createThingId(B.data.id, id);
     const thing: ThingData = deepCopy(template.thing);
@@ -87,5 +83,6 @@ export async function createFromScratch(B: BookServer, id?: string, templateName
         }
     } 
     fixThingDefaults(thing)
-    return await B.things.save(thing);
+    await B.things.save(thing);
+    return thing;
 }

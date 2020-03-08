@@ -6,6 +6,7 @@ import { config } from "../config"
 import * as baseCommands from "./base"
 import * as thingCommands from "./things"
 import * as planeCommands from "./planes"
+import * as print from "./print"
 
 
 const chalk = require('chalk');
@@ -16,6 +17,7 @@ export function init(library: LibraryServer, exitHandler) {
         baseCommands.setup();
         thingCommands.setup();
         planeCommands.setup();
+        print.setup();
         register("test", function(n, params) { console.log(params) })
         register("exit", async function(n, params) { 
             ok("Exit.")
