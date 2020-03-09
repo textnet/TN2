@@ -3,6 +3,13 @@
 This is an Excalibur+Electron prototype of the TXTNET.
 
 
+## Messaging/Events/Actions
++ Load
+    + put message cycle in place
+    + extend `inspect`
+    + make sure it works
+- Controller 
+
 ## Text console
 [ ] concept of console compatible with text, GUI, and Anima
 [ ] connect <thing>

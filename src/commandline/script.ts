@@ -19,10 +19,15 @@ copy Alphabet.X to Z
 
 things in Alphabet
 planes in Bible.*
+
 `;
 
 
 const remainder = `
+inspect Alphabet.*
+inspect Alphabet.* from Bible
+
+
 create book Earth
 create book Mars
 

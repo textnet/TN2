@@ -8,12 +8,12 @@ import { isBookId, isThingId, getBookId } from "../model/identity"
 
 export function setup() {
     const NA = undefined;
-    commandline.register("inspect", inspect, /(\S+)\s*/, ["id"]);
+    commandline.register("inspect", inspect, /(\S+)(\s+from\s+(\S+))?\s*/, ["id", NA, "fromId"]);
 }
 async function inspect(L: LibraryServer, params) {
     if (isBookId(params["id"]))  return inspectBook(L, params["id"])
-    if (isThingId(params["id"])) return inspectThing(L, params["id"])
-    return inspectPlane(L, params["id"])
+    if (isThingId(params["id"])) return inspectThing(L, params["id"], params["fromId"])
+    return inspectPlane(L, params["id"], params["fromId"])
 }
 
 async function inspectBook(L:LibraryServer, id: string) {
@@ -21,14 +21,14 @@ async function inspectBook(L:LibraryServer, id: string) {
     commandline.log(`Inspect: `+str(book))
     console.log(book)
 }
-async function inspectThing(L:LibraryServer, id: string) {
-    const B = L.bookServers[ getBookId(id) ];
+async function inspectThing(L:LibraryServer, id: string, fromId?: string) {
+    const B = L.bookServers[ getBookId(fromId || id) ];
     const thing = await B.things.load(id);
     commandline.log(`Inspect: `+str(thing))
     console.log(thing)    
 }
-async function inspectPlane(L:LibraryServer, id: string) {
-    const B = L.bookServers[ getBookId(id) ];
+async function inspectPlane(L:LibraryServer, id: string, fromId?: string) {
+    const B = L.bookServers[ getBookId(fromId || id) ];
     const plane = await B.planes.load(id);
     commandline.log(`Inspect: `+str(plane))
     console.log(plane)

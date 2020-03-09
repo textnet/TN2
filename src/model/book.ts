@@ -3,8 +3,10 @@ import { LibraryServer } from "./library"
 import { Repository } from "../storage/repo"
 import * as network from "../network/discovery"
 import { log, error, ok, verboseLog } from "../commandline/commandline"
-import { pushDefaults } from "../utils"
+import { pushDefaults, nonce } from "../utils"
 import { getBookId, createBookId } from "./identity"
+import * as actions from "../behaviour/actions"
+import * as events from "../behaviour/events"
 
 
 
@@ -23,8 +25,8 @@ export class BookServer {
     constructor(library: LibraryServer, data: BookData) {
         this.data = data;
         this.library = library;
-        this.things = new Repository<ThingData>("things", this.data.id);
-        this.planes = new Repository<PlaneData>("planes", this.data.id);
+        this.things = new Repository<ThingData>("things", this.data.id, this);
+        this.planes = new Repository<PlaneData>("planes", this.data.id, this);
         this._online = false;
     }
 
@@ -41,9 +43,27 @@ export class BookServer {
         }
     }
 
+    _callbackRegistry: Record<string,any> = {}
     // will be used to send events and to issue commands
-    async sendMessage(targetBookId: string, fullPayload: any) {
-        return await this.handlers.message(targetBookId, fullPayload);
+    async sendMessage(targetBookId: string, payload: network.Message) {
+        const fullPayload: network.FullPayload = {
+            nonce: nonce(),
+            isCallback: false,
+            senderId: this.data.id,
+            receiverId: targetBookId,
+            payload: payload,
+        }
+        if (targetBookId == this.data.id) {
+            error("local message!");
+            console.log(payload);
+            return await this.receiveMessage(this.data.id, fullPayload);
+        } else {
+            const promise = new Promise((resolve, reject)=>{
+                this._callbackRegistry[fullPayload.nonce] = resolve;
+                this.handlers.message(targetBookId, fullPayload);
+            })
+            return promise;
+        }
     }
 
     async receiveConnection(peerBookId: string) {
@@ -52,12 +72,57 @@ export class BookServer {
     async receiveDisconnect(peerBookId: string) {
         // remove all my guests from the book, put them into their limbo
     }
-    async receiveMessage(fromBookId: string, fullPayload: any) {
+    async receiveMessage(fromBookId: string, fullPayload: network.FullPayload) {
+        const that = this;
+        // loads
         // incoming events regarding my guests that are visiting that book
         // incoming commands from guests from that book that are visiting ours
+        if (fullPayload.isCallback) {
+            const callback = this._callbackRegistry[fullPayload.nonce];
+            if (callback) {
+                callback(fullPayload.result);
+            }
+        } else {
+            const promise = this.conductMessage(
+                                fullPayload.senderId.toString(),
+                                fullPayload.receiverId.toString(), 
+                                fullPayload.payload);
+            promise.then(function(result){
+                const callbackPayload: network.FullPayload = {
+                    result: result,
+                    nonce:  fullPayload.nonce,
+                    isCallback: true,
+                }
+                that.handlers.message(fullPayload.senderId.toString(), callbackPayload);
+            })
+        }
     }
-
+    async conductMessage(fromBookId: string, toBookId: string, data: network.Message) {
+        switch(data.name) {
+            ////////
+            case network.MESSAGE.LOAD: 
+                const loadData = data as network.MessageLoad;
+                return this[loadData.kind].load(loadData.id);
+            ////////
+            default: error(`Conduct message of unknown type: ${data.name}!`);
+        }
+        return undefined;
+    }
+    async loadRemote(kind: string, id: string) {
+        const bookId = getBookId(id);
+        const message: network.MessageLoad = {
+            name: network.MESSAGE.LOAD,
+            kind: kind,
+            id: id 
+        }
+        return this.sendMessage(bookId, message);
+    }
 }
+
+
+
+
+
 
 /*
 export function message(connectionInfo: ConnectionInfo, fullPayload) {

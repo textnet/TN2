@@ -9,11 +9,46 @@ import { ok, error, log, verboseLog } from "../commandline/commandline"
 import { config } from "../config"
 import { LibraryServer } from "../model/library"
 import { BookServer } from "../model/book"
+import * as actions from "../behaviour/actions"
+import * as events from "../behaviour/events"
+import * as updates from "../behaviour/updates"
 
 
 export interface NetworkHandlers {
     message:    any;
     disconnect: any;
+}
+export interface FullPayload {
+    nonce: string,
+    isCallback: boolean;
+    senderId?: string;
+    receiverId?: string;
+    result?: string;
+    payload?: Message;
+}
+
+export const MESSAGE = {
+    LOAD: "load",
+    ACTION: "action",
+    EVENT:  "event",
+    UPDATE: "update",
+}
+
+export interface Message {
+    name: string;
+}
+export interface MessageLoad extends Message {
+    kind: string;
+    id: string;
+}
+export interface MessageAction extends Message {
+    action: actions.Action;
+}
+export interface MessageEvent extends Message {
+    event: events.Event;
+}
+export interface MessageUpdate extends Message {
+    update: updates.Update;
 }
 
 
@@ -82,7 +117,7 @@ export async function connect( book: BookServer ) {
 
         await swarm.join(config.network.discoveryChannel);
         return {
-            message: function(targetBookId: string, fullPayload: any) {
+            message: function(targetBookId: string, fullPayload: FullPayload) {
                 let data = JSON.stringify(fullPayload);
                 let sockets = socketMap[targetBookId];
                 for (let socket of sockets) {
@@ -101,7 +136,6 @@ export async function connect( book: BookServer ) {
 }
 
 
-
 export async function localConnect( book: BookServer, onMessage?, onConnect?, onClose? ) {
     verboseLog(`Network-Local: (${book.data.id}) joining discovery channel.`)   
     for (let id in book.library.bookServers) {
@@ -114,11 +148,11 @@ export async function localConnect( book: BookServer, onMessage?, onConnect?, on
     }
     // ----------
     return {
-        message: async function(targetBookId: string, fullPayload: any) {
+        message: async function(targetBookId: string, fullPayload: FullPayload) {
             for (let id in book.library.bookServers) {
                 const server = book.library.bookServers[id];
                 if (server.data.id != book.data.id && server.data.id == targetBookId) {
-                    await server.receiveMessage( book.data.id, fullPayload );
+                    return await server.receiveMessage( book.data.id, fullPayload );
                 }
             }    
         },

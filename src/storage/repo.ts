@@ -2,7 +2,9 @@
  * Generalised object storage based on an abstracted key-value storage
  */
 import { Storage, createStorage } from "./abstraction"
+import { BookServer } from "../model/book"
 import { getBookId } from "../model/identity"
+import * as cl from "../commandline/commandline"
 
 /**
  * Repository of objects with interface <T>.
@@ -10,16 +12,18 @@ import { getBookId } from "../model/identity"
  */
 export class Repository<T> {
     storage: Storage;
+    server:  BookServer;
     cache: Record<string, T>;
     prefix: string;
     bookId: string;
     isFree: boolean;
 
-    constructor(prefix: string, bookId?: string) {
+    constructor(prefix: string, bookId: string, server?: BookServer) {
         this.prefix = prefix;
         this.bookId = bookId || "";
         this.storage = createStorage(this.bookId+"."+this.prefix);
         this.isFree = false;
+        this.server = server;
     }
     free() { 
         this.storage.free() 
@@ -27,14 +31,14 @@ export class Repository<T> {
     }
 
     isLocal(id: string) {
-        return (this.bookId && this.bookId != "library") ? (getBookId(id) == this.bookId) : true;
+        if (!this.server) return true;
+        return getBookId(id) == this.bookId;
     }
 
     async load(id: string)   { 
         if (!this.isLocal(id)) {
-            console.log(`REMOTE LOAD(${this.bookId}.${this.prefix})->`, id)
-            // const data = await remote.load(this.persistence, this.prefix, id);
-            // await this.save(data);
+            cl.verboseLog(`REMOTE LOAD(${this.bookId}.${this.prefix})->${id}`)
+            return await this.server.loadRemote(this.prefix, id) as T;
         } else {
             return this.storage.get(id) as T     
         }
