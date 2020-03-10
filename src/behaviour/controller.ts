@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events'
 import { BookServer } from "../model/book"
 import { ThingData, PlaneData, PLANE } from "../model/interfaces"
 import * as actions from "./actions"
@@ -5,15 +6,25 @@ import * as events from "./events"
 import * as updates from "./updates"
 import * as cl from "../commandline/commandline"
 
-
+export const CONTROLLER = {
+    UNBOUND: true,
+}
 
 export class Controller {
     B: BookServer;
     actorId: string;
+    emitter: EventEmitter;
 
     constructor(server: BookServer, thingId: string) {
         this.B = server;
         this.actorId = thingId;
+        this.emitter = new EventEmitter();
+    }
+
+    async emit(event: events.Event) {
+        // if console
+        // if proxy
+        // if anima
     }
 
     async connect() {
@@ -37,8 +48,12 @@ export class Controller {
                 } as actions.ActionEnter)
             }            
         }
+        await this.B.bind(this)
     }
-    async disconnect() {
+    async disconnect(unbound?: boolean) {
+        if (unbound != CONTROLLER.UNBOUND) { 
+            await this.B.unbind(this);
+        }
         const thing = await this.B.things.load(this.actorId);
         const limbo = await this.B.planes.load(thing.planes[PLANE.LIMBO]);
         // 1. get out of the plane

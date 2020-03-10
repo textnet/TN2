@@ -7,6 +7,10 @@ export function getBookId(id: string) {
 export function isBookId(id: string) {
     return id.indexOf(".") < 0;
 }
+export function getThingId(id: string) {
+    const parts = id.split(".");
+    return `${parts[0]}.${parts[1]}`;
+}
 export function isThingId(id: string) {
     return id.split(".").length < 3;
 }

@@ -21,9 +21,8 @@ export function init(library: LibraryServer, exitHandler) {
         print.setup();
         register("test", function(n, params) { console.log(params) })
         register("exit", async function(n, params) { 
-            await written.unbind();
-            ok("Exit.")
             await exitHandler();
+            ok("Finished.")
         })
         script(library).then(()=>{ commandInput(library) });
 }

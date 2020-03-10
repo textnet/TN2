@@ -4,6 +4,7 @@ import { deepCopy } from "../utils"
 import * as network from "../network/discovery"
 import * as geo from "../model/geometry"
 import * as updates from "./updates"
+import * as events from "./events"
 import * as cl from "../commandline/commandline"
 import { print } from "../commandline/print"
 
@@ -41,7 +42,7 @@ export async function action(B: BookServer, action: Action) {
         name: network.MESSAGE.ACTION,
         action: action,
     }
-    print(action)
+    // print(action)
     return await B.sendMessage(targetBookId, message)
 }
 
@@ -69,6 +70,14 @@ export const handlers = {
             id: action.thingId,
             hostPlaneId: plane.id,
         } as updates.UpdateHostPlane)
+        // emit event
+        await events.emit(B, {
+            event: events.EVENT.ENTER,
+            actorId: action.actorId,
+            planeId: action.planeId,
+            thingId: action.thingId,
+            position: visit,           
+        } as events.EventEnter)
     },
 
     place: async function(B: BookServer, action: ActionPlace) {
@@ -93,6 +102,14 @@ export const handlers = {
                 position: deepCopy(position)
             } as updates.UpdateVisits)
         }
+        // emit event
+        await events.emit(B, {
+            event: events.EVENT.LEAVE,
+            actorId: action.actorId,
+            planeId: action.planeId,
+            thingId: action.thingId,
+        } as events.EventLeave)
+
     },
 
 }

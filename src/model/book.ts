@@ -5,6 +5,7 @@ import * as network from "../network/discovery"
 import { log, error, ok, verboseLog } from "../commandline/commandline"
 import { pushDefaults, nonce } from "../utils"
 import { getBookId, createBookId } from "./identity"
+import { Controller, CONTROLLER } from "../behaviour/controller"
 import * as actions from "../behaviour/actions"
 import * as events from "../behaviour/events"
 import * as updates from "../behaviour/updates"
@@ -19,6 +20,8 @@ export class BookServer {
     things: Repository<ThingData>;
     planes: Repository<PlaneData>;
 
+    controllers: Controller[];
+
     handlers: network.NetworkHandlers;
 
     _online: boolean;
@@ -29,6 +32,7 @@ export class BookServer {
         this.things = new Repository<ThingData>("things", this.data.id, this);
         this.planes = new Repository<PlaneData>("planes", this.data.id, this);
         this._online = false;
+        this.controllers = [];
     }
 
     async online() {
@@ -40,8 +44,26 @@ export class BookServer {
     async offline() {
         if (this._online) {
             await this.handlers.disconnect()
+            for (let t of this.controllers) {
+                await t.disconnect(CONTROLLER.UNBOUND);
+            }
             this._online = false;    
         }
+    }
+
+    // keep trace of all controllers relevant for this book.
+    // will send events to them when something happens.
+    async bind(c: Controller) {
+        this.controllers.push(c);
+    }
+    async unbind(c: Controller) {
+        let list = [];
+        for (let t of this.controllers) {
+            if (t != c) {
+                list.push(t)
+            }
+        }
+        this.controllers = list;
     }
 
     _callbackRegistry: Record<string,any> = {}

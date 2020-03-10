@@ -1,5 +1,5 @@
 import { BookServer } from "../model/book"
-import { getBookId } from "../model/identity"
+import { getBookId, getThingId } from "../model/identity"
 import { deepCopy } from "../utils"
 import * as network from "../network/discovery"
 import * as geo from "../model/geometry"
@@ -8,25 +8,37 @@ import * as cl from "../commandline/commandline"
 import { print } from "../commandline/print"
 
 
-// Events. And commands
+// Events.
 
-
-export interface Event {
-    name: string;
+export const EVENT = {
+    ENTER: "enter",
+    LEAVE: "leave",
 }
 
-// export interface RemoteEvent {}
-// export interface Payload {
-//     event: string,
-//     data:  RemoteEvent,
-// }
+export interface Event {
+    event:      string;
+    actorId:    string;
+    planeId?:   string;
+    thingId?:   string;
+}
+export interface EventEnter extends Event {
+    position: geo.Position;
+}
+export interface EventLeave extends Event {
+}
 
-// // --------------------------------------------------------------
-// export interface Load extends RemoteEvent {
-//     prefix: string,
-//     id:     string,
-// }
-// export interface ArtifactEnter extends RemoteEvent {
-//     artifactId: string,
-//     worldId:    string,
-// }
+
+// ------------------ emitting -------------------------
+export async function emit(B: BookServer, event: Event) {
+    for (let controller of B.controllers) {
+        const hostId = getThingId(event.planeId);
+        const actor = await B.things.load(controller.actorId);
+        if (
+            (actor.id == event.actorId) ||          // controller is the actor
+            (actor.hostPlaneId == event.planeId) || // controller is on the plane where event happened
+            (actor.id == hostId)                    // controller is the thing that owns the plane
+           ){
+            await controller.emit(event)
+        }
+    }
+}

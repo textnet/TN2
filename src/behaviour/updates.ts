@@ -32,7 +32,7 @@ export async function update(B: BookServer, update: Update) {
         name: network.MESSAGE.UPDATE,
         update: update,
     }
-    print(update)
+    // print(update)
     return await B.sendMessage(targetBookId, message)
 }
 

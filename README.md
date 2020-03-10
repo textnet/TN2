@@ -4,35 +4,15 @@ This is an Excalibur+Electron prototype of the TXTNET.
 
 
 ## Connect/Disconnect
-+ Forgot about visits!
-+ connect dispatcher and handlers
-+ make sure actions/update cycle work
-+ Controller
-    + bind/unbind command stubs
-+ First COMMANDS: connect / disconnect
-    + on connect:
-        get thing from limbo
-        place thing on a plane <- if possible
-    + on disconnect:
-        remove thing from the plane
-        put thing into limbo
-+ First ACTIONS:
++ figure out how events should work in general
++ First EVENTS:
     + enter
     + leave
-+ First UPDATE:
-    + hostPlane
-    + visits
-- First SPATIALS:
-    + force
-    - place
-    - fit
-- First EVENTS:
-    - enter
-    - leave
-+ make sure newly created thing is placed in the book
-+ make sure newly copied thing is placed in the book next to the source
-+ make sure promise chain is not broken
-- figure out how events should work
+
+
+## More on controllers
+- Anima controller
+- Proxy controller -> send events via network
 
 
 ## Up Next
@@ -42,11 +22,8 @@ This is an Excalibur+Electron prototype of the TXTNET.
 - Push
 - Pick
 - ....
+- SPATIALS: place/fit
 
-## Text console
-[ ] concept of console compatible with text, GUI, and Anima
-[ ] connect <thing>
-[ ] disconnect
 
 ## TODO: Document
 - Book is created from a default template
@@ -68,8 +45,8 @@ This is an Excalibur+Electron prototype of the TXTNET.
 2. (+) Naive Books in the Library
 3. (+) Network of Books (discovery, online, offline)
 5. (+) Things (create, destroy) — with Planes
-6. Text consoles (connect, disconnect)
-7. Text controls over things (A LOT OF WORK HERE: events, collisions, network communication)
+6. (+) Text consoles (connect, disconnect)
+7. (>) Text controls over things (A LOT OF WORK HERE: events, collisions, network communication)
 8. Imagination Limbo (=off-book behaviour)
 9. Anima (written word)
 10. GUI
