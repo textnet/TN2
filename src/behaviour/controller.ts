@@ -5,6 +5,8 @@ import * as actions from "./actions"
 import * as events from "./events"
 import * as updates from "./updates"
 import * as cl from "../commandline/commandline"
+import { Anima } from "../anima/anima"
+import { getBookId } from "../model/identity"
 
 export const CONTROLLER = {
     UNBOUND: true,
@@ -14,6 +16,8 @@ export class Controller {
     B: BookServer;
     actorId: string;
     emitter: EventEmitter;
+    anima?: Anima;
+    consoleId?: string;
 
     constructor(server: BookServer, thingId: string) {
         this.B = server;
@@ -21,15 +25,23 @@ export class Controller {
         this.emitter = new EventEmitter();
     }
 
+    async connectConsole(consoleId: string) {
+        this.consoleId = consoleId;
+    }
+
+    async connectAnima(anima: Anima) {
+        this.anima = anima;
+    }
+
     async emit(event: events.Event) {
         // if console
         // if proxy
         // if anima
     }
-
+    
     async connect() {
         const thing = await this.B.things.load(this.actorId);
-        if (thing.lostPlaneId) {
+        if (thing.hostPlaneId == thing.planes[PLANE.LIMBO]) {
             let plane = await this.B.planes.load(thing.lostPlaneId);
             if (plane) {
                 // 1. get out of limbo
@@ -55,25 +67,31 @@ export class Controller {
             await this.B.unbind(this);
         }
         const thing = await this.B.things.load(this.actorId);
-        const limbo = await this.B.planes.load(thing.planes[PLANE.LIMBO]);
-        // 1. get out of the plane
-        await actions.action(this.B, { 
-            action: actions.ACTION.LEAVE,
-            actorId: this.actorId,
-            thingId: this.actorId,
-            planeId: thing.hostPlaneId,
-        } as actions.ActionLeave)
-        // 2. move to limbo
-        await actions.action(this.B, { 
-            action: actions.ACTION.ENTER,
-            actorId: this.actorId,
-            thingId: this.actorId,
-            planeId: limbo.id,
-        } as actions.ActionEnter)
+        if (this.consoleId || getBookId(thing.hostPlaneId) != this.B.data.id) {
+            // 1. get out of the plane
+            await actions.action(this.B, { 
+                action: actions.ACTION.LEAVE,
+                actorId: this.actorId,
+                thingId: this.actorId,
+                planeId: thing.hostPlaneId,
+            } as actions.ActionLeave)
+            // 2. move to limbo
+            await actions.action(this.B, { 
+                action: actions.ACTION.ENTER,
+                actorId: this.actorId,
+                thingId: this.actorId,
+                planeId: thing.planes[PLANE.LIMBO],
+            } as actions.ActionEnter)
+        }
     }
 }
 
-
+/*
+    NOTE TO CHECK:
+        - what happens when both books are online, but the console isn't: where does the thing resides?
+        - is it possible -- when going offline -- to still leave on the table?
+        - somehow need to cancel putting things on the plane which are marked as on other plane (ignore at some level?)
+*/
 /*
 
 

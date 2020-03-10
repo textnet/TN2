@@ -4,8 +4,9 @@ import * as cl from "./commandline"
 
 let controller: Controller;
 
-export async function bind(B: BookServer, thingId: string) {
+export async function bind(B: BookServer, thingId: string, consoleId: string) {
     controller = new Controller(B, thingId);
+    controller.connectConsole(consoleId);
     await controller.connect();
     cl.ok(`Controller bound to: ${thingId}`)
 

@@ -3,15 +3,20 @@
 This is an Excalibur+Electron prototype of the TXTNET.
 
 
-## Connect/Disconnect
-+ figure out how events should work in general
-+ First EVENTS:
-    + enter
-    + leave
+## Anima and Written Word
++ create anima wrapper
+    + when book is going online, try to create new animas
+    + bind animas with controllers
+    - make anima capable of rebooting
+- gently move lua api
+- empty library
+- implement getters
+- implement event handlers: on/off, timer event
+- create special permanent anima for the commandline console
 
 
 ## More on controllers
-- Anima controller
+- Anima controller: handling events
 - Proxy controller -> send events via network
 
 

@@ -9,7 +9,7 @@ import { Controller, CONTROLLER } from "../behaviour/controller"
 import * as actions from "../behaviour/actions"
 import * as events from "../behaviour/events"
 import * as updates from "../behaviour/updates"
-
+import * as anima from "../anima/animate"
 
 
 // serves a book
@@ -38,15 +38,20 @@ export class BookServer {
     async online() {
         if (!this._online) {
             this.handlers = await network.connect(this);
-            this._online = true;            
+            this._online = true;
+            // set up all animas
+            const things = await this.things.all();
+            for (let thingId in things) {
+                await anima.animate(this, things[thingId]);
+            }
         }
     }
     async offline() {
         if (this._online) {
-            await this.handlers.disconnect()
             for (let t of this.controllers) {
                 await t.disconnect(CONTROLLER.UNBOUND);
             }
+            await this.handlers.disconnect()
             this._online = false;    
         }
     }

@@ -129,7 +129,7 @@ export async function bindConsole(library: LibraryServer, paramList) {
     const data = await library.loadConsole(params["id"]);
     const bookId = getBookId(data.thingId)
     const server = library.bookServers[bookId];
-    await written.bind(server, data.thingId);
+    await written.bind(server, data.thingId, data.id);
 }
 
 export async function unbindConsole(library: LibraryServer) {
@@ -140,13 +140,6 @@ export async function unbindConsole(library: LibraryServer) {
 // commands to do:
 
 /*
-create thing <id> @ <bookid> "template" x y
-destroy thing <id>
-
-connect
-disconnect
 gui
-
 where <thing_id>
-
 */
