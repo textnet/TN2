@@ -47,9 +47,9 @@ export class LibraryServer {
         }
         const tempServer = new BookServer(this, data);
         const thing = await createFromTemplate(tempServer, TEMPLATE_BOOK, "*");
-        const result = await this.books.save(data);
+        data["thingId"] = thing.id;
+        await this.books.save(data);
         await this.startBook(data)
-        return result;
     }
     async updateBook(data: BookData) {
         return await this.books.save(data);

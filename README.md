@@ -3,12 +3,45 @@
 This is an Excalibur+Electron prototype of the TXTNET.
 
 
-## Messaging/Events/Actions
-+ Load
-    + put message cycle in place
-    + extend `inspect`
-    + make sure it works
-- Controller 
+## Connect/Disconnect
++ Forgot about visits!
++ connect dispatcher and handlers
++ make sure actions/update cycle work
++ Controller
+    + bind/unbind command stubs
++ First COMMANDS: connect / disconnect
+    + on connect:
+        get thing from limbo
+        place thing on a plane <- if possible
+    + on disconnect:
+        remove thing from the plane
+        put thing into limbo
++ First ACTIONS:
+    + enter
+    + leave
++ First UPDATE:
+    + hostPlane
+    + visits
+- First SPATIALS:
+    + force
+    - place
+    - fit
+- First EVENTS:
+    - enter
+    - leave
++ make sure newly created thing is placed in the book
++ make sure newly copied thing is placed in the book next to the source
++ make sure promise chain is not broken
+- figure out how events should work
+
+
+## Up Next
+- Properties
+- Move
+- Enter / Leave
+- Push
+- Pick
+- ....
 
 ## Text console
 [ ] concept of console compatible with text, GUI, and Anima
@@ -67,7 +100,7 @@ This is an Excalibur+Electron prototype of the TXTNET.
     destroy console <id>
     consoles
 
-    inspect <id>
+    inspect <id> from <bookId>
 
     things
     things in <book>
@@ -76,6 +109,9 @@ This is an Excalibur+Electron prototype of the TXTNET.
     copy thing <id> from <id> in <book>
 
     planes
+
+    bind <consoleId>
+    unbind
 
 ## Not supported commands
     destroy thing <id>

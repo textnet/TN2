@@ -7,12 +7,13 @@ import { pushDefaults, nonce } from "../utils"
 import { getBookId, createBookId } from "./identity"
 import * as actions from "../behaviour/actions"
 import * as events from "../behaviour/events"
+import * as updates from "../behaviour/updates"
 
 
 
 // serves a book
 export class BookServer {
-    data: BookData; // NB: book data is static!
+    data:    BookData; // NB: book data is static!
     library: LibraryServer;
 
     things: Repository<ThingData>;
@@ -54,9 +55,7 @@ export class BookServer {
             payload: payload,
         }
         if (targetBookId == this.data.id) {
-            error("local message!");
-            console.log(payload);
-            return await this.receiveMessage(this.data.id, fullPayload);
+            return await this.conductMessage(this.data.id, targetBookId, payload);
         } else {
             const promise = new Promise((resolve, reject)=>{
                 this._callbackRegistry[fullPayload.nonce] = resolve;
@@ -98,11 +97,27 @@ export class BookServer {
         }
     }
     async conductMessage(fromBookId: string, toBookId: string, data: network.Message) {
+        if (toBookId != this.data.id) {
+            error(`Can't conduct message to (${toBookId}): landed on (${this.data.id})!`)
+            return undefined;
+        }
         switch(data.name) {
             ////////
             case network.MESSAGE.LOAD: 
                 const loadData = data as network.MessageLoad;
                 return this[loadData.kind].load(loadData.id);
+            ////////
+            case network.MESSAGE.ACTION: 
+                const action = (data as network.MessageAction).action;
+                return actions.handlers[action.action](this, action);
+            ////////
+            case network.MESSAGE.UPDATE: 
+                const update = (data as network.MessageUpdate).update;
+                return updates.handlers[update.update](this, update);
+            ////////
+            case network.MESSAGE.EVENT: 
+                const event = (data as network.MessageEvent).event;
+                // handle event!
             ////////
             default: error(`Conduct message of unknown type: ${data.name}!`);
         }

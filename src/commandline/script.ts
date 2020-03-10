@@ -14,11 +14,16 @@ const setupScript = `
 create book Alphabet
 create book Bible
 create thing X
-create thing Y in Alphabet
+create thing Player in Alphabet
 copy Alphabet.X to Z
 
 things in Alphabet
 planes in Bible.*
+
+create console P1 Alphabet.Player
+consoles
+
+bind P1
 
 `;
 

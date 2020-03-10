@@ -19,12 +19,14 @@ export interface ConsoleData {
 export interface ThingData {
     id: string;
     hostPlaneId: string;
+    lostPlaneId?: string;
     name: string;
     colors: Record<string,string>; // e.g. text, floor, title, skin, eyes. use constants as keys!
     constraints?: Record<string,boolean|ThingConstraint>; // constraints like "pushable" etc. true/false or min mass
     sprite: Sprite;
     physics: ThingPhysics;
-    planes: Record<string, string>;
+    planes: Record<string, string>;    // name:planeId
+    visits?: Record<string, Position>; // position of the previous visit to planeIds.
 }
 
 export interface ThingConstraint {
@@ -50,6 +52,7 @@ export interface ThingTemplate {
 
 export function fixThingDefaults(data) {
     data.constraints = data.constraints || deepCopy(CONSTRAINTS_DEFAULT);
+    data.visits = data.visits || {};
 }
 export function fixPlaneDefaults(data) {
     data.physics = data.physics   || deepCopy(PLANE_PHYSICS_DEFAULT);
@@ -82,14 +85,14 @@ export const FORMAT = {
 export const FORMAT_DEFAULT = FORMAT.MARKDOWN;
 
 
-export const PLANE: Record<string,string> = {
+export const PLANE = {
     LIMBO:     "limbo",    // Limbo plane where all lost things are.
     MATERIAL:  "material", // Material plane that everybody starts with. See: Democritus
     THOUGHT:   "thought",  // Thought plane is where thinking mechanics happens. See: Schedrovitski.
 }
 export const PLANE_DEFAULT = PLANE.MATERIAL;
 
-export const COLOR: Record<string,string> = {
+export const COLOR = {
     TEXT:  "#CDECF7",
     FLOOR: "#444444",
     TITLE: "#1E76EC",

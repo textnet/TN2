@@ -2,8 +2,11 @@ import * as commandline from "./commandline";
 import { LibraryServer } from "../model/library";
 import { BookServer } from "../model/book"
 import { BookData, ThingData, PlaneData } from "../model/interfaces"
-import * as print from "./print"
 import { isBookId, isThingId, getBookId } from "../model/identity"
+import { Update } from "../behaviour/updates"
+import { Action } from "../behaviour/actions"
+import { Event  } from "../behaviour/events"
+
 
 
 export function setup() {
@@ -45,6 +48,9 @@ export function strPlane(plane: PlaneData) {
 export function strBook(book: BookData) {
     return `/Book:${book.id}`;
 }
+export function strEvent(event: Event) {
+
+}
 
 export function str(data: ThingData|PlaneData|BookData) {
     if (data["planes"]) return strThing(data as ThingData);
@@ -54,4 +60,11 @@ export function str(data: ThingData|PlaneData|BookData) {
 
 export function log(data: ThingData|PlaneData|BookData) {
     commandline.log(str(data))
+}
+
+export function print(data: Event|Update|Action) {
+    if (data["event"])  commandline.log("Event:")
+    if (data["action"]) commandline.log("Action:")
+    if (data["update"]) commandline.log("Update:")
+    console.log(data)
 }

@@ -6,6 +6,7 @@ import { config } from "../config"
 import * as baseCommands from "./base"
 import * as thingCommands from "./things"
 import * as planeCommands from "./planes"
+import * as written from "./written"
 import * as print from "./print"
 
 
@@ -20,6 +21,7 @@ export function init(library: LibraryServer, exitHandler) {
         print.setup();
         register("test", function(n, params) { console.log(params) })
         register("exit", async function(n, params) { 
+            await written.unbind();
             ok("Exit.")
             await exitHandler();
         })

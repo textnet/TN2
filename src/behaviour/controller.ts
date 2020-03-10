@@ -1,4 +1,62 @@
+import { BookServer } from "../model/book"
+import { ThingData, PlaneData, PLANE } from "../model/interfaces"
+import * as actions from "./actions"
+import * as events from "./events"
+import * as updates from "./updates"
+import * as cl from "../commandline/commandline"
 
+
+
+export class Controller {
+    B: BookServer;
+    actorId: string;
+
+    constructor(server: BookServer, thingId: string) {
+        this.B = server;
+        this.actorId = thingId;
+    }
+
+    async connect() {
+        const thing = await this.B.things.load(this.actorId);
+        if (thing.lostPlaneId) {
+            let plane = await this.B.planes.load(thing.lostPlaneId);
+            if (plane) {
+                // 1. get out of limbo
+                await actions.action(this.B, { 
+                    action: actions.ACTION.LEAVE,
+                    actorId: this.actorId,
+                    thingId: this.actorId,
+                    planeId: thing.hostPlaneId,
+                } as actions.ActionLeave)
+                // 2. move to new plane
+                await actions.action(this.B, { 
+                    action: actions.ACTION.ENTER,
+                    actorId: this.actorId,
+                    thingId: this.actorId,
+                    planeId: plane.id,
+                } as actions.ActionEnter)
+            }            
+        }
+    }
+    async disconnect() {
+        const thing = await this.B.things.load(this.actorId);
+        const limbo = await this.B.planes.load(thing.planes[PLANE.LIMBO]);
+        // 1. get out of the plane
+        await actions.action(this.B, { 
+            action: actions.ACTION.LEAVE,
+            actorId: this.actorId,
+            thingId: this.actorId,
+            planeId: thing.hostPlaneId,
+        } as actions.ActionLeave)
+        // 2. move to limbo
+        await actions.action(this.B, { 
+            action: actions.ACTION.ENTER,
+            actorId: this.actorId,
+            thingId: this.actorId,
+            planeId: limbo.id,
+        } as actions.ActionEnter)
+    }
+}
 
 
 /*

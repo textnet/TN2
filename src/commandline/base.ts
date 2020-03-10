@@ -3,6 +3,8 @@ import { LibraryServer } from "../model/library";
 import { debugPeers } from "../network/discovery"
 import { BookServer } from "../model/book"
 import { config } from "../config"
+import * as written from "./written"
+import { getBookId } from "../model/identity"
 
 
 export function setup() {
@@ -16,7 +18,8 @@ export function setup() {
     register("create console", createConsole)
     register("destroy console", destroyConsole)
     register("consoles", listConsoles)
-    // TODO: bind, unbind, connect, disconnect
+    register("bind", bindConsole);
+    register("unbind", unbindConsole);
 
     register("network", network);
 }
@@ -117,9 +120,22 @@ export async function destroyConsole(library: LibraryServer, paramList) {
 export async function listConsoles(library: LibraryServer) {
     const consoles = await library.listConsoles();
     for (let id in consoles) {
-        logObj("Console", consoles[id]);
+        log(`Console ${id}: ${consoles[id].thingId}`)
     }
 }
+
+export async function bindConsole(library: LibraryServer, paramList) {
+    const params = mapParams(paramList, ["id"])
+    const data = await library.loadConsole(params["id"]);
+    const bookId = getBookId(data.thingId)
+    const server = library.bookServers[bookId];
+    await written.bind(server, data.thingId);
+}
+
+export async function unbindConsole(library: LibraryServer) {
+    await written.unbind();
+}
+
 
 // commands to do:
 
