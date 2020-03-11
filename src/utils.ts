@@ -8,6 +8,11 @@ export function nonce() {
     return (new Date()) + ":" + crypto.randomBytes(16).toString('hex')
 }
 
+export function strip(s) {
+    const ss = s.replace(/^\s+/, "");
+    return ss.replace(/\s+$/, "")
+}
+
 
 
 /**

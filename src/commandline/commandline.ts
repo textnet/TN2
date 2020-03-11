@@ -10,6 +10,7 @@ import * as written from "./written"
 import * as print from "./print"
 
 
+
 const chalk = require('chalk');
 const splitargs = require('splitargs');
 
@@ -35,8 +36,20 @@ export function commandInput(library: LibraryServer,) {
         output: process.stdout,
     });
     async function handleCommand(input?: string) {
-        if (input) await parseCommand(library, input);
-        rl.questionAsync(':) ').then(handleCommand);
+        const anima = written.getAnima();
+        const prefix = anima?(await anima.str()+" "):"";
+        if (input) {
+            if (anima) {
+                if (input[0] == "/") {
+                    await parseCommand(library, input.substr(1));
+                } else {
+                    anima.call(input)
+                }
+            } else {
+                await parseCommand(library, input);    
+            }
+        }
+        rl.questionAsync(prefix+ ':) ').then(handleCommand);
     }
 
     handleCommand();

@@ -38,8 +38,8 @@ async function inspectPlane(L:LibraryServer, id: string, fromId?: string) {
 }
 
 
-export function strThing(thing: ThingData) {
-    return `${thing.sprite.symbol}:${thing.name} // ${thing.id}`
+export function strThing(thing: ThingData, short?:boolean) {
+    return `${thing.sprite.symbol}:${thing.name}` + (short?"":` // ${thing.id}`);
 }
 
 export function strPlane(plane: PlaneData) {
@@ -52,8 +52,8 @@ export function strEvent(event: Event) {
 
 }
 
-export function str(data: ThingData|PlaneData|BookData) {
-    if (data["planes"]) return strThing(data as ThingData);
+export function str(data: ThingData|PlaneData|BookData, short?: boolean) {
+    if (data["planes"]) return strThing(data as ThingData, short);
     if (data["things"]) return strPlane(data as PlaneData);
     return strBook(data as BookData);
 }

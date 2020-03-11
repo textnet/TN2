@@ -35,7 +35,6 @@ async function create(L: LibraryServer, params) {
     const books = await getBookServers(L, params["bookId"])
     for (let server of books) {
         const thingData = await createFromTemplate(server, TEMPLATE_DEFAULT, params["id"])
-        console.log(server.data)
         const bookThing = await server.things.load(server.data.thingId);
         await actions.action(server, {
             action: actions.ACTION.ENTER,
