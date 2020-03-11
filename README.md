@@ -3,17 +3,11 @@
 This is an Excalibur+Electron prototype of the TXTNET.
 
 
-## Anima and Written Word
-+ create anima wrapper
-    + when book is going online, try to create new animas
-    + bind animas with controllers
-    - make anima capable of rebooting
-+ gently move lua api
-+ empty library
+## Written Word Support
 - implement getters
 - implement event handlers: on/off, timer event
-+ create special permanent anima for the commandline console
-+ try to capture anima for every thing
+- implement other known methods
+- what is missing?
 
 
 ## More on controllers
@@ -31,12 +25,12 @@ This is an Excalibur+Electron prototype of the TXTNET.
 - SPATIALS: place/fit
 
 
+
 ## TODO: Document
 - Book is created from a default template
 - Every other thing created from another thing inherits all its properties
 - There is a stub template to make life easier (not)
 - Supported commands and Written Word
-
 
 
 ## TODO: Operations between libraries
