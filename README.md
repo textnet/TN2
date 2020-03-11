@@ -8,11 +8,12 @@ This is an Excalibur+Electron prototype of the TXTNET.
     + when book is going online, try to create new animas
     + bind animas with controllers
     - make anima capable of rebooting
-- gently move lua api
-- empty library
++ gently move lua api
++ empty library
 - implement getters
 - implement event handlers: on/off, timer event
-- create special permanent anima for the commandline console
++ create special permanent anima for the commandline console
++ try to capture anima for every thing
 
 
 ## More on controllers
@@ -34,14 +35,16 @@ This is an Excalibur+Electron prototype of the TXTNET.
 - Book is created from a default template
 - Every other thing created from another thing inherits all its properties
 - There is a stub template to make life easier (not)
+- Supported commands and Written Word
 
 
 
 ## TODO: Operations between libraries
+- anima reboots when thing's text is changed (reacts on event of changing text)
 - peer book goes offline: move all my guests to limbo
 - peer book goes online: move guests back
 - send message: event happens on the plane where are guests from other book
-- send message: console/anima issues a command to my guest visiting another book
++ send message: console/anima issues a command to my guest visiting another book
 
 
 
@@ -53,7 +56,7 @@ This is an Excalibur+Electron prototype of the TXTNET.
 6. (+) Text consoles (connect, disconnect)
 7. (>) Text controls over things (A LOT OF WORK HERE: events, collisions, network communication)
 8. Imagination Limbo (=off-book behaviour)
-9. Anima (written word)
+9. (>) Anima (written word)
 10. GUI
 
 
@@ -94,6 +97,10 @@ This is an Excalibur+Electron prototype of the TXTNET.
 
     bind <consoleId>
     unbind
+
+## Written Console
+NB: After binding your terminal to a console you have Written Word interface.
+You can still invoke regular commands prepended with `/`. E.g. `/exit`.
 
 ## Not supported commands
     destroy thing <id>
