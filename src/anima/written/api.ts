@@ -5,7 +5,7 @@ import { config } from "../../config"
 
 import { lua, lauxlib, ldebug, lualib, to_luastring, to_jsstring, LuaState } from "fengari-web"
 import { push, luaopen_js, wrap, jscall } from "./interop"
-// import { supportedFunctions } from "./library"
+import { supportedFunctions } from "./library"
 
 /**
  * FengariMap is an interfact for Fengari Proxy wrapper which
@@ -118,10 +118,10 @@ export function fengari_init(CTX) {
     lauxlib.luaL_requiref(L, to_luastring("js"), luaopen_js, 1);
     lua.lua_pop(L, 1);
     // register functions ---------------------------------------------------
-    // for (let i in supportedFunctions) {
-    //     fengari_register_function(CTX, L, i, supportedFunctions[i].signature, 
-    //                                          supportedFunctions[i].f)
-    // }
+    for (let i in supportedFunctions) {
+        fengari_register_function(CTX, L, i, supportedFunctions[i].signature, 
+                                             supportedFunctions[i].f)
+    }
     return L;
 }
 
