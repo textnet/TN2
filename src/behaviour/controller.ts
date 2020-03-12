@@ -34,9 +34,25 @@ export class Controller {
     }
 
     async emit(event: events.Event) {
-        // if console
-        // if proxy
-        // if anima
+        const tids = {}
+        tids[events.EVENT_ROLE.SUBJECT] = event.actorId;
+        tids[events.EVENT_ROLE.OBJECT]  = event.thingId;
+        if (event.planeId) {
+            const hostPlane = await this.B.planes.load(event.planeId);
+            tids[events.EVENT_ROLE.HOST] = hostPlane.ownerId;
+        }        
+        this.emitter.emit(event.event, {
+            data: event,
+            targetIds: tids
+        })
+        // if console -> somehow send to bound console.
+        // if proxy   -> send via internet
+    }
+    on(name: string, listener) {
+        this.emitter.on(name, listener);
+    }
+    off(name: string, listener) {
+        this.emitter.off(name, listener);
     }
     
     async connect() {

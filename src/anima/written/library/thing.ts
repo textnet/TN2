@@ -21,6 +21,7 @@ export interface WrittenThing {
  */
 export function writtenThing(A: Anima, thing: ThingData|WrittenThing) {
     if (thing["isWritten"]) return thing;
+    if (!thing) return thing;
     const source = thing as ThingData;
     const result: WrittenThing = { isWritten: true, id: thing.id };
     for (let i of source.API) {

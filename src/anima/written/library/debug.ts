@@ -14,7 +14,7 @@ import { FengariMap } from "../api"
  */
 export function debug( A: WrittenAnima, 
                        log?: any) {
-    if (obj) {
-        console.log(obj)
+    if (log) {
+        console.log(log)
     }
 }

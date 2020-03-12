@@ -11,15 +11,27 @@ import { print } from "../commandline/print"
 // Events.
 
 export const EVENT = {
+    TIMER: "timer",
     ENTER: "enter",
     LEAVE: "leave",
 }
+
+export const EVENT_ROLE = {
+    SUBJECT: "subject",
+    OBJECT:  "object",
+    HOST:    "host",
+}
+
+export const EVENT_TIMER_DURATION = 10; // ms
 
 export interface Event {
     event:      string;
     actorId:    string;
     planeId?:   string;
     thingId?:   string;
+}
+export interface TimerEvent extends Event {
+    delta: number;
 }
 export interface EventEnter extends Event {
     position: geo.Position;

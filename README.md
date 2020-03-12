@@ -2,34 +2,32 @@
 
 This is an Excalibur+Electron prototype of the TXTNET.
 
-
-## Written Word Support
-+ implement getters w/o spatials
-- implement event handlers: on/off, timer event
-- implement other known methods
-- what is missing?
-
-
-## More on controllers
-- Anima controller: handling events
+## Handling events
++ Written Anima: implement 
+    + event handlers: on/off
+    + timer event
+    + make sure it is unsubscribable
++ Anima controller: handling events
 - Proxy controller -> send events via network
+- check that creation of things leads to events
 
 
-## Up Next
+## Up Next Implementation
+- SPATIALS: place/fit, written getters
 - Properties
 - Move
 - Enter / Leave
 - Push
 - Pick
 - ....
-- SPATIALS: place/fit
+- implement the rest of the WW library
 
 
 
 ## TODO: Document
-- Book is created from a default template
+- Each book is created from a default template
 - Every other thing created from another thing inherits all its properties
-- There is a stub template to make life easier (not)
+- If there is no prototype thing, then it uses `Something`
 - Supported commands and Written Word
 
 

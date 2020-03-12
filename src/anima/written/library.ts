@@ -5,10 +5,13 @@
 import { debug } from "./library/debug"
 import { get_artifacts, get_artifact, get_myself, } from "./library/get"
 
+import { event_on, event_off } from "./library/events"
+
+import { EVENT } from "../../behaviour/events"
+
 // import { update } from "./library/properties"
 // import { move_to, move_by, place_at, fit_at, halt } from "./library/spatial"
 // import { get_text, update_text, update_line, insert_line, delete_line } from "./library/text"
-// import { event_on, event_off } from "./library/events"
 // import { teleport } from "./library/teleport"
 
 /**
@@ -22,6 +25,9 @@ export const supportedFunctions = {
     "get_myself":    { signature: [],                      f: get_myself    },
     // "get_next":      { signature: ["direction"],           f: get_next      },
     // "get_closest":   { signature: ["name"],                f: get_closest   },
+    //
+    "on":  { signature: false, /* artifact, event, role, handler */ f: event_on }, 
+    "off": { signature: ["artifact", "event", "role", "key" ,], f: event_off },
 
     // "update":        { signature: false,                   f: update        },
     // "self":          { signature: false,                   f: update        },
@@ -42,13 +48,11 @@ export const supportedFunctions = {
     // "place_at": { signature: ["artifact", "x", "y", "direction" ], f: place_at },
     // "fit_at":   { signature: ["artifact", "x", "y", "direction" ], f: fit_at },
     // "halt":     { signature: ["artifact",                       ], f: halt },
-
-    // "on":  { signature: false, /* artifact, event, role, handler */ f: event_on }, 
-    // "off": { signature: ["artifact", "event", "role", "key"     ,], f: event_off },
 }
 
 export const supportedEvents = [ 
-                                 // "timer", "move", 
+                                 EVENT.TIMER, 
+                                 // "move", 
                                  // "pickup", "putdown", 
                                  // "enter", "leave",
                                  // "push", 

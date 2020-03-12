@@ -1,4 +1,6 @@
-import { ok, error, log, register, call } from "./commandline";
+import { ok, error, log, register, call, message } from "./commandline";
+import { getAnima } from "./written"
+import { strip } from "../utils"
 
 export async function script(library) {
     const lines = setupScript.split("\n");
@@ -8,6 +10,12 @@ export async function script(library) {
             await call(library, line);
         }
     }
+    const anima = getAnima();
+    if (anima) {
+        message(`Anima Written Word:\n${setupWritten}`)
+        await anima.call(strip(setupWritten));
+    }
+    
 }
 
 const setupScript = `
@@ -25,6 +33,14 @@ consoles
 
 bind P1
 
+`;
+
+const setupWritten = `
+function f(event)
+    debug{log=event}
+    off{event="timer", key=key}
+end
+key = on{event="timer", handler=f}
 `;
 
 

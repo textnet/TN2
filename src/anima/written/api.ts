@@ -6,6 +6,7 @@ import { config } from "../../config"
 import { lua, lauxlib, ldebug, lualib, to_luastring, to_jsstring, LuaState } from "fengari-web"
 import { push, luaopen_js, wrap, jscall } from "./interop"
 import { supportedFunctions } from "./library"
+import * as cl from "../../commandline/commandline"
 
 /**
  * FengariMap is an interfact for Fengari Proxy wrapper which
@@ -53,8 +54,8 @@ export function fengari_call(L: LuaState) {
 function log(L: LuaState, call:string, callResult:string) {
     if (!config.debug.verboseConsole) return;
     const _log = (text) => {
-        console.log(call+":", text);
-        console.log("Error message:", to_jsstring(lauxlib.luaL_tolstring(L, -1)))
+        cl.error(`${call}: ${text}`);
+        cl.error(to_jsstring(lauxlib.luaL_tolstring(L, -1)))
     };
     switch (callResult) {
         case lua.LUA_OK:        return;
@@ -111,7 +112,7 @@ export function fengari_init(CTX) {
     // init ----------------------------------------------------------------
     const L = lauxlib.luaL_newstate();
     if (!L) {
-        console.log("luaL_newstate: out of memory")
+        cl.error("luaL_newstate: out of memory")
         return;
     }
     lualib.luaL_openlibs(L);
