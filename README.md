@@ -3,13 +3,9 @@
 This is an Excalibur+Electron prototype of the TXTNET.
 
 ## Handling events
-+ Written Anima: implement 
-    + event handlers: on/off
-    + timer event
-    + make sure it is unsubscribable
-+ Anima controller: handling events
++ check that creation of things leads to events
++ add 'observer' role
 - Proxy controller -> send events via network
-- check that creation of things leads to events
 
 
 ## Up Next Implementation
@@ -29,6 +25,7 @@ This is an Excalibur+Electron prototype of the TXTNET.
 - Every other thing created from another thing inherits all its properties
 - If there is no prototype thing, then it uses `Something`
 - Supported commands and Written Word
+- event roles: object, subject, host, observer
 
 
 ## TODO: Operations between libraries
@@ -83,7 +80,7 @@ This is an Excalibur+Electron prototype of the TXTNET.
     things in <book>
     create thing <id>
     create thing <id> in <book>
-    copy thing <id> from <id> in <book>
+    copy <id> from <id> in <book>
 
     planes
 

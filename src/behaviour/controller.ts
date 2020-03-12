@@ -40,7 +40,7 @@ export class Controller {
         if (event.planeId) {
             const hostPlane = await this.B.planes.load(event.planeId);
             tids[events.EVENT_ROLE.HOST] = hostPlane.ownerId;
-        }        
+        } 
         this.emitter.emit(event.event, {
             data: event,
             targetIds: tids

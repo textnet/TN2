@@ -38,9 +38,8 @@ bind P1
 const setupWritten = `
 function f(event)
     debug{log=event}
-    off{event="timer", key=key}
 end
-key = on{event="timer", handler=f}
+key = on{event="enter", role="observer", handler=f}
 `;
 
 

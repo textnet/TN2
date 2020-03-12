@@ -20,6 +20,7 @@ export const EVENT_ROLE = {
     SUBJECT: "subject",
     OBJECT:  "object",
     HOST:    "host",
+    OBSERVER: "observer",
 }
 
 export const EVENT_TIMER_DURATION = 10; // ms

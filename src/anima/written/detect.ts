@@ -6,6 +6,7 @@ import * as print from "../../commandline/print"
 import { strip, nonce } from "../../utils"
 import { config } from "../../config"
 import * as events from "../../behaviour/events"
+import { getThingId } from "../../model/identity"
 
 import { getChunks } from "./parser"
 import { fengari_init, fengari_load, fengari_call, fengari_free } from "./api"
@@ -70,6 +71,7 @@ export class WrittenAnima extends Anima {
         if (!thingId) {
             thingId = this.thingId;
         }
+        const cachedThing = this.things.load(thingId);
         const that = this;
         const listener = (fullData) => {
             let caught = false;
@@ -82,6 +84,11 @@ export class WrittenAnima extends Anima {
             } else {
                 caught = true;
             }
+            if (role == events.EVENT_ROLE.OBSERVER && fullData.targetIds[events.EVENT_ROLE.HOST]) {
+                if (getThingId(cachedThing.hostPlaneId) == fullData.targetIds[events.EVENT_ROLE.HOST]) {
+                    caught = true; // was on the plane of event host.
+                }
+            }
             if (caught) {
                 const eventData = {
                     event: event,
@@ -93,7 +100,8 @@ export class WrittenAnima extends Anima {
                     that.prepareMemory().then(function(){
                          that.updateMemory("things", fullData.targetIds)
                             .then(function(){
-                            for (let i of ["subject", "object", "host"]) {
+                            for (let ROLE in events.EVENT_ROLE) {
+                                const i = events.EVENT_ROLE[ROLE];
                                 const targetId = fullData.targetIds[i];
                                 if (targetId) {
                                     eventData[i] = writtenThing(that, that.things.load(targetId));

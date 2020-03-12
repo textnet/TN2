@@ -52,6 +52,8 @@ export const supportedFunctions = {
 
 export const supportedEvents = [ 
                                  EVENT.TIMER, 
+                                 EVENT.ENTER,
+                                 EVENT.LEAVE,
                                  // "move", 
                                  // "pickup", "putdown", 
                                  // "enter", "leave",
