@@ -4,7 +4,7 @@ This is an Excalibur+Electron prototype of the TXTNET.
 
 
 ## Written Word Support
-- implement getters
++ implement getters w/o spatials
 - implement event handlers: on/off, timer event
 - implement other known methods
 - what is missing?

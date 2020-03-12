@@ -27,6 +27,7 @@ export interface ThingData {
     physics: ThingPhysics;
     planes: Record<string, string>;    // name:planeId
     visits?: Record<string, Position>; // position of the previous visit to planeIds.
+    API?: string[];
 }
 
 export interface ThingConstraint {
@@ -53,6 +54,7 @@ export interface ThingTemplate {
 export function fixThingDefaults(data) {
     data.constraints = data.constraints || deepCopy(CONSTRAINTS_DEFAULT);
     data.visits = data.visits || {};
+    data.API = deepCopy(API);
 }
 export function fixPlaneDefaults(data) {
     data.physics = data.physics   || deepCopy(PLANE_PHYSICS_DEFAULT);
@@ -83,6 +85,13 @@ export const FORMAT = {
     WRITTEN:  "lua",
 }
 export const FORMAT_DEFAULT = FORMAT.MARKDOWN;
+
+const API = [ "name",
+              "constraints",
+              "colors", 
+              "physics",
+              "API",
+            ];
 
 
 export const PLANE = {

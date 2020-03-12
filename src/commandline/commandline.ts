@@ -43,7 +43,7 @@ export function commandInput(library: LibraryServer,) {
                 if (input[0] == "/") {
                     await parseCommand(library, input.substr(1));
                 } else {
-                    anima.call(input)
+                    await anima.call(input)
                 }
             } else {
                 await parseCommand(library, input);    

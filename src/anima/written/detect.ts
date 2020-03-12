@@ -25,7 +25,7 @@ export class WrittenAnima extends Anima {
         if (this.source == undefined) {
             this.source = await extractSource(this.B, await this.B.things.load(this.thingId));
         }
-        permanent = permanent || this.call(this.source);
+        permanent = permanent || await this.call(this.source);
         if (config.debug.verboseConsole) {
             cl.verboseLog(await this.str() + ` <Written Word> ready.` + (permanent?" And left alive.":""));    
         }
@@ -34,8 +34,9 @@ export class WrittenAnima extends Anima {
         }
     }
 
-    call(code: string) {
+    async call(code: string) {
         if (strip(code) != "") {
+            await this.prepareMemory()
             let success = fengari_load(this.L, code);
             if (!success) return;
             success = fengari_call(this.L);
