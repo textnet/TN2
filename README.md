@@ -3,9 +3,9 @@
 This is an Excalibur+Electron prototype of the TXTNET.
 
 ## Handling events
-+ check that creation of things leads to events
-+ add 'observer' role
 - Proxy controller -> send events via network
+- book goes offline while guests are online -> move guests offline
+- teleport{to=thing} command
 
 
 ## Up Next Implementation
