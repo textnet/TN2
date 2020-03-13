@@ -25,7 +25,7 @@ export async function createThingId(B: BookServer, id?: string) {
     let counter = 0;
     while (true) {
         counter++;
-        id = `${bookId}.${id}`+((counter < 2)?``:`-${counter}`):
+        id = `${bookId}.${id}`+((counter < 2)?``:`-${counter}`);
         const existing = await B.things.load(id);
         if (!existing) break;
     }

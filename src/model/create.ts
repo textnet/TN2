@@ -6,6 +6,7 @@ import { LibraryServer } from "./library"
 import { BookServer } from "./book"
 import { pushDefaults, deepCopy } from "../utils"
 import { createThingId, createPlaneId } from "./identity"
+import * as actions from "../behaviour/actions"
 
 
 
@@ -37,6 +38,7 @@ export async function createFromThing(B: BookServer, fromId: string, id?: string
         thing.id = thingId;
         thing.planes = {}
         for (let planeName in modelThing.planes) {
+            // duplicate plane
             const modelPlane = await B.planes.load(modelThing.planes[planeName])
             const plane: PlaneData = deepCopy(modelPlane);
             const planeId = createPlaneId(planeName, thingId);
@@ -47,6 +49,14 @@ export async function createFromThing(B: BookServer, fromId: string, id?: string
                 plane.things[thingId] = plane.spawn || deepCopy(SPAWN_DEFAULT);
             }
             fixPlaneDefaults(plane);
+            await B.planes.save(plane);
+            // copy things
+            for (let innerId in modelPlane.things) {
+                const innerCopy = await B.copy(innerId);
+                innerCopy.hostPlaneId = plane.id;
+                await B.things.save(innerCopy);
+                plane.things[innerCopy.id] = plane.spawn || deepCopy(SPAWN_DEFAULT);
+            }
             await B.planes.save(plane);
         }
         thing.hostPlaneId = createPlaneId(PLANE.LIMBO, thingId);

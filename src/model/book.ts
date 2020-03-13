@@ -10,6 +10,7 @@ import * as actions from "../behaviour/actions"
 import * as events from "../behaviour/events"
 import * as updates from "../behaviour/updates"
 import * as anima from "../anima/animate"
+import { createFromThing } from "./create"
 
 
 // serves a book
@@ -25,6 +26,14 @@ export class BookServer {
     handlers: network.NetworkHandlers;
 
     _online: boolean;
+
+    contains(id: string) {
+        return getBookId(id) == this.data.id;
+    }
+    id() {
+        return this.data.id;
+    }
+
 
     constructor(library: LibraryServer, data: BookData) {
         this.data = data;
@@ -55,6 +64,25 @@ export class BookServer {
             this._online = false;    
         }
     }
+    async own(thingId:string) {
+        const thing = await this.things.load(thingId);
+        await anima.animate(this, thing);
+    }
+    async copy(thingId:string, actorId?:string) {
+        const thing = await this.things.load(thingId);
+        const actor = await this.things.load(actorId);
+        if (this.contains(thingId)) return thing;
+        const isGuest = await actions.action(this, {
+            action:  actions.ACTION.IS_GUEST,
+            actorId: actorId || thingId,
+            planeId: actor? actor.hostPlaneId : thing.hostPlaneId,
+            thingId: thingId,
+        } as actions.ActionIsGuest);
+        if (!isGuest) {
+            return await createFromThing(this, thingId);
+        }
+    }
+
 
     // keep trace of all controllers relevant for this book.
     // will send events to them when something happens.
@@ -167,59 +195,6 @@ export class BookServer {
         return this.sendMessage(bookId, message);
     }
 
-    contains(id: string) {
-        return getBookId(id) == this.data.id;
-    }
-    id() {
-        return this.data.id;
-    }
-
-    async own(thingId: string, newId?:string) {
-        const thing = await this.things.load(thingId);
-        if (!this.contains(thingId)) {
-            thing.id = newId;
-            await this.things.save(thing);
-            const hostPlane = await this.planes.load(thing.hostPlaneId);
-            hostPlane.things[thing.id] = hostPlane.things[thingId];
-            delete hostPlane.things[thingId];
-            for (let planeName in thing.planes) {
-                const plane = await this.planes.load(thing.planes[planeName]);
-                plane.id = createPlaneId(planeName, thing.id);
-                await this.planes.save(plane);
-                for (let id in plane.things) {
-                    await this.own(id);
-                }
-            }           
-        }
-        thing.ownershipHistory[this.id()] = thingId;
-        await this.things.save(thing);
-        for (let planeName in thing.planes) {
-            const plane = await this.planes.load(thing.planes[planeName]);
-            plane.ownershipHistory[this.id()] = plane.id;
-            await this.planes.save(plane);
-        }
-        await anima.animate(this, thing);
-        // TODO need to announce new ownership
-    }
-    // update all possible mentions of thing id with new validThingId
-    async fixThingOwnership(localThingId: string, validThingId: string) {
-        // TODO
-        // scan through all things
-        // scan through all planes
-        // need to restart animas?
-        // where thingIds are:
-        // - thing.id
-        // - plane.ownerId
-        // - plane[thingId]
-        // - inventory! TODO inventory
-        // where planeIds are:
-        // - plane.id
-        // - thing.hostPlaneId
-        // - thing.lostPlaneId
-        // - thing.visits[planeId]
-        // - thing.planes[]
-
-    }
 }
 
 

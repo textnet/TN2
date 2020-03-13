@@ -15,7 +15,7 @@ export const ACTION = {
     ENTER: "enter",
     LEAVE: "leave",
     TRANSFER: "transfer",
-    RELEASE: "release",
+    IS_GUEST: "isGuest",
     PLACE: "place",
 }
 
@@ -34,7 +34,7 @@ export interface ActionLeave extends Action {
 export interface ActionTransfer extends Action {
     thingId: string;
 }
-export interface ActionRelease extends Action {
+export interface ActionIsGuest extends Action {
     thingId: string;
 }
 
@@ -77,32 +77,26 @@ export const handlers = {
         await handlers.leave(B, actionLeave);
         await handlers.enter(B, actionEnter);
     },
-
     // check if can transwer ownership
-    release: async(B: BookServer, action: ActionTransfer)=>{
+    isGuest: async(B: BookServer, action: ActionIsGuest)=>{
         const thing = await B.things.load(action.thingId);
-        if (B.data.thingId == action.thingId) return false; // can't give up book
-        if (await B.library.isBound(action.thingId)) return false; // can't give up console
-        if (B.isControlled(action.thingId)) return false; // can't give up animas
-        return true;
+        if (B.data.thingId == action.thingId)        return true; // don't copy book
+        if (await B.library.isBound(action.thingId)) return true; // don't copy console
+        if (B.isControlled(action.thingId))          return true; // don't copy animas
+        return false;
     },
+
 
     enter: async function(B: BookServer, action: ActionEnter) {
         const plane = await B.planes.load(action.planeId);
         let   thing = await B.things.load(action.thingId);
         const visit = action.position || thing.visits[plane.id] || plane.spawn;
         let thingId = action.thingId;
-        // ask for ownership and own
-        const canOwn = await dispatchAction(B, {
-            action: ACTION.RELEASE,
-            actorId: action.actorId,
-            planeId: action.planeId,
-            thingId: action.thingId,
-        } as ActionRelease);
-        if (canOwn) {
-            const newId = await createThingId(B, action.thingId);
-            await B.own(action.thingId, newId);
-            thingId = newId;
+        const thingCopy = await B.copy(action.thingId, action.actorId);
+        if (thingCopy) {
+            thing = thingCopy;
+        } else {
+            // TODO subscribe on events
         }
         // place thing
         await handlers.place(B, {

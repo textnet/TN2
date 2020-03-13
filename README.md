@@ -3,12 +3,13 @@
 This is an Excalibur+Electron prototype of the TXTNET.
 
 ## Handling events
-+ teleport{to=thing} command
-- change ownership of things while not breaking the ID system
-    - how to track when we left?
++ teleport{to=thing} command, copy if between worlds
++ copy things
+- say command
 - Proxy controller -> send events via network
 - book goes offline while guests are online -> move guests offline
 - gravity & seasonality 
+
 
 
 ## Up Next Implementation

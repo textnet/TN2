@@ -20,7 +20,6 @@ export interface ThingData {
     id: string;
     hostPlaneId: string;
     lostPlaneId?: string;
-    ownershipHistory: Record<string, string>; // list of books = all previous owners, including current
     name: string;
     colors: Record<string,string>; // e.g. text, floor, title, skin, eyes. use constants as keys!
     constraints?: Record<string,boolean|ThingConstraint>; // constraints like "pushable" etc. true/false or min mass
@@ -39,7 +38,6 @@ export interface ThingConstraint {
 export interface PlaneData {
     id: string;
     ownerId: string;
-    ownershipHistory: Record<string, string>; // list of all previous owners, including current
     physics?: PlanePhysics;
     things: Record<string, Position>;
     text: string;
@@ -54,13 +52,11 @@ export interface ThingTemplate {
 }
 
 export function fixThingDefaults(data) {
-    data.ownershipHistory = {};
     data.constraints = data.constraints || deepCopy(CONSTRAINTS_DEFAULT);
     data.visits = data.visits || {};
     data.API = deepCopy(API);
 }
 export function fixPlaneDefaults(data) {
-    data.ownershipHistory = {};
     data.physics = data.physics   || deepCopy(PLANE_PHYSICS_DEFAULT);
     data.format  = data.format    || FORMAT_DEFAULT;
     data.spawn   = data.spawn     || deepCopy(SPAWN_DEFAULT);
