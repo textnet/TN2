@@ -64,7 +64,7 @@ export class BookServer {
             this._online = false;    
         }
     }
-    async own(thingId:string) {
+    async awaken(thingId:string) {
         const thing = await this.things.load(thingId);
         await anima.animate(this, thing);
     }

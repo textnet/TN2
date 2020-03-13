@@ -7,6 +7,8 @@ import * as updates from "./updates"
 import * as cl from "../commandline/commandline"
 import { Anima } from "../anima/anima"
 import { getBookId } from "../model/identity"
+import { Console } from "../console/console"
+
 
 export const CONTROLLER = {
     UNBOUND: true,
@@ -17,7 +19,7 @@ export class Controller {
     actorId: string;
     emitter: EventEmitter;
     anima?: Anima;
-    consoleId?: string;
+    console?: Console;
 
     constructor(server: BookServer, thingId: string) {
         this.B = server;
@@ -25,8 +27,8 @@ export class Controller {
         this.emitter = new EventEmitter();
     }
 
-    async connectConsole(consoleId: string) {
-        this.consoleId = consoleId;
+    async connectConsole(ui: Console) {
+        this.console = ui;
     }
 
     async connectAnima(anima: Anima) {
@@ -83,7 +85,7 @@ export class Controller {
             await this.B.unbind(this);
         }
         const thing = await this.B.things.load(this.actorId);
-        if (this.consoleId || getBookId(thing.hostPlaneId) != this.B.data.id) {
+        if (this.console || getBookId(thing.hostPlaneId) != this.B.data.id) {
             // 1. get out of the plane
             await actions.action(this.B, { 
                 action: actions.ACTION.LEAVE,

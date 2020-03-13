@@ -67,7 +67,7 @@ export async function createFromThing(B: BookServer, fromId: string, id?: string
         }
         fixThingDefaults(thing)
         await B.things.save(thing)
-        await B.own(thing.id)
+        await B.awaken(thing.id)
         return thing;
     }
 }
@@ -95,6 +95,6 @@ export async function createFromTemplate(B: BookServer, templateName?: string, i
     } 
     fixThingDefaults(thing)
     await B.things.save(thing);
-    await B.own(thing.id)
+    await B.awaken(thing.id)
     return thing;
 }

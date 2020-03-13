@@ -11,9 +11,11 @@ import { print } from "../commandline/print"
 // Events.
 
 export const EVENT = {
+    ANY:   "any",
     TIMER: "timer",
     ENTER: "enter",
     LEAVE: "leave",
+    HEAR:  "hear",
 }
 
 export const EVENT_ROLE = {
@@ -22,7 +24,7 @@ export const EVENT_ROLE = {
     HOST:    "host",
     OBSERVER: "observer",
 }
-
+export const EVENT_ROLE_DEFAULT = EVENT_ROLE.OBJECT;
 export const EVENT_TIMER_DURATION = 10; // ms
 
 export interface Event {
@@ -38,6 +40,10 @@ export interface EventEnter extends Event {
     position: geo.Position;
 }
 export interface EventLeave extends Event {
+}
+export interface EventHear extends Event {
+    what: string;
+    loudness: number;
 }
 
 

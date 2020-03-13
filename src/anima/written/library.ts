@@ -5,6 +5,7 @@
 import { debug } from "./library/debug"
 import { get_artifacts, get_artifact, get_myself, } from "./library/get"
 import { teleport } from "./library/teleport"
+import { say, shout, whisper } from "./library/say"
 
 
 import { event_on, event_off } from "./library/events"
@@ -32,6 +33,10 @@ export const supportedFunctions = {
 
     "teleport":    { signature: ["thing", "to" ], f: teleport },
 
+    "say":         { signature: ["what", "loudness"], f: say },
+    "shout":       { signature: ["what"], f: shout },
+    "whisper":     { signature: ["what"], f: whisper },
+
     // "update":        { signature: false,                   f: update        },
     // "self":          { signature: false,                   f: update        },
 
@@ -56,6 +61,7 @@ export const supportedEvents = [
                                  EVENT.TIMER, 
                                  EVENT.ENTER,
                                  EVENT.LEAVE,
+                                 EVENT.HEAR,
                                  // "move", 
                                  // "pickup", "putdown", 
                                  // "enter", "leave",

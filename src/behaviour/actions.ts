@@ -9,6 +9,7 @@ import * as events from "./events"
 import * as cl from "../commandline/commandline"
 import { print } from "../commandline/print"
 
+import * as say from "./actions/say"
 // actions happen on a plane
 
 export const ACTION = {
@@ -17,6 +18,7 @@ export const ACTION = {
     TRANSFER: "transfer",
     IS_GUEST: "isGuest",
     PLACE: "place",
+    SAY: "say",
 }
 
 export interface Action {
@@ -37,13 +39,17 @@ export interface ActionTransfer extends Action {
 export interface ActionIsGuest extends Action {
     thingId: string;
 }
-
 export interface ActionPlace extends Action {
     thingId: string;
     position: geo.Position;
     fit?: boolean;
     force?: boolean;
 }
+export interface ActionSay extends Action {
+    what: string,
+    loudness: number;
+}
+
 
 // --- dispatcher ---
 export async function action(B: BookServer, action: Action) {
@@ -59,6 +65,7 @@ const dispatchAction = action;
 
 // --- handlers ---
 export const handlers = {
+    say: say.action,
 
     transfer: async(B: BookServer, action: ActionTransfer)=>{
         const thing: ThingData = await B.things.load(action.thingId);

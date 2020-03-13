@@ -39,8 +39,9 @@ const setupWritten = `
 function f(event)
     debug{log=event}
 end
-key = on{event="enter", role="observer", handler=f}
-teleport{thing="Bible.X", to="Alphabet"}
+-- key = on{event="enter", role="observer", handler=f}
+-- teleport{thing="Bible.X", to="Alphabet"}
+say{what="Hello, world!"}
 `;
 
 

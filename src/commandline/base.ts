@@ -129,7 +129,7 @@ export async function bindConsole(library: LibraryServer, paramList) {
     const data = await library.loadConsole(params["id"]);
     const bookId = getBookId(data.thingId)
     const server = library.bookServers[bookId];
-    await written.bind(server, data.thingId, data.id);
+    await written.bind(server, data.id);
 }
 
 export async function unbindConsole(library: LibraryServer) {

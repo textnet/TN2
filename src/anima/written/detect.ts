@@ -78,6 +78,7 @@ export class WrittenAnima extends Anima {
         if (!thingId) {
             thingId = this.thingId;
         }
+        if (!role) role = events.EVENT_ROLE_DEFAULT;
         const cachedThing = this.things.load(thingId);
         const that = this;
         const listener = (fullData) => {

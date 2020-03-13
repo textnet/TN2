@@ -67,6 +67,12 @@ export const SPAWN_DEFAULT: Position = {
     direction: DIRECTION.DOWN,
 }
 
+export const SAY = {
+    WHISPER:   0,
+    SHOUT:    -1,
+    SAY:     200, // distance of normal voice
+}
+
 export const CONSTRAINTS = {
     PUSHABLE: "pushable", // Can this thing be pushed?
     PASSABLE: "passable", // Can this thing be passed through?
