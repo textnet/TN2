@@ -34,7 +34,8 @@ async function list(L: LibraryServer, params) {
 async function create(L: LibraryServer, params) {
     const books = await getBookServers(L, params["bookId"])
     for (let server of books) {
-        const thingData = await createFromTemplate(server, TEMPLATE_DEFAULT, params["id"])
+        const id = params["id"];
+        const thingData = await createFromTemplate(server, TEMPLATE_DEFAULT, id)
         const bookThing = await server.things.load(server.data.thingId);
         await actions.action(server, {
             action: actions.ACTION.ENTER,
@@ -50,6 +51,7 @@ async function copy(L: LibraryServer, params) {
     const bookId = getBookId(params["fromId"]);
     const server = L.bookServers[bookId];
     if (server) {
+        let id = params["toId"];
         const thingData = await createFromThing(server, params["fromId"], params["toId"])
         const source = await server.things.load(params["fromId"]);
         const sourcePlane = await server.planes.load(source.hostPlaneId);

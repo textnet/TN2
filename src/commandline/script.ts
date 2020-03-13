@@ -40,6 +40,7 @@ function f(event)
     debug{log=event}
 end
 key = on{event="enter", role="observer", handler=f}
+teleport{thing="Bible.X", to="Alphabet"}
 `;
 
 

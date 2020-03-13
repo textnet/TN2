@@ -1,4 +1,5 @@
 import * as crypto from "crypto";
+import { BookServer } from "./book"
 import { BookData, ThingData, PlaneData } from "./interfaces"
 
 export function getBookId(id: string) {
@@ -18,9 +19,17 @@ export function isThingId(id: string) {
 export function createBookId() {
     return crypto.randomBytes(32).toString('hex')
 }
-export function createThingId(bookId: string, id?: string) {
+export async function createThingId(B: BookServer, id?: string) {
+    const bookId = B.data.id;
     id = id || createBookId(); // same rule.
-    return `${bookId}.${id}`;
+    let counter = 0;
+    while (true) {
+        counter++;
+        id = `${bookId}.${id}`+((counter < 2)?``:`-${counter}`):
+        const existing = await B.things.load(id);
+        if (!existing) break;
+    }
+    return id;
 }
 export function createPlaneId(name:string, thingId?:string) {
     return `${thingId}.${name}`;

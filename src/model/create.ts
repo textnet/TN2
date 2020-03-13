@@ -32,7 +32,7 @@ export async function createFromThing(B: BookServer, fromId: string, id?: string
     if (!modelThing) {
         return createFromTemplate(B, templateName, id, differences);
     } else {
-        const thingId = createThingId(B.data.id, id);
+        const thingId = await createThingId(B, id);
         const thing = deepCopy(modelThing);
         thing.id = thingId;
         thing.planes = {}
@@ -57,13 +57,14 @@ export async function createFromThing(B: BookServer, fromId: string, id?: string
         }
         fixThingDefaults(thing)
         await B.things.save(thing)
+        await B.own(thing.id)
         return thing;
     }
 }
 
 export async function createFromTemplate(B: BookServer, templateName?: string, id?: string, differences?: any) {
     const template = getTemplate(templateName);
-    const thingId = createThingId(B.data.id, id);
+    const thingId = await createThingId(B, id);
     const thing: ThingData = deepCopy(template.thing);
     thing.id = thingId;
     const planeNames = [ PLANE_DEFAULT, PLANE.LIMBO ];
@@ -84,5 +85,6 @@ export async function createFromTemplate(B: BookServer, templateName?: string, i
     } 
     fixThingDefaults(thing)
     await B.things.save(thing);
+    await B.own(thing.id)
     return thing;
 }

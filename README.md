@@ -3,9 +3,12 @@
 This is an Excalibur+Electron prototype of the TXTNET.
 
 ## Handling events
++ teleport{to=thing} command
+- change ownership of things while not breaking the ID system
+    - how to track when we left?
 - Proxy controller -> send events via network
 - book goes offline while guests are online -> move guests offline
-- teleport{to=thing} command
+- gravity & seasonality 
 
 
 ## Up Next Implementation
@@ -17,6 +20,7 @@ This is an Excalibur+Electron prototype of the TXTNET.
 - Pick
 - ....
 - implement the rest of the WW library
+- anima reboots when thing's text is changed (reacts on event of changing text)
 
 
 
@@ -26,12 +30,11 @@ This is an Excalibur+Electron prototype of the TXTNET.
 - If there is no prototype thing, then it uses `Something`
 - Supported commands and Written Word
 - event roles: object, subject, host, observer
+- every thing has GLOBAL UNIQUE ID!
 
 
 ## TODO: Operations between libraries
-- anima reboots when thing's text is changed (reacts on event of changing text)
 - peer book goes offline: move all my guests to limbo
-- peer book goes online: move guests back
 - send message: event happens on the plane where are guests from other book
 + send message: console/anima issues a command to my guest visiting another book
 

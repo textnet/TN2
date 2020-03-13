@@ -96,5 +96,12 @@ export class LibraryServer {
         data.thingId = null;
         return this.consoles.save(data)
     }
+    async isBound(thingId: string) {
+        const all = this.listConsoles();
+        for (let id in all) {
+            if (all[id].thingId == thingId) return true;
+        }
+        return false;
+    }
 
 }

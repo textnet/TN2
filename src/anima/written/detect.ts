@@ -30,11 +30,12 @@ export class WrittenAnima extends Anima {
         if (this.source == undefined) {
             this.source = await extractSource(this.B, await this.B.things.load(this.thingId));
         }
-        permanent = permanent || await this.call(this.source);
+        const hasSubscriptions = await this.call(this.source);
         if (config.debug.verboseConsole) {
-            cl.verboseLog(await this.str() + ` <Written Word> ready.` + (permanent?" And left alive.":""));    
+            cl.verboseLog(await this.str() + ` <Written Word> ready.` + 
+                          ((permanent||hasSubscriptions)?" And left alive.":""));    
         }
-        if (!permanent) {
+        if (!permanent || hasSubscriptions) {
             await this.terminate();
         }
     }
@@ -43,11 +44,10 @@ export class WrittenAnima extends Anima {
         if (strip(code) != "") {
             await this.prepareMemory()
             let success = fengari_load(this.L, code);
-            if (!success) return;
+            if (!success) return false;
             success = fengari_call(this.L);
-            if (!success) return;
-            // TODO: check if there are event handlers
-            return true;
+            if (!success) return false;
+            return this.hasSubscriptions();
         }      
         return false;
 
@@ -64,6 +64,13 @@ export class WrittenAnima extends Anima {
 
     }
 
+
+    hasSubscriptions() {
+        for (let k in this.subscribedKeys) {
+            return true;
+        }
+        return false;
+    }
     subscribe(thingId: string, event: string, role: string, handler: any) {
         if (event == events.EVENT.TIMER && !this.interval) {
             this.setupInterval();
