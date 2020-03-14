@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events'
 import { BookServer } from "../model/book"
 import { ThingData, PlaneData, PLANE } from "../model/interfaces"
+import * as network from "../network/discovery"
 import * as actions from "./actions"
 import * as events from "./events"
 import * as updates from "./updates"
@@ -20,6 +21,7 @@ export class Controller {
     emitter: EventEmitter;
     anima?: Anima;
     console?: Console;
+    isProxy?: boolean;
 
     constructor(server: BookServer, thingId: string) {
         this.B = server;
@@ -35,6 +37,10 @@ export class Controller {
         this.anima = anima;
     }
 
+    makeProxy() {
+        this.isProxy = true;
+    }
+
     async emit(event: events.Event) {
         const tids = {}
         tids[events.EVENT_ROLE.SUBJECT] = event.actorId;
@@ -47,8 +53,15 @@ export class Controller {
             data: event,
             targetIds: tids
         })
-        // if console -> somehow send to bound console.
-        // if proxy   -> send via internet
+        if (this.isProxy) {
+            const message: network.MessageEvent = {
+                name: network.MESSAGE.EVENT,
+                event: event,
+                recipientId: this.actorId,
+            }
+            const targetBookId = getBookId(this.actorId);
+            await this.B.sendMessage(targetBookId, message)
+        }
     }
     on(name: string, listener) {
         this.emitter.on(name, listener);
@@ -56,7 +69,7 @@ export class Controller {
     off(name: string, listener) {
         this.emitter.off(name, listener);
     }
-    
+
     async connect() {
         const thing = await this.B.things.load(this.actorId);
         if (thing.hostPlaneId == thing.planes[PLANE.LIMBO]) {

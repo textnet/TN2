@@ -61,3 +61,14 @@ export async function emit(B: BookServer, event: Event) {
         }
     }
 }
+
+
+//
+    // const targetBookId = getBookId(action.planeId)
+    // const message: network.MessageAction = {
+    //     name: network.MESSAGE.ACTION,
+    //     action: action,
+    // }
+    // // print(action)
+    // return await B.sendMessage(targetBookId, message)
+//

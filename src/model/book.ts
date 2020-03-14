@@ -22,6 +22,7 @@ export class BookServer {
     planes: Repository<PlaneData>;
 
     controllers: Controller[];
+    guests: Record<string,Controller>;
 
     handlers: network.NetworkHandlers;
 
@@ -42,6 +43,7 @@ export class BookServer {
         this.planes = new Repository<PlaneData>("planes", this.data.id, this);
         this._online = false;
         this.controllers = [];
+        this.guests = {};
     }
 
     async online() {
@@ -83,8 +85,21 @@ export class BookServer {
         }
     }
 
+    async registerGuest(thingId: string) {
+        if (!this.guests[thingId]) {
+            this.guests[thingId] = new Controller(this, thingId);
+            this.guests[thingId].makeProxy();
+            this.bind(this.guests[thingId])
+        }
+    }
+    async deregisterGuest(thingId: string) {
+        if (this.guests[thingId]) {
+            await this.unbind(this.guests[thingId]);
+            delete this.guests[thingId];
+        }
+    }
 
-    // keep trace of all controllers relevant for this book.
+    // keep track of all controllers relevant for this book.
     // will send events to them when something happens.
     async bind(c: Controller) {
         this.controllers.push(c);
@@ -127,10 +142,10 @@ export class BookServer {
     }
 
     async receiveConnection(peerBookId: string) {
-        // move all my guests on this book (back from limbo)
+        // TODO move all my guests on this book (back from limbo)
     }
     async receiveDisconnect(peerBookId: string) {
-        // remove all my guests from the book, put them into their limbo
+        // TODO remove all my guests from the book, put them into their limbo
     }
     async receiveMessage(fromBookId: string, fullPayload: network.FullPayload) {
         const that = this;
@@ -179,7 +194,7 @@ export class BookServer {
             ////////
             case network.MESSAGE.EVENT: 
                 const event = (data as network.MessageEvent).event;
-                // handle event!
+                return events.emit(this, event)
             ////////
             default: error(`Conduct message of unknown type: ${data.name}!`);
         }

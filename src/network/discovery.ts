@@ -45,6 +45,7 @@ export interface MessageAction extends Message {
     action: actions.Action;
 }
 export interface MessageEvent extends Message {
+    recipientId: string; // which controller should get the event
     event: events.Event;
 }
 export interface MessageUpdate extends Message {

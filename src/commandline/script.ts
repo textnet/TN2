@@ -41,6 +41,7 @@ function f(event)
 end
 -- key = on{event="enter", role="observer", handler=f}
 -- teleport{thing="Bible.X", to="Alphabet"}
+teleport{to="Bible"}
 say{what="Hello, world!"}
 `;
 

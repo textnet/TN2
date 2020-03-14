@@ -7,7 +7,7 @@ import * as actions from "../../../behaviour/actions"
 export function teleport( A: WrittenAnima, 
                           thing: any,
                           destination?: any) {
-    const thingId = thing["id"] || thing;
+    const thingId = thing?(thing["id"] || thing):A.thingId;
     const targetId = destination["id"] || destination;
     _teleport(A, thingId, targetId);
 }

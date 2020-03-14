@@ -21,7 +21,7 @@ import { EVENT } from "../../behaviour/events"
  * Read Written Word documentation.
  */
 export const supportedFunctions = {
-    "debug": { signature: ["log"], f: debug },
+    "debug": { signature: ["log", "where", "list"], f: debug },
     "get_artifacts": { signature: ["host", "plane", "id", "name"], f: get_artifacts },
     "get_artifact":  { signature: ["host", "plane", "id", "name"], f: get_artifact  },
     "get_myself":    { signature: [],                      f: get_myself    },
