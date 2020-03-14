@@ -3,10 +3,9 @@
 This is an Excalibur+Electron prototype of the TXTNET.
 
 ## Handling events
-- book goes offline while guests are online -> move guests offline
-- book goes offline and has controllers on other books -> move them offline
-- book goes online and has controller in limbo -> move them to other books
-- book goes offline and has guests from other books -> send them to limbo
++ book goes offline and has controllers visiting other books -> move them to limbo
++ book goes online and has animas in limbo -> move them back to other books
++ book goes offline and has guests from other books -> send them to limbo
 
 ## Advanced environment
 - gravity & seasonality
@@ -48,9 +47,9 @@ This is an Excalibur+Electron prototype of the TXTNET.
 3. (+) Network of Books (discovery, online, offline)
 5. (+) Things (create, destroy) — with Planes
 6. (+) Text consoles (connect, disconnect)
-7. (>) Text controls over things (A LOT OF WORK HERE: events, collisions, network communication)
-8. Imagination Limbo (=off-book behaviour)
-9. (>) Anima (written word)
+7. (+) Imagination Limbo (=off-book behaviour)
+8. (+) Anima basics (written word)
+9. (>) Controls over things (A LOT OF WORK HERE: actions, events, collisions)
 10. GUI
 
 

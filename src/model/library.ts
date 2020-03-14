@@ -73,7 +73,7 @@ export class LibraryServer {
     // console creation
     async createConsole(id?: string, thingId?: string) {
         const data: ConsoleData = {
-            id: id || createBookId(), // NB: it is just a random id. TODO
+            id: id || createBookId(),
             thingId: thingId,
         }
         return this.consoles.save(data);

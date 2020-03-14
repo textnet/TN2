@@ -141,12 +141,8 @@ export class BookServer {
         }
     }
 
-    async receiveConnection(peerBookId: string) {
-        // TODO move all my guests on this book (back from limbo)
-    }
-    async receiveDisconnect(peerBookId: string) {
-        // TODO remove all my guests from the book, put them into their limbo
-    }
+    async receiveConnection(peerBookId: string) {}
+    async receiveDisconnect(peerBookId: string) {}
     async receiveMessage(fromBookId: string, fullPayload: network.FullPayload) {
         const that = this;
         // loads
