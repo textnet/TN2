@@ -1,28 +1,26 @@
 # TN2 – 2nd Generation of Textnet.
 
-This is an Excalibur+Electron prototype of the TXTNET.
+This is an Excalibur+Electron/Node prototype of the TXTNET.
 
-## Handling events
-+ book goes offline and has controllers visiting other books -> move them to limbo
-+ book goes online and has animas in limbo -> move them back to other books
-+ book goes offline and has guests from other books -> send them to limbo
-
-## Advanced environment
-- gravity & seasonality
-
-
+## Controlling things
+- SPATIALS: place/fit, written getters <- figure out position.z???
 
 ## Stage 9. Control over things
-- SPATIALS: place/fit, written getters
-- Update Properties
-- Update Text
-    - anima reboots when thing's text is changed (reacts on event of changing text)
 - Move
+    - also gravity
 - Enter / Leave (add WW support)
 - Push
 - Pick / Putdown = inventory!
 - Throw
-
+- Update Properties
+    - plane props: spawn, format
+- Update Physics: Thing, Plane
+    - get plane physics
+- Update Constraints
+- Update Colors
+- Update Text
+    - anima reboots when thing's text is changed (reacts on event of changing text)
+- Seasonality events
 
 ## TODO: Document
 - Each book is created from a default template
@@ -30,7 +28,7 @@ This is an Excalibur+Electron prototype of the TXTNET.
 - If there is no prototype thing, then it uses `Something`
 - Supported commands and Written Word
 - event roles: object, subject, host, observer
-
+- NB: need to figure out position.z VS. physics.Z
 
 ## Stages
 1. (+) Library stub
@@ -43,16 +41,29 @@ This is an Excalibur+Electron prototype of the TXTNET.
 9. (>) Controls over things (A LOT OF WORK HERE: actions, events, collisions)
 10. GUI
 
+## Rough planning for Q2
+- March: Spatials + Move + Enter/Leave + Push + Pick/Putdown + Throw = 1w
+- March-April: Updates & Seasonality = 1w
+- April: GUI setup & menu = 1w
+- April: GUI basic rendering & movement = 1w
+- April: GUI inventory = 1w
+- May: GUI push & throw = 1w
+- May: GUI text editor = 2w
+- May: GUI seasonality = 1w
+- June: polishing & documenting
+
 
 ## Old things
     npm install   -- after cloning the repo
     ./start.sh    -- to enter the debug cycle
     yarn dist     -- to make distro package
+    yarn headless -- to start the headless console version
 
 # Until found a way to split into to different builders
 ### Before launching Electron
     ./node_modules/.bin/electron-rebuild
 ### Before launching Headless
+    tbd
 
 
 ## Console commands supported

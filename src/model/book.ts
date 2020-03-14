@@ -130,10 +130,25 @@ export class BookServer {
                         delta: delta
                     } as events.TimerEvent)                    
                 }
-
             }
+            that.intervalGravity(delta);
         }, events.EVENT_TIMER_DURATION);
-    }    
+    }
+    async intervalGravity(delta: number) {
+        const gravityPlanes: Record<string,boolean> = {};
+        for (let c of this.controllers) {
+            if (c.anima) {
+                const thing = await this.things.load(c.anima.thingId);
+                gravityPlanes[thing.hostPlaneId] = true;
+            }
+        }
+        for (let planeId in gravityPlanes) {
+            // - Для каждого объекта с ненулевой массой: установить скорость/ускорение
+            // - Для каждого объекта с заданной траекторией: вычислить вектор скорости/ускорения
+            // - Для каждого объекта с ненулевой скоростью: передвинуть
+            // TODO apply gravity & velocity
+        }
+    }
 
     // keep track of all controllers relevant for this book.
     // will send events to them when something happens.

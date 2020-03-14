@@ -7,6 +7,7 @@ export interface ThingPhysics {
     Z?:  number; // Z-level
     mass?: Record<string,number>;
     force?: Record<string, number>;
+    velocity: Direction;
 }
 
 export interface PlanePhysics {
