@@ -72,8 +72,8 @@ export class WrittenAnima extends Anima {
         return false;
     }
     subscribe(thingId: string, event: string, role: string, handler: any) {
-        if (event == events.EVENT.TIMER && !this.interval) {
-            this.setupInterval();
+        if (event == events.EVENT.TIMER) {
+            this.needsTimer = true;
         }
         if (!thingId) {
             thingId = this.thingId;

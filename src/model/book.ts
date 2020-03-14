@@ -55,10 +55,15 @@ export class BookServer {
             for (let thingId in things) {
                 await anima.animate(this, things[thingId]);
             }
+            this.setupInterval();
         }
     }
     async offline() {
         if (this._online) {
+            if (this.interval) {
+                clearInterval(this.interval);
+                this.interval = undefined;
+            }
             for (let t of this.controllers) {
                 await t.disconnect(CONTROLLER.UNBOUND);
             }
@@ -98,6 +103,37 @@ export class BookServer {
             delete this.guests[thingId];
         }
     }
+
+    /**
+     * Setup the base interval that creates "timer" events.
+     * Those events are also used to execute on spatial commands.
+     * Should be called somewhere, but only when events are in play.
+     */
+    interval;
+    setupInterval() {
+        const that = this;
+        if (this.interval) {
+            clearInterval(this.interval)
+            this.interval = undefined;
+        }
+        let prevTime = Date.now();
+        this.interval = setInterval(function(){
+            const nowTime = Date.now();
+            const delta = nowTime - prevTime;
+            prevTime = nowTime;
+            for (let c of that.controllers) {
+                if (c.anima && c.anima.needsTimer) {
+                    c.emit({
+                        event: events.EVENT.TIMER,
+                        actorId: c.anima.thingId,
+                        thingId: c.anima.thingId,
+                        delta: delta
+                    } as events.TimerEvent)                    
+                }
+
+            }
+        }, events.EVENT_TIMER_DURATION);
+    }    
 
     // keep track of all controllers relevant for this book.
     // will send events to them when something happens.

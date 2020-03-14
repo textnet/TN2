@@ -18,7 +18,7 @@ export class Anima {
     things: SyncRepository<ThingData>;
     planes: SyncRepository<PlaneData>;
 
-    interval;
+    needsTimer: boolean;
 
     constructor(B: BookServer, thingId: string) {
         this.B = B;
@@ -39,39 +39,8 @@ export class Anima {
     }
 
     async terminate() {
-        if (this.interval) {
-            clearInterval(this.interval);
-            this.interval = undefined;
-        }
         await this.controller.disconnect();
     }
-
-
-    /**
-     * Setup the base interval that creates "timer" events.
-     * Those events are also used to execute on spatial commands.
-     * Should be called somewhere, but only when events are in play.
-     */
-    setupInterval() {
-        const that = this;
-        if (this.interval) {
-            clearInterval(this.interval)
-            this.interval = undefined;
-        }
-        let prevTime = Date.now();
-        this.interval = setInterval(function(){
-            const nowTime = Date.now();
-            const delta = nowTime - prevTime;
-            prevTime = nowTime;
-            that.controller.emit({
-                event: events.EVENT.TIMER,
-                actorId: that.thingId,
-                thingId: that.thingId,
-                delta: delta
-            } as events.TimerEvent)
-        }, events.EVENT_TIMER_DURATION);
-    }
-
 
     /**
      * Creating snapshot memory to be used synchronously within Anima's code.
