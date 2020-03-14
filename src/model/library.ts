@@ -57,7 +57,8 @@ export class LibraryServer {
     async destroyBook(id: string) {
         if (this.bookServers[id]) {
             await this.bookServers[id].offline();
-            // TODO destroy all things and planes
+            await this.bookServers[id].planes.clear();
+            await this.bookServers[id].things.clear();
             delete this.bookServers[id];
         }
         return this.books.remove(id);

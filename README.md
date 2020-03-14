@@ -3,10 +3,6 @@
 This is an Excalibur+Electron prototype of the TXTNET.
 
 ## Handling events
-+ teleport{to=thing} command, copy if between worlds
-+ copy things
-+ say command
-+ Proxy controller -> send events via network
 - book goes offline while guests are online -> move guests offline
 - book goes offline and has controllers on other books -> move them offline
 - book goes online and has controller in limbo -> move them to other books
@@ -15,9 +11,6 @@ This is an Excalibur+Electron prototype of the TXTNET.
 ## Advanced environment
 - gravity & seasonality
 
-## Helper commands
-+ `debug{where=<...>}`
-+ `debug{list="things"}`
 
 
 
