@@ -12,18 +12,16 @@ This is an Excalibur+Electron prototype of the TXTNET.
 
 
 
-
-## Up Next Implementation
+## Stage 9. Control over things
 - SPATIALS: place/fit, written getters
-- Properties
+- Update Properties
+- Update Text
+    - anima reboots when thing's text is changed (reacts on event of changing text)
 - Move
-- Enter / Leave
+- Enter / Leave (add WW support)
 - Push
-- Pick
-- ....
-- implement the rest of the WW library
-- anima reboots when thing's text is changed (reacts on event of changing text)
-
+- Pick / Putdown = inventory!
+- Throw
 
 
 ## TODO: Document
@@ -32,13 +30,6 @@ This is an Excalibur+Electron prototype of the TXTNET.
 - If there is no prototype thing, then it uses `Something`
 - Supported commands and Written Word
 - event roles: object, subject, host, observer
-
-
-## TODO: Operations between libraries
-- peer book goes offline: move all my guests to limbo
-- send message: event happens on the plane where are guests from other book
-+ send message: console/anima issues a command to my guest visiting another book
-
 
 
 ## Stages
