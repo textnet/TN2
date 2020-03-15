@@ -1,0 +1,111 @@
+import { BookServer } from "../../model/book"
+import { ThingData, PlaneData, SAY } from "../../model/interfaces"
+import { getBookId, createThingId } from "../../model/identity"
+import { deepCopy } from "../../utils"
+import * as geo from "../../model/geometry"
+import * as updates from "../updates"
+import * as events from "../events"
+import * as actions from "../actions"
+import * as cl from "../../commandline/commandline"
+import { print } from "../../commandline/print"
+
+
+
+export async function place(B: BookServer, action: actions.ActionPlace) {
+    const plane = await B.planes.load(action.planeId);
+    const thing = await B.things.load(action.thingId);
+
+    let position: geo.Position = undefined;
+    if (action.fit) {
+        position = await findFitting(B, thing, plane, action.position);
+    } else {
+        if (action.force || isFitting(B, thing, plane, action.position)) {
+            position = deepCopy(action.position);
+        }
+    }
+    if (position) {
+        plane.things[thing.id] = position;
+        await B.planes.save(plane);
+        const event = {
+            event:    action.isEnter? events.EVENT.ENTER : events.EVENT.PLACE,
+            actorId:  action.actorId,
+            planeId:  action.planeId,
+            thingId:  thing.id,
+            position: position,           
+        } as events.EventPlace;
+        await events.emit(B, event);
+    } 
+    return position;
+}
+
+
+async function findFitting(B: BookServer, thing: ThingData, plane: PlaneData, position: geo.Position) {
+    if (await isFitting(B, thing, plane, position)) return deepCopy(position);
+    let size = 0;
+    let pos = deepCopy(position);
+    while (true) {
+        size++;
+        let sequence = [];
+        pos = shiftPos(pos, thing.physics.box, 0, 1);
+        sequence.push(pos);
+        // 2. go right (size times)
+        for (let i=0; i<size; i++) {
+            sequence.push(shiftPos( pos, thing.physics.box, i+1, 0 ))
+        }
+        // 3. go up (size+1+size)
+        for (let i=0; i<size*2+1; i++) {
+            sequence.push(shiftPos( pos, thing.physics.box, size, -i ))
+        }
+        // 4. go left (size+1+size)
+        for (let i=0; i<size*2+1; i++) {
+            sequence.push(shiftPos( pos, thing.physics.box, size-i, -2*size ))
+        }
+        // 5. go down (size+1+size)
+        for (let i=0; i<size*2+1; i++) {
+            sequence.push(shiftPos( pos, thing.physics.box, -size, -2*size+i ))
+        }
+        // 6. go right.
+        for (let i=0; i<size; i++) {
+            sequence.push(shiftPos( pos, thing.physics.box, -size, 0 ))
+        }
+        // check
+        for (let p of sequence) {
+            if (await isFitting(B, thing, plane, p)) return p;
+        }  
+    }
+    return pos;
+}
+
+
+function shiftPos(p: geo.Position, body: geo.Box, dx: number, dy: number) {
+    const pos = deepCopy(p);
+    pos.x += dx * body.w*2;
+    pos.y += dy * body.h*2;
+    return pos;
+}
+
+// will it fit here?
+async function isFitting(B: BookServer, thing: ThingData, plane: PlaneData, position: geo.Position) {
+    if (!geo.inBounds(position, plane.physics.box)) {
+        return false;
+    } else {
+        for (let id in plane.things) {
+            if (id != thing.id) {
+                const another = await B.things.load(id);
+                const anotherPos = plane.things[id];
+                if (geo.boxOverlap(
+                    geo.positionedBox(thing.physics.box,   position),
+                    geo.positionedBox(another.physics.box, anotherPos))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+
+
+
+
+

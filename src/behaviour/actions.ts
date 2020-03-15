@@ -11,6 +11,7 @@ import { print } from "../commandline/print"
 
 import * as say from "./actions/say"
 import * as transfer from "./actions/transfer"
+import * as spatials from "./actions/spatials"
 // actions happen on a plane
 
 export const ACTION = {
@@ -45,6 +46,7 @@ export interface ActionPlace extends Action {
     position: geo.Position;
     fit?: boolean;
     force?: boolean;
+    isEnter?: boolean;
 }
 export interface ActionSay extends Action {
     what: string,
@@ -71,13 +73,7 @@ export const handlers = {
     leave:     transfer.leave,
     transfer:  transfer.action,
     isGuest:   transfer.isGuest,
+    place:     spatials.place,
 
-    place: async function(B: BookServer, action: ActionPlace) {
-        const plane = await B.planes.load(action.planeId);
-        const thing = await B.things.load(action.thingId);
-        // TODO spatial;
-        plane.things[thing.id] = deepCopy(action.position);
-        await B.planes.save(plane);
-    },
 
 }

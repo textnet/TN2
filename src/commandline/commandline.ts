@@ -37,19 +37,20 @@ export function commandInput(library: LibraryServer,) {
     });
     async function handleCommand(input?: string) {
         const anima = written.getAnima();
-        const prefix = anima?(await anima.str()+" "):"";
+        const prefix = anima?(await anima.str()+" "):":) ";
         if (input) {
             if (anima) {
                 if (input[0] == "/") {
                     await parseCommand(library, input.substr(1));
                 } else {
+                    await anima.prepareMemory()
                     await anima.call(input)
                 }
             } else {
                 await parseCommand(library, input);    
             }
         }
-        rl.questionAsync(prefix+ ':) ').then(handleCommand);
+        rl.questionAsync(prefix).then(handleCommand);
     }
 
     handleCommand();

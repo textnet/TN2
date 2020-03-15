@@ -4,13 +4,14 @@ import { Box, Position, Direction } from "./geometry"
 
 export interface ThingPhysics {
     box: Box;
-    Z?:  number; // Z-level
+    Z?:  number; // Z-level required to pass over
     mass?: Record<string,number>;
     force?: Record<string, number>;
-    velocity: Direction;
+    velocity?: Direction;
 }
 
 export interface PlanePhysics {
+    box?: Box;
     gravity?: Record<string, PlaneGravity>;
     seasons?: Record<string, PlaneSeason>;
 }
@@ -74,6 +75,7 @@ export const SEASON: Record<string, PlaneSeason> = {
 }
 
 export const PLANE_PHYSICS_DEFAULT: PlanePhysics = {
+    box:     { w: 0, h: 0 },
     gravity: { mass: GRAVITY.TOPDOWN },
     seasons: { day: SEASON.DAY },
 }

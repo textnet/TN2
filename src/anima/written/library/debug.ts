@@ -53,7 +53,8 @@ async function _where( A: WrittenAnima, target: any) {
             const pos = plane.things[thing.id];
             const name = print.str(thing);
             const planePrefix = (animaThing.hostPlaneId == plane.id)?"":`${print.str(plane)} -> `
-            cl.log(`- {x:${pos.x}, y:${pos.x}, z:${pos.z}}<${geo.directionName(pos)}> ${name}`)
+            cl.log(`- {x:${pos.x}, y:${pos.y}, z:${pos.z}}<${geo.directionName(pos)}> ${name}`)
         }
     }
 }
+

@@ -7,7 +7,7 @@ import * as updates from "../updates"
 import * as events from "../events"
 import * as actions from "../actions"
 import * as cl from "../../commandline/commandline"
-import { print } from "../../commandline/print"
+import { print, inspect } from "../../commandline/print"
 import { Controller } from "../controller"
 
 
@@ -48,6 +48,13 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
     } else {
         await B.registerGuest(thing.id);
     }
+    // update host
+    await updates.update(B, {
+        update:      updates.UPDATE.HOST,
+        actorId:     action.actorId,
+        id:          thingId,
+        hostPlaneId: plane.id,
+    } as updates.UpdateHostPlane)
     // place thing
     await actions.handlers.place(B, {
         action:   actions.ACTION.PLACE,
@@ -56,23 +63,11 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
         thingId:  thingId,
         position: visit,
         fit:      true,
-        force:    false
+        force:    false,
+        isEnter:  true,
     } as actions.ActionPlace)
-    // update host
-    await updates.update(B, {
-        update:      updates.UPDATE.HOST,
-        actorId:     action.actorId,
-        id:          thingId,
-        hostPlaneId: plane.id,
-    } as updates.UpdateHostPlane)
-    // emit event
-    await events.emit(B, {
-        event:    events.EVENT.ENTER,
-        actorId:  action.actorId,
-        planeId:  action.planeId,
-        thingId:  thingId,
-        position: visit,           
-    } as events.EventEnter)
+    // emit event <- done while placing
+    // inspect(B.library, {id:action.planeId})
 }
 
 export async function leave(B: BookServer, action: actions.ActionLeave) {

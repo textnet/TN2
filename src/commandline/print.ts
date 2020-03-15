@@ -1,11 +1,13 @@
 import * as commandline from "./commandline";
 import { LibraryServer } from "../model/library";
 import { BookServer } from "../model/book"
+import { Anima } from "../anima/anima"
 import { BookData, ThingData, PlaneData } from "../model/interfaces"
 import { isBookId, isThingId, getBookId } from "../model/identity"
 import { Update } from "../behaviour/updates"
 import { Action } from "../behaviour/actions"
 import { Event  } from "../behaviour/events"
+import * as geo from "../model/geometry"
 
 
 
@@ -13,10 +15,18 @@ export function setup() {
     const NA = undefined;
     commandline.register("inspect", inspect, /(\S+)(\s+from\s+(\S+))?\s*/, ["id", NA, "fromId"]);
 }
-async function inspect(L: LibraryServer, params) {
-    if (isBookId(params["id"]))  return inspectBook(L, params["id"])
-    if (isThingId(params["id"])) return inspectThing(L, params["id"], params["fromId"])
-    return inspectPlane(L, params["id"], params["fromId"])
+
+function getLibraryServer(L: LibraryServer|BookServer|Anima) {
+    if ((L as Anima).B) L = (L as Anima).B;
+    if ((L as BookServer).library) L = (L as BookServer).library;
+    return L as LibraryServer
+}
+
+export async function inspect(L: LibraryServer|BookServer|Anima, params) {
+    const server = getLibraryServer(L);
+    if (isBookId(params["id"]))  return inspectBook(server, params["id"])
+    if (isThingId(params["id"])) return inspectThing(server, params["id"], params["fromId"])
+    return inspectPlane(server, params["id"], params["fromId"])
 }
 
 async function inspectBook(L:LibraryServer, id: string) {
@@ -37,9 +47,22 @@ async function inspectPlane(L:LibraryServer, id: string, fromId?: string) {
     console.log(plane)
 }
 
+export async function where(L:LibraryServer, thingId: string) {
+    const B = L.bookServers[ getBookId(thingId) ];
+    const thing = await B.things.load(thingId);
+    if (thing) {
+        const plane = await B.planes.load(thing.hostPlaneId);
+        if (plane) {
+            const pos = plane.things[thing.id];
+            const name = str(thing);
+            commandline.log(`${str(plane)} -> {x:${pos.x}, y:${pos.y}, z:${pos.z}}<${geo.directionName(pos)}> ${thing.id}`)
+        }
+    }
+}
+
 
 export function strThing(thing: ThingData, short?:boolean) {
-    return `${thing.sprite.symbol}:${thing.name}` + (short?"":` // ${thing.id}`);
+    return `${thing.sprite.symbol}«${thing.name}»` + (short?"":` id:${thing.id}`);
 }
 
 export function strPlane(plane: PlaneData) {

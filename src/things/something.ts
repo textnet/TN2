@@ -10,7 +10,7 @@ export const template: ThingTemplate = {
         name: name,
         colors: {}, // all default colors
         sprite: {
-            symbol: "?",
+            symbol: "🔮",
             size: { w: 32, h: 32 },
         },
         physics: {

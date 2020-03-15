@@ -16,6 +16,7 @@ export const EVENT = {
     ENTER: "enter",
     LEAVE: "leave",
     HEAR:  "hear",
+    PLACE: "place", // changes place on the plane
 }
 
 export const EVENT_ROLE = {
@@ -36,8 +37,10 @@ export interface Event {
 export interface TimerEvent extends Event {
     delta: number;
 }
-export interface EventEnter extends Event {
+export interface EventPlace extends Event {
     position: geo.Position;
+}
+export interface EventEnter extends EventPlace {
 }
 export interface EventLeave extends Event {
 }

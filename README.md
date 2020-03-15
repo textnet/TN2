@@ -3,7 +3,13 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## Controlling things
-- SPATIALS: place/fit, written getters <- figure out position.z???
++ SPATIALS: place/fit, 
+    + force
+    + spatial checks
+    + fit
+    + send event
++ what is Z-level = height!
+- written getters 
 
 ## Stage 9. Control over things
 - Move

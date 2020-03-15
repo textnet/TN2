@@ -59,6 +59,7 @@ export const supportedFunctions = {
 
 export const supportedEvents = [ 
                                  EVENT.TIMER, 
+                                 EVENT.PLACE,
                                  EVENT.ENTER,
                                  EVENT.LEAVE,
                                  EVENT.HEAR,
