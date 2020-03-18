@@ -27,21 +27,25 @@ export interface Direction {
     dx:  number;
     dy:  number;
     dz?: number;
+    rotation?: number;
 }
 
 export const DIRECTION: Record<string,Direction> = {
-    UP:    { dx: 0, dy:-1, dz:0 },
-    DOWN:  { dx: 0, dy: 1, dz:0 },
-    LEFT:  { dx:-1, dy: 0, dz:0 },
-    RIGHT: { dx: 1, dy: 0, dz:0 }, 
-    UL:    { dx:-1, dy:-1, dz:0 }, 
-    DL:    { dx:-1, dy: 1, dz:0 }, 
-    UR:    { dx: 1, dy:-1, dz:0 }, 
-    DR:    { dx: 1, dy: 1, dz:0 }, 
-    IDLE:  { dx: 0, dy: 0, dz:0 }, 
+    UP:    { dx: 0, dy:-1, dz:0, rotation:   0 },
+    DOWN:  { dx: 0, dy: 1, dz:0, rotation: 180 },
+    LEFT:  { dx:-1, dy: 0, dz:0, rotation: 270 },
+    RIGHT: { dx: 1, dy: 0, dz:0, rotation:  90 }, 
+    UL:    { dx:-1, dy:-1, dz:0, rotation: 315 }, 
+    DL:    { dx:-1, dy: 1, dz:0, rotation: 225 }, 
+    UR:    { dx: 1, dy:-1, dz:0, rotation:  45 }, 
+    DR:    { dx: 1, dy: 1, dz:0, rotation: 135 }, 
+    IDLE:  { dx: 0, dy: 0, dz:0, rotation:   0 }, 
 }
-export const PROXIMITY = 3; // how far is 'next'
-
+export const PROXIMITY = {
+    NEXT: 3,
+    MOVE: 0.1,
+    STOP: 1,
+}
 
 export function directionName(what: Direction|Position) {
     let dir = what as Direction;
@@ -58,6 +62,18 @@ export function directionName(what: Direction|Position) {
     if (dir.dx >  0 && dir.dy == 0) return "RIGHT";
     if (dir.dx >  0 && dir.dy >  0) return "DR";
     return "IDLE";
+}
+
+export function rotationDir(dir?: Direction) {
+    if (!dir) return rotationDir(DIRECTION.IDLE);
+    if (dir.rotation) return dir.rotation;
+    if (dir.dy == 0) {
+        if (dir.dx > 0) return rotationDir(DIRECTION.RIGHT);
+        if (dir.dx < 0) return rotationDir(DIRECTION.LEFT);
+        if (dir.dx ==0) return rotationDir(DIRECTION.IDLE);
+    } else {
+        return Math.floor(Math.sin(dir.dx/dir.dy)*180/Math.PI);
+    }
 }
 
 export function isDir(name: string, dir: Direction) {
@@ -115,6 +131,18 @@ export function add(pos: Position, dir: Direction) {
 export function substract(pos: Position, dir: Direction) {
     return add(pos, reverse(dir));
 }
+export function scale(dir: Direction, scaleFactor: number) {
+    const result = deepCopy(dir);
+    result.dx *= scaleFactor;
+    result.dy *= scaleFactor;
+    result.dz *= scaleFactor;
+    return result;
+}
+export function accumulateDirection(main: Direction, contribution: Direction) {
+    main.dx += contribution.dx;
+    main.dy += contribution.dy;
+    main.dz += contribution.dz;
+}
 
 export function positionedBox(box: Box, position: Position) {
     let aBox: PositionedBox = {n:[0,0,0,0]} // L-U-R-D
@@ -169,6 +197,6 @@ export function boxNextTo(dir: Direction, aBox: PositionedBox, bBox: PositionedB
         if (isDir("UP", dir))     distance = aBox.n[1]-bBox.n[3];
         if (isDir("DOWN", dir))   distance = bBox.n[1]-aBox.n[3];
     }
-    return (distance >= -PROXIMITY && distance <= PROXIMITY);
+    return (distance >= -PROXIMITY.NEXT && distance <= PROXIMITY.NEXT);
 }
 

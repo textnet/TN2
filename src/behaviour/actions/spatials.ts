@@ -14,16 +14,21 @@ import { print } from "../../commandline/print"
 export async function place(B: BookServer, action: actions.ActionPlace) {
     const plane = await B.planes.load(action.planeId);
     const thing = await B.things.load(action.thingId);
-
+    let colliderId: string;
     let position: geo.Position = undefined;
     if (action.fit) {
         position = await findFitting(B, thing, plane, action.position);
     } else {
-        if (action.force || isFitting(B, thing, plane, action.position)) {
+        if (action.force) {
             position = deepCopy(action.position);
+        } else {
+            colliderId = await findCollision(B, thing, plane, action.position);
+            if (!colliderId) {
+                position = deepCopy(action.position);
+            }
         }
     }
-    if (position) {
+    if (!colliderId) {
         plane.things[thing.id] = position;
         await B.planes.save(plane);
         const event = {
@@ -34,13 +39,28 @@ export async function place(B: BookServer, action: actions.ActionPlace) {
             position: position,           
         } as events.EventPlace;
         await events.emit(B, event);
-    } 
+    } else {
+        thing.physics.inertia = deepCopy(geo.DIRECTION.IDLE);
+        await B.things.save(thing);
+        const event = {
+            event:    events.EVENT.COLLISION,
+            actorId:  action.actorId,
+            planeId:  action.planeId,
+            thingId:  thing.id,
+            colliderId: colliderId,
+            position: position,           
+        } as events.EventCollision;
+        await events.emit(B, event);
+    }
     return position;
 }
 
 
 async function findFitting(B: BookServer, thing: ThingData, plane: PlaneData, position: geo.Position) {
-    if (await isFitting(B, thing, plane, position)) return deepCopy(position);
+    if (geo.inBounds(position, plane.physics.box) && 
+        !(await findCollision(B, thing, plane, position))) {
+        return deepCopy(position);
+    }
     let size = 0;
     let pos = deepCopy(position);
     while (true) {
@@ -70,7 +90,10 @@ async function findFitting(B: BookServer, thing: ThingData, plane: PlaneData, po
         }
         // check
         for (let p of sequence) {
-            if (await isFitting(B, thing, plane, p)) return p;
+            if (geo.inBounds(position, plane.physics.box)) {
+                const collider = await findCollision(B, thing, plane, p);
+                if (!collider) return p;
+            }
         }  
     }
     return pos;
@@ -85,23 +108,19 @@ function shiftPos(p: geo.Position, body: geo.Box, dx: number, dy: number) {
 }
 
 // will it fit here?
-async function isFitting(B: BookServer, thing: ThingData, plane: PlaneData, position: geo.Position) {
-    if (!geo.inBounds(position, plane.physics.box)) {
-        return false;
-    } else {
-        for (let id in plane.things) {
-            if (id != thing.id) {
-                const another = await B.things.load(id);
-                const anotherPos = plane.things[id];
-                if (geo.boxOverlap(
-                    geo.positionedBox(thing.physics.box,   position),
-                    geo.positionedBox(another.physics.box, anotherPos))) {
-                    return false;
-                }
+async function findCollision(B: BookServer, thing: ThingData, plane: PlaneData, position: geo.Position) {
+    for (let id in plane.things) {
+        if (id != thing.id) {
+            const another = await B.things.load(id);
+            const anotherPos = plane.things[id];
+            if (geo.boxOverlap(
+                geo.positionedBox(thing.physics.box,   position),
+                geo.positionedBox(another.physics.box, anotherPos))) {
+                return id;
             }
         }
-        return true;
     }
+    return undefined;
 }
 
 

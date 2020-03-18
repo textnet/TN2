@@ -7,20 +7,29 @@ export interface ThingPhysics {
     Z?:  number; // Z-level required to pass over
     mass?: Record<string,number>;
     force?: Record<string, number>;
-    velocity?: Direction;
+    inertia?: Direction; // applied physics as result of acceleration
+    momentum?: Direction; // applied speed/tension and momentum gravity
+    speed?: number;       // 100 is 1:1
 }
 
 export interface PlanePhysics {
     box?: Box;
     gravity?: Record<string, PlaneGravity>;
     seasons?: Record<string, PlaneSeason>;
+    friction?: number; // 100 is 1:1; slowing any movement in any direction
 }
+
+export const TIME_MOMENTUM = 1;      // how many units of time per 1 unit of inertia/momentum
+export const TIME_ACCELERATION = 1;  // how many units of time per 1 unit of acceleration
+export const DEFAULT_SPEED = 100;
+export const DEFAULT_INERTIA = 100;
 
 export interface PlaneGravity {
     direction:     Direction;
-    velocity?:     number;    // sets things in movement with constant velocity
+    momentum?:     number;    // sets things in movement with constant inertia
     acceleration?: number;    // accelerate things
     minimalMass?:  number;    // don't trigger if the mass is lighter
+    maximalMass?:  number;    // don't trigger if the mass is heavier
 
 }
 
@@ -37,11 +46,11 @@ export const GRAVITY: Record<string, PlaneGravity> = {
     },
     MARIO: {
         direction: { dx:0, dy:1 },
-        acceleration: 1,        
+        momentum: 1,        
     },
     WIND: {
         direction: { dx:1, dy:0 },
-        velocity: 1,
+        momentum: 1,
     },
 }
 
@@ -78,4 +87,5 @@ export const PLANE_PHYSICS_DEFAULT: PlanePhysics = {
     box:     { w: 0, h: 0 },
     gravity: { mass: GRAVITY.TOPDOWN },
     seasons: { day: SEASON.DAY },
+    friction: DEFAULT_INERTIA,
 }

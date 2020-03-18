@@ -4,6 +4,7 @@ import { deepCopy } from "../utils"
 import * as network from "../network/discovery"
 import * as geo from "../model/geometry"
 import * as updates from "./updates"
+import * as movement from "./actions/movement"
 import * as cl from "../commandline/commandline"
 import { print } from "../commandline/print"
 
@@ -17,6 +18,11 @@ export const EVENT = {
     LEAVE: "leave",
     HEAR:  "hear",
     PLACE: "place", // changes place on the plane
+    COLLISION: "collision",
+    MOVE_START:  "move_start",
+    MOVE_FINISH: "move_finish",
+    HALT:        "halt",
+    WAYPOINT:    "waypoint",
 }
 
 export const EVENT_ROLE = {
@@ -40,14 +46,22 @@ export interface TimerEvent extends Event {
 export interface EventPlace extends Event {
     position: geo.Position;
 }
-export interface EventEnter extends EventPlace {
+export interface EventCollision extends EventPlace {
+    colliderId: string;
 }
-export interface EventLeave extends Event {
-}
+export interface EventEnter extends EventPlace {}
+export interface EventLeave extends Event {}
 export interface EventHear extends Event {
     what: string;
     loudness: number;
 }
+export interface EventWaypoint   extends Event {
+    waypoint: movement.Waypoint;
+}
+export interface EventMoveFinish extends EventWaypoint {}
+export interface EventMoveStart  extends EventWaypoint {}
+export interface EventHalt       extends EventWaypoint {}
+
 
 
 // ------------------ emitting -------------------------
@@ -66,12 +80,3 @@ export async function emit(B: BookServer, event: Event) {
 }
 
 
-//
-    // const targetBookId = getBookId(action.planeId)
-    // const message: network.MessageAction = {
-    //     name: network.MESSAGE.ACTION,
-    //     action: action,
-    // }
-    // // print(action)
-    // return await B.sendMessage(targetBookId, message)
-//

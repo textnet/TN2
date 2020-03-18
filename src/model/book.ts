@@ -11,6 +11,8 @@ import * as events from "../behaviour/events"
 import * as updates from "../behaviour/updates"
 import * as anima from "../anima/animate"
 import { createFromThing } from "./create"
+import { applyPhysics } from "../behaviour/physics"
+import { Waypoint } from "../behaviour/actions/movement"
 
 
 // serves a book
@@ -23,6 +25,7 @@ export class BookServer {
 
     controllers: Controller[];
     guests: Record<string,Controller>;
+    waypoints: Record<string,Waypoint[]>; // thingId -> waypoints
 
     handlers: network.NetworkHandlers;
 
@@ -44,6 +47,7 @@ export class BookServer {
         this._online = false;
         this.controllers = [];
         this.guests = {};
+        this.waypoints = {};
     }
 
     async online() {
@@ -131,23 +135,8 @@ export class BookServer {
                     } as events.TimerEvent)                    
                 }
             }
-            that.intervalGravity(delta);
+            applyPhysics(that, delta)
         }, events.EVENT_TIMER_DURATION);
-    }
-    async intervalGravity(delta: number) {
-        const gravityPlanes: Record<string,boolean> = {};
-        for (let c of this.controllers) {
-            if (c.anima) {
-                const thing = await this.things.load(c.anima.thingId);
-                gravityPlanes[thing.hostPlaneId] = true;
-            }
-        }
-        for (let planeId in gravityPlanes) {
-            // - Для каждого объекта с ненулевой массой: установить скорость/ускорение
-            // - Для каждого объекта с заданной траекторией: вычислить вектор скорости/ускорения
-            // - Для каждого объекта с ненулевой скоростью: передвинуть
-            // TODO apply gravity & velocity
-        }
     }
 
     // keep track of all controllers relevant for this book.

@@ -12,6 +12,7 @@ import { print } from "../commandline/print"
 import * as say from "./actions/say"
 import * as transfer from "./actions/transfer"
 import * as spatials from "./actions/spatials"
+import * as movement from "./actions/movement"
 // actions happen on a plane
 
 export const ACTION = {
@@ -21,6 +22,9 @@ export const ACTION = {
     IS_GUEST: "isGuest",
     PLACE: "place",
     SAY: "say",
+
+    MOVE: "move",
+    HALT: "halt",
 }
 
 export interface Action {
@@ -53,6 +57,14 @@ export interface ActionSay extends Action {
     loudness: number;
 }
 
+export interface ActionAddMovement extends Action {
+    thingId: string;
+    waypoint: movement.Waypoint;
+}
+export interface ActionHaltMovement extends Action {
+    thingId: string;
+}
+
 
 // --- dispatcher ---
 export async function action(B: BookServer, action: Action) {
@@ -74,6 +86,6 @@ export const handlers = {
     transfer:  transfer.action,
     isGuest:   transfer.isGuest,
     place:     spatials.place,
-
-
+    move:      movement.add,
+    halt:      movement.halt,
 }
