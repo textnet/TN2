@@ -2,17 +2,31 @@
 
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
-## Controlling things
-- written getters 
-    - get_next
-    - get_closest
+## GUI
+- switch to electron
+- open electron from headless - can we do it?
+- connect excalibur
+- starting screen
+- pass through starting screen (for testing)
+- top level event handling
+- load stage
+- show title of the plane
+- place all things
+- accept events of moving things around
+- special actor which is controlled from keyboard
+- pass commands to the console
+
+
+
+
+
+
+## Stage 11. Control over things
 - written movers
     - move_to
     - move_by (duration)
     - turn_to 
     - halt
-
-## Stage 9. Control over things
 - Enter / Leave (add WW support)
 - Push
 - Pick / Putdown = inventory!
@@ -43,8 +57,9 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 6. (+) Text consoles (connect, disconnect)
 7. (+) Imagination Limbo (=off-book behaviour)
 8. (+) Anima basics (written word)
-9. (>) Controls over things (A LOT OF WORK HERE: actions, events, collisions)
-10. GUI
+9. (+) Basic Controls over things (A LOT OF WORK HERE: actions, events, collisions)
+10. (>) GUI
+11. Proceed to controll all things
 
 ## Rough planning for Q2
 - March: Spatials + Move + Enter/Leave + Push + Pick/Putdown + Throw = 2w

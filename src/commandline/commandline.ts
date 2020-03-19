@@ -15,17 +15,26 @@ const chalk = require('chalk');
 const splitargs = require('splitargs');
 
 
-export function init(library: LibraryServer, exitHandler) {
-        baseCommands.setup();
-        thingCommands.setup();
-        planeCommands.setup();
-        print.setup();
-        register("test", function(n, params) { console.log(params) })
-        register("exit", async function(n, params) { 
-            await exitHandler();
-            ok("Finished.")
-        })
-        script(library).then(()=>{ commandInput(library) });
+export interface CommandLineConfig {
+    exitHandler?: any; 
+    gui?: any;
+}
+
+let _config: CommandLineConfig;
+export function getConfig() { return _config };
+
+export function init(library: LibraryServer, config: CommandLineConfig) {
+    _config = config;    
+    baseCommands.setup();
+    thingCommands.setup();
+    planeCommands.setup();
+    print.setup();
+    register("test", function(n, params) { console.log(params) })
+    register("exit", async function(n, params) { 
+        await config["exitHandler"]();
+        ok("Finished.")
+    })
+    script(library).then(()=>{ commandInput(library) });
 }
 
 

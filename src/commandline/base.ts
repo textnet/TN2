@@ -20,6 +20,7 @@ export function setup() {
     register("consoles", listConsoles)
     register("bind", bindConsole);
     register("unbind", unbindConsole);
+    register("gui", guiConsole);
 
     register("network", network);
 }
@@ -134,6 +135,13 @@ export async function bindConsole(library: LibraryServer, paramList) {
 
 export async function unbindConsole(library: LibraryServer) {
     await written.unbind();
+}
+export async function guiConsole(library: LibraryServer, paramList) {
+    const params = mapParams(paramList, ["id"])
+    const data = await library.loadConsole(params["id"]);
+    const bookId = getBookId(data.thingId)
+    const server = library.bookServers[bookId];
+    await written.gui(server, data.id);
 }
 
 

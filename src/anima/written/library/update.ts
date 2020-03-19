@@ -41,7 +41,7 @@ export function update( A: WrittenAnima, params: FengariMap) {
         const key = "colors."+COLORS[c];
         properties[key] = params.get(key);
     }
-    for (let p in PHYSICS) {
+    for (let c in PHYSICS) {
         const key = "physics."+PHYSICS[c];
         properties[key] = params.get(key);
 
