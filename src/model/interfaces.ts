@@ -92,7 +92,7 @@ export const FORMAT = {
 }
 export const FORMAT_DEFAULT = FORMAT.MARKDOWN;
 
-const API = [ "name",
+export const API = [ "name",
               "constraints",
               "colors", 
               "physics",
@@ -107,9 +107,16 @@ export const PLANE = {
 }
 export const PLANE_DEFAULT = PLANE.MATERIAL;
 
-export const COLOR = {
-    TEXT:  "#CDECF7",
-    FLOOR: "#444444",
-    TITLE: "#1E76EC",
-    NAME:  "#FFFFFF",
+export const COLORS = {
+    TEXT:  "text",
+    FLOOR: "floor",
+    TITLE: "title",
+    NAME:  "name",
+}
+
+export const COLORS_DEFAULT = {
+    "text":  "#CDECF7",
+    "floor": "#444444",
+    "title": "#1E76EC",
+    "name":  "#FFFFFF",
 }

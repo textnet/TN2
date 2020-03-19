@@ -20,8 +20,8 @@ export interface WrittenThing {
  * NB: It is a specific structure
  */
 export function writtenThing(A: Anima, thing: ThingData|WrittenThing) {
-    if (thing["isWritten"]) return thing;
-    if (!thing) return thing;
+    if (thing["isWritten"]) return thing as WrittenThing;
+    if (!thing) return thing as WrittenThing;
     const source = thing as ThingData;
     const result: WrittenThing = { isWritten: true, id: thing.id };
     for (let i of source.API) {

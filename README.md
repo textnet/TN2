@@ -6,10 +6,13 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 - written getters 
     - get_next
     - get_closest
+- written movers
+    - move_to
+    - move_by (duration)
+    - turn_to 
+    - halt
 
 ## Stage 9. Control over things
-- Move
-    - also gravity
 - Enter / Leave (add WW support)
 - Push
 - Pick / Putdown = inventory!
@@ -44,8 +47,8 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 10. GUI
 
 ## Rough planning for Q2
-- March: Spatials + Move + Enter/Leave + Push + Pick/Putdown + Throw = 1w
-- March-April: Updates & Seasonality = 1w
+- March: Spatials + Move + Enter/Leave + Push + Pick/Putdown + Throw = 2w
+- April: Updates & Seasonality = 1w
 - April: GUI setup & menu = 1w
 - April: GUI basic rendering & movement = 1w
 - April: GUI inventory = 1w

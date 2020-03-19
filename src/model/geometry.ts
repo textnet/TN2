@@ -83,7 +83,7 @@ export function isDir(name: string, dir: Direction) {
 export function isIdle(dir: Direction) {
     return isDir("IDLE", dir)
 }
-export function toDir(name: string, dir: Direction, length?:number) {
+export function toDir(name: string, length?:number, rotation?: number) {
     if (!DIRECTION[name]) return deepCopy(DIRECTION.IDLE);
     length = length || 1;
     return normalize(DIRECTION[name], length)

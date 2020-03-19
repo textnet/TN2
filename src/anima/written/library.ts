@@ -3,10 +3,9 @@
  */
 
 import { debug } from "./library/debug"
-import { get_artifacts, get_artifact, get_myself, } from "./library/get"
 import { teleport } from "./library/teleport"
-import { say, shout, whisper } from "./library/say"
-
+import * as get from "./library/get"
+import * as say from "./library/say"
 
 import { event_on, event_off } from "./library/events"
 
@@ -22,24 +21,23 @@ import { EVENT } from "../../behaviour/events"
  */
 export const supportedFunctions = {
     "debug": { signature: ["log", "where", "list"], f: debug },
-    "get_artifacts": { signature: ["host", "plane", "id", "name"], f: get_artifacts },
-    "get_artifact":  { signature: ["host", "plane", "id", "name"], f: get_artifact  },
-    "get_myself":    { signature: [],                      f: get_myself    },
-    // "get_next":      { signature: ["direction"],           f: get_next      },
-    // "get_closest":   { signature: ["name"],                f: get_closest   },
+    "get_artifacts": { signature: ["host", "plane", "id", "name"], f: get.get_things },
+    "get_artifact":  { signature: ["host", "plane", "id", "name"], f: get.get_thing  },
+    "get_myself":    { signature: [],                      f: get.get_myself    },
+    "get_next":      { signature: ["direction"],           f: get.get_next      },
+    "get_closest":   { signature: ["name"],                f: get.get_closest   },
     //
     "on":  { signature: false, /* artifact, event, role, handler */ f: event_on }, 
     "off": { signature: ["artifact", "event", "role", "key" ,], f: event_off },
 
     "teleport":    { signature: ["thing", "to" ], f: teleport },
 
-    "say":         { signature: ["what", "loudness"], f: say },
-    "shout":       { signature: ["what"], f: shout },
-    "whisper":     { signature: ["what"], f: whisper },
+    "say":         { signature: ["what", "loudness"], f: say.say },
+    "shout":       { signature: ["what"], f: say.shout },
+    "whisper":     { signature: ["what"], f: say.whisper },
 
     // "update":        { signature: false,                   f: update        },
     // "self":          { signature: false,                   f: update        },
-
 
     // "get_text":    { signature: ["artifact", "line", "anchor"         ], f: get_text    },
     // "get_line":    { signature: ["artifact", "line", "anchor"         ], f: get_text    },
