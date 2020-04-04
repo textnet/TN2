@@ -107,7 +107,6 @@ export class ThingActor extends BaseActor {
             const velocity = (this.data.physics.speed /friction) * (delta /physics.TIME_MOMENTUM);
             this.vel.x = dir.dx * velocity;
             this.vel.y = dir.dy * velocity;
-            // console.log("pos", this.pos, "vel", this.vel,)
 
             // TODO start/stop moving
             // const _prevMoving = this._isMoving;

@@ -15,9 +15,16 @@ export const TEMPLATE_DEFAULT = "Something";
 export const TEMPLATE_BOOK    = "Book";
 import * as tBook      from "../things/book"
 import * as tSomething from "../things/something"
+import * as tChest from "../things/chest"
+import * as tPiano from "../things/piano"
+import * as tJones from "../things/jones"
+
 export function registerAllTemplates() {
     registerTemplate(tBook.template);
     registerTemplate(tSomething.template);
+    registerTemplate(tChest.template);
+    registerTemplate(tPiano.template);
+    registerTemplate(tJones.template);
 }
 export function registerTemplate(t: ThingTemplate) {
     templateRegistry[t.name] = t;

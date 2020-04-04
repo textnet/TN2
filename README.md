@@ -5,16 +5,22 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO / ISSUES
 + excalibur collisions
++ `create thing @ x y` and `copy`
++ new sprites
+    + professor
+    + something
+    + chest
+    + piano
++ BUG: non-animated sprite don't work
+- BUG: name of the plane is not shown (or not set correctly)
 - send data from renderer to gui console 
-- bookserver collision
-- book sprite
+- bookserver collisions
 
 
 ## Stage 10. GUI
 - pass commands to the console
 - collisions
 - accept events of moving things around
-- test physics
 
 
 ## Stage 11. Control over things
@@ -60,7 +66,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 ## Rough planning for Q2
 - April: basic GUI and events
 - May: Inventory, Text editor and menu
-- June: Seasonality 
+- June: Gravity and Seasonality 
 - June/July: polishing & documenting
 
 

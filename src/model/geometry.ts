@@ -47,6 +47,19 @@ export const PROXIMITY = {
     STOP: 1,
 }
 
+export function position(x, y, direction?: Direction|string) {
+    if (direction === undefined) direction = DIRECTION.NONE;
+    if (direction["dx"] === undefined) {
+        return position(x,y, toDir(direction as string));
+    } else {
+        return {
+            x: parseInt(x, 10),
+            y: parseInt(y, 10),
+            direction: deepCopy(direction as Direction),
+        } as Position;        
+    }
+}
+
 export function directionName(what?: Direction|Position) {
     if (what === undefined) {
         what = DIRECTION.NONE;

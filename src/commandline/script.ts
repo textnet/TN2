@@ -19,13 +19,17 @@ export async function script(library) {
 }
 
 const setupScript = `
-create book Alphabet
-create book Bible
-create thing X
-create thing Player in Alphabet
-copy Alphabet.X to Z
-things in Alphabet
-create console P1 Alphabet.Player
+create book Indiana
+create book Matrix
+create thing Player as Jones in Indiana @ 100 200
+create thing Piano as Piano in Indiana @ 200 200
+create thing Chest as Chest in Indiana @ 300 200
+copy Indiana.Piano to GrandPiano @ 400 200
+create thing Something @ 500 200
+
+things in Indiana
+
+create console P1 Indiana.Player
 gui P1
 `;
 
@@ -42,38 +46,25 @@ end
 
 
 const remainder = `
+
+inspect Indiana.*
+inspect Indiana.* from Matrix
+
+create book Bible
+destroy book Bible
+
+destroy thing Chest
+
 bind P1
+unbind
 
-inspect Alphabet.*
-inspect Alphabet.* from Bible
-
-
-create book Earth
-create book Mars
-
-create book Saturn
-destroy book Saturn
-
-
-exit
-
-create thing Chair1 @ Earth "chair" 100 50
-create thing Chair2 @ Earth "chair" 50  50
-create thing Player @ Earth "professor" 100 100
-create thing WrongChair @ Earth "chair" 50 150
-create thing Chair @ Mars "chair" 200 100
-destroy thing WrongChair
-
-create console C1
-bind C1 Player
-connect C1
-disconnect
-
-where Chair1
 where Player
+where Piano
+where Chest
 
-connect C1
 player move right 10
 player kneel
+
+exit
 
 `

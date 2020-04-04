@@ -20,7 +20,7 @@ export function runGame() {
     baseCSS();
     const id = interop.id();
     const game = new Game();
-    game.backgroundColor = ex.Color.fromRGB(0,0,0,0)
+    game.backgroundColor = ex.Color.fromRGB(0,0,0,0);
     game.bind(id);
     clientInterop.interopSetup(game);
     game.addScene("menu",               new MenuScene(game));
@@ -34,7 +34,7 @@ export function runGame() {
  */
 function baseCSS() {
     jquery("head").prepend(`<meta name="viewport" content="width=${config.gui.width/2}, initial-scale=2">`);
-    jquery("body").css({ padding: 0, margin: 0, background:"#24251F" });
+    jquery("body").css({ padding: 0, margin: 0, background:"#70869D" });
     jquery("canvas").css({
         zIndex: 1000,
         position: "absolute",

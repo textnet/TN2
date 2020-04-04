@@ -15,7 +15,6 @@ export const template: ThingTemplate = {
         },
         physics: {
             box: { w: 32, h: 32 },
-            Z: 0,
             mass:  { mass: 100 },
             force: { mass: 100 },
         },

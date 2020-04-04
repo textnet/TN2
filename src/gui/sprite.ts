@@ -75,13 +75,17 @@ export class ThingSprite {
                         }
                     }
                     if (!this.animations[code]) {
-                        const row   = this.sprite.mapping[code]? this.sprite.mapping[code][0] : 0;
-                        const steps = (this.sprite.mapping[code]? this.sprite.mapping[code][1] : 1) || this.sprite.steps;
-                        const startIndex = row*this.sprite.steps;
+                        const row   = this.sprite.mapping[code][0]? this.sprite.mapping[code][0] : 0;
+                        let steps = this.sprite.steps;
+                        if (this.sprite.mapping[code][1]) steps = this.sprite.mapping[code][1];
+                        if (!steps) steps = 1; 
+                        const startIndex = row * (this.sprite.steps || steps);
                         const endIndex = startIndex + steps;
+                        console.log(code, "@", row)
                         this.animations[code] = this.sheet.getAnimationBetween(engine, startIndex, endIndex, sprites.SPEED);                        
                     }
                     this.animations[_code] = this.animations[code];
+                    console.log(_code, ":=", code)
                 }
             }
         }      
