@@ -24,15 +24,9 @@ create book Bible
 create thing X
 create thing Player in Alphabet
 copy Alphabet.X to Z
-
 things in Alphabet
-planes in Bible.*
-
 create console P1 Alphabet.Player
-consoles
-
-bind P1
-
+gui P1
 `;
 
 const setupWritten = `
@@ -43,11 +37,13 @@ end
 -- teleport{thing="Bible.X", to="Alphabet"}
 -- teleport{to="Bible"}
 -- say{what="Hello, world!"}
-debug{list="things"}
+-- debug{list="things"}
 `;
 
 
 const remainder = `
+bind P1
+
 inspect Alphabet.*
 inspect Alphabet.* from Bible
 

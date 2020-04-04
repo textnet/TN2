@@ -37,14 +37,14 @@ export async function applyPhysics(B: BookServer, timeDelta:number) {
             const hostPlane = await loadPlane(B, world, thing.hostPlaneId);
         }
     }
-    // figuring out momentum and inertia
+    // figuring out _momentum and _inertia
     for (let thingId in world.things) {
         const thing = world.things[thingId];
         const plane = world.planes[thing.hostPlaneId];
         if (B.waypoints[thingId] && B.waypoints[thingId].length > 0) {
             const vector = movement.process(B, thing, plane, timeDelta);
             if (vector) {
-                geo.accumulateDirection(thing.physics.momentum, vector);
+                geo.accumulateDirection(thing.physics._momentum, vector);
             }
         }
         for (let g in thing.physics.mass) {
@@ -52,18 +52,18 @@ export async function applyPhysics(B: BookServer, timeDelta:number) {
             if (thing.physics.mass[g] && gravity && 
                 thing.physics.mass[g] >= gravity.minimalMass &&
                 thing.physics.mass[g] <= gravity.maximalMass) {
-                if (gravity.momentum) {
-                    geo.accumulateDirection(thing.physics.momentum, 
-                                            geo.scale(gravity.direction, gravity.momentum));
+                if (gravity._momentum) {
+                    geo.accumulateDirection(thing.physics._momentum, 
+                                            geo.scale(gravity.direction, gravity._momentum));
                 }
                 if (gravity.acceleration) {
-                    geo.accumulateDirection(thing.physics.inertia, 
+                    geo.accumulateDirection(thing.physics._inertia, 
                                             geo.scale(gravity.direction, timeDelta/physics.TIME_ACCELERATION));
                 }
             }
         }
-        geo.accumulateDirection(thing.physics.momentum, thing.physics.inertia);
-        const speed = geo.scale(thing.physics.momentum, thing.physics.speed/plane.physics.friction);
+        geo.accumulateDirection(thing.physics._momentum, thing.physics._inertia);
+        const speed = geo.scale(thing.physics._momentum, thing.physics.speed/plane.physics.friction * timeDelta/physics.TIME_MOMENTUM);
         const newPosition = geo.add(plane.things[thing.id], speed);
         const finalPosition = movement.checkWaypoint(B, thing, newPosition);
         if (geo.distance(plane.things[thing.id], finalPosition) > geo.PROXIMITY.MOVE) {
@@ -84,12 +84,12 @@ export async function loadPlane(B: BookServer, world: World, planeId: string) {
 }
 export async function loadThing(B: BookServer, world: World, thingId: string) {
     world.things[thingId] = await B.things.load(thingId);
-    world.things[thingId].physics.momentum = deepCopy(geo.DIRECTION.IDLE);
+    world.things[thingId].physics._momentum = deepCopy(geo.DIRECTION.NONE);
     if (!world.things[thingId].physics.speed) { 
         world.things[thingId].physics.speed = physics.DEFAULT_SPEED;
     }
-    if (!world.things[thingId].physics.inertia) {
-        world.things[thingId].physics.inertia = deepCopy(geo.DIRECTION.IDLE);
+    if (!world.things[thingId].physics._inertia) {
+        world.things[thingId].physics._inertia = deepCopy(geo.DIRECTION.NONE);
     }
     return world.things[thingId];
 }

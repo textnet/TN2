@@ -90,7 +90,7 @@ export async function halt(B: BookServer, action: actions.ActionHaltMovement) {
 }
 
 // process waypoints; modify things but do not save them
-// returns normalized momentum vector
+// returns normalized _momentum vector
 export function process(B: BookServer, thing: ThingData, plane: PlaneData, timeDelta: number) {
     if (B.waypoints[thing.id] && B.waypoints[thing.id].length > 0) {
         const waypoint = B.waypoints[thing.id][0];
@@ -108,7 +108,7 @@ export function process(B: BookServer, thing: ThingData, plane: PlaneData, timeD
                         break;
 
             case WAYPOINT.TURN_TO:
-                        vector = deepCopy(geo.DIRECTION.IDLE);
+                        vector = deepCopy(geo.DIRECTION.NONE);
                         vector.rotation = (waypoint as WaypointTurnTo).rotation;
                         break;            
 
@@ -116,9 +116,9 @@ export function process(B: BookServer, thing: ThingData, plane: PlaneData, timeD
             default:    break;
                         
         }
-        if (vector) {
-            vector = geo.scale(vector, thing.physics.speed)
-        }
+        // if (vector) {
+        //     vector = geo.scale(vector, )
+        // }
         waypoint.timeLeft -= timeDelta;
         return vector;
     }

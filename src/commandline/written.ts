@@ -26,9 +26,9 @@ export async function unbind() {
 }
 
 export async function gui(B: BookServer, consoleId: string) {
-    const window = cl.getConfig().gui();
+    const gui = new GuiConsole(B, consoleId);
+    const window = cl.getConfig().gui(gui);
     if (window) {
-        const gui = new GuiConsole(B, consoleId);
         gui.attach(window);
         await gui.bind();        
     }

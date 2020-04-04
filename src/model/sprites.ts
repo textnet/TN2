@@ -5,32 +5,25 @@ import { Box, Position, Direction } from "./geometry"
 // default sprite is a storage structure.
 export interface Sprite {
     size: Box;
-    symbol: string; // mandatory!
+    symbol: string;  // mandatory!
     base64?: string; // shortcut for one static idle unidirectional image
-    directions?: Record<string, SpriteImage>; // shortcut for idle with directions
-    states?: Record<string, SpriteState>; // idle, move, etc.
-    implementation?: Record<string, any>; // GUI implementation, e.g. 2D or 3D builds cached structure here
-    // ^ caching is done in the `render` part of the gui
-}
-export interface SpriteState { 
-    directions: Record<string, SpriteImage>; // up, down,...
-}
-export interface SpriteImage { 
-    symbol?: string; // shortcut for static symbol
-    base64?: string; // shortcut for static picture with the same box
-    animations?: Record<string, SpriteAnimation>; // main, easeIn, easeOut
-}
-export interface SpriteAnimation {
-    symbol?:  string; // for text interface
-    base64?: string; // for 3D sprite
-    steps?: number;
-    size? : Box;
+    steps?: number;  // default number of steps in animations
+    offset?: { x: number, y: number }; // shift from the center
+    mapping?: Record<string, number[]>; // for each 'state-direction-animation' 
+                                        // [<number of the row in the mapping>, <optional no of steps>]
 }
 
 export const simplestSprites: Record<string,Sprite> = {
     verbose: {  symbol: "@",
                 size: { w: 32, h: 32 },
-                states: { idle: { directions: {up: { animations: {main: {symbol: "@"}}}}}}
+                base64: "....",
+                steps: 16,
+                mapping: {
+                    "Idle-Up-Main":   [0, 1],
+                    "Idle-Down-Main": [1, 1],
+                    "Move-Up-Main":   [0],
+                    "Move-Down-Main": [1],
+                }
              },
     minimal: {  symbol: "@",
                 size: { w: 32, h: 32 },
@@ -39,11 +32,6 @@ export const simplestSprites: Record<string,Sprite> = {
                 size: { w: 32, h: 32 },
                 base64: "...",
              },
-    directional: { symbol: "@",
-                   size: { w: 32, h: 32 },
-                   directions: { up: { base64:"..." }, down: { base64:"..."} }
-                 },
-    minimalAnimation: { symbol: "^>v<", size: {w:64, h:64} },
 }
 
 
@@ -53,9 +41,9 @@ export const DIR = {
     LEFT   : "Left",
     RIGHT  : "Right",
     UL     : "Up Left",
-    DL     : "DownLeft",
+    DL     : "Down Left",
     UR     : "Up Right",
-    DR     : "Down-Right",
+    DR     : "Down Right",
 }
 export const STATE = {
     IDLE   : "Idle",
@@ -69,25 +57,11 @@ export const ANIMATION = {
     IN   : "Ease In",
     OUT  : "Ease Out",
 }
+export const SPEED = 60;
 
-export function spriteCode(state?:string, dir?:string, animation?:string) {
+export function code(state?:string, dir?:string, animation?:string) {
     const myState = state === undefined? STATE.IDLE : state;
-    const myDir = dir === undefined? DIR.UP     : dir;
+    const myDir   = dir === undefined?   DIR.DOWN   : dir;
     const myAnimation = animation === undefined? ANIMATION.MAIN : animation;
     return `${myState}-${myDir}-${myAnimation}`;
-}
-export function getCode(sprite: Sprite, state?:string, dir?:string, animation?:string) {
-    let code = spriteCode(state, dir, animation);
-    if (sprite.implementation[code]) {
-        return sprite.implementation[code]
-    }
-    code = spriteCode(state, dir);
-    if (sprite.implementation[code]) {
-        return sprite.implementation[code]
-    }
-    code = spriteCode(state)
-    if (sprite.implementation[code]) {
-        return sprite.implementation[code]
-    };
-    return sprite.implementation[""]
 }

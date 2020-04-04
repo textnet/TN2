@@ -7,8 +7,8 @@ export interface ThingPhysics {
     Z?:  number; // Z-level required to pass over
     mass?: Record<string,number>;
     force?: Record<string, number>;
-    inertia?: Direction; // applied physics as result of acceleration
-    momentum?: Direction; // applied speed/tension and momentum gravity
+    _inertia?: Direction; // applied physics as result of acceleration
+    _momentum?: Direction; // applied speed/tension and _momentum gravity
     speed?: number;       // 100 is 1:1
 }
 
@@ -19,14 +19,14 @@ export interface PlanePhysics {
     friction?: number; // 100 is 1:1; slowing any movement in any direction
 }
 
-export const TIME_MOMENTUM = 1;      // how many units of time per 1 unit of inertia/momentum
+export const TIME_MOMENTUM = 1;      // how many units of time per 1 unit of _inertia/_momentum
 export const TIME_ACCELERATION = 1;  // how many units of time per 1 unit of acceleration
 export const DEFAULT_SPEED = 100;
 export const DEFAULT_INERTIA = 100;
 
 export interface PlaneGravity {
     direction:     Direction;
-    momentum?:     number;    // sets things in movement with constant inertia
+    _momentum?:     number;    // sets things in movement with constant _inertia
     acceleration?: number;    // accelerate things
     minimalMass?:  number;    // don't trigger if the mass is lighter
     maximalMass?:  number;    // don't trigger if the mass is heavier
@@ -46,11 +46,11 @@ export const GRAVITY: Record<string, PlaneGravity> = {
     },
     MARIO: {
         direction: { dx:0, dy:1 },
-        momentum: 1,        
+        _momentum: 1,        
     },
     WIND: {
         direction: { dx:1, dy:0 },
-        momentum: 1,
+        _momentum: 1,
     },
 }
 
@@ -88,4 +88,30 @@ export const PLANE_PHYSICS_DEFAULT: PlanePhysics = {
     gravity: { mass: GRAVITY.TOPDOWN },
     seasons: { day: SEASON.DAY },
     friction: DEFAULT_INERTIA,
+}
+
+export function patchThingPhysics(physics: ThingPhysics) {
+    const defaults = {
+        speed: 100,
+        Z: 0,
+        mass: {},
+        force: {},
+    }
+    for (let i in defaults) {
+        physics[i] = physics[i] || defaults[i];
+    }
+    return physics;    
+}
+
+
+export function patchPlanePhysics(physics: PlanePhysics) {
+    const defaults = {
+        friction: 100,
+        gravity: {},
+        seasons: {},
+    }
+    for (let i in defaults) {
+        physics[i] = physics[i] || defaults[i];
+    }
+    return physics;
 }

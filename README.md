@@ -3,22 +3,27 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## GUI
-- switch to electron
-- open electron from headless - can we do it?
-- connect excalibur
-- starting screen
-- pass through starting screen (for testing)
-- top level event handling
-- load stage
-- show title of the plane
-- place all things
++ connect excalibur
++ dummy starting screen
++ sending logs from renderer to server console
++ pass through starting screen (for testing)
+
+## TOP LEVEL STAGE
+> show title of the plane
++ load stage
++ top level event handling
+
+## THINGS PASSIVE
+> physics
++ prepare all sprites
++ place all things
 - accept events of moving things around
+
+## PLAYER 
 - special actor which is controlled from keyboard
 - pass commands to the console
-
-
-
-
+- isPlayer
+- collisions
 
 
 ## Stage 11. Control over things
@@ -80,10 +85,12 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     yarn headless -- to start the headless console version
 
 # Until found a way to split into to different builders
+Because Electron node is not compatible with NPM node, there you have to rebuild it everytime you switch between electron and headless modes.
+
 ### Before launching Electron
     ./node_modules/.bin/electron-rebuild
 ### Before launching Headless
-    tbd
+    npm rebuild
 
 
 ## Console commands supported

@@ -40,7 +40,7 @@ export async function place(B: BookServer, action: actions.ActionPlace) {
         } as events.EventPlace;
         await events.emit(B, event);
     } else {
-        thing.physics.inertia = deepCopy(geo.DIRECTION.IDLE);
+        thing.physics._inertia = deepCopy(geo.DIRECTION.NONE);
         await B.things.save(thing);
         const event = {
             event:    events.EVENT.COLLISION,

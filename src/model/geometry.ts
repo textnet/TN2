@@ -39,7 +39,7 @@ export const DIRECTION: Record<string,Direction> = {
     DL:    { dx:-1, dy: 1, dz:0, rotation: 225 }, 
     UR:    { dx: 1, dy:-1, dz:0, rotation:  45 }, 
     DR:    { dx: 1, dy: 1, dz:0, rotation: 135 }, 
-    IDLE:  { dx: 0, dy: 0, dz:0, rotation:   0 }, 
+    NONE:  { dx: 0, dy: 0, dz:0, rotation:   0 }, 
 }
 export const PROXIMITY = {
     NEXT: 3,
@@ -56,21 +56,21 @@ export function directionName(what: Direction|Position) {
     if (dir.dx <  0 && dir.dy == 0) return "LEFT";
     if (dir.dx <  0 && dir.dy >  0) return "DL";
     if (dir.dx == 0 && dir.dy <  0) return "UP";
-    if (dir.dx == 0 && dir.dy == 0) return "IDLE";
+    if (dir.dx == 0 && dir.dy == 0) return "NONE";
     if (dir.dx == 0 && dir.dy >  0) return "DOWN";
     if (dir.dx >  0 && dir.dy <  0) return "UR";
     if (dir.dx >  0 && dir.dy == 0) return "RIGHT";
     if (dir.dx >  0 && dir.dy >  0) return "DR";
-    return "IDLE";
+    return "NONE";
 }
 
 export function rotationDir(dir?: Direction) {
-    if (!dir) return rotationDir(DIRECTION.IDLE);
+    if (!dir) return rotationDir(DIRECTION.NONE);
     if (dir.rotation) return dir.rotation;
     if (dir.dy == 0) {
         if (dir.dx > 0) return rotationDir(DIRECTION.RIGHT);
         if (dir.dx < 0) return rotationDir(DIRECTION.LEFT);
-        if (dir.dx ==0) return rotationDir(DIRECTION.IDLE);
+        if (dir.dx ==0) return rotationDir(DIRECTION.NONE);
     } else {
         return Math.floor(Math.sin(dir.dx/dir.dy)*180/Math.PI);
     }
@@ -81,10 +81,10 @@ export function isDir(name: string, dir: Direction) {
     return name == dirName;
 }
 export function isIdle(dir: Direction) {
-    return isDir("IDLE", dir)
+    return isDir("NONE", dir)
 }
 export function toDir(name: string, length?:number, rotation?: number) {
-    if (!DIRECTION[name]) return deepCopy(DIRECTION.IDLE);
+    if (!DIRECTION[name]) return deepCopy(DIRECTION.NONE);
     length = length || 1;
     return normalize(DIRECTION[name], length)
 }
@@ -92,7 +92,7 @@ export function normalize(dir: Direction, length?:number) {
     length = length || 1;
     const len = lengthDir(dir);
     if (len == 0) {
-        return deepCopy(DIRECTION.IDLE)
+        return deepCopy(DIRECTION.NONE)
     } else {
         const result = deepCopy(dir);
         result.dx = result.dx * length / len;

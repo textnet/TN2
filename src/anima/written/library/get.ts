@@ -130,13 +130,13 @@ function dist(a: WrittenThing, b: WrittenThing) {
 export function get_next( A: WrittenAnima, direction: string|number) {
     const thing = A.things.load(A.thingId);
     let dir = geo.toDir(""+direction);
-    if (geo.isDir("IDLE", dir)) {
+    if (geo.isIdle(dir)) {
         const rotation = parseInt(""+direction, 10);
         if (rotation != NaN) {
-            dir = geo.toDir("IDLE", 1, rotation);
+            dir = geo.toDir("NONE", 1, rotation);
         }
     }
-    if (geo.isDir("IDLE", dir)) {
+    if (geo.isIdle(dir)) {
         dir = undefined;
     }
     return writtenThing(A, getNextThing(A, thing, dir));

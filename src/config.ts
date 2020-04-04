@@ -3,6 +3,7 @@ export interface Debug {
     verboseConsole: boolean;
     forceOffline:   boolean;
     gui:            boolean;
+    skipTitle:      boolean;
 }
 export interface Network {
     discoveryChannel: string;
@@ -13,6 +14,12 @@ export interface GUI {
     padding: {
         horizontal: number;
         vertical:   number;
+    }
+    macTitle: number;
+    planeTitle: {
+        height: number;    // height of the plane title
+        fontSize: number;  // font size for the title
+        fontFamily: string;
     }
 }
 
@@ -27,18 +34,21 @@ export const config: Configuration = {} as Configuration;
 
 
 
-// Actiual configuration
+// Actual configuration
 config.version = "1";
 
 config.debug = {} as Debug;
 config.debug.forceOffline = true;
 config.debug.verboseConsole = true;
 config.debug.gui = true;
+config.debug.skipTitle = true;
 
 config.network = {} as Network;
 config.network.discoveryChannel = `Cybermonks:TN2:${config.version}:discovery`;
 
 config.gui = {} as GUI;
-config.gui.width  = 800;
-config.gui.height = 600;
-config.gui.padding = { horizontal: 100, vertical: 100 };
+config.gui.width  = 1000;
+config.gui.height = 400;
+config.gui.padding = { horizontal: 50, vertical: 50 };
+config.gui.macTitle = 26;
+config.gui.planeTitle = { height: 24, fontSize: 16, fontFamily: "Nanum Gothic Coding, monospace" };
