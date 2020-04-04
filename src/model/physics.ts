@@ -19,8 +19,8 @@ export interface PlanePhysics {
     friction?: number; // 100 is 1:1; slowing any movement in any direction
 }
 
-export const TIME_MOMENTUM = 1;      // how many units of time per 1 unit of _inertia/_momentum
-export const TIME_ACCELERATION = 1;  // how many units of time per 1 unit of acceleration
+export const TIME_MOMENTUM     = 0.10;  // how many units of time per 1 unit of _inertia/_momentum
+export const TIME_ACCELERATION = 1.00;  // how many units of time per 1 unit of acceleration
 export const DEFAULT_SPEED = 100;
 export const DEFAULT_INERTIA = 100;
 

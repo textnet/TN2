@@ -1,4 +1,4 @@
-import { Box, Position, Direction } from "./geometry"
+import { Box, Position, Direction, directionName, isIdle } from "./geometry"
 // Everything about sprites
 
 // for excalibur we need to extend Sprite.
@@ -19,10 +19,10 @@ export const simplestSprites: Record<string,Sprite> = {
                 base64: "....",
                 steps: 16,
                 mapping: {
-                    "Idle-Up-Main":   [0, 1],
-                    "Idle-Down-Main": [1, 1],
-                    "Move-Up-Main":   [0],
-                    "Move-Down-Main": [1],
+                    "Idle.Up.Main":   [0, 1],
+                    "Idle.Down.Main": [1, 1],
+                    "Move.Up.Main":   [0],
+                    "Move.Down.Main": [1],
                 }
              },
     minimal: {  symbol: "@",
@@ -40,10 +40,11 @@ export const DIR = {
     DOWN   : "Down",
     LEFT   : "Left",
     RIGHT  : "Right",
-    UL     : "Up Left",
-    DL     : "Down Left",
-    UR     : "Up Right",
-    DR     : "Down Right",
+    UL     : "UL",
+    DL     : "DL",
+    UR     : "UR",
+    DR     : "DR",
+    NONE   : "Down",
 }
 export const STATE = {
     IDLE   : "Idle",
@@ -54,14 +55,14 @@ export const STATE = {
 }
 export const ANIMATION = {
     MAIN : "Main",
-    IN   : "Ease In",
-    OUT  : "Ease Out",
+    IN   : "Ease-In",
+    OUT  : "Ease-Out",
 }
 export const SPEED = 60;
 
 export function code(state?:string, dir?:string, animation?:string) {
-    const myState = state === undefined? STATE.IDLE : state;
-    const myDir   = dir === undefined?   DIR.DOWN   : dir;
-    const myAnimation = animation === undefined? ANIMATION.MAIN : animation;
-    return `${myState}-${myDir}-${myAnimation}`;
+    const myState     = state       === undefined? STATE.IDLE     : state;
+    const myDir       = dir         === undefined? DIR.NONE       : dir;
+    const myAnimation = (animation || ANIMATION.MAIN == ANIMATION.MAIN) ? "" : `->${animation}`;
+    return `${myState}(${myDir})${myAnimation}`;
 }

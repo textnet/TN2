@@ -32,12 +32,15 @@ export class ThingSprite {
                 sprite.mapping = {};
                 sprite.mapping[ sprites.code() ] = [0];
             }
+            let mapping = {};           
             let rows = 0;
             for (let code in sprite.mapping) {
+                mapping[code.replace(/\s+/g,"")] = sprite.mapping[code];
                 if (sprite.mapping[code][0] > rows) {
                     rows = sprite.mapping[code][0];
                 }
-            }                
+            } 
+            sprite.mapping = mapping;
             rows +=1;
             const steps = this.sprite.steps || 1;
             let mainTexture = new ex.Texture("");
@@ -57,16 +60,15 @@ export class ThingSprite {
     makeAnimations(engine: ex.Engine) {
         // create all animations
         this.animations = {};
-        // 'state-direction-animation'
         for (let state in sprites.STATE) {
             for (let dir in sprites.DIR) {
                 for (let animation in sprites.ANIMATION) {
                     const _code = sprites.code(sprites.STATE[state], sprites.DIR[dir], sprites.ANIMATION[animation]);
                     let code = _code;
-                    if (!this.sprite.mapping[code] && animation != sprites.ANIMATION.MAIN) {
+                    if (!this.sprite.mapping[code] && animation != "MAIN") {
                         continue;
                     }
-                    if (!this.sprite.mapping[code] && animation == sprites.ANIMATION.MAIN) {
+                    if (!this.sprite.mapping[code] && animation == "MAIN") {
                         code = sprites.code(sprites.STATE[state])
                         if (!this.sprite.mapping[code]) {
                             code = sprites.code();
@@ -74,7 +76,7 @@ export class ThingSprite {
                     }
                     if (!this.animations[code]) {
                         const row   = this.sprite.mapping[code]? this.sprite.mapping[code][0] : 0;
-                        const steps = (this.sprite.mapping[code]? this.sprite.mapping[code][1] : undefined) || this.sprite.steps;
+                        const steps = (this.sprite.mapping[code]? this.sprite.mapping[code][1] : 1) || this.sprite.steps;
                         const startIndex = row*this.sprite.steps;
                         const endIndex = startIndex + steps;
                         this.animations[code] = this.sheet.getAnimationBetween(engine, startIndex, endIndex, sprites.SPEED);                        
@@ -87,7 +89,7 @@ export class ThingSprite {
 
     /**
      * Get Excalibur-format animation by the states.
-     * @param {string} code - e.g. 'state-direction-animation'
+     * @param {string} code - combining state, direction, and animation.
      */
     animation(code:string) {
         return this.animations[code];

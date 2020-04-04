@@ -53,7 +53,6 @@ export async function renderThingData(B: BookServer, thing: string|model.ThingDa
     if (!thing.physics.box.anchor) {
         thing.physics.box.anchor = { x:0, y: 0 };
     }
-    console.log('render thing', thing.id)
     return {
         id: thing.id,
         hostPlaneId: thing.hostPlaneId,

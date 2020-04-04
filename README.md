@@ -4,6 +4,10 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 
 ## TODO / ISSUES
++ facing wrong way
++ speed is too slow
++ Move-Down Left-Main
++ don't turn faces when running different directions
 
 
 ## Stage 10. GUI
@@ -55,15 +59,10 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 11. Proceed to controll all things
 
 ## Rough planning for Q2
-- March: Spatials + Move + Enter/Leave + Push + Pick/Putdown + Throw = 2w
-- April: Updates & Seasonality = 1w
-- April: GUI setup & menu = 1w
-- April: GUI basic rendering & movement = 1w
-- April: GUI inventory = 1w
-- May: GUI push & throw = 1w
-- May: GUI text editor = 2w
-- May: GUI seasonality = 1w
-- June: polishing & documenting
+- April: basic GUI and events
+- May: Inventory, Text editor and menu
+- June: Seasonality 
+- June/July: polishing & documenting
 
 
 ## Old things

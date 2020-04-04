@@ -39,7 +39,7 @@ export const DIRECTION: Record<string,Direction> = {
     DL:    { dx:-1, dy: 1, dz:0, rotation: 225 }, 
     UR:    { dx: 1, dy:-1, dz:0, rotation:  45 }, 
     DR:    { dx: 1, dy: 1, dz:0, rotation: 135 }, 
-    NONE:  { dx: 0, dy: 0, dz:0, rotation:   0 }, 
+    NONE:  { dx: 0, dy: 0, dz:0, rotation: 180 }, 
 }
 export const PROXIMITY = {
     NEXT: 3,
@@ -47,7 +47,10 @@ export const PROXIMITY = {
     STOP: 1,
 }
 
-export function directionName(what: Direction|Position) {
+export function directionName(what?: Direction|Position) {
+    if (what === undefined) {
+        what = DIRECTION.NONE;
+    }
     let dir = what as Direction;
     if (what["direction"]) {
         dir = (what as Position).direction;
