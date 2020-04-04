@@ -1,5 +1,5 @@
 import { config } from "../../config"
-import { Game, GameScene } from "../game"
+import { Game, GameScene, RadiusAroundActorStrategy } from "../game"
 import * as msg from "../messages"
 import * as interop from "./send"
 import * as ex from "excalibur"
@@ -19,10 +19,12 @@ export function enterPlane(game: Game, data: msg.EnterPlane) {
     scene.animaId = data.animaThingId;
     scene.things = data.things;
     scene.thingActors = {}
+    let playerActor;
     for (let id in data.things) {
         const actor = new ThingActor(data.things[id]);
         if (id == scene.animaId) {
             actor.bindPlayer();
+            playerActor = actor;
         }
         scene.add(actor);
         scene.thingActors[id] = actor;
@@ -48,6 +50,10 @@ export function enterPlane(game: Game, data: msg.EnterPlane) {
     }
     // 4. Editor
     // 5. Camera
+    scene.camera.addStrategy(
+        new RadiusAroundActorStrategy(playerActor)
+    );    
+
     // 6. Go!
     updateSceneFromPlane(scene, data.plane);
     game.start();

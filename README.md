@@ -4,14 +4,9 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 
 ## TODO / ISSUES
-+ send data from renderer to gui console 
-    + start moving  : move_start    move_start    -
-    + end moving    : move_finish   move_finish   -
-    + reposition    : place         -             place
-+ bookserver collisions
-+ send data back from console to renderer
-    + reposition
-+ BUG: name of the plane is not shown (or not set correctly)
++ camera
+- observer GUI = second window `/observe <id>` command
+- accept events of moving OTHER things around
 
 
 ## Stage 10. GUI

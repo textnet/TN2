@@ -41,3 +41,40 @@ export class GameScene extends ex.Scene {
     thingActors?: Record<string, ThingActor>;
     environmentActors?: Record<string, ex.Actor>;
 }
+
+
+/** 
+ * Strategy to move camera in a way that it always follows the player actor.
+ */
+export class RadiusAroundActorStrategy implements ex.CameraStrategy<ex.Actor> {
+    constructor(public target: ex.Actor) {}
+
+    /** 
+     * Called regularly in the draw/update cycle.
+     * As the player's actor nears screen boundary, we start to move camera,
+     * so the player will alwyas stay in the visible area.
+     */
+    public action(
+        target: ex.Actor,
+        cam: ex.Camera,
+        _eng: ex.Engine,
+        _delta: number
+    ) {
+        const position = target.center;
+        let focus = cam.getFocus();
+        const radius = {
+            x: config.gui.width/2 - config.gui.padding.horizontal,
+            y: config.gui.height/2 - config.gui.padding.vertical,
+        }
+        for (let axis of ["x", "y"]) {
+            if (position[axis] + radius[axis] < focus[axis]) {
+                focus[axis] = position[axis] + radius[axis];
+            }
+            if (position[axis] - radius[axis] > focus[axis]) {
+                focus[axis] = position[axis] - radius[axis];
+            }
+        }
+        // TODO: kneeling here
+        return focus;
+    }
+}
