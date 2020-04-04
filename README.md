@@ -2,28 +2,16 @@
 
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
-## GUI
-+ connect excalibur
-+ dummy starting screen
-+ sending logs from renderer to server console
-+ pass through starting screen (for testing)
 
-## TOP LEVEL STAGE
-> show title of the plane
-+ load stage
-+ top level event handling
+## TODO / ISSUES
 
-## THINGS PASSIVE
-> physics
-+ prepare all sprites
-+ place all things
-- accept events of moving things around
 
-## PLAYER 
-- special actor which is controlled from keyboard
+## Stage 10. GUI
 - pass commands to the console
 - isPlayer
 - collisions
+- accept events of moving things around
+- test physics
 
 
 ## Stage 11. Control over things
