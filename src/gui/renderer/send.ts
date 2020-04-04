@@ -5,15 +5,16 @@
  */
 import { ipcRenderer } from "electron";
 import * as msg from "../messages"
+import * as geo from "../../model/geometry"
 
 
 export function id() {
     return window.location.search.substr(1);
 }
-function send(name, payload) {
+function send(name, payload?: msg.Message) {
     ipcRenderer.send(name, {
         consoleId: id(),
-        payload: payload,
+        payload: payload || {},
     });
 }
 
@@ -21,14 +22,36 @@ function send(name, payload) {
  * INTEROP-> Sends some data (up to ten fields) to be put in the log
  */
 export function log(a1, a2?, a3?, a4?, a5?, a6?, a7?, a8?, a9?, a10?) {
-    send(msg.SERVER.LOG, [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10]);
+    send(msg.SERVER.LOG, {data: [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10]} as msg.MessageLog);
 }
 
 /**
  * INTEROP-> Ask for stage
  */
-export function loadPlane() {
-    send(msg.SERVER.PLANE, {});
+export function loadPlane() { 
+    send(msg.SERVER.PLANE);
 }
 
+/**
+ * INTEROP-> Start moving
+ */
+export function startMoving() {
+    send(msg.SERVER.MOVE_START);
+}
+
+/**
+ * INTEROP-> Stop moving
+ */
+export function stopMoving() {
+    send(msg.SERVER.MOVE_FINISH);
+}
+
+/**
+ * INTEROP-> Reposition
+ */
+export function reposition(position: geo.Position) {
+    send(msg.SERVER.PLACE, {
+        position: position 
+    } as msg.Place);
+}
 

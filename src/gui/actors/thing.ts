@@ -15,6 +15,7 @@ import * as physics from "../../model/physics"
 import { CONSTRAINTS } from "../../model/interfaces"
 import { getPlayerDirection, getPlayerCommand, COMMAND } from "../command"
 import { deepCopy } from "../../utils"
+import * as interop from "../renderer/send"
 
 
 /**
@@ -24,6 +25,7 @@ export class ThingActor extends BaseActor {
     isPlayer: boolean;
     needRelease: boolean;
 
+    dir: geo.Direction;
     visualDir:   string;
     visualState: string;
 
@@ -95,9 +97,14 @@ export class ThingActor extends BaseActor {
                     geo.accumulateDirection(dir, playerDir);
                 }
             }
-            if (( geo.isIdle(dir) && (this.visualState != sprites.STATE.IDLE)) ||
-                (!geo.isIdle(dir) && (this.visualState == sprites.STATE.IDLE))) {
-                this.visualState = geo.isIdle(dir) ? sprites.STATE.IDLE : sprites.STATE.MOVE;
+            const wasIdle = this.visualState == sprites.STATE.IDLE;
+            if (geo.isIdle(dir) && !wasIdle) {
+                this.visualState = sprites.STATE.IDLE;
+                interop.stopMoving();
+            }
+            if (!geo.isIdle(dir) && wasIdle) {
+                this.visualState = sprites.STATE.MOVE;
+                interop.startMoving();
             }
             if (this.visualDir != sprites.DIR[geo.directionName(dir)]) {
                 this.visualDir   = sprites.DIR[geo.directionName(dir)];
@@ -107,17 +114,33 @@ export class ThingActor extends BaseActor {
             const velocity = (this.data.physics.speed /friction) * (delta /physics.TIME_MOMENTUM);
             this.vel.x = dir.dx * velocity;
             this.vel.y = dir.dy * velocity;
-
-            // TODO start/stop moving
-            // const _prevMoving = this._isMoving;
-            // this. _isMoving = Math.abs(this.vel.x)+Math.abs(this.vel.y) > 0;
-            // if (this.isMoving && !prevMoving) {
-            //     interopSend.startMoving(this);
-            // }
-            // if (!this.isMoving && prevMoving) {
-            //     interopSend.stopMoving(this);                
+            this.dir = dir;
+            this.repositionToServer(engine, delta);
+            // if (!geo.isIdle(dir)) {
+                
             // }
         }
-    }    
+    } 
+
+    _delta: number;
+    _pos: geo.Position;
+    repositionToServer(engine: Game, delta: number) {
+        this._delta = (this._delta || 0) + delta;
+        if (this._delta > 200) {
+            this._delta = 0;
+            const pos = geo.position(this.body.pos.x, this.body.pos.y, this.dir);
+            if (!this._pos || geo.distance(pos, this._pos) > 0) {
+                interop.reposition(pos);
+            }
+            this._pos = pos;
+        }
+    }
+
+    repositionFromServer(engine: Game, position: geo.Position) {
+        this._pos = position;
+        this.body.pos.x = position.x;
+        this.body.pos.y = position.y;
+        this.visualDir = sprites.DIR[geo.directionName(position.direction)];
+    }
 
 }

@@ -3,7 +3,8 @@ import { GuiConsole } from "../../console/gui";
 import * as cl from "../../commandline/commandline"
 import * as msg from "../messages"
 
-import { loadPlane } from "./plane"
+import * as plane from "./plane"
+import * as move from "./move"
 
 let monitoredChannels = [
     // "log",
@@ -23,17 +24,16 @@ export function setup(gui: GuiConsole) {
         }
     }
     // bindings
-    ipcMain.on(msg.SERVER.LOG,     process(log));
-    ipcMain.on(msg.SERVER.PLANE,   process(loadPlane));
+    ipcMain.on(msg.SERVER.LOG,          process(log));
+    ipcMain.on(msg.SERVER.PLANE,        process(plane.loadPlane));
+    ipcMain.on(msg.SERVER.PLACE,        process(move.reposition));
+    ipcMain.on(msg.SERVER.MOVE_START,   process(move.startMoving));
+    ipcMain.on(msg.SERVER.MOVE_FINISH,  process(move.stopMoving));
 
 }
 
-async function log(gui: GuiConsole, args) {
-    const p = [];
-    for (let i of args) {
-        if (i !== undefined) p.push(i);
-    }
+async function log(gui: GuiConsole, message: msg.MessageLog) {
     const data = await gui.data();
     cl.log(`GUI of «${data.thingId}»:`)
-    console.log(p);
+    console.log(message.data);
 }

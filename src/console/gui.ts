@@ -9,7 +9,6 @@ import * as msg from "../gui/messages"
 
 
 export class GuiConsole extends Console {
-    anima: WrittenAnima;
     window: any;
 
     attach(window: any) {
@@ -17,24 +16,30 @@ export class GuiConsole extends Console {
     }
 
     async bind() {
-        const c = await this.data();
-        this.anima = new WrittenAnima(this.B, c.thingId, "");
-        await this.anima.animate(ANIMA.PERMANENT);
-        await this.anima.prepareMemory();
-        cl.ok(`GUI(${c.id}) bound to: ${c.thingId}`)
+        const that = this;
+        await super.bind()
+        // reposition everything I see
+        const animaThing = await this.B.things.load(this.anima.thingId);
+        const hostPlane  = await this.B.planes.load(animaThing.hostPlaneId);
+        this.anima.subscribe(hostPlane.ownerId, 
+            events.EVENT.PLACE, 
+            events.EVENT_ROLE.HOST, 
+            async function(eventData) {
+                return that.updateRenderer(eventData.data as events.Event);
+            }
+        )
     }
 
-    async getAnima() {
-        return this.anima;
-    }
-
-    async unbind() {
-        const c = await this.data();
-        if (this.anima) {
-            await this.anima.terminate();
+    async updateRenderer(eventData: events.Event) {
+        switch(eventData.event) {
+            case events.EVENT.PLACE:
+                const e = eventData as events.EventPlace;
+                this.send(msg.RENDER.PLACE, {
+                    position: e.position,
+                    thingId:  e.thingId,
+                } as msg.Place);
+                break;
         }
-        this.anima = undefined;
-        cl.ok(`GUI(${c.id})  released.`)
     }
 
     async send(channel: string, message: msg.Message) {

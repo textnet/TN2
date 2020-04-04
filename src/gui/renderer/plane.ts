@@ -16,14 +16,16 @@ export function enterPlane(game: Game, data: msg.EnterPlane) {
     game.addScene(game.gameSceneName(), scene);
     game.goToScene(game.gameSceneName())
     // 2. populate actors
-    scene.animaId = data.animaId;
+    scene.animaId = data.animaThingId;
     scene.things = data.things;
+    scene.thingActors = {}
     for (let id in data.things) {
         const actor = new ThingActor(data.things[id]);
         if (id == scene.animaId) {
             actor.bindPlayer();
         }
         scene.add(actor);
+        scene.thingActors[id] = actor;
     }
     // 3. create HUD
     const titleHeight = config.gui.planeTitle.height;

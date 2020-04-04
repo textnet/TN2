@@ -4,23 +4,22 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 
 ## TODO / ISSUES
-+ excalibur collisions
-+ `create thing @ x y` and `copy`
-+ new sprites
-    + professor
-    + something
-    + chest
-    + piano
-+ BUG: non-animated sprite don't work
-- BUG: name of the plane is not shown (or not set correctly)
-- send data from renderer to gui console 
-- bookserver collisions
++ send data from renderer to gui console 
+    + start moving  : move_start    move_start    -
+    + end moving    : move_finish   move_finish   -
+    + reposition    : place         -             place
++ bookserver collisions
++ send data back from console to renderer
+    + reposition
++ BUG: name of the plane is not shown (or not set correctly)
 
 
 ## Stage 10. GUI
-- pass commands to the console
-- collisions
-- accept events of moving things around
++ pass commands to the console
++ collisions
+- accept events of moving OTHER things around
+- camera
+- observer GUI
 
 
 ## Stage 11. Control over things

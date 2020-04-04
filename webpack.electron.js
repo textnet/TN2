@@ -64,7 +64,9 @@ module.exports = [
       target: 'electron-renderer',
       entry: { gui: './src/electron/gui.ts' },
       plugins: [
-        new HtmlWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            title: "TN2",
+        }),
       ]
     },
     commonConfig)

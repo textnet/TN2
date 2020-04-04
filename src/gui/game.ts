@@ -8,6 +8,7 @@ import * as ex from "excalibur";
 import { ipcRenderer } from "electron";
 import { config } from "../config"
 import * as msg from "./messages"
+import { ThingActor } from "./actors/thing"
 
 /**
  * Extension of the Excalibur engine that initialises it
@@ -37,5 +38,6 @@ export class GameScene extends ex.Scene {
     planeData?: msg.PlaneRenderData;
     animaId: string;
     things?: Record<string, msg.ThingRenderData>;
-    environmentActors?: Record<string, ex.Actor>;    
+    thingActors?: Record<string, ThingActor>;
+    environmentActors?: Record<string, ex.Actor>;
 }

@@ -6,24 +6,38 @@ import * as geo     from "../model/geometry"
 
 
 
-// what should server do
+// what should server do (messages sent by renderer)
 export const SERVER = {
     LOG:   "log",
     PLANE: "loadPlane",
+    MOVE_START: "startMoving",
+    MOVE_FINISH: "stopMoving",
+    PLACE: "reposition",
 }
 
-// what should renderer do
+// what should renderer do (messages sent by server)
 export const RENDER = {
     ENTER: "enter",
+    PLACE: "reposition",
 }
 
-
-export interface Message {}
+export interface Message {
+    animaThingId?: string; // used to tell who the player is
+    event?:   string;   
+}
+export interface MessageLog extends Message {
+    data: any;
+}
 export interface EnterPlane extends Message {
-    animaId: string;
     plane: PlaneRenderData;
     things: Record<string, ThingRenderData>;
 }
+export interface Place extends Message {
+    position: geo.Position;
+    thingId?: string; 
+}
+export interface MoveStart extends Message {}
+export interface MoveEnd   extends Message {}
 
 
 export interface PlaneRenderData {

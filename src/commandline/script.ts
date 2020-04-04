@@ -25,7 +25,6 @@ create thing Player as Jones in Indiana @ 100 200
 create thing Piano as Piano in Indiana @ 200 200
 create thing Chest as Chest in Indiana @ 300 200
 copy Indiana.Piano to GrandPiano @ 400 200
-create thing Something @ 500 200
 
 things in Indiana
 

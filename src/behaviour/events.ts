@@ -56,10 +56,11 @@ export interface EventHear extends Event {
     loudness: number;
 }
 export interface EventWaypoint   extends Event {
-    waypoint: movement.Waypoint;
+    waypoint?: movement.Waypoint;
 }
-export interface EventMoveFinish extends EventWaypoint {}
-export interface EventMoveStart  extends EventWaypoint {}
+export interface EventMoveStartFinish extends EventWaypoint {}
+export interface EventMoveFinish extends EventMoveStartFinish {}
+export interface EventMoveStart  extends EventMoveStartFinish {}
 export interface EventHalt       extends EventWaypoint {}
 
 
