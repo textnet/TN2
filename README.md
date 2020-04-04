@@ -4,15 +4,14 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 
 ## TODO / ISSUES
-+ facing wrong way
-+ speed is too slow
-+ Move-Down Left-Main
-+ don't turn faces when running different directions
++ excalibur collisions
+- send data from renderer to gui console 
+- bookserver collision
+- book sprite
 
 
 ## Stage 10. GUI
 - pass commands to the console
-- isPlayer
 - collisions
 - accept events of moving things around
 - test physics
