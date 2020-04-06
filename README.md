@@ -2,24 +2,19 @@
 
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
-
 ## TODO and ISSUES
-+ camera
-+ observer GUI = second window `/observe <id>` command
-+ BUG: no reposition to server
-+ BUG: no walking
-+ accept events of moving OTHER things around
-+ BUG: walking to the left is faster than to the right
+- temp: show ID in the title of each window
+- show plane name/code in the title of each window
+- observe another book
+- create new Written Word `teleport{destination="...."}`
+- transfer events from the remote book to the local anima
+- test limbo
+    - player goes offline
+    - player's book goes offline/online
+    - destination's book goes offline/online
+    - player gets out of limbo
 
-
-## Stage 10. GUI
-+ pass commands to the console
-+ collisions
-+ accept events of moving OTHER things around
-+ camera
-- observer GUI
-
-## Stage 11. Interbook
+## Current Stage 11. Interbook and Limbo
 - teleport command
 - observe book
 - transfer events from the remote book to the local anima
@@ -53,22 +48,30 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 - NB: need to figure out position.z VS. physics.Z
 
 ## Stages
-1. (+) Library stub
-2. (+) Naive Books in the Library
-3. (+) Network of Books (discovery, online, offline)
-5. (+) Things (create, destroy) — with Planes
-6. (+) Text consoles (connect, disconnect)
-7. (+) Imagination Limbo (=off-book behaviour)
-8. (+) Anima basics (written word)
-9. (+) Basic Controls over things (A LOT OF WORK HERE: actions, events, collisions)
-10. (>) GUI
-11. Proceed to controll all things
+1. [x] Library stub
+2. [x] Naive Books in the Library
+3. [x] Network of Books (discovery, online, offline)
+4. [x] Take a break.
+5. [x] Things (create, destroy) — with Planes
+6. [x] Text consoles (connect, disconnect)
+7. [x] Imagination Limbo (=off-book behaviour)
+8. [x] Anima basics (written word)
+9. [x] Basic Controls in text console
+10. [x] GUI and moving
+11. [ ] Interbook operations and limbo
+12. [ ] Basic actions: run, push, updates (both GUI and Written Word)
+13. [ ] Inventory concept and actions (incl. throw)
+14. [ ] Text editor and kneeling
+15. [ ] Physics: gravity, speed, friction, seasonality
+16. [ ] Clean up and document
+17. [ ] Design docs for `TN2 Release 1`
 
-## Rough planning for Q2
-- April: basic GUI and events
+## Rough planning for Q2 and Q3
+- April: GUI, limbo, basic actions (move, run, push, updates)
 - May: Inventory, Text editor and menu
 - June: Gravity and Seasonality 
-- June/July: polishing & documenting
+- July: Documenting
+- July/August/September: Release 1
 
 
 ## Old things
