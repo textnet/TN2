@@ -19,6 +19,7 @@ export const SERVER = {
 export const RENDER = {
     ENTER: "enter",
     PLACE: "reposition",
+    MOVE:  "move",
 }
 
 export interface Message {
@@ -36,8 +37,12 @@ export interface Place extends Message {
     position: geo.Position;
     thingId?: string; 
 }
-export interface MoveStart extends Message {}
-export interface MoveEnd   extends Message {}
+export interface Move      extends Message {
+    thingId?: string;
+    isStart?: boolean;
+}
+export interface MoveStart extends Move {}
+export interface MoveEnd   extends Move {}
 
 
 export interface PlaneRenderData {

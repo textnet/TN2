@@ -47,14 +47,21 @@ export const PROXIMITY = {
     STOP: 1,
 }
 
-export function position(x, y, direction?: Direction|string) {
-    if (direction === undefined) direction = DIRECTION.NONE;
+export function position(x, y, zOrDirection?: Direction|string|number, direction?: Direction|string) {
+    let z = 0;
+    if (typeof zOrDirection == "number") {
+        z = zOrDirection;
+    } else {
+        return position(x,y,z, zOrDirection);
+    }
+    if (direction       === undefined) direction = DIRECTION.NONE;
     if (direction["dx"] === undefined) {
-        return position(x,y, toDir(direction as string));
+        return position(x,y,z, toDir(direction as string));
     } else {
         return {
-            x: parseInt(x, 10),
-            y: parseInt(y, 10),
+            x: x*1.0,
+            y: y*1.0,
+            z: z,
             direction: deepCopy(direction as Direction),
         } as Position;        
     }

@@ -92,7 +92,7 @@ export const PLANE_PHYSICS_DEFAULT: PlanePhysics = {
 
 export function patchThingPhysics(physics: ThingPhysics) {
     const defaults = {
-        speed: 100,
+        speed: DEFAULT_SPEED,
         Z: 0,
         mass: {},
         force: {},
@@ -106,7 +106,7 @@ export function patchThingPhysics(physics: ThingPhysics) {
 
 export function patchPlanePhysics(physics: PlanePhysics) {
     const defaults = {
-        friction: 100,
+        friction: DEFAULT_INERTIA,
         gravity: {},
         seasons: {},
     }

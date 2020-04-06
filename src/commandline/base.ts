@@ -21,6 +21,7 @@ export function setup() {
     register("bind", bindConsole);
     register("unbind", unbindConsole);
     register("gui", guiConsole);
+    register("observe", guiObserve);
 
     register("network", network);
 }
@@ -143,7 +144,13 @@ export async function guiConsole(library: LibraryServer, paramList) {
     const server = library.bookServers[bookId];
     await written.gui(server, data.id);
 }
-
+export async function guiObserve(library: LibraryServer, paramList) {
+    const params = mapParams(paramList, ["id"])
+    const thingId = params["id"];
+    const bookId = getBookId(thingId);
+    const server = library.bookServers[bookId];
+    await written.observe(server, thingId);
+}
 
 // commands to do:
 

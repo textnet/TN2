@@ -15,7 +15,7 @@ function setupServer() {
     });
 
     server.listen(port, hostname, () => {
-        console.log(`TN2 Headless Server. Version ${config.version}.`)
+        commandline.log(`TN2 Headless Server. Version ${config.version}.`)
         // waitPermission(function(){
             const library = new LibraryServer();
             library.start().then(()=>{

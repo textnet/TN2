@@ -3,12 +3,15 @@ import { config } from "../config";
 import * as serverInterop from "../gui/server/setup"
 import { GuiConsole } from "../console/gui"
 
+let _count = 0;
+
 export function createWindow(gui: GuiConsole) {
     serverInterop.setup(gui);
+    const height = config.gui.height + config.gui.macTitle;
     const mainWindow = new BrowserWindow({
-        x: 800, y: 0,
+        x: 800, y: height*_count,
         width:  config.gui.width,
-        height: config.gui.height + config.gui.macTitle,
+        height: height,
         resizable: false,
         fullscreen: false,
         maximizable: false,
@@ -20,6 +23,7 @@ export function createWindow(gui: GuiConsole) {
         mainWindow.webContents.openDevTools({ mode:"detach" })
     }
     mainWindow.loadFile('dist/index.html', { search: gui.id });
+    _count++;
     return mainWindow;
 }
         

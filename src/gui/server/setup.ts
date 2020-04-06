@@ -33,7 +33,6 @@ export function setup(gui: GuiConsole) {
 }
 
 async function log(gui: GuiConsole, message: msg.MessageLog) {
-    const data = await gui.data();
-    cl.log(`GUI of «${data.thingId}»:`)
+    cl.log(`GUI of «${gui.id}»:`)
     console.log(message.data);
 }

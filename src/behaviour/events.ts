@@ -74,7 +74,7 @@ export async function emit(B: BookServer, event: Event) {
             (actor.id == event.actorId) ||          // controller is the actor
             (actor.hostPlaneId == event.planeId) || // controller is on the plane where event happened
             (actor.id == hostId)                    // controller is the thing that owns the plane
-           ){
+           ){ 
             await controller.emit(event)
         }
     }

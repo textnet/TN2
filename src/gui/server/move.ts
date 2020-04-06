@@ -6,13 +6,11 @@ import * as events  from "../../behaviour/events"
 import * as actions from "../../behaviour/actions"
 
 export async function startMoving(gui: GuiConsole, message: msg.Message) {
-    cl.verboseLog(`GUI(${gui.id}): startMoving.`);
     return moving(gui, events.EVENT.MOVE_START);
 }
 
 export async function stopMoving(gui: GuiConsole, message: msg.Message) {
-    cl.verboseLog(`GUI(${gui.id}): stopMoving.`);
-    return moving(gui, events.EVENT.MOVE_START);
+    return moving(gui, events.EVENT.MOVE_FINISH);
 }
 
 export async function moving(gui: GuiConsole, event: string) {

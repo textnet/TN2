@@ -3,21 +3,28 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 
-## TODO / ISSUES
+## TODO and ISSUES
 + camera
-- observer GUI = second window `/observe <id>` command
-- accept events of moving OTHER things around
++ observer GUI = second window `/observe <id>` command
++ BUG: no reposition to server
++ BUG: no walking
++ accept events of moving OTHER things around
++ BUG: walking to the left is faster than to the right
 
 
 ## Stage 10. GUI
 + pass commands to the console
 + collisions
-- accept events of moving OTHER things around
-- camera
++ accept events of moving OTHER things around
++ camera
 - observer GUI
 
+## Stage 11. Interbook
+- teleport command
+- observe book
+- transfer events from the remote book to the local anima
 
-## Stage 11. Control over things
+## Stage 12. Control over things
 - written movers
     - move_to
     - move_by (duration)
@@ -105,6 +112,8 @@ Because Electron node is not compatible with NPM node, there you have to rebuild
 
     bind <consoleId>
     unbind
+    gui <consoleId>
+    observe <consoleId>
 
 ## Written Console
 NB: After binding your terminal to a console you have Written Word interface.

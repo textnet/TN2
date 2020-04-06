@@ -3,38 +3,37 @@ import { BookServer } from "../model/book"
 import * as cl from "../commandline/commandline"
 import { WrittenAnima } from "../anima/written/detect"
 import { ANIMA } from "../anima/anima"
+import { ConsoleData } from "../model/interfaces"
 
 
 export class Console {
     B: BookServer;
     id: string;
     anima: WrittenAnima;
+    isObserver: boolean;
 
-    constructor(B: BookServer, consoleId: string) {
+    constructor(B: BookServer, consoleId?: string) {
         this.B = B;
         this.id = consoleId;
+        this.isObserver = !consoleId;
     }
-    async bind()   {
-        const c = await this.data();
-        this.anima = new WrittenAnima(this.B, c.thingId, "");
+    async bind(thingId?: string)   {
+        if (!thingId) {
+            thingId = (await this.B.library.loadConsole(this.id)).thingId;
+        } else {
+            this.id = `<observer:${thingId}>`
+        }
+        this.anima = new WrittenAnima(this.B, thingId, "");
         await this.anima.animate(ANIMA.PERMANENT);
         await this.anima.prepareMemory();
-        cl.ok(`GUI(${c.id}) bound to: ${c.thingId}`)        
+        cl.ok(`GUI(${this.id}) bound to: ${thingId}`)        
     }
     async unbind() {
-        const c = await this.data();
         if (this.anima) {
             await this.anima.terminate();
         }
         this.anima = undefined;
-        cl.ok(`GUI(${c.id})  released.`)        
+        cl.ok(`GUI(${this.id}) released.`)        
     }
-    async data() {
-        return this.B.library.loadConsole(this.id);
-    }
-    async getAnima() {
-        return this.anima;
-    }
-    
-
+    getAnima() { return this.anima; }
 }

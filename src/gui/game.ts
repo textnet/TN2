@@ -34,7 +34,6 @@ export class Game extends ex.Engine {
 
 export class GameScene extends ex.Scene {
     // editor?: Editor;
-    // hasCamera?: boolean;
     planeData?: msg.PlaneRenderData;
     animaId: string;
     things?: Record<string, msg.ThingRenderData>;

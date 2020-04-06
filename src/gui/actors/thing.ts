@@ -116,9 +116,6 @@ export class ThingActor extends BaseActor {
             this.vel.y = dir.dy * velocity;
             this.dir = dir;
             this.repositionToServer(engine, delta);
-            // if (!geo.isIdle(dir)) {
-                
-            // }
         }
     } 
 
@@ -126,7 +123,7 @@ export class ThingActor extends BaseActor {
     _pos: geo.Position;
     repositionToServer(engine: Game, delta: number) {
         this._delta = (this._delta || 0) + delta;
-        if (this._delta > 200) {
+        if (this._delta > 10) {
             this._delta = 0;
             const pos = geo.position(this.body.pos.x, this.body.pos.y, this.dir);
             if (!this._pos || geo.distance(pos, this._pos) > 0) {
@@ -136,6 +133,9 @@ export class ThingActor extends BaseActor {
         }
     }
 
+    stateFromServer(engine: Game, visualState: string) {
+        this.visualState = visualState;
+    }
     repositionFromServer(engine: Game, position: geo.Position) {
         this._pos = position;
         this.body.pos.x = position.x;

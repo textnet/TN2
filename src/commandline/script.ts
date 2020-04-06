@@ -45,6 +45,8 @@ end
 
 
 const remainder = `
+observe Indiana.Chest
+
 
 inspect Indiana.*
 inspect Indiana.* from Matrix

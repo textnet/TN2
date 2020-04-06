@@ -15,13 +15,16 @@ import * as geo from "../model/geometry"
 
 export function setup() {
     const NA = undefined;
+    
     register("things", list,   
         /(in\s+(\S+))?\s*/,            
         [NA, "id"]);
+    
     register("create thing", create, 
         // create thing <id> as <template> in <world> @ <x> <y>
         /(\S+)?(\s+as\s+(\S+))?(\s+in\s+(\S+))?(\s+@\s+(\S+)\s+(\S+))?\s*/,  
         ["id", NA, "template", NA, "bookId", NA, "x", "y"]);
+    
     register("copy", copy,   
         // copy <id> to <id> @ <x> <y>
         /(\S+)(\s+to\s+(\S+))?(\s+@\s+(\S+)\s+(\S+))?\s*/,    

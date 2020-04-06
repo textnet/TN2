@@ -42,6 +42,7 @@ config.debug.forceOffline = true;
 config.debug.verboseConsole = true;
 config.debug.gui = true;
 config.debug.skipTitle = true;
+// config.debug = {} as Debug; // uncomment to turn off all the debugging
 
 config.network = {} as Network;
 config.network.discoveryChannel = `Cybermonks:TN2:${config.version}:discovery`;

@@ -15,4 +15,5 @@ import * as move  from "./move"
 export function interopSetup(game: Game) {
     ipcRenderer.on(msg.RENDER.ENTER, (event, args) => { plane.enterPlane(game, args) });
     ipcRenderer.on(msg.RENDER.PLACE, (event, args) => { move.place(game, args) });
+    ipcRenderer.on(msg.RENDER.MOVE,  (event, args) => { move.moving(game, args) });
 }

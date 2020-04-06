@@ -9,7 +9,7 @@ import * as geo from "../../model/geometry"
 
 
 export function id() {
-    return window.location.search.substr(1);
+    return unescape(window.location.search.substr(1));
 }
 function send(name, payload?: msg.Message) {
     ipcRenderer.send(name, {
