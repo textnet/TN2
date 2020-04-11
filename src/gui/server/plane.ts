@@ -15,6 +15,7 @@ export async function loadPlane(gui: GuiConsole, args) {
     }
     // send
     gui.send(msg.RENDER.ENTER, {
+        asObserver: gui.isObserver,
         animaThingId: animaThing.id,
         plane: await msg.renderPlaneData(B, hostPlane),
         things: thingsData,

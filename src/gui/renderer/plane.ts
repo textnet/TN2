@@ -23,7 +23,7 @@ export function enterPlane(game: Game, data: msg.EnterPlane) {
     for (let id in data.things) {
         const actor = new ThingActor(data.things[id]);
         if (id == scene.animaId) {
-            actor.bindPlayer();
+            actor.bindPlayer(data.asObserver);
             playerActor = actor;
         }
         scene.add(actor);

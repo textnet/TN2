@@ -30,6 +30,7 @@ export interface MessageLog extends Message {
     data: any;
 }
 export interface EnterPlane extends Message {
+    asObserver: boolean;
     plane: PlaneRenderData;
     things: Record<string, ThingRenderData>;
 }

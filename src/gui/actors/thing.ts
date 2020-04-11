@@ -23,6 +23,7 @@ import * as interop from "../renderer/send"
  */
 export class ThingActor extends BaseActor {
     isPlayer: boolean;
+    asObserver: boolean;
     needRelease: boolean;
 
     dir: geo.Direction;
@@ -41,8 +42,9 @@ export class ThingActor extends BaseActor {
         this.visualDir = sprites.DIR[geo.directionName(data.position.direction)];
     }
 
-    bindPlayer() {
+    bindPlayer(asObserver: boolean) {
         this.isPlayer = true;
+        this.asObserver = asObserver;
         this.body.collider.type = ex.CollisionType.Active;
     }
 
@@ -60,10 +62,8 @@ export class ThingActor extends BaseActor {
             this.body.collider.type = ex.CollisionType.Fixed;
         }
         // update position and issue commands
-        if (this.isPlayer) {
+        if (this.isPlayer && !this.asObserver) {
             this.updateFromCommands(engine, delta)
-            // TODO
-            // interopSend.updateArtifactPosition(this);
         } 
         // switch sprites
         this.setDrawing(sprites.code(this.visualState, this.visualDir, sprites.ANIMATION.MAIN));
@@ -78,45 +78,43 @@ export class ThingActor extends BaseActor {
      */
     updateFromCommands(engine: Game, delta: number) {
         let dir: geo.Direction = deepCopy(geo.DIRECTION.NONE)
-        if (this.isPlayer) { 
-            // TODO kneeled
-            if (this.needRelease && engine.input.keyboard.getKeys().length == 0) {
-                this.needRelease = false;
-            }
-            if (!this.needRelease) {
-                let playerDir = getPlayerDirection(engine);
-                let command   = getPlayerCommand(engine);
-                // PUSH
-                if (command == COMMAND.PUSH && !geo.isIdle(playerDir)) {
-                    this.needRelease = true;
-                    geo.accumulateDirection(dir, playerDir);
-                    // interopSend.push(this, playerDir); TODO send push
-                } 
-                // MOVE               
-                if (command == COMMAND.NONE && !geo.isIdle(playerDir)) {
-                    geo.accumulateDirection(dir, playerDir);
-                }
-            }
-            const wasIdle = this.visualState == sprites.STATE.IDLE;
-            if (geo.isIdle(dir) && !wasIdle) {
-                this.visualState = sprites.STATE.IDLE;
-                interop.stopMoving();
-            }
-            if (!geo.isIdle(dir) && wasIdle) {
-                this.visualState = sprites.STATE.MOVE;
-                interop.startMoving();
-            }
-            if (this.visualDir != sprites.DIR[geo.directionName(dir)]) {
-                this.visualDir   = sprites.DIR[geo.directionName(dir)];
-            }
-            // velocity
-            const friction = (this.scene as GameScene).planeData.physics.friction;
-            const velocity = (this.data.physics.speed /friction) * (delta /physics.TIME_MOMENTUM);
-            this.vel.x = dir.dx * velocity;
-            this.vel.y = dir.dy * velocity;
-            this.dir = dir;
-            this.repositionToServer(engine, delta);
+        // TODO kneeled
+        if (this.needRelease && engine.input.keyboard.getKeys().length == 0) {
+            this.needRelease = false;
         }
+        if (!this.needRelease) {
+            let playerDir = getPlayerDirection(engine);
+            let command   = getPlayerCommand(engine);
+            // PUSH
+            if (command == COMMAND.PUSH && !geo.isIdle(playerDir)) {
+                this.needRelease = true;
+                geo.accumulateDirection(dir, playerDir);
+                // interopSend.push(this, playerDir); TODO send push
+            } 
+            // MOVE               
+            if (command == COMMAND.NONE && !geo.isIdle(playerDir)) {
+                geo.accumulateDirection(dir, playerDir);
+            }
+        }
+        const wasIdle = this.visualState == sprites.STATE.IDLE;
+        if (geo.isIdle(dir) && !wasIdle) {
+            this.visualState = sprites.STATE.IDLE;
+            interop.stopMoving();
+        }
+        if (!geo.isIdle(dir) && wasIdle) {
+            this.visualState = sprites.STATE.MOVE;
+            interop.startMoving();
+        }
+        if (this.visualDir != sprites.DIR[geo.directionName(dir)]) {
+            this.visualDir   = sprites.DIR[geo.directionName(dir)];
+        }
+        // velocity
+        const friction = (this.scene as GameScene).planeData.physics.friction;
+        const velocity = (this.data.physics.speed /friction) * (delta /physics.TIME_MOMENTUM);
+        this.vel.x = dir.dx * velocity;
+        this.vel.y = dir.dy * velocity;
+        this.dir = dir;
+        this.repositionToServer(engine, delta);
     } 
 
     _delta: number;
