@@ -21,7 +21,7 @@ async function _teleport( A:WrittenAnima, thingId:string, targetId: string ) {
         const thing = await A.B.things.load(targetId);
         targetId = thing.planes[PLANE_DEFAULT];
     }
-    actions.action(A.B, {
+    await actions.action(A.B, {
         action: actions.ACTION.TRANSFER,
         actorId: A.thingId,
         thingId: thingId,

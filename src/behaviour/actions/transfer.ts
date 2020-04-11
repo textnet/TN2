@@ -44,8 +44,10 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
     let thingId = action.thingId;
     const thingCopy = await B.copy(action.thingId, action.actorId);
     if (thingCopy) {
+        cl.verboseLog(`local: ${thing.id} on ${plane.id}`)
         thing = thingCopy;
     } else {
+        cl.verboseLog(`registerGuest: ${thing.id} on ${plane.id}`)
         await B.registerGuest(thing.id);
     }
     // update host

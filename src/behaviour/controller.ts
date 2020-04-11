@@ -54,13 +54,7 @@ export class Controller {
             targetIds: tids
         })
         if (this.isProxy) {
-            const message: network.MessageEvent = {
-                name: network.MESSAGE.EVENT,
-                event: event,
-                recipientId: this.actorId,
-            }
-            const targetBookId = getBookId(this.actorId);
-            await this.B.sendMessage(targetBookId, message)
+            await this.B.emitEvent(getBookId(this.actorId), this.actorId, event);
         }
     }
     on(name: string, listener) {

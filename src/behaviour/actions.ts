@@ -74,7 +74,7 @@ export async function action(B: BookServer, action: Action) {
         action: action,
     }
     // print(action)
-    return await B.sendMessage(targetBookId, message)
+    return B.sendMessage(targetBookId, message)
 }
 const dispatchAction = action;
 

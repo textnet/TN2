@@ -26,14 +26,14 @@ export class Console {
         this.anima = new WrittenAnima(this.B, thingId, "");
         await this.anima.animate(ANIMA.PERMANENT);
         await this.anima.prepareMemory();
-        cl.ok(`GUI(${this.id}) bound to: ${thingId}`)        
+        cl.ok(`Console(${this.id}) bound to: ${thingId}`)        
     }
     async unbind() {
         if (this.anima) {
             await this.anima.terminate();
         }
         this.anima = undefined;
-        cl.ok(`GUI(${this.id}) released.`)        
+        cl.ok(`Console(${this.id}) released.`)        
     }
     getAnima() { return this.anima; }
 }

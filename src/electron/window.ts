@@ -7,11 +7,12 @@ let _count = 0;
 
 export function createWindow(gui: GuiConsole) {
     serverInterop.setup(gui);
-    const height = config.gui.height + config.gui.macTitle;
+    // const height = config.gui.height + config.gui.macTitle;
     const mainWindow = new BrowserWindow({
-        x: 800, y: height*_count,
+        x: config.gui.width * _count, 
+        y: 0,
         width:  config.gui.width,
-        height: height,
+        height: (config.gui.height + config.gui.macTitle) *2,
         resizable: false,
         fullscreen: false,
         maximizable: false,
@@ -20,7 +21,7 @@ export function createWindow(gui: GuiConsole) {
         }
     })
     if (config.debug.gui) {
-        mainWindow.webContents.openDevTools({ mode:"detach" })
+        mainWindow.webContents.openDevTools({mode:"bottom"})   // ({ mode:"detach" })
     }
     mainWindow.loadFile('dist/index.html', { search: gui.id });
     _count++;

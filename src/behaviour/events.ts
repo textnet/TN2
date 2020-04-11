@@ -39,6 +39,7 @@ export interface Event {
     actorId:    string;
     planeId?:   string;
     thingId?:   string;
+    isProxied:  boolean;
 }
 export interface TimerEvent extends Event {
     delta: number;
@@ -67,6 +68,7 @@ export interface EventHalt       extends EventWaypoint {}
 
 // ------------------ emitting -------------------------
 export async function emit(B: BookServer, event: Event) {
+    // get to all controllers
     for (let controller of B.controllers) {
         const hostId = getThingId(event.planeId);
         const actor = await B.things.load(controller.actorId);
@@ -77,6 +79,13 @@ export async function emit(B: BookServer, event: Event) {
            ){ 
             await controller.emit(event)
         }
+    }
+    // get to the external plane -> passing the event
+    if (!event.isProxied && !B.contains(event.planeId)) {
+        const targetPlane = await B.planes.load(event.planeId);
+        const proxiedEvent = deepCopy(event);
+        proxiedEvent.isProxied = true;
+        await B.emitEvent(getBookId(event.planeId), targetPlane.ownerId, proxiedEvent);
     }
 }
 

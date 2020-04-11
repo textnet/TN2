@@ -46,7 +46,7 @@ export function commandInput(library: LibraryServer,) {
     });
     async function handleCommand(input?: string) {
         const anima = written.getAnima();
-        const prefix = anima?(await anima.str()+" "):":) ";
+        const prefix = (anima?(await anima.str()+"\n"):"")+":) ";
         if (input) {
             if (anima) {
                 if (input[0] == "/") {

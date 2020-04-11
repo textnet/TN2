@@ -19,25 +19,40 @@ export async function applyPhysics(B: BookServer, timeDelta:number) {
     const world: World = {
         animas: [], things: {}, planes: {}
     }
-    // all things visible to controllers
+    // 1. all local PLANES visible to the controllers that are on the planes of the book
+    // 1.1. local controller with anima: all internal planes
+    // 1.2. any controller on a local plane: that plane
     for (let c of B.controllers) {
-        if (c.anima) {
+        const actor = await B.things.load(c.actorId);
+        if (c.anima && B.contains(actor)) {
             world.animas.push(c.anima);
-            const thing = await loadThing(B, world, c.anima.thingId);
-            const hostPlane = await loadPlane(B, world, thing.hostPlaneId);
-            for (let name in thing.planes) {
-                const plane = await loadPlane(B, world, thing.planes[name]);
+            for (let name in actor.planes) {
+                const plane = await loadPlane(B, world, actor.planes[name]);
             }
+        } 
+        if (B.contains(actor.hostPlaneId)) {
+            const hostPlane = await loadPlane(B, world, actor.hostPlaneId);
         }
     }
-    // all things being moved
+    // 2. for things with waypoints
+    // 2.1. add the planes for those things
+    // 2.2. add the things themselves
     for (let thingId in B.waypoints) {
         if (B.waypoints[thingId].length > 0) {
             const thing = await loadThing(B, world, thingId);
             const hostPlane = await loadPlane(B, world, thing.hostPlaneId);
         }
     }
-    // figuring out _momentum and _inertia
+    // 3. now for each plane
+    // 3.1. add all things on that plane regardless of their locality
+    for (let planeId in world.planes) {
+        for (let thingId in world.planes[planeId].things) {
+            const thing = await loadThing(B, world, thingId);
+        }
+    }
+    // 4. go through all things added
+    // 4.1. figuring out _momentum and _inertia
+    // 4.2. calculate the final position and place it
     for (let thingId in world.things) {
         const thing = world.things[thingId];
         const plane = world.planes[thing.hostPlaneId];
@@ -93,4 +108,8 @@ export async function loadThing(B: BookServer, world: World, thingId: string) {
     }
     return world.things[thingId];
 }
+
+
+
+
 

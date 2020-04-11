@@ -6,6 +6,8 @@ import { BookServer } from "../model/book"
 import { getBookId } from "../model/identity"
 import * as cl from "../commandline/commandline"
 
+
+const TTL = 0; // = np cache
 /**
  * Repository of objects with interface <T>.
  * Each object has the "id" field which is used internally as `key`.
@@ -13,10 +15,10 @@ import * as cl from "../commandline/commandline"
 export class Repository<T> {
     storage: Storage;
     server:  BookServer;
-    cache: Record<string, T>;
     prefix: string;
     bookId: string;
     isFree: boolean;
+    cache: Cache<T>;
 
     constructor(prefix: string, bookId: string, server?: BookServer) {
         this.prefix = prefix;
@@ -24,6 +26,7 @@ export class Repository<T> {
         this.storage = createStorage(this.bookId+"."+this.prefix);
         this.isFree = false;
         this.server = server;
+        this.cache = new Cache<T>(prefix);
     }
     free() { 
         this.storage.free() 
@@ -37,8 +40,12 @@ export class Repository<T> {
 
     async load(id: string)   { 
         if (!this.isLocal(id)) {
-            cl.verboseLog(`REMOTE LOAD(${this.bookId}.${this.prefix})->${id}`)
-            return await this.server.loadRemote(this.prefix, id) as T;
+            const that = this;
+            // cl.verboseLog(`REMOTE LOAD(${this.bookId}.${this.prefix})->${id}`)
+            return await this.cache.get(id, (id)=>{ 
+                // cl.verboseLog(`REMOTE LOAD(${that.bookId}.${that.prefix})->${id}`)
+                return that.server.loadRemote(that.prefix, id)
+            })
         } else {
             return this.storage.get(id) as T     
         }
@@ -57,3 +64,27 @@ export class Repository<T> {
     }
 }
 
+
+
+export class Cache<T> {
+    prefix: string;
+    ttl: number;
+    _cache: Record<string, {data: T, timestamp: number}>;
+    constructor(prefix:string, ttl?: number) {
+        this.ttl = ttl || TTL; 
+        this.prefix = prefix;
+        this._cache = {}
+    }
+    async get(id: string, getter, force?:boolean) {
+        if ((this.ttl == 0) || force || !this._cache[id] || (this._cache[id].timestamp+this.ttl < Date.now())) {
+            await this.set(id, (await getter(id) as T));
+        }
+        return this._cache[id].data;
+    }
+    async set(id: string, value: T) {
+        this._cache[id] = {
+            data: value,
+            timestamp: Date.now()
+        }
+    }
+}

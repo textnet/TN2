@@ -16,6 +16,14 @@ export function isThingId(id: string) {
     return id.split(".").length < 3;
 }
 
+export function isInBook(id: string, bookId: string) {
+    return getBookId(id) == bookId;
+}
+export function stripBookId(id: string) {
+    return id.substr(getBookId(id).length+1);
+}
+
+
 export function createBookId() {
     return crypto.randomBytes(32).toString('hex')
 }

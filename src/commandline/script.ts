@@ -6,7 +6,7 @@ export async function script(library) {
     const lines = setupScript.split("\n");
     for (let line of lines) {
         line = line.replace(/^\s+/, "").replace(/\s+$/, "");
-        if (line != "") {
+        if (line != "" && line.substr(0,2) != "--") {
             await call(library, line);
         }
     }
@@ -20,32 +20,45 @@ export async function script(library) {
 
 const setupScript = `
 create book Indiana
-create book Matrix
-create thing Player as Jones in Indiana @ 100 200
 create thing Piano as Piano in Indiana @ 200 200
-create thing Chest as Chest in Indiana @ 300 200
 copy Indiana.Piano to GrandPiano @ 400 200
 
-things in Indiana
+create book Matrix
+create thing Chest as Chest in Matrix @ 100 100
 
+create thing Player as Jones in Indiana @ 100 200
 create console P1 Indiana.Player
 gui P1
+bind P1
+
+observe Matrix.Chest
+-- observe Indiana.Piano
+
 `;
 
 const setupWritten = `
-function f(event)
-    debug{log=event}
-end
+teleport{thing="Indiana.Player", to="Matrix"}
+`; `
+-- function f(event)
+--     debug{log=event}
+-- end
 -- key = on{event="enter", role="observer", handler=f}
 -- teleport{thing="Bible.X", to="Alphabet"}
--- teleport{to="Bible"}
 -- say{what="Hello, world!"}
 -- debug{list="things"}
+
+teleport{thing="Indiana.GrandPiano", to="Matrix"}
+-- teleport{thing="Indiana.Player",     to="Matrix"}
+
 `;
 
 
 const remainder = `
-observe Indiana.Chest
+things in Indiana
+
+create console P1 Indiana.Player
+bind P1
+gui P1
 
 
 inspect Indiana.*

@@ -39,6 +39,7 @@ export async function place(B: BookServer, action: actions.ActionPlace) {
             position: position,           
         } as events.EventPlace;
         await events.emit(B, event);
+
     } else {
         thing.physics._inertia = deepCopy(geo.DIRECTION.NONE);
         await B.things.save(thing);

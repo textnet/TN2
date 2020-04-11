@@ -3,16 +3,22 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-- temp: show ID in the title of each window
-- show plane name/code in the title of each window
-- observe another book
-- create new Written Word `teleport{destination="...."}`
++ temp: show plane name/code in the title of each window
++ observe another book
++ debug `teleport{thing="...", destination="...."}`
+    + BUG: regular copy misses planes
+    + BUG: usual things — problems with ID when teleporting
+    + BUG: guests — simply doesn't work
 - transfer events from the remote book to the local anima
+    + BUG: when walking, remote observer is not showing the walk
+    - BUG: local observer still sees P1
+- BUG: observer window shouldn't be able to grab control over its thing
 - test limbo
     - player goes offline
     - player's book goes offline/online
     - destination's book goes offline/online
     - player gets out of limbo
+- when teleporting, entering, or leaving, drop waypoints
 
 ## Current Stage 11. Interbook and Limbo
 - teleport command

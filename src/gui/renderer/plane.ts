@@ -64,7 +64,7 @@ function updateSceneFromPlane(scene: GameScene, data: msg.PlaneRenderData) {
     scene.planeData = data;
     const label = (scene.environmentActors["label"] as ex.Label);
     const title = (scene.environmentActors["title"] as ex.UIActor)
-    label.text = data.name;
+    label.text = `${data.id} «${data.name}»` // data.name;
     label.color = ex.Color.fromHex(data.colors[COLORS.NAME] || COLORS_DEFAULT[COLORS.NAME]);
     title.color = ex.Color.fromHex(data.colors[COLORS.TITLE] || COLORS_DEFAULT[COLORS.TITLE]);
     // scene.editor.getSession().setMode('ace/mode/'+worldData.format);

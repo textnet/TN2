@@ -31,8 +31,9 @@ export class BookServer {
 
     _online: boolean;
 
-    contains(id: string) {
-        return getBookId(id) == this.data.id;
+    contains(id: string|PlaneData|ThingData) {
+        if (id["id"]) return this.contains(id["id"]);
+        return getBookId(id as string) == this.data.id;
     }
     id() {
         return this.data.id;
@@ -89,7 +90,9 @@ export class BookServer {
             planeId: actor? actor.hostPlaneId : thing.hostPlaneId,
             thingId: thingId,
         } as actions.ActionIsGuest);
-        if (!isGuest) {
+        if (isGuest) {
+            return undefined;
+        } else {
             return await createFromThing(this, thingId);
         }
     }
@@ -179,6 +182,15 @@ export class BookServer {
             })
             return promise;
         }
+    }
+
+    async emitEvent(targetBookId: string, recipientId: string, event: events.Event) {
+        const message: network.MessageEvent = {
+            name: network.MESSAGE.EVENT,
+            event: event,
+            recipientId: recipientId,
+        }
+        await this.sendMessage(targetBookId, message);
     }
 
     async receiveConnection(peerBookId: string) {}
