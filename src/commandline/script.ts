@@ -28,12 +28,11 @@ create thing Chest as Chest in Matrix @ 100 100
 
 create thing Player as Jones in Indiana @ 100 200
 create console P1 Indiana.Player
-gui P1
 bind P1
-
-observe Matrix.Chest
--- observe Indiana.Piano
-
+gui P1
+observe Indiana.Piano
+-- observe Matrix.Chest
+-- inspect Indiana.*.material
 `;
 
 const setupWritten = `

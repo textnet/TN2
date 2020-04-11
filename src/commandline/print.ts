@@ -37,6 +37,7 @@ async function inspectBook(L:LibraryServer, id: string) {
 async function inspectThing(L:LibraryServer, id: string, fromId?: string) {
     const B = L.bookServers[ getBookId(fromId || id) ];
     const thing = await B.things.load(id);
+    if (thing.sprite.base64) thing.sprite.base64 = thing.sprite.base64.substr(0,15)+"...";
     commandline.log(`Inspect: `+str(thing))
     console.log(thing)    
 }

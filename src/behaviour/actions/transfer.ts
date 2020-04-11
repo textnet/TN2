@@ -25,8 +25,8 @@ export async function action(B: BookServer, action: actions.ActionTransfer) {
         planeId: action.planeId,
         thingId: action.thingId,
     }
-    await leave(B, actionLeave);
-    await enter(B, actionEnter);
+    await actions.action(B, actionLeave);
+    await actions.action(B, actionEnter);
 }
 
 // check if the this should be treated as a guest
