@@ -13,6 +13,7 @@ import * as say from "./actions/say"
 import * as transfer from "./actions/transfer"
 import * as spatials from "./actions/spatials"
 import * as movement from "./actions/movement"
+import * as attempt  from "./actions/attempt"
 // actions happen on a plane
 
 export const ACTION = {
@@ -22,9 +23,16 @@ export const ACTION = {
     IS_GUEST: "isGuest",
     PLACE: "place",
     SAY: "say",
+    ATTEMPT: "attempt", // attempt a proximal action, e.g. enter
 
     MOVE: "move",
     HALT: "halt",
+}
+
+export const ATTEMPT = {
+    ENTER:   "enter",
+    PUSH:    "push",
+    PICKUP:  "pickup",
 }
 
 export interface Action {
@@ -56,6 +64,10 @@ export interface ActionSay extends Action {
     what: string,
     loudness: number;
 }
+export interface ActionAttempt extends Action {
+    direction?: geo.Direction;
+    attempt: string;
+}
 
 export interface ActionAddMovement extends Action {
     thingId: string;
@@ -86,6 +98,7 @@ export const handlers = {
     transfer:  transfer.action,
     isGuest:   transfer.isGuest,
     place:     spatials.place,
+    attempt:   attempt.action,
     move:      movement.add,
     halt:      movement.halt,
 }

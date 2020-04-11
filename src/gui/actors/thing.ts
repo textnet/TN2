@@ -85,11 +85,16 @@ export class ThingActor extends BaseActor {
         if (!this.needRelease) {
             let playerDir = getPlayerDirection(engine);
             let command   = getPlayerCommand(engine);
+            // ENTER -> DEEPER
+            if (command == COMMAND.ENTER && !geo.isIdle(playerDir)) {
+                this.needRelease = true;
+                interop.attempt(msg.ATTEMPT.ENTER, playerDir);
+            }
             // PUSH
             if (command == COMMAND.PUSH && !geo.isIdle(playerDir)) {
                 this.needRelease = true;
                 geo.accumulateDirection(dir, playerDir);
-                // interopSend.push(this, playerDir); TODO send push
+                interop.attempt(msg.ATTEMPT.PUSH, playerDir);
             } 
             // MOVE               
             if (command == COMMAND.NONE && !geo.isIdle(playerDir)) {

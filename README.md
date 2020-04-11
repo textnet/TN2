@@ -3,27 +3,30 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-+ temp: show plane name/code in the title of each window
-+ observe another book
-+ debug `teleport{thing="...", destination="...."}`
-    + BUG: regular copy misses planes
-    + BUG: usual things — problems with ID when teleporting
-    + BUG: guests — simply doesn't work
-- transfer events from the remote book to the local anima
-    + BUG: when walking, remote observer is not showing the walk
-    - BUG: local observer still sees P1
-- BUG: observer window shouldn't be able to grab control over its thing
-- test limbo
-    - player goes offline
-    - player's book goes offline/online
-    - destination's book goes offline/online
-    - player gets out of limbo
+- Enter / Leave
+    + attempt action
+    + process enter attempt
+    - surface action
+    - WrittenWord support
+        - attempt `attempt{action="enter", dir="up"}`, `enter{dir="up"}`
+        - surface `surface{}`
+- test limbo between two books
+    - player goes offline while being in another book => disappears in limbo
+    - player's book goes offline => player disappears in limbo
+    - destination's book goes offline => player is transferred to limbo, create portal
+    - destination's book goes online => (???)
+    - player gets out of limbo, portal is lost.
 - when teleporting, entering, or leaving, drop waypoints
+- BUG: when leaving by Cmd+Q — disconnect everyone!
 
-## Current Stage 11. Interbook and Limbo
-- teleport command
-- observe book
-- transfer events from the remote book to the local anima
+## Current Stage 11. Interbook and Limbo, also Enter/Leave
++ teleport command
++ observe thing
++ transfer events from the remote book to the local anima
++ `attempt` framework
++ enter/leave with WrittenWord support
+- limbo portals
+- test limbo-ing
 
 ## Stage 12. Control over things
 - written movers
@@ -31,7 +34,6 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     - move_by (duration)
     - turn_to 
     - halt
-- Enter / Leave (add WW support)
 - Push
 - Pick / Putdown = inventory!
 - Throw
@@ -64,7 +66,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 8. [x] Anima basics (written word)
 9. [x] Basic Controls in text console
 10. [x] GUI and moving
-11. [ ] Interbook operations and limbo
+11. [ ] Interbook operations and limbo, entering and leaving
 12. [ ] Basic actions: run, push, updates (both GUI and Written Word)
 13. [ ] Inventory concept and actions (incl. throw)
 14. [ ] Text editor and kneeling
@@ -80,7 +82,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 - July/August/September: Release 1
 
 
-## Old things
+## How to set things up
     npm install   -- after cloning the repo
     ./start.sh    -- to enter the debug cycle
     yarn dist     -- to make distro package

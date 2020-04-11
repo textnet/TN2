@@ -55,3 +55,12 @@ export function reposition(position: geo.Position) {
     } as msg.Place);
 }
 
+/**
+ * INTEROP-> Attempt(Push, Pickup, etc.)
+ */
+export function attempt(attempt: string, direction: geo.Direction) {
+    send(msg.SERVER.ATTEMPT, {
+        direction: direction,
+        attempt: attempt
+    } as msg.Attempt);
+}

@@ -69,6 +69,7 @@ export interface EventHalt       extends EventWaypoint {}
 // ------------------ emitting -------------------------
 export async function emit(B: BookServer, event: Event) {
     // get to all controllers
+    console.log(event)
     for (let controller of B.controllers) {
         const hostId = getThingId(event.planeId);
         const actor = await B.things.load(controller.actorId);

@@ -56,7 +56,7 @@ export async function place(B: BookServer, action: actions.ActionPlace) {
     return position;
 }
 
-
+// find a position where the thing will fit.
 async function findFitting(B: BookServer, thing: ThingData, plane: PlaneData, position: geo.Position) {
     if (geo.inBounds(position, plane.physics.box) && 
         !(await findCollision(B, thing, plane, position))) {
@@ -124,7 +124,6 @@ async function findCollision(B: BookServer, thing: ThingData, plane: PlaneData, 
     return undefined;
 }
 
-//
 
 
 

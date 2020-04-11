@@ -22,21 +22,21 @@ const setupScript = `
 create book Indiana
 create thing Piano as Piano in Indiana @ 200 200
 copy Indiana.Piano to GrandPiano @ 400 200
+observe Indiana.Piano
 
-create book Matrix
-create thing Chest as Chest in Matrix @ 100 100
+-- create book Matrix
+-- create thing Chest as Chest in Matrix @ 100 100
+-- observe Matrix.Chest
 
 create thing Player as Jones in Indiana @ 100 200
 create console P1 Indiana.Player
-bind P1
 gui P1
-observe Indiana.Piano
--- observe Matrix.Chest
--- inspect Indiana.*.material
+-- bind P1
+-- unbind
 `;
 
 const setupWritten = `
-teleport{thing="Indiana.Player", to="Matrix"}
+-- teleport{thing="Indiana.Player", to="Matrix"}
 `; `
 -- function f(event)
 --     debug{log=event}

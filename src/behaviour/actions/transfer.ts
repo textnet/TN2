@@ -50,6 +50,7 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
         cl.verboseLog(`registerGuest: ${thing.id} on ${plane.id}`)
         await B.registerGuest(thing.id);
     }
+    // console.log(`Book(${B.id()}) ${action.thingId} enters ${action.planeId}`);
     // update host
     await updates.update(B, {
         update:      updates.UPDATE.HOST,
@@ -77,6 +78,7 @@ export async function leave(B: BookServer, action: actions.ActionLeave) {
     const position: geo.Position = plane.things[action.thingId];
     delete plane.things[action.thingId];
     await B.planes.save(plane);
+    // console.log(`Book(${B.id()}) ${action.thingId} leaves ${action.planeId}`);
     // update visit
     if (position) {
         await updates.update(B, {

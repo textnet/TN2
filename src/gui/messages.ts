@@ -3,23 +3,28 @@ import * as model   from "../model/interfaces"
 import * as sprites from "../model/sprites"
 import * as physics from "../model/physics"
 import * as geo     from "../model/geometry"
+import * as actions from "../behaviour/actions"
 
 
 
 // what should server do (messages sent by renderer)
 export const SERVER = {
-    LOG:   "log",
-    PLANE: "loadPlane",
-    MOVE_START: "startMoving",
+    LOG:         "log",
+    PLANE:       "loadPlane",
+    MOVE_START:  "startMoving",
     MOVE_FINISH: "stopMoving",
-    PLACE: "reposition",
+    PLACE:       "reposition",
+    ATTEMPT:     "attempt", // attempt different actions, see below
 }
+
+export const ATTEMPT = actions.ATTEMPT;
 
 // what should renderer do (messages sent by server)
 export const RENDER = {
     ENTER: "enter",
     PLACE: "reposition",
     MOVE:  "move",
+    LEAVE: "leave",
 }
 
 export interface Message {
@@ -37,6 +42,13 @@ export interface EnterPlane extends Message {
 export interface Place extends Message {
     position: geo.Position;
     thingId?: string; 
+}
+export interface Leave extends Message {
+    thingId: string; 
+}
+export interface Attempt extends Message {
+    direction: geo.Direction;
+    attempt: string;
 }
 export interface Move      extends Message {
     thingId?: string;

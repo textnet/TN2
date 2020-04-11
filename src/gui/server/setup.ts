@@ -5,6 +5,7 @@ import * as msg from "../messages"
 
 import * as plane from "./plane"
 import * as move from "./move"
+import * as attempt from "./attempt"
 
 let monitoredChannels = [
     // "log",
@@ -27,10 +28,11 @@ export function setup(gui: GuiConsole) {
     ipcMain.on(msg.SERVER.LOG,          process(log));
     ipcMain.on(msg.SERVER.PLANE,        process(plane.loadPlane));
     ipcMain.on(msg.SERVER.PLACE,        process(move.reposition));
+    ipcMain.on(msg.SERVER.ATTEMPT,      process(attempt.attemptAction));
     ipcMain.on(msg.SERVER.MOVE_START,   process(move.startMoving));
     ipcMain.on(msg.SERVER.MOVE_FINISH,  process(move.stopMoving));
-
 }
+
 
 async function log(gui: GuiConsole, message: msg.MessageLog) {
     cl.log(`GUI of «${gui.id}»:`)

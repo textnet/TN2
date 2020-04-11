@@ -39,6 +39,11 @@ export async function createThingId(B: BookServer, id?: string) {
     }
     return id;
 }
-export function createPlaneId(name:string, thingId?:string) {
+export function createPlaneId(name:string, thingId:string) {
     return `${thingId}.${name}`;
+}
+
+export function switchPlaneId(planeId: string, toThingId: string) {
+    const parts = planeId.split(".");
+    return createPlaneId(parts[parts.length-1], toThingId);
 }

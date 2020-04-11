@@ -35,6 +35,14 @@ export interface ThingConstraint {
     criticalMass: number;
 }
 
+export function checkConstraint(thing: ThingPhysics, c: ThingConstraint|boolean|undefined) {
+    if (c === undefined) return true;
+    if (c === true || c === false) return c;
+    c = c as ThingConstraint;
+    return thing.mass[c.massName] && thing.mass[c.massName] >= c.criticalMass;
+}
+
+
 export interface PlaneData {
     id: string;
     ownerId: string;
@@ -74,16 +82,16 @@ export const SAY = {
 }
 
 export const CONSTRAINTS = {
-    PUSHABLE: "pushable", // Can this thing be pushed?
-    PASSABLE: "passable", // Can this thing be passed through?
-    PICKABLE: "pickable", // Can this thing be picked up?
-    LOCKED:   "locked",   // Can someone enter inside this thing?"
+    PUSHABLE:  "pushable", // Can this thing be pushed?
+    PASSABLE:  "passable", // Can this thing be passed through?
+    PICKABLE:  "pickable", // Can this thing be picked up?
+    ENTERABLE: "enterable",   // Can someone enter inside this thing?"
 }
 export const CONSTRAINTS_DEFAULT = {
-    pushable: true,
-    passable: false,
-    pickable: true,
-    locked:   false,
+    pushable:    true,
+    passable:    false,
+    pickable:    true,
+    enterable:   true,
 }
 
 export const FORMAT = {

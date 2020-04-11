@@ -14,6 +14,7 @@ export async function setup(gui: GuiConsole) {
     mapping[events.EVENT.PLACE]       = sendPlace;
     mapping[events.EVENT.MOVE_START]  = sendMove;
     mapping[events.EVENT.MOVE_FINISH] = sendMove;
+    mapping[events.EVENT.LEAVE]       = sendLeave;
 
     for (let event in mapping) {
        gui.anima.subscribe(hostPlane.ownerId, 
@@ -35,4 +36,10 @@ export async function sendMove(gui: GuiConsole, e: events.EventMoveStartFinish) 
         isStart: e.event == events.EVENT.MOVE_START,
         thingId: e.thingId
     } as msg.Move);    
+}
+
+export async function sendLeave(gui: GuiConsole, e: events.EventLeave) {
+    return gui.send(msg.RENDER.LEAVE, {
+        thingId:  e.thingId,
+    } as msg.Leave);    
 }

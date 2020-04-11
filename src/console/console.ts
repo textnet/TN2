@@ -26,6 +26,9 @@ export class Console {
         this.anima = new WrittenAnima(this.B, thingId, "");
         await this.anima.animate(ANIMA.PERMANENT);
         await this.anima.prepareMemory();
+        if (!this.isObserver) {
+            this.anima.controller.connectConsole(this);    
+        }
         cl.ok(`Console(${this.id}) bound to: ${thingId}`)        
     }
     async unbind() {
