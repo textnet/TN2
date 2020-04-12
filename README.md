@@ -6,7 +6,11 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 - Enter / Leave
     + attempt action
     + process enter attempt
-    - surface action
+    + transferUp action
+    + change command key to Ctrl+Esc
+    + BUG: on TransferUp need to refresh the plane
+    + BUG: when someone enters the plane, GUI doesn't get an ENTER event
+    - BUG: when coming for the 2nd time — position is not stored
     - WrittenWord support
         - attempt `attempt{action="enter", dir="up"}`, `enter{dir="up"}`
         - surface `surface{}`
@@ -18,6 +22,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     - player gets out of limbo, portal is lost.
 - when teleporting, entering, or leaving, drop waypoints
 - BUG: when leaving by Cmd+Q — disconnect everyone!
+- BUG: when leaving by `exit` — exception??
 
 ## Current Stage 11. Interbook and Limbo, also Enter/Leave
 + teleport command
@@ -95,6 +100,25 @@ Because Electron node is not compatible with NPM node, there you have to rebuild
     ./node_modules/.bin/electron-rebuild
 ### Before launching Headless
     npm rebuild
+
+
+### Creating new actions
+- subject to be refactored, way too many files have to be changed
+- **Generic action**
+    - behavior/actions/<action>.ts -> create new action handler
+    - behavior/actions —> 1) add the above to handlers
+    - behavior/actions —> 2) add ACTION.<action> constant
+    - behavior/actions —> 3) add Action* interface
+    - NB: you can't save things in actions, as action happens on a plane. You need to use **updates**
+- **Call the action from GUI**
+    - gui/messages.ts -> add SERVER.<action> so it will be called for the server
+    - gui/renderer/send.ts -> create interop for sending the action to the server
+    - gui/server/<action>.ts -> send action via Action API
+    - gui/server/setup.ts -> add the above to handlers
+    - gui/command.ts -> add COMMAND.<action> and the control combination for the action
+    - gui/actors/thing.ts -> add handled of the above that calls the interop
+- **Call the action from Written Word**
+    - TBD
 
 
 ## Console commands supported

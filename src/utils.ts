@@ -5,7 +5,7 @@ import * as crypto from "crypto";
  */
 
 export function nonce() {
-    return (new Date()) + ":" + crypto.randomBytes(16).toString('hex')
+    return (Date.now()) + ":" + crypto.randomBytes(16).toString('hex')
 }
 
 export function strip(s) {

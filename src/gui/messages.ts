@@ -15,16 +15,18 @@ export const SERVER = {
     MOVE_FINISH: "stopMoving",
     PLACE:       "reposition",
     ATTEMPT:     "attempt", // attempt different actions, see below
+    TRANSFER_UP: "transferUp", // go up in the stack
 }
 
 export const ATTEMPT = actions.ATTEMPT;
 
 // what should renderer do (messages sent by server)
 export const RENDER = {
-    ENTER: "enter",
+    ENTER_PLANE: "enterPlane",
     PLACE: "reposition",
     MOVE:  "move",
     LEAVE: "leave",
+    ENTER: "enter",
 }
 
 export interface Message {
@@ -46,11 +48,15 @@ export interface Place extends Message {
 export interface Leave extends Message {
     thingId: string; 
 }
+export interface Enter extends Message {
+    thing: ThingRenderData;
+}
+export interface TransferUp extends Message {}
 export interface Attempt extends Message {
     direction: geo.Direction;
     attempt: string;
 }
-export interface Move      extends Message {
+export interface Move extends Message {
     thingId?: string;
     isStart?: boolean;
 }

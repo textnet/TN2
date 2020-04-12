@@ -35,12 +35,8 @@ export async function gui(B: BookServer, consoleId: string) {
 }
 
 export async function observe(B: BookServer, thingId: string) {
-    // not sure if those are needed when observing.
-    // const observer = new Controller(B, thingId);
-    // await B.bind(observer);
     const gui = new GuiConsole(B);
     await gui.bind(thingId);
-    await B.bind(gui.anima.controller);
     const window = cl.getConfig().gui(gui);
     if (window) {
         gui.attach(window);

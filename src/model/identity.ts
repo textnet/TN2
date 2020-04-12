@@ -1,6 +1,6 @@
 import * as crypto from "crypto";
 import { BookServer } from "./book"
-import { BookData, ThingData, PlaneData } from "./interfaces"
+import { BookData, ThingData, PlaneData, PLANE } from "./interfaces"
 
 export function getBookId(id: string) {
     return id.split(".")[0]
@@ -14,6 +14,14 @@ export function getThingId(id: string) {
 }
 export function isThingId(id: string) {
     return id.split(".").length < 3;
+}
+export function isLimbo(planeId: string) {
+    const name = extractPlaneName(planeId);
+    return (name == PLANE.LIMBO);
+}
+export function extractPlaneName(planeId: string) {
+    const parts = planeId.split(".");
+    return parts[ parts.length-1 ];
 }
 
 export function isInBook(id: string, bookId: string) {
@@ -45,5 +53,5 @@ export function createPlaneId(name:string, thingId:string) {
 
 export function switchPlaneId(planeId: string, toThingId: string) {
     const parts = planeId.split(".");
-    return createPlaneId(parts[parts.length-1], toThingId);
+    return createPlaneId(extractPlaneName(planeId), toThingId);
 }

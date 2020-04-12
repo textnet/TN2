@@ -65,7 +65,6 @@ export class Controller {
     }
 
     async connect() {
-        console.log(`Book(${this.B.id()}) Connect controller ${this.actorId}`)
         const thing = await this.B.things.load(this.actorId);
         if (thing.hostPlaneId == thing.planes[PLANE.LIMBO]) {
             let plane = await this.B.planes.load(thing.lostPlaneId);
@@ -89,7 +88,6 @@ export class Controller {
         await this.B.bind(this)
     }
     async disconnect(unbound?: boolean) {
-        console.log(`Book(${this.B.id()}) DISCONNECT controller ${this.actorId}`)
         if (unbound != CONTROLLER.UNBOUND) { 
             await this.B.unbind(this);
         }

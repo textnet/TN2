@@ -9,11 +9,11 @@ export function leave(game: Game, data: msg.Leave) {
     // remove actor or ask for new plane
     const scene = game.gameScene();
     if (data.thingId == scene.animaId) {
-        console.log("load plane")
         interop.loadPlane();
     } else {
         scene.remove(scene.thingActors[data.thingId]);
         delete scene.thingActors[data.thingId];
     }
 }
+
 

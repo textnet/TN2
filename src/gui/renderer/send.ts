@@ -28,23 +28,13 @@ export function log(a1, a2?, a3?, a4?, a5?, a6?, a7?, a8?, a9?, a10?) {
 /**
  * INTEROP-> Ask for stage
  */
-export function loadPlane() { 
-    send(msg.SERVER.PLANE);
-}
+export function loadPlane() { send(msg.SERVER.PLANE); }
 
 /**
- * INTEROP-> Start moving
+ * INTEROP-> Start/stop moving
  */
-export function startMoving() {
-    send(msg.SERVER.MOVE_START);
-}
-
-/**
- * INTEROP-> Stop moving
- */
-export function stopMoving() {
-    send(msg.SERVER.MOVE_FINISH);
-}
+export function startMoving() { send(msg.SERVER.MOVE_START);  }
+export function stopMoving()  { send(msg.SERVER.MOVE_FINISH); }
 
 /**
  * INTEROP-> Reposition
@@ -64,3 +54,9 @@ export function attempt(attempt: string, direction: geo.Direction) {
         attempt: attempt
     } as msg.Attempt);
 }
+
+/**
+ * INTEROP-> Transfer itself up in visits stack
+ */
+export function transferUp() { send(msg.SERVER.TRANSFER_UP); }
+

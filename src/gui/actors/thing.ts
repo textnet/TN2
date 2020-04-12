@@ -90,6 +90,11 @@ export class ThingActor extends BaseActor {
                 this.needRelease = true;
                 interop.attempt(msg.ATTEMPT.ENTER, playerDir);
             }
+            // LEAVE -> TRANSFER UP
+            if (command == COMMAND.LEAVE) {
+                this.needRelease = true;
+                interop.transferUp();
+            }
             // PUSH
             if (command == COMMAND.PUSH && !geo.isIdle(playerDir)) {
                 this.needRelease = true;

@@ -1,5 +1,5 @@
 import { BookServer } from "../model/book"
-import { getBookId } from "../model/identity"
+import { getBookId, isLimbo } from "../model/identity"
 import * as network from "../network/discovery"
 import * as geo from "../model/geometry"
 import { deepCopy } from "../utils"
@@ -19,6 +19,7 @@ export interface Update {
     id: string;
 }
 export interface UpdateHostPlane extends Update {
+    isUp?: boolean;
     hostPlaneId: string;
 }
 export interface UpdateVisits extends Update {
@@ -40,8 +41,21 @@ export const handlers = {
 
     hostPlane: async function(B: BookServer, update: UpdateHostPlane) {
         const thing = await B.things.load(update.id);
-        thing.lostPlaneId = thing.hostPlaneId;
-        thing.hostPlaneId = update.hostPlaneId;
+        if (update.isUp) {
+            const lostPlaneId = thing.visitsStack.pop();
+            cl.verboseLog(`$Book({B.id()}) ${thing.id} pops from the stack «${lostPlaneId}» -> «${update.hostPlaneId}»`);
+            thing.lostPlaneId = lostPlaneId;
+            thing.hostPlaneId = update.hostPlaneId;
+        } else {
+            thing.lostPlaneId = thing.hostPlaneId;
+            thing.hostPlaneId = update.hostPlaneId;
+            // movement between limbo & not limbo doesn't add up to the stack
+            if ((!isLimbo(update.hostPlaneId)) && 
+                (!isLimbo(thing.hostPlaneId) || (thing.lostPlaneId != update.hostPlaneId))) {
+                cl.verboseLog(`$Book({B.id()}) ${thing.id} push to stack «${thing.hostPlaneId}»`);
+                thing.visitsStack.push(update.hostPlaneId)    
+            }
+        }
         await B.things.save(thing);
     },
 

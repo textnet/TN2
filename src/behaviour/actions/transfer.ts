@@ -1,6 +1,6 @@
 import { BookServer } from "../../model/book"
 import { ThingData, PlaneData, SAY } from "../../model/interfaces"
-import { getBookId, createThingId } from "../../model/identity"
+import { getBookId, createThingId, isLimbo } from "../../model/identity"
 import { deepCopy } from "../../utils"
 import * as geo from "../../model/geometry"
 import * as updates from "../updates"
@@ -11,19 +11,34 @@ import { print, inspect } from "../../commandline/print"
 import { Controller } from "../controller"
 
 
+export async function transferUp(B: BookServer, action: actions.ActionTransferUp) {
+    const thing: ThingData = await B.things.load(action.actorId);
+    if (thing.visitsStack.length > 1) {
+        const prevPlaneId = thing.visitsStack[ thing.visitsStack.length-2]; 
+        await actions.action(B, {
+            action: actions.ACTION.TRANSFER,
+            actorId: action.actorId,
+            thingId: action.actorId,
+            planeId: prevPlaneId,
+            isUp: true,
+        } as actions.ActionTransfer)
+    }
+}
+
 export async function action(B: BookServer, action: actions.ActionTransfer) {
     const thing: ThingData = await B.things.load(action.thingId);
     const actionLeave: actions.ActionLeave = {
-        action: actions.ACTION.LEAVE,
+        action:  actions.ACTION.LEAVE,
         actorId: action.actorId,
         planeId: thing.hostPlaneId,
         thingId: action.thingId,
     }
     const actionEnter: actions.ActionEnter = {
-        action: actions.ACTION.ENTER,
+        action:  actions.ACTION.ENTER,
         actorId: action.actorId,
         planeId: action.planeId,
         thingId: action.thingId,
+        isUp:    action.isUp,
     }
     await actions.action(B, actionLeave);
     await actions.action(B, actionEnter);
@@ -57,7 +72,8 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
         actorId:     action.actorId,
         id:          thingId,
         hostPlaneId: plane.id,
-    } as updates.UpdateHostPlane)
+        isUp:        action.isUp,
+    } as updates.UpdateHostPlane) // here we will be updating
     // place thing
     await actions.handlers.place(B, {
         action:   actions.ACTION.PLACE,

@@ -43,7 +43,7 @@ export function getPlayerDirection(game: Game) {
 const KEY = {
     ENTER:   17, // CTRL=17
     PICKUP:  18, // ALT=18
-    LEAVE:   ex.Input.Keys.Esc,
+    LEAVE:   ex.Input.Keys.Esc, // ENTER+LEAVE
     PUSH:    ex.Input.Keys.Shift,
     TEXT:    13, // ENTER
 }
@@ -70,9 +70,9 @@ export const COMMAND = {
 export function getPlayerCommand(game: Game) {
     const dir = getPlayerDirection(game);
     const name = geo.directionName(dir);
-    if (game.input.keyboard.isHeld(KEY.LEAVE))       return COMMAND.LEAVE;
     if (geo.isIdle(dir)) {
-        if (game.input.keyboard.isHeld(KEY.ENTER) && game.input.keyboard.isHeld(KEY.TEXT)) return COMMAND.KNEEL;
+        if (game.input.keyboard.isHeld(KEY.ENTER) && game.input.keyboard.isHeld(KEY.TEXT))  return COMMAND.KNEEL;
+        if (game.input.keyboard.isHeld(KEY.ENTER) && game.input.keyboard.isHeld(KEY.LEAVE)) return COMMAND.LEAVE;
     } else {
         if (game.input.keyboard.isHeld(KEY.ENTER))   return COMMAND.ENTER;
         if (game.input.keyboard.isHeld(KEY.PUSH))    return COMMAND.PUSH;

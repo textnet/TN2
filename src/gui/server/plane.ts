@@ -1,5 +1,6 @@
 import { ipcMain } from "electron"
 import { GuiConsole } from "../../console/gui";
+import { subscribeOnPlane } from "./subscribe"
 import * as cl from "../../commandline/commandline"
 
 import * as msg from "../messages"
@@ -13,8 +14,10 @@ export async function loadPlane(gui: GuiConsole, args) {
     for (let id in hostPlane.things) {
         thingsData[id] = await msg.renderThingData(B, id)
     }
+    //
+    await subscribeOnPlane(gui, animaThing.hostPlaneId)
     // send
-    gui.send(msg.RENDER.ENTER, {
+    gui.send(msg.RENDER.ENTER_PLANE, {
         asObserver: gui.isObserver,
         animaThingId: animaThing.id,
         plane: await msg.renderPlaneData(B, hostPlane),

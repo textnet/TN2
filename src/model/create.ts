@@ -42,7 +42,6 @@ export async function createFromThing(B: BookServer, fromId: string, id?: string
     } else {
         const thingId = await createThingId(B, id || stripBookId(fromId));
         const thing = deepCopy(modelThing);
-        console.log(`create from ${fromId} with ${id} => ${thingId}`)
         thing.id = thingId;
         thing.planes = {}
         for (let planeName in modelThing.planes) {
@@ -58,8 +57,6 @@ export async function createFromThing(B: BookServer, fromId: string, id?: string
             }
             fixPlaneDefaults(plane);
             await B.planes.save(plane);
-            console.log(`create plane ${planeId} for ${thingId}`)
-            console.log(plane)
             // copy things
             for (let innerId in modelPlane.things) {
                 if (innerId == fromId) {
@@ -75,7 +72,6 @@ export async function createFromThing(B: BookServer, fromId: string, id?: string
             await B.planes.save(plane);
             thing.planes[planeName] = planeId;
         }
-        console.log("kinda done with planes")
         thing.hostPlaneId = createPlaneId(PLANE.LIMBO, thingId);
         if (differences) {
             for (let key in differences) {
@@ -84,9 +80,7 @@ export async function createFromThing(B: BookServer, fromId: string, id?: string
         }
         fixThingDefaults(thing)
         await B.things.save(thing)
-        console.log("AWAKEN!")
         await B.awaken(thing.id)
-        console.log("DONE CREATE")
         return thing;
     }
 }

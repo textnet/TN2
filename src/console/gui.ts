@@ -6,11 +6,11 @@ import * as cl from "../commandline/commandline"
 import * as print from "../commandline/print"
 import * as events from "../behaviour/events"
 import * as msg from "../gui/messages"
-import * as serverInterop from "../gui/server/send"
 
 
 export class GuiConsole extends Console {
     window: any;
+    listeners: any;
 
     attach(window: any) {
         this.window = window;
@@ -19,7 +19,6 @@ export class GuiConsole extends Console {
     async bind(thingId?: string) {
         const that = this;
         await super.bind(thingId);
-        await serverInterop.setup(this);
     }
 
     async send(channel: string, message: msg.Message) {

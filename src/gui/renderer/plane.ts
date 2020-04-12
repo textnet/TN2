@@ -6,7 +6,17 @@ import * as ex from "excalibur"
 import { ThingActor } from "../actors/thing"
 import { COLORS, COLORS_DEFAULT } from "../../model/interfaces"
 
+export function enterActor(game: Game, data: msg.Enter) {
+    const actor = createActor(game, data.thing);
+}
 
+function createActor(game: Game, thing: msg.ThingRenderData) {
+    const actor = new ThingActor(thing);
+    const scene = game.gameScene();
+    scene.add(actor);
+    scene.thingActors[thing.id] = actor;
+    return actor;
+}
 
 export function enterPlane(game: Game, data: msg.EnterPlane) {
     // 1. reset scene
@@ -21,13 +31,11 @@ export function enterPlane(game: Game, data: msg.EnterPlane) {
     scene.thingActors = {}
     let playerActor;
     for (let id in data.things) {
-        const actor = new ThingActor(data.things[id]);
+        const actor = createActor(game, data.things[id])
         if (id == scene.animaId) {
             actor.bindPlayer(data.asObserver);
             playerActor = actor;
         }
-        scene.add(actor);
-        scene.thingActors[id] = actor;
     }
     // 3. create HUD
     const titleHeight = config.gui.planeTitle.height;

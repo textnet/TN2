@@ -27,6 +27,7 @@ export interface ThingData {
     physics: ThingPhysics;
     planes:  Record<string, string>;    // name:planeId
     visits?: Record<string, Position>; // position of the previous visit to planeIds.
+    visitsStack?: string[]; // history of going deeper
     API?: string[];
 }
 
@@ -62,6 +63,7 @@ export interface ThingTemplate {
 export function fixThingDefaults(data) {
     data.constraints = data.constraints || deepCopy(CONSTRAINTS_DEFAULT);
     data.visits = data.visits || {};
+    data.visitsStack = data.visitsStack || [];
     data.API = deepCopy(API);
 }
 export function fixPlaneDefaults(data) {

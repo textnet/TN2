@@ -9,17 +9,32 @@ import * as events from "./events"
 import * as cl from "../commandline/commandline"
 import { print } from "../commandline/print"
 
+// --- handlers ---
 import * as say from "./actions/say"
 import * as transfer from "./actions/transfer"
 import * as spatials from "./actions/spatials"
 import * as movement from "./actions/movement"
 import * as attempt  from "./actions/attempt"
+export const handlers = {
+    say:        say.action,
+    enter:      transfer.enter,
+    leave:      transfer.leave,
+    transfer:   transfer.action,
+    transferUp: transfer.transferUp,
+    isGuest:    transfer.isGuest,
+    place:      spatials.place,
+    attempt:    attempt.action,
+    move:       movement.add,
+    halt:       movement.halt,
+}
+
 // actions happen on a plane
 
 export const ACTION = {
     ENTER: "enter",
     LEAVE: "leave",
-    TRANSFER: "transfer",
+    TRANSFER: "transfer", // and put in stack
+    TRANSFER_UP: "transferUp", // in stack
     IS_GUEST: "isGuest",
     PLACE: "place",
     SAY: "say",
@@ -43,12 +58,16 @@ export interface Action {
 export interface ActionEnter extends Action {
     thingId: string;
     position?: geo.Position;
+    isUp?:boolean;
 }
 export interface ActionLeave extends Action {
     thingId: string;
 }
 export interface ActionTransfer extends Action {
     thingId: string;
+    isUp?: boolean; // is it up in stack
+}
+export interface ActionTransferUp extends Action {
 }
 export interface ActionIsGuest extends Action {
     thingId: string;
@@ -90,15 +109,4 @@ export async function action(B: BookServer, action: Action) {
 }
 const dispatchAction = action;
 
-// --- handlers ---
-export const handlers = {
-    say:       say.action,
-    enter:     transfer.enter,
-    leave:     transfer.leave,
-    transfer:  transfer.action,
-    isGuest:   transfer.isGuest,
-    place:     spatials.place,
-    attempt:   attempt.action,
-    move:      movement.add,
-    halt:      movement.halt,
-}
+
