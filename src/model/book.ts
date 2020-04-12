@@ -46,13 +46,13 @@ export class BookServer {
         this.things = new Repository<ThingData>("things", this.data.id, this);
         this.planes = new Repository<PlaneData>("planes", this.data.id, this);
         this._online = false;
-        this.controllers = [];
         this.guests = {};
         this.waypoints = {};
     }
 
     async online() {
         if (!this._online) {
+            this.controllers = [];
             this.handlers = await network.connect(this);
             this._online = true;
             // set up all animas
@@ -72,6 +72,7 @@ export class BookServer {
             for (let t of this.controllers) {
                 await t.disconnect(CONTROLLER.UNBOUND);
             }
+            this.controllers = undefined;
             await this.handlers.disconnect()
             this._online = false;    
         }

@@ -24,7 +24,7 @@ export function createWindow(gui: GuiConsole) {
         mainWindow.webContents.openDevTools({mode:"bottom"})   // ({ mode:"detach" })
     }
     mainWindow.loadFile('dist/index.html', { search: gui.id });
-    mainWindow.on("close", (e)=>{ gui.unbind() })
+    mainWindow.on("close", (e)=>{ }); // TODO: terminate Console on close
     _count++;
     return mainWindow;
 }

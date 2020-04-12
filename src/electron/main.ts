@@ -29,7 +29,10 @@ function onQuit(event) {
     if (_quitOnce) {
         event.preventDefault();
         _quitOnce = false;
-        library.finish().then(()=>{ app.quit(); })
+        library.finish().then(()=>{ 
+            commandline.ok("Finished.")
+            app.quit(); 
+        })
     }
 }
 

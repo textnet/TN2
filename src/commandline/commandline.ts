@@ -32,8 +32,8 @@ export function init(library: LibraryServer, config: CommandLineConfig) {
     print.setup();
     register("test", function(n, params) { console.log(params) })
     register("exit", async function(n, params) { 
+        ok("Finalizing...")
         await config["exitHandler"]();
-        ok("Finished.")
     })
     script(library).then(()=>{ commandInput(library) });
 }

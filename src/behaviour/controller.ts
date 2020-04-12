@@ -88,8 +88,10 @@ export class Controller {
                 action:  actions.ACTION.TO_LIMBO,
                 actorId: thing.id,
                 planeId: thing.hostPlaneId,
-            } as actions.ActionToLimbo);            
+            } as actions.ActionToLimbo);
         }
+        // TODO terminate animas if it is not coming from terminating animas
+        // TODO terminate console if it is not coming from terminating console
     }
 }
 

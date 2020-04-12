@@ -24,15 +24,17 @@ create thing Piano as Piano in Indiana @ 200 200
 copy Indiana.Piano to GrandPiano @ 400 200
 observe Indiana.Piano
 
--- create book Matrix
--- create thing Chest as Chest in Matrix @ 100 100
--- observe Matrix.Chest
+create book Matrix
+create thing Chest as Chest in Matrix @ 100 100
+observe Matrix.Chest
 
 create thing Player as Jones in Indiana @ 100 200
 create console P1 Indiana.Player
-gui P1
+-- gui P1
 -- bind P1
 -- unbind
+
+offline Indiana
 `;
 
 const setupWritten = `

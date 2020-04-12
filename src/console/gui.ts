@@ -25,5 +25,7 @@ export class GuiConsole extends Console {
         this.window.webContents.send(channel, message);
     }
 
+
 }
+
 
