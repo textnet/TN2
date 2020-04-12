@@ -1,6 +1,7 @@
 import readline from 'readline-promise'
 import { script } from "./script"
 import { LibraryServer } from "../model/library"
+import { BookServer } from "../model/book"
 import { config } from "../config"
 
 import * as baseCommands from "./base"
@@ -76,7 +77,11 @@ export function log(what) {
     console.log(chalk.yellow(">> "+what))
 }
 
-export function verboseLog(what) {
+export function verboseLog(what, whatwhat?) {
+    if (whatwhat) {
+        const B = (what.B || what) as BookServer;
+        return verboseLog(`Book(${B.id()}) ${whatwhat}`)
+    }
     if (config.debug.verboseConsole) {
         console.log(chalk.grey(">> "+what))
     }

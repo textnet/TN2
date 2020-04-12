@@ -10,7 +10,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     + change command key to Ctrl+Esc
     + BUG: on TransferUp need to refresh the plane
     + BUG: when someone enters the plane, GUI doesn't get an ENTER event
-    - BUG: when coming for the 2nd time — position is not stored
+    + BUG: when coming for the 2nd time — position is not stored
     - WrittenWord support
         - attempt `attempt{action="enter", dir="up"}`, `enter{dir="up"}`
         - surface `surface{}`

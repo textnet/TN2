@@ -43,7 +43,7 @@ export const handlers = {
         const thing = await B.things.load(update.id);
         if (update.isUp) {
             const lostPlaneId = thing.visitsStack.pop();
-            cl.verboseLog(`$Book({B.id()}) ${thing.id} pops from the stack «${lostPlaneId}» -> «${update.hostPlaneId}»`);
+            cl.verboseLog(B, `${thing.id} pops from the stack «${lostPlaneId}» -> «${update.hostPlaneId}»`);
             thing.lostPlaneId = lostPlaneId;
             thing.hostPlaneId = update.hostPlaneId;
         } else {
@@ -52,7 +52,7 @@ export const handlers = {
             // movement between limbo & not limbo doesn't add up to the stack
             if ((!isLimbo(update.hostPlaneId)) && 
                 (!isLimbo(thing.hostPlaneId) || (thing.lostPlaneId != update.hostPlaneId))) {
-                cl.verboseLog(`$Book({B.id()}) ${thing.id} push to stack «${thing.hostPlaneId}»`);
+                cl.verboseLog(B, `${thing.id} push to stack «${thing.hostPlaneId}»`);
                 thing.visitsStack.push(update.hostPlaneId)    
             }
         }

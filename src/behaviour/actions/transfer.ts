@@ -59,13 +59,12 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
     let thingId = action.thingId;
     const thingCopy = await B.copy(action.thingId, action.actorId);
     if (thingCopy) {
-        cl.verboseLog(`local: ${thing.id} on ${plane.id}`)
+        cl.verboseLog(B, `ENTER local ${thing.id} to «${plane.id}» @ ${visit.x} ${visit.y}`)
         thing = thingCopy;
     } else {
-        cl.verboseLog(`registerGuest: ${thing.id} on ${plane.id}`)
+        cl.verboseLog(B, `ENTER guest ${thing.id} to «${plane.id}» @ ${visit.x} ${visit.y}`)
         await B.registerGuest(thing.id);
     }
-    // console.log(`Book(${B.id()}) ${action.thingId} enters ${action.planeId}`);
     // update host
     await updates.update(B, {
         update:      updates.UPDATE.HOST,
@@ -73,7 +72,7 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
         id:          thingId,
         hostPlaneId: plane.id,
         isUp:        action.isUp,
-    } as updates.UpdateHostPlane) // here we will be updating
+    } as updates.UpdateHostPlane) 
     // place thing
     await actions.handlers.place(B, {
         action:   actions.ACTION.PLACE,
@@ -85,23 +84,22 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
         force:    false,
         isEnter:  true,
     } as actions.ActionPlace)
-    // emit event <- done while placing
-    // inspect(B.library, {id:action.planeId})
 }
 
 export async function leave(B: BookServer, action: actions.ActionLeave) {
     const plane = await B.planes.load(action.planeId);
-    const position: geo.Position = plane.things[action.thingId];
+    const position: geo.Position = deepCopy(plane.things[action.thingId]);
     delete plane.things[action.thingId];
     await B.planes.save(plane);
-    // console.log(`Book(${B.id()}) ${action.thingId} leaves ${action.planeId}`);
+    cl.verboseLog(B, `LEAVE ${action.thingId} from «${plane.id}» @ ${position.x} ${position.y}`)
     // update visit
     if (position) {
         await updates.update(B, {
             update: updates.UPDATE.VISITS,
             actorId: action.actorId,
+            planeId: action.planeId,
             id: action.thingId,
-            position: deepCopy(position)
+            position: position,
         } as updates.UpdateVisits)
     }
     // emit event
