@@ -3,26 +3,21 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-+ Enter / Leave
-    + attempt action
-    + process enter attempt
-    + transferUp action
-    + change command key to Ctrl+Esc
-    + BUG: on TransferUp need to refresh the plane
-    + BUG: when someone enters the plane, GUI doesn't get an ENTER event
-    + BUG: when coming for the 2nd time — position is not stored
-    + WrittenWord support
-        + attempt `attempt{action="enter", direction="up"}`, `enter{dir="up"}`
-        + transfer up `leave{}`
+- when teleporting, entering, or leaving, drop waypoints
+- BUG: when leaving by Cmd+Q — disconnect everyone!
+- BUG: when leaving by `exit` — exception??
+- BUG: unbind should not put the thing in limbo, if it wasn't there previously.
 - test limbo between two books
     - player goes offline while being in another book => disappears in limbo
     - player's book goes offline => player disappears in limbo
     - destination's book goes offline => player is transferred to limbo, create portal
     - destination's book goes online => (???)
     - player gets out of limbo, portal is lost.
-- when teleporting, entering, or leaving, drop waypoints
-- BUG: when leaving by Cmd+Q — disconnect everyone!
-- BUG: when leaving by `exit` — exception??
+- limbo portal
+    - sprite
+    - thing
+    - auto-create
+    - auto-cleanup
 
 ## Current Stage 11. Interbook and Limbo, also Enter/Leave
 + teleport command
@@ -34,22 +29,23 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 - test limbo-ing
 
 ## Stage 12. Control over things
-- written movers
-    - move_to
-    - move_by (duration)
-    - turn_to 
-    - halt
 - Push
-- Pick / Putdown = inventory!
-- Throw
+- Run
 - Update Properties
     - plane props: spawn, format
 - Update Physics: Thing, Plane
     - get plane physics
 - Update Constraints
 - Update Colors
+- Pick / Putdown = inventory!
+- Throw
 - Update Text
     - anima reboots when thing's text is changed (reacts on event of changing text)
+- written movers
+    - move_to
+    - move_by (duration)
+    - turn_to 
+    - halt
 - Seasonality events
 
 ## TODO: Document
