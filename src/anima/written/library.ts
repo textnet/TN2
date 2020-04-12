@@ -4,8 +4,10 @@
 
 import { debug } from "./library/debug"
 import { teleport } from "./library/teleport"
+import { leave } from "./library/leave"
 import * as get from "./library/get"
 import * as say from "./library/say"
+import * as attempt from "./library/attempt"
 
 import { event_on, event_off } from "./library/events"
 
@@ -29,12 +31,18 @@ export const supportedFunctions = {
     //
     "on":  { signature: false, /* artifact, event, role, handler */ f: event_on }, 
     "off": { signature: ["artifact", "event", "role", "key" ,], f: event_off },
-
+    //
     "teleport":    { signature: ["thing", "to" ], f: teleport },
-
+    "leave":       { signature: false,            f: leave },
+    //
     "say":         { signature: ["what", "loudness"], f: say.say },
     "shout":       { signature: ["what"], f: say.shout },
     "whisper":     { signature: ["what"], f: say.whisper },
+    //
+    "attempt":     { signature: ["action", "direction"], f: attempt.attempt },
+    "enter":       { signature: ["direction"], f: attempt.enter },
+    "push":        { signature: ["direction"], f: attempt.push },
+    "pickup":      { signature: ["direction"], f: attempt.pickup },
 
     // "update":        { signature: false,                   f: update        },
     // "self":          { signature: false,                   f: update        },
@@ -61,9 +69,11 @@ export const supportedEvents = [
                                  EVENT.ENTER,
                                  EVENT.LEAVE,
                                  EVENT.HEAR,
-                                 // "move", 
+                                 EVENT.ENTER,
+                                 EVENT.LEAVE,
+                                 EVENT.MOVE_FINISH,
+                                 EVENT.MOVE_START,
+                                 EVENT.PLACE,
                                  // "pickup", "putdown", 
-                                 // "enter", "leave",
                                  // "push", 
-                                 // "move_start", "move_stop",
                                ];

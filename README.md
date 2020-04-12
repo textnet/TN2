@@ -3,7 +3,7 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-- Enter / Leave
++ Enter / Leave
     + attempt action
     + process enter attempt
     + transferUp action
@@ -11,9 +11,9 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     + BUG: on TransferUp need to refresh the plane
     + BUG: when someone enters the plane, GUI doesn't get an ENTER event
     + BUG: when coming for the 2nd time — position is not stored
-    - WrittenWord support
-        - attempt `attempt{action="enter", dir="up"}`, `enter{dir="up"}`
-        - surface `surface{}`
+    + WrittenWord support
+        + attempt `attempt{action="enter", direction="up"}`, `enter{dir="up"}`
+        + transfer up `leave{}`
 - test limbo between two books
     - player goes offline while being in another book => disappears in limbo
     - player's book goes offline => player disappears in limbo
