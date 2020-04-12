@@ -21,6 +21,8 @@ export const handlers = {
     leave:      transfer.leave,
     transfer:   transfer.action,
     transferUp: transfer.transferUp,
+    toLimbo:    transfer.transferToLimbo,
+    fromLimbo:  transfer.transferFromLimbo,
     isGuest:    transfer.isGuest,
     place:      spatials.place,
     attempt:    attempt.action,
@@ -35,6 +37,8 @@ export const ACTION = {
     LEAVE: "leave",
     TRANSFER: "transfer", // and put in stack
     TRANSFER_UP: "transferUp", // in stack
+    TO_LIMBO: "toLimbo",
+    FROM_LIMBO: "fromLimbo",
     IS_GUEST: "isGuest",
     PLACE: "place",
     SAY: "say",
@@ -67,8 +71,9 @@ export interface ActionTransfer extends Action {
     thingId: string;
     isUp?: boolean; // is it up in stack
 }
-export interface ActionTransferUp extends Action {
-}
+export interface ActionTransferUp extends Action {}
+export interface ActionToLimbo    extends Action {}
+export interface ActionFromLimbo  extends Action {}
 export interface ActionIsGuest extends Action {
     thingId: string;
 }

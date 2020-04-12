@@ -10,24 +10,31 @@ import { LibraryServer } from "../model/library"
 import { waitPermission } from "../network/permission"
 import { createWindow } from "./window"
 
+let library: LibraryServer;
 
 function onReady() {
     waitPermission(function(){
-        const library = new LibraryServer();
+        library = new LibraryServer();
         library.start().then(()=>{
             commandline.init(library, {
-                exitHandler: ()=>{ library.finish().then(()=>{ app.quit() }) },
+                exitHandler: ()=>{ app.quit() },
                 gui: createWindow,
             });
         })
     })
 }
 
-function onQuit() {
+let _quitOnce: boolean = true;
+function onQuit(event) {
+    if (_quitOnce) {
+        event.preventDefault();
+        _quitOnce = false;
+        library.finish().then(()=>{ app.quit(); })
+    }
 }
 
 app.on('ready', () => onReady())
 app.on('window-all-closed', () => app.quit())
-app.on("quit", () => onQuit())
+app.on("before-quit", (e) => onQuit(e))
 
 

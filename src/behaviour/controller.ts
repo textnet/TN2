@@ -64,26 +64,16 @@ export class Controller {
         this.emitter.off(name, listener);
     }
 
+    wasInLimbo: boolean;
     async connect() {
         const thing = await this.B.things.load(this.actorId);
-        if (thing.hostPlaneId == thing.planes[PLANE.LIMBO]) {
-            let plane = await this.B.planes.load(thing.lostPlaneId);
-            if (plane) {
-                // 1. get out of limbo
-                await actions.action(this.B, { 
-                    action: actions.ACTION.LEAVE,
-                    actorId: this.actorId,
-                    thingId: this.actorId,
-                    planeId: thing.hostPlaneId,
-                } as actions.ActionLeave)
-                // 2. move to new plane
-                await actions.action(this.B, { 
-                    action: actions.ACTION.ENTER,
-                    actorId: this.actorId,
-                    thingId: this.actorId,
-                    planeId: plane.id,
-                } as actions.ActionEnter)
-            }            
+        this.wasInLimbo = thing.hostPlaneId == thing.planes[PLANE.LIMBO];
+        if (this.wasInLimbo) {
+            await actions.action(this.B, {
+                action:  actions.ACTION.FROM_LIMBO,
+                actorId: thing.id,
+                planeId: thing.hostPlaneId,
+            } as actions.ActionFromLimbo);
         }
         await this.B.bind(this)
     }
@@ -92,21 +82,13 @@ export class Controller {
             await this.B.unbind(this);
         }
         const thing = await this.B.things.load(this.actorId);
-        if (this.console || getBookId(thing.hostPlaneId) != this.B.data.id) {
-            // 1. get out of the plane
-            await actions.action(this.B, { 
-                action: actions.ACTION.LEAVE,
-                actorId: this.actorId,
-                thingId: this.actorId,
+        if ((this.console && this.wasInLimbo) ||                 // console found in Limbo
+            getBookId(thing.hostPlaneId) != this.B.data.id) {    // visiting other plane
+            await actions.action(this.B, {
+                action:  actions.ACTION.TO_LIMBO,
+                actorId: thing.id,
                 planeId: thing.hostPlaneId,
-            } as actions.ActionLeave)
-            // 2. move to limbo
-            await actions.action(this.B, { 
-                action: actions.ACTION.ENTER,
-                actorId: this.actorId,
-                thingId: this.actorId,
-                planeId: thing.planes[PLANE.LIMBO],
-            } as actions.ActionEnter)
+            } as actions.ActionToLimbo);            
         }
     }
 }

@@ -1,6 +1,6 @@
 import { BookServer } from "../../model/book"
-import { ThingData, PlaneData, SAY } from "../../model/interfaces"
-import { getBookId, createThingId, isLimbo } from "../../model/identity"
+import { ThingData, PlaneData, SAY, PLANE } from "../../model/interfaces"
+import { getBookId, createThingId, isLimbo, createPlaneId } from "../../model/identity"
 import { deepCopy } from "../../utils"
 import * as geo from "../../model/geometry"
 import * as updates from "../updates"
@@ -23,6 +23,24 @@ export async function transferUp(B: BookServer, action: actions.ActionTransferUp
             isUp: true,
         } as actions.ActionTransfer)
     }
+}
+
+export async function transferToLimbo(B: BookServer, action: actions.ActionToLimbo) {
+    await actions.action(B, {
+        action:  actions.ACTION.TRANSFER,
+        actorId: action.actorId,
+        thingId: action.actorId,
+        planeId: createPlaneId(PLANE.LIMBO, action.actorId),
+    } as actions.ActionTransfer)
+}
+export async function transferFromLimbo(B: BookServer, action: actions.ActionFromLimbo) {
+    const thing: ThingData = await B.things.load(action.actorId);
+    await actions.action(B, {
+        action:  actions.ACTION.TRANSFER,
+        actorId: action.actorId,
+        thingId: action.actorId,
+        planeId: thing.lostPlaneId,
+    } as actions.ActionTransfer)
 }
 
 export async function action(B: BookServer, action: actions.ActionTransfer) {
@@ -102,6 +120,13 @@ export async function leave(B: BookServer, action: actions.ActionLeave) {
             position: position,
         } as updates.UpdateVisits)
     }
+    // halt
+    await actions.action(B, {
+        action: actions.ACTION.HALT,
+        actorId: action.actorId,
+        thingId: action.thingId,
+        planeId: action.planeId,
+    } as actions.ActionHaltMovement)
     // emit event
     await events.emit(B, {
         event: events.EVENT.LEAVE,

@@ -3,10 +3,12 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-- when teleporting, entering, or leaving, drop waypoints
-- BUG: when leaving by Cmd+Q — disconnect everyone!
-- BUG: when leaving by `exit` — exception??
-- BUG: unbind should not put the thing in limbo, if it wasn't there previously.
++ BUG: when leaving by Cmd+Q — disconnect everyone!
++ BUG: when leaving by `exit` — exception??
++ BUG: unbind should not put the thing in limbo, if it wasn't there previously.
++ BUG: when closing non-observer GUI -> disconnect
++ BUG: when closing observer GUI -> disconnect but don't remove
++ when teleporting, entering, or leaving, drop waypoints
 - test limbo between two books
     - player goes offline while being in another book => disappears in limbo
     - player's book goes offline => player disappears in limbo

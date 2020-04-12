@@ -3,8 +3,9 @@ import { BookData, ConsoleData } from "./interfaces";
 import { Repository } from "../storage/repo";
 import { BookServer } from "./book"
 import { createFromTemplate, TEMPLATE_BOOK } from "./create"
-import { createBookId } from "./identity"
+import { createBookId, getBookId } from "./identity"
 import { ok, log, error, verboseLog } from "../commandline/commandline"
+import * as actions from "../behaviour/actions"
 
 
 export class LibraryServer {
@@ -76,7 +77,20 @@ export class LibraryServer {
             id: id || createBookId(),
             thingId: thingId,
         }
-        return this.consoles.save(data);
+        const bookId = getBookId(thingId);
+        const book = this.bookServers[bookId];
+        const thing = await book.things.load(thingId);
+        if (book) {
+            await actions.action(book, {
+                action:  actions.ACTION.TO_LIMBO,
+                actorId: thing.id,
+                planeId: thing.hostPlaneId,
+            } as actions.ActionToLimbo)
+            return this.consoles.save(data);    
+        } else {
+            error(`Can't create console for ${thingId} as it belongs to an unknown book!`);
+        }
+        
     }
     async destroyConsole(id: string) {
         return this.consoles.remove(id);
