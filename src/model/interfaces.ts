@@ -28,6 +28,7 @@ export interface ThingData {
     planes:  Record<string, string>;    // name:planeId
     visits?: Record<string, Position>; // position of the previous visit to planeIds.
     visitsStack?: string[]; // history of going deeper
+    _isLimboPortal?: boolean;
     API?: string[];
 }
 
@@ -111,11 +112,12 @@ export const API = [ "name",
 
 
 export const PLANE = {
-    LIMBO:     "limbo",    // Limbo plane where all lost things are.
-    MATERIAL:  "material", // Material plane that everybody starts with. See: Democritus
-    THOUGHT:   "thought",  // Thought plane is where thinking mechanics happens. See: Schedrovitski.
+    LIMBO:     "limbo",      // Limbo plane where all lost things are.
+    MATERIAL:  "material",   // Material plane that everybody starts with. See: Democritus
+    THOUGHT:   "thought",    // Thought plane is where thinking mechanics happens. See: Schedrovitski.
 }
 export const PLANE_DEFAULT = PLANE.MATERIAL;
+export const LIMBO_PORTAL_TEMPLATE  = "<LimboPortal>"
 
 export const COLORS = {
     TEXT:  "text",

@@ -1,7 +1,7 @@
 import { BookServer } from "../../model/book"
 import { deepCopy } from "../../utils"
 import { ThingData, PlaneData, CONSTRAINTS, checkConstraint, ThingConstraint } from "../../model/interfaces"
-import { switchPlaneId } from "../../model/identity"
+import { switchPlaneId, isLimboPortalId } from "../../model/identity"
 import * as geo from "../../model/geometry"
 import * as updates from "../updates"
 import * as events from "../events"
@@ -32,12 +32,20 @@ export async function action(B: BookServer, action: actions.ActionAttempt) {
     switch(action.attempt) {
         // ----------------------------------------------------------------
         case actions.ATTEMPT.ENTER: // do transfer
-            return await actions.action(B, {
-                action: actions.ACTION.TRANSFER,
-                actorId: actor.id,
-                planeId: switchPlaneId(plane.id, next.id),
-                thingId: actor.id,
-            } as actions.ActionTransfer);
+            if (isLimboPortalId(next.id)) {
+                return await actions.action(B, {
+                    action:  actions.ACTION.FROM_LIMBO,
+                    actorId: actor.id,
+                    planeId: plane.id,
+                } as actions.ActionFromLimbo);
+            } else {
+                return await actions.action(B, {
+                    action:  actions.ACTION.TRANSFER,
+                    actorId: actor.id,
+                    planeId: switchPlaneId(plane.id, next.id),
+                    thingId: actor.id,
+                } as actions.ActionTransfer);                
+            }
         // ----------------------------------------------------------------
     }
 

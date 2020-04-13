@@ -3,19 +3,37 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-+ REFACTOR: gui/server event handlers into self-registration
-+ REFACTOR: gui/renderer event handlers into self-registration
-- test limbo between two books
-    - player goes offline while being in another book => disappears in limbo
-    - player's book goes offline => player disappears in limbo
-    - destination's book goes offline => player is transferred to limbo, create portal
-    - destination's book goes online => (???)
-    - player gets out of limbo, portal is lost.
-- limbo portal
-    - sprite
-    - thing
-    - auto-create
-    - auto-cleanup
++ BUG: deeper copy of things is broken
++ limbo portal
+    + sprite
+    + thing
+    + remove limbo from physics
+    + remove limbo from anima
++ implementation (NOT TESTED)
+    + log-on -> check lostPlane's book
+        + if offline: stay in limbo, turn portal `UP`
+        + if online:  get out of limbo
+    + log-off -> go to limbo
+    + book goes offline ->
+        + send to limbo
+        + turn portal `UP`
+    + book goes online ->
+        + turn portal `DOWN`
+    + enter portal => go out of limbo
+- test sequence
+    - create two books: Indiana, Matrix = ... 
+    - Observe items there               = (two windows)
+    - create player P1 in Indiana       = ...
+    - bind P1                           = ...
+    - WW: teleport P1 to Matrix         = player in Matrix
+    - offline Matrix                    = player is in Limbo, portal is UP
+        - try to go through the portal  = nothing happens
+    - online Matrix                     = player is in Limbo, portal is DOWN
+        - try to go through the portal  = back to Matrix
+    - offline Matrix, unbind P1         = ...
+    - bind P1                           = same as above
+    - unbind P1, online Matrix, bind P1 = player in Matrix
+
 
 ## Current Stage 11. Interbook and Limbo, also Enter/Leave
 + teleport command
@@ -23,7 +41,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 + transfer events from the remote book to the local anima
 + `attempt` framework
 + enter/leave with WrittenWord support
-- limbo portals
++ limbo portals
 - test limbo-ing
 
 ## Stage 12. Control over things

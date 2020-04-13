@@ -4,15 +4,17 @@ import { Repository } from "../storage/repo"
 import * as network from "../network/discovery"
 import { log, error, ok, verboseLog } from "../commandline/commandline"
 import { pushDefaults, nonce } from "../utils"
-import { getBookId, createBookId, createPlaneId } from "./identity"
+import { getBookId, createBookId, createPlaneId, isLimboPortalId, getLimboHost } from "./identity"
 import { Controller, CONTROLLER } from "../behaviour/controller"
 import * as actions from "../behaviour/actions"
 import * as events from "../behaviour/events"
 import * as updates from "../behaviour/updates"
 import * as anima from "../anima/animate"
+import * as geo from "./geometry"
 import { createFromThing } from "./create"
 import { applyPhysics } from "../behaviour/physics"
 import { Waypoint } from "../behaviour/actions/movement"
+import { turnLimboPortal } from "../behaviour/actions/transfer"
 
 
 // serves a book
@@ -33,7 +35,7 @@ export class BookServer {
 
     contains(id: string|PlaneData|ThingData) {
         if (id["id"]) return this.contains(id["id"]);
-        return getBookId(id as string) == this.data.id;
+        return getBookId(id as string) == this.id();
     }
     id() {
         return this.data.id;
@@ -81,10 +83,9 @@ export class BookServer {
         const thing = await this.things.load(thingId);
         await anima.animate(this, thing);
     }
-    async copy(thingId:string, actorId?:string) {
+    async getOrCopy(thingId: string, actorId: string) {
         const thing = await this.things.load(thingId);
         const actor = await this.things.load(actorId);
-        if (this.contains(thingId)) return thing;
         const isGuest = await actions.action(this, {
             action:  actions.ACTION.IS_GUEST,
             actorId: actorId || thingId,
@@ -94,8 +95,11 @@ export class BookServer {
         if (isGuest) {
             return undefined;
         } else {
-            return await createFromThing(this, thingId);
-        }
+            return await this.copy(thingId);
+        }        
+    }
+    async copy(thingId:string) {
+        return await createFromThing(this, thingId);
     }
 
     async registerGuest(thingId: string) {
@@ -194,7 +198,14 @@ export class BookServer {
         await this.sendMessage(targetBookId, message);
     }
 
-    async receiveConnection(peerBookId: string) {}
+    async receiveConnection(peerBookId: string) {
+        const things = await this.things.all();
+        for (let thingId in things) {
+            if (isLimboPortalId(thingId)) {
+                await turnLimboPortal(this, getLimboHost(thingId), "DOWN");
+            }
+        }
+    }
     async receiveDisconnect(peerBookId: string) {}
     async receiveMessage(fromBookId: string, fullPayload: network.FullPayload) {
         const that = this;

@@ -5,6 +5,8 @@ import { deepCopy } from "../utils"
 import { ThingData, PlaneData } from "../model/interfaces"
 import { BookServer } from "../model/book"
 import { Anima } from "../anima/anima"
+import { isLimbo, isLimboPortalId } from "../model/identity"
+
 import * as actions from "./actions"
 import * as events from "./events"
 import * as movement from "./actions/movement"
@@ -94,8 +96,12 @@ export async function applyPhysics(B: BookServer, timeDelta:number) {
 }
 
 export async function loadPlane(B: BookServer, world: World, planeId: string) {
-    world.planes[planeId] = await B.planes.load(planeId);
-    return world.planes[planeId];
+    const plane = await B.planes.load(planeId);
+    // NB: Physics doesn't work in Limbo.
+    if (!isLimbo(planeId)) {
+        world.planes[planeId] = plane;        
+    }
+    return plane;
 }
 export async function loadThing(B: BookServer, world: World, thingId: string) {
     world.things[thingId] = await B.things.load(thingId);

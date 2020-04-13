@@ -9,7 +9,6 @@ import { reg } from "./setup"
 
 reg(msg.RENDER.ENTER, (game: Game, data: msg.Enter) => {
     const actor = createActor(game, data.thing);
-    console.log(data)
 })
 
 reg(msg.RENDER.READY, (game: Game, data: msg.MessageReady) => {

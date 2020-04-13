@@ -32,10 +32,6 @@ export class GuiConsole extends Console {
     }
 
     async send(channel: string, message: msg.Message) {
-        if (this.window.isDestroyed()) {
-            cl.error("Window is destroyed!")
-            console.log(this.B.controllers.length)
-        }
         this.window.webContents.send(channel, message);
     }
 

@@ -6,7 +6,7 @@ import * as print from "../../commandline/print"
 import { strip, nonce } from "../../utils"
 import { config } from "../../config"
 import * as events from "../../behaviour/events"
-import { getThingId } from "../../model/identity"
+import { getThingId, isLimbo } from "../../model/identity"
 
 import { getChunks } from "./parser"
 import { fengari_init, fengari_load, fengari_call, fengari_free } from "./api"
@@ -147,10 +147,13 @@ export class WrittenAnima extends Anima {
 async function extractSource(B: BookServer, thing: ThingData) {
     let resultList = []
     for (let planeName in thing.planes) {
-        const plane = await B.planes.load(thing.planes[planeName]);
-        const chunks = getChunks(plane.text);
-        for (let chunk of chunks) {
-            resultList.push(chunk.data);
+        // NB: Limbo is not a part of the Written Word
+        if (!isLimbo(thing.planes[planeName])) {
+            const plane = await B.planes.load(thing.planes[planeName]);
+            const chunks = getChunks(plane.text);
+            for (let chunk of chunks) {
+                resultList.push(chunk.data);
+            }            
         }
     }
     return resultList.join("\n")

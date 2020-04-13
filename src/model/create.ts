@@ -1,11 +1,11 @@
 import * as crypto from "crypto";
 import { BookData, ThingData, PlaneData, ThingTemplate, 
          fixThingDefaults, fixPlaneDefaults,
-         PLANE_DEFAULT, PLANE, SPAWN_DEFAULT } from "./interfaces"
+         PLANE_DEFAULT, PLANE, SPAWN_DEFAULT, LIMBO_PORTAL_TEMPLATE } from "./interfaces"
 import { LibraryServer } from "./library"
 import { BookServer } from "./book"
 import { pushDefaults, deepCopy } from "../utils"
-import { createThingId, createPlaneId, stripBookId } from "./identity"
+import { createThingId, createPlaneId, stripBookId, getLimboPortalId, isLimboPortalId } from "./identity"
 import * as actions from "../behaviour/actions"
 
 
@@ -18,6 +18,7 @@ import * as tSomething from "../things/something"
 import * as tChest from "../things/chest"
 import * as tPiano from "../things/piano"
 import * as tJones from "../things/jones"
+import * as tLimboPortal from "../things/limbo_portal"
 
 export function registerAllTemplates() {
     registerTemplate(tBook.template);
@@ -25,6 +26,7 @@ export function registerAllTemplates() {
     registerTemplate(tChest.template);
     registerTemplate(tPiano.template);
     registerTemplate(tJones.template);
+    registerTemplate(tLimboPortal.template);
 }
 export function registerTemplate(t: ThingTemplate) {
     templateRegistry[t.name] = t;
@@ -62,7 +64,6 @@ export async function createFromThing(B: BookServer, fromId: string, id?: string
                 if (innerId == fromId) {
                     plane.things[thingId] = plane.things[innerId];
                 } else {
-                    console.log("go deeper", innerId)
                     const innerCopy = await B.copy(innerId);
                     innerCopy.hostPlaneId = plane.id;
                     await B.things.save(innerCopy);
@@ -97,6 +98,16 @@ export async function createFromTemplate(B: BookServer, templateName?: string, i
         plane.id = planeId;
         plane.ownerId = thingId;
         fixPlaneDefaults(plane);
+        //
+        if (planeName == PLANE.LIMBO && templateName != LIMBO_PORTAL_TEMPLATE) {
+            const limboPortal = await createFromTemplate(B, LIMBO_PORTAL_TEMPLATE, 
+                                                         stripBookId(getLimboPortalId(thing.id)));
+            plane.things[limboPortal.id] = SPAWN_DEFAULT;
+            limboPortal.hostPlaneId = plane.id;
+            limboPortal.lostPlaneId = plane.id;
+            await B.things.save(limboPortal);
+        }
+        //
         await B.planes.save(plane);
         thing.planes[planeName] = planeId;
     }

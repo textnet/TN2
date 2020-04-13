@@ -1,6 +1,7 @@
 import * as crypto from "crypto";
 import { BookServer } from "./book"
-import { BookData, ThingData, PlaneData, PLANE } from "./interfaces"
+import { BookData, ThingData, PlaneData, PLANE, LIMBO_PORTAL_TEMPLATE } from "./interfaces"
+
 
 export function getBookId(id: string) {
     return id.split(".")[0]
@@ -23,12 +24,22 @@ export function extractPlaneName(planeId: string) {
     const parts = planeId.split(".");
     return parts[ parts.length-1 ];
 }
-
 export function isInBook(id: string, bookId: string) {
     return getBookId(id) == bookId;
 }
 export function stripBookId(id: string) {
     return id.substr(getBookId(id).length+1);
+}
+export function getLimboPortalId(id: string) {
+    const thingId = getThingId(id);
+    const limboId = thingId+LIMBO_PORTAL_TEMPLATE;
+    return limboId;
+}
+export function isLimboPortalId(id: string) {
+    return (id.indexOf(LIMBO_PORTAL_TEMPLATE) == id.length - LIMBO_PORTAL_TEMPLATE.length);
+}
+export function getLimboHost(limboPortalId: string) {
+    return limboPortalId.substr(0, limboPortalId.indexOf(LIMBO_PORTAL_TEMPLATE));
 }
 
 

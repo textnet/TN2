@@ -1,6 +1,6 @@
 import { BookServer } from "../../model/book"
 import { ThingData, PlaneData, SAY, PLANE } from "../../model/interfaces"
-import { getBookId, createThingId, isLimbo, createPlaneId } from "../../model/identity"
+import { getBookId, createThingId, isLimbo, createPlaneId, getLimboPortalId, isLimboPortalId } from "../../model/identity"
 import { deepCopy } from "../../utils"
 import * as geo from "../../model/geometry"
 import * as updates from "../updates"
@@ -26,6 +26,7 @@ export async function transferUp(B: BookServer, action: actions.ActionTransferUp
 }
 
 export async function transferToLimbo(B: BookServer, action: actions.ActionToLimbo) {
+    await turnLimboPortal(B, action.actorId, "UP");
     await actions.action(B, {
         action:  actions.ACTION.TRANSFER,
         actorId: action.actorId,
@@ -33,15 +34,40 @@ export async function transferToLimbo(B: BookServer, action: actions.ActionToLim
         planeId: createPlaneId(PLANE.LIMBO, action.actorId),
     } as actions.ActionTransfer)
 }
+
 export async function transferFromLimbo(B: BookServer, action: actions.ActionFromLimbo) {
     const thing: ThingData = await B.things.load(action.actorId);
-    await actions.action(B, {
-        action:  actions.ACTION.TRANSFER,
-        actorId: action.actorId,
-        thingId: action.actorId,
-        planeId: thing.lostPlaneId,
-    } as actions.ActionTransfer)
+    const lostPlane = await B.planes.load(thing.lostPlaneId);
+    if (lostPlane) {
+        // plane is available, going there
+        await actions.action(B, {
+            action:  actions.ACTION.TRANSFER,
+            actorId: action.actorId,
+            thingId: action.actorId,
+            planeId: thing.lostPlaneId,
+        } as actions.ActionTransfer)
+    } else {
+        // plane is not available, need to switch the limbo portal to "UP"
+        await turnLimboPortal(B, thing.id, "UP");
+    }
 }
+
+export async function turnLimboPortal(B: BookServer, actorId: string, direction: string) {
+    const limboId = createPlaneId(PLANE.LIMBO, actorId)
+    const limboPortalId = getLimboPortalId(actorId);
+    const limbo = await B.planes.load(limboId);
+    const position = deepCopy(limbo.things[limboPortalId]);
+    position.direction = geo.toDir(direction);
+    await actions.action(B, {
+        action:   actions.ACTION.PLACE,
+        actorId:  actorId,
+        thingId:  limboPortalId,
+        planeId:  limboId,
+        position: position,
+        force: true,
+    } as actions.ActionPlace);
+}
+
 
 export async function action(B: BookServer, action: actions.ActionTransfer) {
     const thing: ThingData = await B.things.load(action.thingId);
@@ -75,7 +101,7 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
     let   thing = await B.things.load(action.thingId);
     const visit = action.position || thing.visits[plane.id] || plane.spawn;
     let thingId = action.thingId;
-    const thingCopy = await B.copy(action.thingId, action.actorId);
+    const thingCopy = await B.getOrCopy(action.thingId, action.actorId);
     if (thingCopy) {
         cl.verboseLog(B, `ENTER local ${thing.id} to «${plane.id}» @ ${visit.x} ${visit.y}`)
         thing = thingCopy;
