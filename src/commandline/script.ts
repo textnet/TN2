@@ -34,7 +34,7 @@ create console P1 Indiana.Player
 -- bind P1
 -- unbind
 
-offline Indiana
+-- offline Indiana
 `;
 
 const setupWritten = `

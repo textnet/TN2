@@ -5,24 +5,18 @@ import * as interop from "./send"
 import * as ex from "excalibur"
 import { ThingActor } from "../actors/thing"
 import { COLORS, COLORS_DEFAULT } from "../../model/interfaces"
+import { reg } from "./setup"
 
-export function enterActor(game: Game, data: msg.Enter) {
+reg(msg.RENDER.ENTER, (game: Game, data: msg.Enter) => {
     const actor = createActor(game, data.thing);
-}
+    console.log(data)
+})
 
-function createActor(game: Game, thing: msg.ThingRenderData) {
-    const actor = new ThingActor(thing);
-    const scene = game.gameScene();
-    scene.add(actor);
-    scene.thingActors[thing.id] = actor;
-    return actor;
-}
-
-export function readyToPlay(game: Game, data: msg.MessageReady) {
+reg(msg.RENDER.READY, (game: Game, data: msg.MessageReady) => {
     game.isReadyToPlay = true;
-}
+})
 
-export function enterPlane(game: Game, data: msg.EnterPlane) {
+reg(msg.RENDER.ENTER_PLANE, (game: Game, data: msg.EnterPlane) => {
     // 1. reset scene
     const oldScene = game.gameScene();
     if (oldScene) game.removeScene(oldScene);
@@ -65,12 +59,23 @@ export function enterPlane(game: Game, data: msg.EnterPlane) {
     scene.camera.addStrategy(
         new RadiusAroundActorStrategy(playerActor)
     );    
-
     // 6. Go!
     updateSceneFromPlane(scene, data.plane);
     game.start();
-}
+})
 
+
+
+
+// --- helpers ---
+
+function createActor(game: Game, thing: msg.ThingRenderData) {
+    const actor = new ThingActor(thing);
+    const scene = game.gameScene();
+    scene.add(actor);
+    scene.thingActors[thing.id] = actor;
+    return actor;
+}
 
 function updateSceneFromPlane(scene: GameScene, data: msg.PlaneRenderData) {
     scene.planeData = data;

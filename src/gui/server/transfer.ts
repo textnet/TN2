@@ -5,8 +5,9 @@ import * as msg     from "../messages"
 import * as events  from "../../behaviour/events"
 import * as actions from "../../behaviour/actions"
 
+import { reg } from "./setup"
 
-export async function transferUp(gui: GuiConsole, message: msg.Attempt) {
+reg(msg.SERVER.TRANSFER_UP, async (gui: GuiConsole, message: msg.TransferUp)=>{
     const B = gui.anima.B;
     const animaThing = await B.things.load(gui.anima.thingId);
     await actions.action(B, {
@@ -14,5 +15,5 @@ export async function transferUp(gui: GuiConsole, message: msg.Attempt) {
         actorId:  animaThing.id,
         planeId:  animaThing.hostPlaneId,
     } as actions.ActionTransferUp);
-}
+})
 

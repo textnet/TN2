@@ -1,21 +1,17 @@
 import { Game, GameScene } from "../game"
 import * as msg from "../messages"
-import * as interop from "./send"
-import * as ex from "excalibur"
-import { ThingActor } from "../actors/thing"
-import { COLORS, COLORS_DEFAULT } from "../../model/interfaces"
 import * as sprites from "../../model/sprites"
+import { reg } from "./setup"
 
-
-export function place(game: Game, data: msg.Place) {
+reg(msg.RENDER.PLACE, (game: Game, data: msg.Place)=>{
     const scene = game.gameScene();
     if (!scene.thingActors) return;
     if (scene.thingActors[data.thingId]) {
         scene.thingActors[data.thingId].repositionFromServer(game, data.position);
     }
-}
+})
 
-export function moving(game: Game, data: msg.Move) {
+reg(msg.RENDER.MOVE, (game: Game, data: msg.Move)=>{
     const scene = game.gameScene();
     if (!scene.thingActors) return;
     if (scene.thingActors[data.thingId]) {
@@ -26,5 +22,5 @@ export function moving(game: Game, data: msg.Move) {
         }
         scene.thingActors[data.thingId].stateFromServer(game, state);
     }
-}
+})
 

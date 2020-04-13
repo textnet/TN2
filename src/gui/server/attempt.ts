@@ -5,8 +5,9 @@ import * as msg     from "../messages"
 import * as events  from "../../behaviour/events"
 import * as actions from "../../behaviour/actions"
 
+import { reg } from "./setup"
 
-export async function attemptAction(gui: GuiConsole, message: msg.Attempt) {
+reg(msg.SERVER.ATTEMPT, async(gui: GuiConsole, message: msg.Attempt)=>{
     const B = gui.anima.B;
     const animaThing = await B.things.load(gui.anima.thingId);
     await actions.action(B, {
@@ -16,5 +17,5 @@ export async function attemptAction(gui: GuiConsole, message: msg.Attempt) {
         direction: message.direction,
         attempt: message.attempt,
     } as actions.ActionAttempt);
-}
+})
 

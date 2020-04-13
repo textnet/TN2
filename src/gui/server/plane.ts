@@ -4,8 +4,9 @@ import { subscribeOnPlane } from "./subscribe"
 import * as cl from "../../commandline/commandline"
 
 import * as msg from "../messages"
+import { reg } from "./setup"
 
-export async function loadPlane(gui: GuiConsole, args) {
+reg(msg.SERVER.PLANE, async(gui: GuiConsole, args)=>{
     cl.verboseLog(`GUI(${gui.id}): loadPlane.`);
     const B = gui.anima.B;
     const animaThing = await B.things.load(gui.anima.thingId);
@@ -23,4 +24,4 @@ export async function loadPlane(gui: GuiConsole, args) {
         plane: await msg.renderPlaneData(B, hostPlane),
         things: thingsData,
     } as msg.EnterPlane);
-}
+})
