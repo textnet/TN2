@@ -17,6 +17,7 @@ export class Console {
         this.id = consoleId;
         this.isObserver = !consoleId;
     }
+    isBound: boolean;
     async bind(thingId?: string)   {
         if (!thingId) {
             thingId = (await this.B.library.loadConsole(this.id)).thingId;
@@ -27,14 +28,17 @@ export class Console {
         await this.anima.animate(ANIMA.PERMANENT);
         await this.anima.prepareMemory();
         this.anima.controller.connectConsole(this);    
+        this.isBound = true;
         cl.ok(`Console(${this.id}) bound to: ${thingId}`)
     }
     async unbind() {
-        if (this.anima) {
-            await this.anima.terminate();
+        if (this.isBound) {
+            this.isBound = false;
+            await this.anima.controller.disconnect();
+            cl.ok(`Console(${this.id}) released.`) 
+            return true;
         }
-        this.anima = undefined;
-        cl.ok(`Console(${this.id}) released.`) 
+        return false;
     }
     getAnima() { return this.anima; }
 }

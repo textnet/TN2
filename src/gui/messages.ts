@@ -1,11 +1,9 @@
 import { BookServer } from "../model/book"
-import * as model   from "../model/interfaces"
-import * as sprites from "../model/sprites"
-import * as physics from "../model/physics"
-import * as geo     from "../model/geometry"
-import * as actions from "../behaviour/actions"
-
-
+import * as model    from "../model/interfaces"
+import * as sprites  from "../model/sprites"
+import * as physics  from "../model/physics"
+import * as geo      from "../model/geometry"
+import * as attempts from "../behaviour/attempts"
 
 // what should server do (messages sent by renderer)
 export const SERVER = {
@@ -14,11 +12,11 @@ export const SERVER = {
     MOVE_START:  "startMoving",
     MOVE_FINISH: "stopMoving",
     PLACE:       "reposition",
-    ATTEMPT:     "attempt", // attempt different actions, see below
+    ATTEMPT:     "attempt",    // attempt different actions, see below
     TRANSFER_UP: "transferUp", // go up in the stack
 }
 
-export const ATTEMPT = actions.ATTEMPT;
+export const ATTEMPT = attempts.ATTEMPT;
 
 // what should renderer do (messages sent by server)
 export const RENDER = {
@@ -27,11 +25,15 @@ export const RENDER = {
     MOVE:  "move",
     LEAVE: "leave",
     ENTER: "enter",
+    READY: "ready",
 }
 
 export interface Message {
     animaThingId?: string; // used to tell who the player is
     event?:   string;   
+}
+export interface MessageReady extends Message {
+    isReady: boolean;
 }
 export interface MessageLog extends Message {
     data: any;

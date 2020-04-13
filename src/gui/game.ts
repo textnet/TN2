@@ -7,8 +7,9 @@
 import * as ex from "excalibur";
 import { ipcRenderer } from "electron";
 import { config } from "../config"
-import * as msg from "./messages"
 import { ThingActor } from "./actors/thing"
+import * as interop from "./renderer/send"
+import * as msg from "./messages"
 
 /**
  * Extension of the Excalibur engine that initialises it
@@ -16,16 +17,18 @@ import { ThingActor } from "./actors/thing"
  */
 export class Game extends ex.Engine {
     id: string;
+    isReadyToPlay: boolean;
+    interopListeners: Record<string,any>;
     constructor() {
         super({
             width: config.gui.width,
             height: config.gui.height,
         });
+        this.interopListeners = {};
     }
     bind(id: string) {
         this.id = id;
     }
-
     gameSceneName() { return "plane" }
     gameScene()     { return this.scenes[this.gameSceneName()] as GameScene; }
 
@@ -39,6 +42,17 @@ export class GameScene extends ex.Scene {
     things?: Record<string, msg.ThingRenderData>;
     thingActors?: Record<string, ThingActor>;
     environmentActors?: Record<string, ex.Actor>;
+}
+
+export function startPlaying(game: Game) {
+    const check = ()=>{
+        if (game.isReadyToPlay) {
+            interop.loadPlane();
+        } else {
+            setTimeout(check, 100);
+        }
+    }
+    check();
 }
 
 

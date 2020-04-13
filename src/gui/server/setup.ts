@@ -8,31 +8,44 @@ import * as move from "./move"
 import * as attempt from "./attempt"
 import * as transfer from "./transfer"
 
-let monitoredChannels = [
-    // "log",
-]
+// TODO refactor to remove once();
+let listeners: Record<string, any>;
+function once() {
+    registerServerListener(msg.SERVER.PLANE,       plane.loadPlane);
+    registerServerListener(msg.SERVER.PLACE,       move.reposition);
+    registerServerListener(msg.SERVER.ATTEMPT,     attempt.attemptAction);
+    registerServerListener(msg.SERVER.TRANSFER_UP, transfer.transferUp);
+    registerServerListener(msg.SERVER.MOVE_START,  move.startMoving);
+    registerServerListener(msg.SERVER.MOVE_FINISH, move.stopMoving);
+}
+once();
+export function registerServerListener(name: string, listener) {
+    listeners = listeners || {};
+    listeners[name] = listener;
+}
 
 export function setup(gui: GuiConsole) {
-    for (let c of monitoredChannels) {
-        ipcMain.on(c, (event, args) => {
-            console.log(`-> SERVER.${c}`, args)
-        } )
-    }
     function process(handler) {
         return function (event, args) {
+            console.log("process", event, args)
             if (args.consoleId == gui.id) {
                 handler(gui, args.payload)    
             }
         }
     }
-    // bindings
-    ipcMain.on(msg.SERVER.LOG,          process(log));
-    ipcMain.on(msg.SERVER.PLANE,        process(plane.loadPlane));
-    ipcMain.on(msg.SERVER.PLACE,        process(move.reposition));
-    ipcMain.on(msg.SERVER.ATTEMPT,      process(attempt.attemptAction));
-    ipcMain.on(msg.SERVER.TRANSFER_UP,  process(transfer.transferUp));
-    ipcMain.on(msg.SERVER.MOVE_START,   process(move.startMoving));
-    ipcMain.on(msg.SERVER.MOVE_FINISH,  process(move.stopMoving));
+    gui.renderListeners = gui.renderListeners || {};
+    for (let name in listeners) {
+        gui.renderListeners[name] = process(listeners[name]);
+        ipcMain.on(name, gui.renderListeners[name]);
+    }
+}
+
+export function done(gui: GuiConsole) {
+    gui.renderListeners = gui.renderListeners || {};
+    for (let name in gui.renderListeners) {
+        ipcMain.off(name, gui.renderListeners[name]);
+    }
+    gui.renderListeners = undefined;
 }
 
 

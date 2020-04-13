@@ -21,12 +21,11 @@ function setupServer() {
             library.start().then(()=>{
                 commandline.init(library, {
                     exitHandler: async function(){ await library.finish(); await process.exit() },
-                    gui: ()=>{ commandline.error("GUI consoles are not supported in headless mode.") }
+                    gui: async()=>{ commandline.error("GUI consoles are not supported in headless mode.") }
                 });    
             })           
         // })
     });    
 }
-
 
 setupServer();

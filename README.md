@@ -3,9 +3,11 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-- when book goes offline, all her consoles should be closed
-    - close each console found
-    - close all observers
+- REFACTOR: gui/server event handlers into self-registration
+- REFACTOR: gui/renderer event handlers into self-registration
++ when book goes offline, all her consoles should be closed
+    + close each console found
+    + close all observers
 - test limbo between two books
     - player goes offline while being in another book => disappears in limbo
     - player's book goes offline => player disappears in limbo

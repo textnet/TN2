@@ -27,18 +27,13 @@ export async function unbind() {
 
 export async function gui(B: BookServer, consoleId: string) {
     const gui = new GuiConsole(B, consoleId);
-    await gui.bind();        
-    const window = cl.getConfig().gui(gui);
-    if (window) {
-        gui.attach(window);
-    }
+    await gui.bind(); 
+    await gui.openWindow();
 }
 
 export async function observe(B: BookServer, thingId: string) {
     const gui = new GuiConsole(B);
     await gui.bind(thingId);
-    const window = cl.getConfig().gui(gui);
-    if (window) {
-        gui.attach(window);
-    }
+    await gui.openWindow();
 }
+

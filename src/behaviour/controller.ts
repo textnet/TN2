@@ -65,6 +65,7 @@ export class Controller {
     }
 
     wasInLimbo: boolean;
+    isConnected: boolean;
     async connect() {
         const thing = await this.B.things.load(this.actorId);
         this.wasInLimbo = thing.hostPlaneId == thing.planes[PLANE.LIMBO];
@@ -76,8 +77,11 @@ export class Controller {
             } as actions.ActionFromLimbo);
         }
         await this.B.bind(this)
+        this.isConnected = true;
     }
     async disconnect(unbound?: boolean) {
+        if (!this.isConnected) return;
+        this.isConnected = false;
         if (unbound != CONTROLLER.UNBOUND) { 
             await this.B.unbind(this);
         }
@@ -90,8 +94,8 @@ export class Controller {
                 planeId: thing.hostPlaneId,
             } as actions.ActionToLimbo);
         }
-        // TODO terminate animas if it is not coming from terminating animas
-        // TODO terminate console if it is not coming from terminating console
+        if (this.console) await this.console.unbind();
+        if (this.anima)   await this.anima.terminate();
     }
 }
 

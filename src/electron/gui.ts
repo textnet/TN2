@@ -6,7 +6,7 @@
 import * as ex from "excalibur";
 import * as jquery from "jquery";
 import { ipcRenderer } from "electron";
-import { Game, GameScene } from "../gui/game"
+import { Game, GameScene, startPlaying } from "../gui/game"
 import { MenuScene } from "../gui/menu"
 import { config } from "../config"
 import * as interop from "../gui/renderer/send"
@@ -25,7 +25,11 @@ export function runGame() {
     clientInterop.interopSetup(game);
     game.addScene("menu",               new MenuScene(game));
     game.addScene(game.gameSceneName(), new GameScene(game)); 
-    game.goToScene("menu");
+    if (interop.isObserver()) {
+        startPlaying(game);
+    } else {
+        game.goToScene("menu");    
+    }
     game.start();
 }
 
@@ -42,5 +46,4 @@ function baseCSS() {
 }
 
 runGame();
-
 

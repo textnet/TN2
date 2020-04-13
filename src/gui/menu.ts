@@ -3,7 +3,7 @@
  */
 import * as ex from "excalibur";
 import { config } from "../config"
-import * as interop from "./renderer/send"
+import { Game, startPlaying } from "./game"
 
 /** 
  * Excalibur Scene for menu
@@ -34,12 +34,12 @@ export class MenuScene extends ex.Scene {
 
 export class MenuStart extends ex.Label {
     _done: boolean;
-    update(engine, delta) {
+    update(engine: Game, delta) {
         super.update(engine, delta);
         if (this._done) return;
         if (config.debug.skipTitle || engine.input.keyboard.wasReleased(ex.Input.Keys.Space)) {
             this._done = true;
-            interop.loadPlane();
+            startPlaying(engine);
         }
     }
 }

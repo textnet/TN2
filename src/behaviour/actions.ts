@@ -6,6 +6,7 @@ import * as network from "../network/discovery"
 import * as geo from "../model/geometry"
 import * as updates from "./updates"
 import * as events from "./events"
+import * as attempts from "./attempts"
 import * as cl from "../commandline/commandline"
 import { print } from "../commandline/print"
 
@@ -48,11 +49,7 @@ export const ACTION = {
     HALT: "halt",
 }
 
-export const ATTEMPT = {
-    ENTER:   "enter",
-    PUSH:    "push",
-    PICKUP:  "pickup",
-}
+export const ATTEMPT = attempts.ATTEMPT;
 
 export interface Action {
     action: string;

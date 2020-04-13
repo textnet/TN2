@@ -14,6 +14,7 @@ export function setup() {
     register("online",  onlineBook)
     register("offline", offlineBook)
     register("books", listBooks)
+    register("controllers", controllers);
 
     register("create console", createConsole)
     register("destroy console", destroyConsole)
@@ -102,6 +103,23 @@ export async function listBooks(library: LibraryServer) {
     const servers = library.bookServers;
     for (let id in servers) {
         logObj(servers[id].data, (servers[id]._online?"ONLINE":"offline"));
+    }
+}
+export async function controllers(library: LibraryServer, paramList) {
+    const params = mapParams(paramList, ["id"])
+    if (library.bookServers[params["id"]]) {
+        const book = library.bookServers[params["id"]];
+        if (book.controllers && book.controllers.length > 0) {
+            log(`Book(${book.id()}) Controllers`)
+            for (let o of book.controllers) {
+                const console = o.console ? "No console" : `Console ${o.console.id}`;
+                log(`- ${o.actorId}. Has console? ${console}`)
+            }
+        } else {
+            log(`Book(${book.id()}) has no controllers.`)
+        }    
+    } else {
+        error(`Unknown book: ${params["id"]})`);
     }
 }
 

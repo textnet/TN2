@@ -5,8 +5,7 @@ import { GuiConsole } from "../console/gui"
 
 let _count = 0;
 
-export function createWindow(gui: GuiConsole) {
-    serverInterop.setup(gui);
+export async function createWindow(gui: GuiConsole) {
     // const height = config.gui.height + config.gui.macTitle;
     const mainWindow = new BrowserWindow({
         x: config.gui.width * _count, 
@@ -23,8 +22,11 @@ export function createWindow(gui: GuiConsole) {
     if (config.debug.gui) {
         mainWindow.webContents.openDevTools({mode:"bottom"})   // ({ mode:"detach" })
     }
-    mainWindow.loadFile('dist/index.html', { search: gui.id });
-    mainWindow.on("close", (e)=>{ }); // TODO: terminate Console on close
+    const id = gui.id + (gui.isObserver?"//observer":"");
+    await mainWindow.loadFile('dist/index.html', { search: id });
+    mainWindow.on("close", (e)=>{ 
+        gui.unbind();
+    }); 
     _count++;
     return mainWindow;
 }

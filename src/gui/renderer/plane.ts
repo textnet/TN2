@@ -18,6 +18,10 @@ function createActor(game: Game, thing: msg.ThingRenderData) {
     return actor;
 }
 
+export function readyToPlay(game: Game, data: msg.MessageReady) {
+    game.isReadyToPlay = true;
+}
+
 export function enterPlane(game: Game, data: msg.EnterPlane) {
     // 1. reset scene
     const oldScene = game.gameScene();

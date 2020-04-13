@@ -9,7 +9,10 @@ import * as geo from "../../model/geometry"
 
 
 export function id() {
-    return unescape(window.location.search.substr(1));
+    return unescape(window.location.search.substr(1).split("//")[0]);
+}
+export function isObserver() {
+    return window.location.search.substr(1).split("//").length > 1;
 }
 function send(name, payload?: msg.Message) {
     ipcRenderer.send(name, {

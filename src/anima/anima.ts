@@ -38,13 +38,8 @@ export class Anima {
         await this.controller.connect();
     }
 
-    _terminated: boolean;
     async terminate() {
-        if (!this._terminated) {
-            this._terminated = true;
-            await this.controller.disconnect();  // TODO disconnect if it is not coming from being disconnected
-        }
-        
+        await this.controller.disconnect(); 
     }
 
     /**
