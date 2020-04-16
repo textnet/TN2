@@ -3,50 +3,13 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-+ BUG: deeper copy of things is broken
-+ limbo portal
-    + sprite
-    + thing
-    + remove limbo from physics
-    + remove limbo from anima
-+ implementation (NOT TESTED)
-    + log-on -> check lostPlane's book
-        + if offline: stay in limbo, turn portal `UP`
-        + if online:  get out of limbo
-    + log-off -> go to limbo
-    + book goes offline ->
-        + send to limbo
-        + turn portal `UP`
-    + book goes online ->
-        + turn portal `DOWN`
-    + enter portal => go out of limbo
-+ test sequence
-    + create two books: Indiana, Matrix = ... 
-    + Observe items there               = (two windows)
-    + create player P1 in Indiana       = ...
-    + bind P1                           = ...
-    + WW: teleport P1 to Matrix         = player in Matrix
-    + offline Matrix                    = player is in Limbo, portal is UP
-    + offline Matrix                    = player is in Limbo, portal is UP
-    + gui P1                            = third window with the player
-    + > try to go through the portal    = nothing happens
-    + online Matrix                     = player is in Limbo, portal is DOWN
-    + > try to go through the portal    = back to Matrix
-    + offline Matrix,                   = back to limbo!
-+ BUG: <enter> doesn't work in local book! (issue with getOrCopy)
-+ BUG: stuck on exit
+- written movers
+    - move_to
+    - move_by (duration)
+    - turn_to 
+    - halt
 
-
-## Current Stage 11. Interbook and Limbo, also Enter/Leave
-+ teleport command
-+ observe thing
-+ transfer events from the remote book to the local anima
-+ `attempt` framework
-+ enter/leave with WrittenWord support
-+ limbo portals
-+ test limbo-ing
-
-## Stage 12. Control over things
+## Stage 12. Basic actions
 - Push
 - Run
 - Update Properties
@@ -55,15 +18,16 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     - get plane physics
 - Update Constraints
 - Update Colors
+
+## Stage 13. INventory
 - Pick / Putdown = inventory!
 - Throw
+
+## Stage 14. Text
 - Update Text
     - anima reboots when thing's text is changed (reacts on event of changing text)
-- written movers
-    - move_to
-    - move_by (duration)
-    - turn_to 
-    - halt
+
+## Stage 15. Gravity, speed, friction, seasonality
 - Seasonality events
 
 ## TODO: Document
@@ -85,7 +49,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 8. [x] Anima basics (written word)
 9. [x] Basic Controls in text console
 10. [x] GUI and moving
-11. [ ] Interbook operations and limbo, entering and leaving
+11. [x] Interbook operations and limbo, entering and leaving
 12. [ ] Basic actions: run, push, updates (both GUI and Written Word)
 13. [ ] Inventory concept and actions (incl. throw)
 14. [ ] Text editor and kneeling
@@ -128,7 +92,7 @@ Because Electron node is not compatible with NPM node, there you have to rebuild
     - gui/messages.ts -> add SERVER.<action> so it will be called for the server
     - gui/renderer/send.ts -> create interop for sending the action to the server
     - gui/server/<action>.ts -> send action via Action API
-    - gui/server/setup.ts -> add the above to handlers
+    - gui/server/setup.ts -> add the <action>.ts module
     - gui/command.ts -> add COMMAND.<action> and the control combination for the action
     - gui/actors/thing.ts -> add handled of the above that calls the interop
 - **Call the action from Written Word**
