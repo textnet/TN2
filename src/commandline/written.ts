@@ -9,6 +9,10 @@ import { GuiConsole }  from "../console/gui"
 
 let ui: TextConsole;
 
+export function isConsoleBound() {
+    return ui && ui.isBound;
+}
+
 export function getAnima() {
     if (ui) return ui.anima;
     else return undefined;
@@ -26,12 +30,18 @@ export async function unbind() {
 }
 
 export async function gui(B: BookServer, consoleId: string) {
+    if (ui && ui.id == consoleId) {
+        await unbind();
+    }
     const gui = new GuiConsole(B, consoleId);
     await gui.bind(); 
     await gui.openWindow();
 }
 
 export async function observe(B: BookServer, thingId: string) {
+    if (ui && ui.anima.thingId == thingId) {
+        await unbind();
+    }
     const gui = new GuiConsole(B);
     await gui.bind(thingId);
     await gui.openWindow();

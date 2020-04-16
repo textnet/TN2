@@ -20,19 +20,21 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     + book goes online ->
         + turn portal `DOWN`
     + enter portal => go out of limbo
-- test sequence
-    - create two books: Indiana, Matrix = ... 
-    - Observe items there               = (two windows)
-    - create player P1 in Indiana       = ...
-    - bind P1                           = ...
-    - WW: teleport P1 to Matrix         = player in Matrix
-    - offline Matrix                    = player is in Limbo, portal is UP
-        - try to go through the portal  = nothing happens
-    - online Matrix                     = player is in Limbo, portal is DOWN
-        - try to go through the portal  = back to Matrix
-    - offline Matrix, unbind P1         = ...
-    - bind P1                           = same as above
-    - unbind P1, online Matrix, bind P1 = player in Matrix
++ test sequence
+    + create two books: Indiana, Matrix = ... 
+    + Observe items there               = (two windows)
+    + create player P1 in Indiana       = ...
+    + bind P1                           = ...
+    + WW: teleport P1 to Matrix         = player in Matrix
+    + offline Matrix                    = player is in Limbo, portal is UP
+    + offline Matrix                    = player is in Limbo, portal is UP
+    + gui P1                            = third window with the player
+    + > try to go through the portal    = nothing happens
+    + online Matrix                     = player is in Limbo, portal is DOWN
+    + > try to go through the portal    = back to Matrix
+    + offline Matrix,                   = back to limbo!
++ BUG: <enter> doesn't work in local book! (issue with getOrCopy)
++ BUG: stuck on exit
 
 
 ## Current Stage 11. Interbook and Limbo, also Enter/Leave
@@ -42,7 +44,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 + `attempt` framework
 + enter/leave with WrittenWord support
 + limbo portals
-- test limbo-ing
++ test limbo-ing
 
 ## Stage 12. Control over things
 - Push

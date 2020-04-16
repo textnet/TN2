@@ -37,8 +37,9 @@ export class Controller {
         this.anima = anima;
     }
 
-    makeProxy() {
+    async makeProxy() {
         this.isProxy = true;
+        await this.connect();
     }
 
     async emit(event: events.Event) {
@@ -86,8 +87,8 @@ export class Controller {
             await this.B.unbind(this);
         }
         const thing = await this.B.things.load(this.actorId);
-        if ((this.console && this.wasInLimbo) ||                 // console found in Limbo
-            getBookId(thing.hostPlaneId) != this.B.data.id) {    // visiting other plane
+        if (this.console && this.wasInLimbo ||     // console found in Limbo
+            this.isProxy) {                        // visiting other plane
             await actions.action(this.B, {
                 action:  actions.ACTION.TO_LIMBO,
                 actorId: thing.id,

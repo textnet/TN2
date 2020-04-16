@@ -34,6 +34,7 @@ export class BookServer {
     _online: boolean;
 
     contains(id: string|PlaneData|ThingData) {
+        if (id === undefined) return false;
         if (id["id"]) return this.contains(id["id"]);
         return getBookId(id as string) == this.id();
     }
@@ -52,11 +53,12 @@ export class BookServer {
         this.waypoints = {};
     }
 
+    isOnline() { return this._online }
     async online() {
         if (!this._online) {
             this.controllers = [];
-            this.handlers = await network.connect(this);
             this._online = true;
+            this.handlers = await network.connect(this);
             // set up all animas
             const things = await this.things.all();
             for (let thingId in things) {
@@ -76,7 +78,7 @@ export class BookServer {
             }
             this.controllers = undefined;
             await this.handlers.disconnect()
-            this._online = false;    
+            this._online = false; 
         }
     }
     async awaken(thingId:string) {
@@ -85,18 +87,22 @@ export class BookServer {
     }
     async getOrCopy(thingId: string, actorId: string) {
         const thing = await this.things.load(thingId);
-        const actor = await this.things.load(actorId);
-        const isGuest = await actions.action(this, {
-            action:  actions.ACTION.IS_GUEST,
-            actorId: actorId || thingId,
-            planeId: actor? actor.hostPlaneId : thing.hostPlaneId,
-            thingId: thingId,
-        } as actions.ActionIsGuest);
-        if (isGuest) {
-            return undefined;
+        if (this.id() == getBookId(thingId)) {
+            return thing; // get
         } else {
-            return await this.copy(thingId);
-        }        
+            const actor = await this.things.load(actorId);
+            const isGuest = await actions.action(this, {
+                action:  actions.ACTION.IS_GUEST,
+                actorId: actorId || thingId,
+                planeId: actor? actor.hostPlaneId : thing.hostPlaneId,
+                thingId: thingId,
+            } as actions.ActionIsGuest);
+            if (isGuest) {
+                return undefined; // return nothing, it is guest?
+            } else {
+                return await this.copy(thingId); // copy and return
+            }        
+        }
     }
     async copy(thingId:string) {
         return await createFromThing(this, thingId);
@@ -105,8 +111,8 @@ export class BookServer {
     async registerGuest(thingId: string) {
         if (!this.guests[thingId]) {
             this.guests[thingId] = new Controller(this, thingId);
-            this.guests[thingId].makeProxy();
-            this.bind(this.guests[thingId])
+            await this.guests[thingId].makeProxy();
+            await this.bind(this.guests[thingId])
         }
     }
     async deregisterGuest(thingId: string) {
@@ -199,6 +205,7 @@ export class BookServer {
     }
 
     async receiveConnection(peerBookId: string) {
+        console.log("we have just received a connection", peerBookId)
         const things = await this.things.all();
         for (let thingId in things) {
             if (isLimboPortalId(thingId)) {

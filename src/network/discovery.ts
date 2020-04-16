@@ -6,6 +6,7 @@ import { Socket } from "net"
 
 import { ok, error, log, verboseLog } from "../commandline/commandline"
 
+import { deepCopy } from "../utils"
 import { config } from "../config"
 import { LibraryServer } from "../model/library"
 import { BookServer } from "../model/book"
@@ -25,6 +26,10 @@ export interface FullPayload {
     receiverId?: string;
     result?: string;
     payload?: Message;
+}
+export const emptyPayload: FullPayload = {
+    nonce: "<fill in>",
+    isCallback: true,
 }
 
 export const MESSAGE = {
@@ -142,7 +147,6 @@ export async function localConnect( book: BookServer, onMessage?, onConnect?, on
     for (let id in book.library.bookServers) {
         if (id != book.data.id) {
             const server = book.library.bookServers[id];
-            // verboseLog(`Network-Local: (${book.data.id}) <-> (${server.data.id}).`)
             await server.receiveConnection( book.data.id )
             await book.receiveConnection( server.data.id )            
         }
@@ -153,7 +157,12 @@ export async function localConnect( book: BookServer, onMessage?, onConnect?, on
             for (let id in book.library.bookServers) {
                 const server = book.library.bookServers[id];
                 if (server.data.id != book.data.id && server.data.id == targetBookId) {
-                    return await server.receiveMessage( book.data.id, fullPayload );
+                    if (server.isOnline()) {
+                        return await server.receiveMessage( book.data.id, fullPayload ); 
+                    } else {
+                        console.log(targetBookId, "is offline...")
+                        return book._callbackRegistry[fullPayload.nonce]()
+                    }
                 }
             }    
         },
@@ -161,7 +170,6 @@ export async function localConnect( book: BookServer, onMessage?, onConnect?, on
             verboseLog(`Network-Local: (${book.data.id}) leaving discovery channel.`)
             for (let id in book.library.bookServers) {
                 if (id != book.data.id) {
-                    // verboseLog(`Network: Book(${id}) >/< by Book(${book.data.id})`)
                     const server = book.library.bookServers[id];
                     await server.receiveDisconnect( book.data.id )
                 }

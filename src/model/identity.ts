@@ -36,7 +36,7 @@ export function getLimboPortalId(id: string) {
     return limboId;
 }
 export function isLimboPortalId(id: string) {
-    return (id.indexOf(LIMBO_PORTAL_TEMPLATE) == id.length - LIMBO_PORTAL_TEMPLATE.length);
+    return (id.indexOf(LIMBO_PORTAL_TEMPLATE) > 0) && (id.indexOf(LIMBO_PORTAL_TEMPLATE) == id.length - LIMBO_PORTAL_TEMPLATE.length);
 }
 export function getLimboHost(limboPortalId: string) {
     return limboPortalId.substr(0, limboPortalId.indexOf(LIMBO_PORTAL_TEMPLATE));

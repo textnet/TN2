@@ -13,6 +13,8 @@ export function setup() {
     register("destroy book", destroyBook)
     register("online",  onlineBook)
     register("offline", offlineBook)
+    register("on",  onlineBook)
+    register("off", offlineBook)
     register("books", listBooks)
     register("controllers", controllers);
 

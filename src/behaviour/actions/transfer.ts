@@ -48,24 +48,30 @@ export async function transferFromLimbo(B: BookServer, action: actions.ActionFro
         } as actions.ActionTransfer)
     } else {
         // plane is not available, need to switch the limbo portal to "UP"
-        await turnLimboPortal(B, thing.id, "UP");
+        await turnLimboPortal(B, thing, "UP");
     }
 }
 
-export async function turnLimboPortal(B: BookServer, actorId: string, direction: string) {
-    const limboId = createPlaneId(PLANE.LIMBO, actorId)
-    const limboPortalId = getLimboPortalId(actorId);
+export async function turnLimboPortal(B: BookServer, actor: string|ThingData, direction: string) {
+    if (!actor["id"]) {
+        return await turnLimboPortal(B, await B.things.load(actor as string), direction);
+    }
+    actor = actor as ThingData;
+    const limboId = createPlaneId(PLANE.LIMBO, actor.id)
+    const limboPortalId = getLimboPortalId(actor.id);
     const limbo = await B.planes.load(limboId);
-    const position = deepCopy(limbo.things[limboPortalId]);
-    position.direction = geo.toDir(direction);
-    await actions.action(B, {
-        action:   actions.ACTION.PLACE,
-        actorId:  actorId,
-        thingId:  limboPortalId,
-        planeId:  limboId,
-        position: position,
-        force: true,
-    } as actions.ActionPlace);
+    if (geo.directionName(limbo.things[limboPortalId]) != direction) {
+        const position = deepCopy(limbo.things[limboPortalId]);
+        position.direction = geo.toDir(direction);
+        await actions.action(B, {
+            action:   actions.ACTION.PLACE,
+            actorId:  actor.id,
+            thingId:  limboPortalId,
+            planeId:  limboId,
+            position: position,
+            force: true,
+        } as actions.ActionPlace);
+    }
 }
 
 
@@ -104,7 +110,7 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
     const thingCopy = await B.getOrCopy(action.thingId, action.actorId);
     if (thingCopy) {
         cl.verboseLog(B, `ENTER local ${thing.id} to «${plane.id}» @ ${visit.x} ${visit.y}`)
-        thing = thingCopy;
+        thing = thingCopy; // replace thing with get-or-copy result
     } else {
         cl.verboseLog(B, `ENTER guest ${thing.id} to «${plane.id}» @ ${visit.x} ${visit.y}`)
         await B.registerGuest(thing.id);
@@ -135,7 +141,6 @@ export async function leave(B: BookServer, action: actions.ActionLeave) {
     const position: geo.Position = deepCopy(plane.things[action.thingId]);
     delete plane.things[action.thingId];
     await B.planes.save(plane);
-    cl.verboseLog(B, `LEAVE ${action.thingId} from «${plane.id}» @ ${position.x} ${position.y}`)
     // update visit
     if (position) {
         await updates.update(B, {

@@ -69,15 +69,17 @@ export interface EventHalt       extends EventWaypoint {}
 // ------------------ emitting -------------------------
 export async function emit(B: BookServer, event: Event) {
     // get to all controllers
-    for (let controller of B.controllers) {
-        const hostId = getThingId(event.planeId);
-        const actor = await B.things.load(controller.actorId);
-        if (
-            (actor.id == event.actorId) ||          // controller is the actor
-            (actor.hostPlaneId == event.planeId) || // controller is on the plane where event happened
-            (actor.id == hostId)                    // controller is the thing that owns the plane
-           ){ 
-            await controller.emit(event)
+    if (B.controllers) {
+        for (let controller of B.controllers) {
+            const hostId = getThingId(event.planeId);
+            const actor = await B.things.load(controller.actorId);
+            if (
+                (actor.id == event.actorId) ||          // controller is the actor
+                (actor.hostPlaneId == event.planeId) || // controller is on the plane where event happened
+                (actor.id == hostId)                    // controller is the thing that owns the plane
+               ){ 
+                await controller.emit(event)
+            }
         }
     }
     // get to the external plane -> passing the event
