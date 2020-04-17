@@ -17,6 +17,7 @@ import { getPlayerDirection, getPlayerCommand, COMMAND } from "../command"
 import { deepCopy } from "../../utils"
 import * as interop from "../renderer/send"
 
+const GUI_VELOCITY = 75; // more = faster
 
 /**
  * Excalibur Actor extension for Thing-based actors.
@@ -119,8 +120,7 @@ export class ThingActor extends BaseActor {
             this.visualDir   = sprites.DIR[geo.directionName(dir)];
         }
         // velocity
-        const friction = (this.scene as GameScene).planeData.physics.friction;
-        const velocity = (this.data.physics.speed /friction) * (delta /physics.TIME_MOMENTUM);
+        const velocity = GUI_VELOCITY * physics.velocity(this.data.physics, (this.scene as GameScene).planeData.physics, delta);
         this.vel.x = dir.dx * velocity;
         this.vel.y = dir.dy * velocity;
         this.dir = dir;

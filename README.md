@@ -4,10 +4,14 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
 - written movers
-    - move_to
+    + move_to function
     - move_by (duration)
-    - turn_to 
     - halt
+    - turn_to 
+    + BUG: timeLeft is not functioning
+    + synchronize speed server/gui
+    + BUG: no walking
+    + BUG: no turning
 
 ## Stage 12. Basic actions
 - Push
@@ -58,7 +62,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 17. [ ] Design docs for `TN2 Release 1`
 
 ## Rough planning for Q2 and Q3
-- April: GUI, limbo, basic actions (move, run, push, updates)
+- April: +GUI, +limbo, basic actions (move, run, push, updates)
 - May: Inventory, Text editor and menu
 - June: Gravity and Seasonality 
 - July: Documenting

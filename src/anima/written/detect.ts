@@ -126,7 +126,7 @@ export class WrittenAnima extends Anima {
         this.controller.on(event, listener);
         const key = nonce();
         this.subscribedKeys[key] = {event:event, role: role, listener:listener, key:key};
-        cl.verboseLog(this.B, `${this.thingId} SUBSCRIBE <${thingId}> #${event}:${role}`)
+        // cl.verboseLog(this.B, `${this.thingId} SUBSCRIBE <${thingId}> #${event}:${role}`)
         return key;
     }
 
@@ -138,7 +138,7 @@ export class WrittenAnima extends Anima {
         const handler = this.subscribedKeys[key];
         if (handler) {
             this.controller.off(event, handler["listener"]);
-            cl.verboseLog(this.B, `${thingId} unsubscribe <${thingId}> #${event}:${role}`)
+            // cl.verboseLog(this.B, `${thingId} unsubscribe <${thingId}> #${event}:${role}`)
             delete this.subscribedKeys[key];
         }
     }      

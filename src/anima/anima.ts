@@ -119,7 +119,7 @@ export class SyncRepository<T> {
         this.contents = contents;
     }
     load(id: string) {
-        return this.contents[id];
+        return this.contents[id] as T;
     }
     directory() {
         cl.log(`Directory > ${this.A.thingId}`)

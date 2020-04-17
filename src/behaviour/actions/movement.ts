@@ -21,7 +21,7 @@ export const MAX_TIME = 60*1000; // movement more than 1 minute long is done.
 
 export interface Waypoint {
     kind: string; // WAYPOINT.*
-    timeLeft:  number;
+    timeLeft?:  number; // TODO!
 }
 export interface WaypointMoveTo extends Waypoint {
     destination: geo.Position;
@@ -42,12 +42,11 @@ export async function add(B: BookServer, action: actions.ActionAddMovement) {
     const wp = prepareWaypoint(thing, plane, action.waypoint)
     if (!B.waypoints[action.thingId]) {
         B.waypoints[action.thingId] = [ wp ];
-        // TODO setup waypoint details.       
         await events.emit(B, {
             event: events.EVENT.MOVE_START,
+            planeId: thing.hostPlaneId,
             actorId: thing.id,
             thingId: thing.id,
-            planeId: thing.hostPlaneId,
             waypoint: action.waypoint,
         } as events.EventMoveStart)
     } else {
@@ -57,6 +56,7 @@ export async function add(B: BookServer, action: actions.ActionAddMovement) {
 
 function prepareWaypoint(thing: ThingData, plane: PlaneData, waypoint: Waypoint) {
     const wp = deepCopy(waypoint);
+    if (!wp.timeLeft) wp.timeLeft = MAX_TIME;
     switch (wp.kind) {
         case WAYPOINT.TURN_TO:
                 const wTurn = wp as WaypointTurnTo;
@@ -105,6 +105,7 @@ export function process(B: BookServer, thing: ThingData, plane: PlaneData, timeD
             case WAYPOINT.MOVE_BY:
                         const wMoveBy = (waypoint as WaypointMoveBy);
                         vector = geo.normalize(wMoveBy.direction);
+                        console.log(wMoveBy.direction)
                         break;
 
             case WAYPOINT.TURN_TO:
@@ -116,9 +117,10 @@ export function process(B: BookServer, thing: ThingData, plane: PlaneData, timeD
             default:    break;
                         
         }
-        // if (vector) {
-        //     vector = geo.scale(vector, )
-        // }
+        if (vector) {
+            const velocity = physics.velocity(thing.physics, plane.physics, timeDelta);
+            vector = geo.scale(vector, velocity);
+        }
         waypoint.timeLeft -= timeDelta;
         return vector;
     }
@@ -140,7 +142,7 @@ export function checkWaypoint(B: BookServer, thing: ThingData, newPosition: geo.
                         break;
         }
         if (arrival) {
-            B.waypoints[thing.id].unshift();
+            B.waypoints[thing.id].shift();
             if (B.waypoints[thing.id].length == 0) {
                 events.emit(B, {
                     event: events.EVENT.MOVE_FINISH,

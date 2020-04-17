@@ -8,6 +8,7 @@ import { leave } from "./library/leave"
 import * as get from "./library/get"
 import * as say from "./library/say"
 import * as attempt from "./library/attempt"
+import * as spatials from "./library/spatials"
 
 import { event_on, event_off } from "./library/events"
 
@@ -29,8 +30,8 @@ export const supportedFunctions = {
     "get_next":      { signature: ["direction"],           f: get.get_next      },
     "get_closest":   { signature: ["name"],                f: get.get_closest   },
     //
-    "on":  { signature: false, /* artifact, event, role, handler */ f: event_on }, 
-    "off": { signature: ["artifact", "event", "role", "key" ,], f: event_off },
+    "on":  { signature: false, /* thing, event, role, handler */ f: event_on }, 
+    "off": { signature: ["thing", "event", "role", "key" ,],     f: event_off },
     //
     "teleport":    { signature: ["thing", "to" ], f: teleport },
     "leave":       { signature: false,            f: leave },
@@ -54,13 +55,13 @@ export const supportedFunctions = {
     // "insert_line": { signature: ["artifact", "line", "anchor", "text" ], f: insert_line },
     // "delete_line": { signature: ["artifact", "line", "anchor"         ], f: delete_line },
 
-    // "move_to":  { signature: ["artifact", "x", "y", "direction" ], f: move_to  },
-    // "move_by":  { signature: ["artifact", "x", "y", "direction", "distance" ], 
-    //                                                                f: move_by  },
+    "move_to":  { signature: ["thing", "x", "y", "direction" ],               f: spatials.move_to  },
+    "move_by":  { signature: ["thing", "dx", "dy", "direction", "distance" ], f: spatials.move_by  },
+    "halt":     { signature: ["thing",                       ],               f: spatials.halt },
+
     // "turn_to":  { signature: ["artifact", "directon"            ], f: move_by  },
     // "place_at": { signature: ["artifact", "x", "y", "direction" ], f: place_at },
     // "fit_at":   { signature: ["artifact", "x", "y", "direction" ], f: fit_at },
-    // "halt":     { signature: ["artifact",                       ], f: halt },
 }
 
 export const supportedEvents = [ 

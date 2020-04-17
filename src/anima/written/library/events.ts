@@ -43,7 +43,7 @@ export function event_on(A: WrittenAnima,
  * @optional @param {object} thing
  * @optional @param {string} event
  * @optional @param {string} role
- * @optional @param {string}    key @see event_on()
+ * @optional @param {string} key @see event_on()
  */
 export function event_off( A: WrittenAnima, 
                            thing?: object, 

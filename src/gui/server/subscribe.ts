@@ -18,7 +18,6 @@ export async function subscribeOnPlane(gui: GuiConsole, planeId: string) {
     if (gui.listeners) {
         unsubscribeFromCurrentPlane(gui);
     }
-    console.log(`GUI(${gui.id}): subscribe on «${planeId}»`)
     gui.listeners = {}
     const hostPlane  = await gui.B.planes.load(planeId);
     for (let event in mapping) {
@@ -41,7 +40,7 @@ async function(gui: GuiConsole, e: events.EventPlace) {
     } as msg.Place);    
 }
 
-mapping[events.EVENT.MOVE_START] = 
+mapping[events.EVENT.MOVE_START] =
 mapping[events.EVENT.MOVE_FINISH] =
 async function(gui: GuiConsole, e: events.EventMoveStartFinish) {
     return gui.send(msg.RENDER.MOVE, {

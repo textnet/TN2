@@ -74,7 +74,7 @@ export function get_thing( A: WrittenAnima,
  */
 export function get_myself( A: WrittenAnima ) {
     const thing = A.things.load(A.thingId);
-    return writtenThing(A, thing);
+    return writtenThing(A);
 }
 
 

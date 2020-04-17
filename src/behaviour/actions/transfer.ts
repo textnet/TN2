@@ -109,10 +109,10 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
     let thingId = action.thingId;
     const thingCopy = await B.getOrCopy(action.thingId, action.actorId);
     if (thingCopy) {
-        cl.verboseLog(B, `ENTER local ${thing.id} to «${plane.id}» @ ${visit.x} ${visit.y}`)
+        // cl.verboseLog(B, `ENTER local ${thing.id} to «${plane.id}» @ ${visit.x} ${visit.y}`)
         thing = thingCopy; // replace thing with get-or-copy result
     } else {
-        cl.verboseLog(B, `ENTER guest ${thing.id} to «${plane.id}» @ ${visit.x} ${visit.y}`)
+        // cl.verboseLog(B, `ENTER guest ${thing.id} to «${plane.id}» @ ${visit.x} ${visit.y}`)
         await B.registerGuest(thing.id);
     }
     // update host

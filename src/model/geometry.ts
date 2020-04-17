@@ -112,6 +112,7 @@ export function toDir(name: string, length?:number, rotation?: number) {
     return normalize(DIRECTION[name], length)
 }
 export function normalize(dir: Direction, length?:number) {
+    dir.dz = dir.dz || 0;
     length = length || 1;
     const len = lengthDir(dir);
     if (len == 0) {
@@ -125,6 +126,7 @@ export function normalize(dir: Direction, length?:number) {
     }
 }
 export function lengthDir(dir: Direction) {
+    dir.dz = dir.dz || 0;
     return Math.sqrt(dir.dx*dir.dx + dir.dy*dir.dy + dir.dz*dir.dz);
 }
 export function reverse(dir: Direction) {
@@ -136,15 +138,17 @@ export function reverse(dir: Direction) {
 }
 export function vector(from: Position, to: Position) {
     return {
-        dx: from.x - to.x, 
-        dy: from.y - to.y,
-        dz: from.z - to.z,
+        dx: to.x - from.x, 
+        dy: to.y - from.y,
+        dz: to.z - from.z,
     } as Direction;
 }
 export function distance(from: Position, to: Position) {
     return lengthDir(vector(from, to))
 }
 export function add(pos: Position, dir: Direction) {
+    dir.dz = dir.dz || 0;
+    pos.z  = pos.z  || 0;
     const result = deepCopy(pos);
     result.x += dir.dx;
     result.y += dir.dy;
@@ -155,6 +159,7 @@ export function substract(pos: Position, dir: Direction) {
     return add(pos, reverse(dir));
 }
 export function scale(dir: Direction, scaleFactor: number) {
+    dir.dz = dir.dz || 0;
     const result = deepCopy(dir);
     result.dx *= scaleFactor;
     result.dy *= scaleFactor;
@@ -162,6 +167,8 @@ export function scale(dir: Direction, scaleFactor: number) {
     return result;
 }
 export function accumulateDirection(main: Direction, contribution: Direction) {
+    main.dz = main.dz || 0;
+    contribution.dz = contribution.dz || 0;
     main.dx += contribution.dx;
     main.dy += contribution.dy;
     main.dz += contribution.dz;

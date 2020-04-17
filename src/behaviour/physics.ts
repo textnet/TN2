@@ -58,10 +58,12 @@ export async function applyPhysics(B: BookServer, timeDelta:number) {
     for (let thingId in world.things) {
         const thing = world.things[thingId];
         const plane = world.planes[thing.hostPlaneId];
+        let vectorDirection: geo.Direction;
         if (B.waypoints[thingId] && B.waypoints[thingId].length > 0) {
             const vector = movement.process(B, thing, plane, timeDelta);
             if (vector) {
                 geo.accumulateDirection(thing.physics._momentum, vector);
+                vectorDirection = geo.normalize(vector);
             }
         }
         for (let g in thing.physics.mass) {
@@ -83,6 +85,9 @@ export async function applyPhysics(B: BookServer, timeDelta:number) {
         const speed = geo.scale(thing.physics._momentum, thing.physics.speed/plane.physics.friction * timeDelta/physics.TIME_MOMENTUM);
         const newPosition = geo.add(plane.things[thing.id], speed);
         const finalPosition = movement.checkWaypoint(B, thing, newPosition);
+        if (vectorDirection) {
+            finalPosition.direction = vectorDirection;
+        }
         if (geo.distance(plane.things[thing.id], finalPosition) > geo.PROXIMITY.MOVE) {
             await actions.action(B, {
                 action: actions.ACTION.PLACE,
