@@ -47,6 +47,14 @@ export async function action(B: BookServer, action: actions.ActionAttempt) {
                 } as actions.ActionTransfer);                
             }
         // ----------------------------------------------------------------
+        case actions.ATTEMPT.PUSH: // push!
+            return await actions.action(B, {
+                    action:  actions.ACTION.PUSH,
+                    actorId: actor.id,
+                    planeId: plane.id,
+                } as actions.ActionPush);
+            }
+        // ----------------------------------------------------------------
     }
 
 }

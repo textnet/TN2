@@ -44,6 +44,7 @@ export const ACTION = {
     PLACE: "place",
     SAY: "say",
     ATTEMPT: "attempt", // attempt a proximal action, e.g. enter
+    PUSH: "push", // successful push
 
     MOVE: "move",
     HALT: "halt",
@@ -56,26 +57,22 @@ export interface Action {
     actorId: string;
     planeId: string;
 }
-export interface ActionEnter extends Action {
+export interface ActionWithThing extends Action {
     thingId: string;
+}
+export interface ActionEnter extends ActionWithThing {
     position?: geo.Position;
     isUp?:boolean;
 }
-export interface ActionLeave extends Action {
-    thingId: string;
-}
-export interface ActionTransfer extends Action {
-    thingId: string;
+export interface ActionLeave extends ActionWithThing {}
+export interface ActionTransfer extends ActionWithThing {
     isUp?: boolean; // is it up in stack
 }
 export interface ActionTransferUp extends Action {}
 export interface ActionToLimbo    extends Action {}
 export interface ActionFromLimbo  extends Action {}
-export interface ActionIsGuest extends Action {
-    thingId: string;
-}
-export interface ActionPlace extends Action {
-    thingId: string;
+export interface ActionIsGuest    extends ActionWithThing {}
+export interface ActionPlace extends ActionWithThing {
     position: geo.Position;
     fit?: boolean;
     force?: boolean;
@@ -89,14 +86,14 @@ export interface ActionAttempt extends Action {
     direction?: geo.Direction;
     attempt: string;
 }
+export interface ActionPush extends ActionWithThing {
+    direction: geo.Direction;
+}
 
-export interface ActionAddMovement extends Action {
-    thingId: string;
+export interface ActionAddMovement extends ActionWithThing {
     waypoint: movement.Waypoint;
 }
-export interface ActionHaltMovement extends Action {
-    thingId: string;
-}
+export interface ActionHaltMovement extends ActionWithThing {}
 
 
 // --- dispatcher ---

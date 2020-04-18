@@ -16,6 +16,7 @@ export const EVENT = {
     TIMER: "timer",
     ENTER: "enter",
     LEAVE: "leave",
+    PUSH:  "push",
     HEAR:  "hear",
     PLACE: "place", // changes place on the plane
     COLLISION: "collision",
@@ -63,6 +64,8 @@ export interface EventMoveStartFinish extends EventWaypoint {}
 export interface EventMoveFinish extends EventMoveStartFinish {}
 export interface EventMoveStart  extends EventMoveStartFinish {}
 export interface EventHalt       extends EventWaypoint {}
+export interface EventAttempt extends Event {}
+export interface EventPush extends EventAttempt {}
 
 
 

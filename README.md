@@ -3,26 +3,25 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-+ written movers
-    + move_to function
-    + move_by (dx, dy)
-        + BUG: don't turn
-        + BUG: don't stop
-    + move_by (direction)
-    + move_by (duration)
-    + move_by (angle)
-    + halt
-    + turn_to 
-    + BUG: timeLeft is not functioning
-    + synchronize speed server/gui
-    + BUG: no walking 
-    + BUG: no turning in move_to
-    + BUG: no turnin in move_by
+- Push
+    + events.EVENT.PUSH and interface
+    + attempt
+        + check constraints
+        + call action
+    - action
+        + actions.ACTION.PUSH and interface
+        - basic handler
+        - place()
+        - fire events
+    - GUI
+        - command
+        - send event renderer
+        - send event server
+    - written
+        - push{direction=}
 
 
 ## Stage 12. Basic actions
-- Push
-- Run
 - Update Properties
     - plane props: spawn, format
 - Update Physics: Thing, Plane
@@ -61,7 +60,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 9. [x] Basic Controls in text console
 10. [x] GUI and moving
 11. [x] Interbook operations and limbo, entering and leaving
-12. [ ] Basic actions: run, push, updates (both GUI and Written Word)
+12. [ ] Push action and basic updates (both GUI and Written Word)
 13. [ ] Inventory concept and actions (incl. throw)
 14. [ ] Text editor and kneeling
 15. [ ] Physics: gravity, speed, friction, seasonality
@@ -69,7 +68,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 17. [ ] Design docs for `TN2 Release 1`
 
 ## Rough planning for Q2 and Q3
-- April: +GUI, +limbo, basic actions (move, run, push, updates)
+- April: +GUI, +limbo, basic actions (+move, push), basic updates
 - May: Inventory, Text editor and menu
 - June: Gravity and Seasonality 
 - July: Documenting
@@ -90,7 +89,6 @@ Because Electron node is not compatible with NPM node, there you have to rebuild
 ### Before launching Headless
     npm rebuild
 
-
 ### Creating new actions
 - subject to be refactored, way too many files have to be changed
 - **Generic action**
@@ -107,8 +105,12 @@ Because Electron node is not compatible with NPM node, there you have to rebuild
     - gui/command.ts -> add COMMAND.<action> and the control combination for the action
     - gui/actors/thing.ts -> add handled of the above that calls the interop
 - **Call the action from Written Word**
-    - TBD
-
+    - written/library/<action>.ts -> implement action as calling the generic action/update
+    - written/library.ts -> connect with signature
+- **Add events**
+    - behaviour/events.ts -> add EVENT.<event> constant
+    - behaviour/events.ts -> add Event<event> interface
+    - behaviour/actions/<action.ts> -> fire up events
 
 ## Console commands supported
     exit
@@ -143,7 +145,13 @@ Because Electron node is not compatible with NPM node, there you have to rebuild
 NB: After binding your terminal to a console you have Written Word interface.
 You can still invoke regular commands prepended with `/`. E.g. `/exit`.
 
-## Not supported commands
-    destroy thing <id>
-    add plane <name> to <thing>
-    remove plane <name> from <thing>
+## GUI Controls
++ `Cursor keys` = move around
+- `Shift+Enter` = push/touch; if picked up — throw
+- `Alt+Enter`   = pick up / put down
++ `Ctrl+Cursor` = enter into a thing in the direction of cursor
++ `Ctrl+Esc`    = undo the above — get up one level of things
+- `Ctrl+Enter`  = kneel to Written Word; or raise up
+- `Shift+Alt+Enter` = pull (no plans to implement)
+- `Ctrl+Space`  = start/stop flying (no plans to implement)
+
