@@ -11,7 +11,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     + move_by (direction)
     + move_by (duration)
     + move_by (angle)
-    - halt
+    + halt
     - turn_to 
     + BUG: timeLeft is not functioning
     + synchronize speed server/gui

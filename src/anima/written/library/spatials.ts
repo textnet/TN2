@@ -92,7 +92,7 @@ export function move_by(A: WrittenAnima,
  * @optional @param {WrittenThing} thing @see "get.ts"
  */
 export function halt(A: WrittenAnima, 
-                        thing?: ThingData|WrittenThing|string) {
+                     thing?: ThingData|WrittenThing|string) {
     const aThing = animaThing(A, thing);
     cl.verboseLog(`<${aThing.name}>.halt()`)
     actions.action(A.B, {

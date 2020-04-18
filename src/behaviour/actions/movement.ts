@@ -13,7 +13,6 @@ import { print } from "../../commandline/print"
 export const WAYPOINT = {
     MOVE_TO: "move_to",
     MOVE_BY: "move_by",
-    TURN_TO: "turn_to",
     STAY:    "stay",
     HALT:    "halt",
 }
@@ -31,10 +30,6 @@ export interface WaypointMoveBy extends Waypoint {
     direction: geo.Direction;
 }
 export interface WaypointStay extends Waypoint {
-}
-export interface WaypointTurnTo extends Waypoint {
-    direction?: geo.Direction;
-    rotation?: number;
 }
 
 export async function add(B: BookServer, action: actions.ActionAddMovement) {
@@ -60,11 +55,6 @@ function prepareWaypoint(thing: ThingData, plane: PlaneData, waypoint: Waypoint)
     const hasDuration = wp.timeLeft;
     if (!hasDuration) wp.timeLeft = MAX_TIME;
     switch (wp.kind) {
-        case WAYPOINT.TURN_TO:
-                const wTurn = wp as WaypointTurnTo;
-                if (!wTurn.rotation) 
-                    wTurn.rotation = geo.rotationDir(wTurn.direction);                   
-                break;
         case WAYPOINT.MOVE_BY:
                 const wMoveBy = wp as WaypointMoveBy;
                 if (hasDuration) 
@@ -114,11 +104,6 @@ export function process(B: BookServer, thing: ThingData, plane: PlaneData, timeD
                         const wMoveBy = (waypoint as WaypointMoveBy);
                         vector = geo.normalize(wMoveBy.direction);
                         break;
-
-            case WAYPOINT.TURN_TO:
-                        vector = deepCopy(geo.DIRECTION.NONE);
-                        vector.rotation = (waypoint as WaypointTurnTo).rotation;
-                        break;            
 
             case WAYPOINT.STAY:
             default:    break;

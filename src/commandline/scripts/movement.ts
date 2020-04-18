@@ -23,6 +23,7 @@ bind P1
 -- move_by{direction="right", distance=100}
 -- move_by{direction="right", duration=5000}
 -- move_by{angle=45, duration=1000}
+-- turn_to{angle=-90}
 
 `
 ];
