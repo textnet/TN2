@@ -23,6 +23,7 @@ export const TIME_MOMENTUM     = 10;    // how many units of time per 1 unit of 
 export const TIME_ACCELERATION = 1.00;  // how many units of time per 1 unit of acceleration
 export const DEFAULT_SPEED = 100;
 export const DEFAULT_INERTIA = 100;
+export const FORCE_AMPLIFIER_PUSH = 1; // how much force of push is amplified, higher = stronger.
 
 export interface PlaneGravity {
     direction:     Direction;

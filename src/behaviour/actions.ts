@@ -16,6 +16,7 @@ import * as transfer from "./actions/transfer"
 import * as spatials from "./actions/spatials"
 import * as movement from "./actions/movement"
 import * as attempt  from "./actions/attempt"
+import * as push  from "./actions/push"
 export const handlers = {
     say:        say.action,
     enter:      transfer.enter,
@@ -29,6 +30,7 @@ export const handlers = {
     attempt:    attempt.action,
     move:       movement.add,
     halt:       movement.halt,
+    push:       push.action,
 }
 
 // actions happen on a plane

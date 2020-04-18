@@ -3,22 +3,19 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-- Push
++ Push
     + events.EVENT.PUSH and interface
     + attempt
         + check constraints
         + call action
-    - action
+    + action
         + actions.ACTION.PUSH and interface
-        - basic handler
-        - place()
-        - fire events
-    - GUI
-        - command
-        - send event renderer
-        - send event server
-    - written
-        - push{direction=}
+        + basic handler
+        + place()
+        + fire events
+        - action.handlers
+    + GUI (attempt.push)
+    + written (attempt.push)
 
 
 ## Stage 12. Basic actions

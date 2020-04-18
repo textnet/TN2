@@ -3,8 +3,9 @@ import { getAnima } from "./written"
 import { strip } from "../utils"
 
 // import { setup } from "./scripts/minimal"
-import { setup } from "./scripts/movement"
 // import { setup } from "./scripts/limbo"
+// import { setup } from "./scripts/movement"
+import { setup } from "./scripts/push"
 
 
 export async function script(library) {

@@ -52,8 +52,9 @@ export async function action(B: BookServer, action: actions.ActionAttempt) {
                     action:  actions.ACTION.PUSH,
                     actorId: actor.id,
                     planeId: plane.id,
-                } as actions.ActionPush);
-            }
+                    thingId: next.id,
+                    direction: action.direction,
+            } as actions.ActionPush);
         // ----------------------------------------------------------------
     }
 
