@@ -3,7 +3,7 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-- written movers
++ written movers
     + move_to function
     + move_by (dx, dy)
         + BUG: don't turn
@@ -12,12 +12,12 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     + move_by (duration)
     + move_by (angle)
     + halt
-    - turn_to 
+    + turn_to 
     + BUG: timeLeft is not functioning
     + synchronize speed server/gui
     + BUG: no walking 
     + BUG: no turning in move_to
-    - BUG: no turnin in move_by
+    + BUG: no turnin in move_by
 
 
 ## Stage 12. Basic actions
