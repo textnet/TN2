@@ -41,6 +41,11 @@ export function animaThing(A: Anima, thing?: ThingData|WrittenThing|string): Thi
     return result;
 }
 
+export function thingId(A: Anima, thing?: ThingData|WrittenThing|string) {
+    let thingId = thing ? ( (thing as WrittenThing).id || (thing as string)) : A.thingId;
+    return thingId;
+}
+
 export function animaPlane(A: Anima, plane: string): PlaneData {
     return A.planes.load(plane)
 }

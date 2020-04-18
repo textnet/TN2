@@ -103,7 +103,8 @@ export const FORMAT = {
 }
 export const FORMAT_DEFAULT = FORMAT.MARKDOWN;
 
-export const API = [ "name",
+export const API = [ 
+              "name",
               "constraints",
               "colors", 
               "physics",

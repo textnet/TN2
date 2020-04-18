@@ -12,6 +12,7 @@ export interface ThingPhysics {
     speed?: number;       // 100 is 1:1
 }
 
+
 export interface PlanePhysics {
     box?: Box;
     gravity?: Record<string, PlaneGravity>;
@@ -27,7 +28,7 @@ export const FORCE_AMPLIFIER_PUSH = 1; // how much force of push is amplified, h
 
 export interface PlaneGravity {
     direction:     Direction;
-    _momentum?:     number;    // sets things in movement with constant _inertia
+    _momentum?:     number;   // sets things in movement with constant _inertia
     acceleration?: number;    // accelerate things
     minimalMass?:  number;    // don't trigger if the mass is lighter
     maximalMass?:  number;    // don't trigger if the mass is heavier

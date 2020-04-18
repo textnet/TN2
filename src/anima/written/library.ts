@@ -9,6 +9,7 @@ import * as get from "./library/get"
 import * as say from "./library/say"
 import * as attempt from "./library/attempt"
 import * as spatials from "./library/spatials"
+import * as update from "./library/update"
 
 import { event_on, event_off } from "./library/events"
 
@@ -45,8 +46,16 @@ export const supportedFunctions = {
     "push":        { signature: ["direction"], f: attempt.push },
     "pickup":      { signature: ["direction"], f: attempt.pickup },
 
-    // "update":        { signature: false,                   f: update        },
-    // "self":          { signature: false,                   f: update        },
+    "update":            { signature: false,                                     f: update.update },
+    "update_constraint": { signature: ["thing", "constraint", "name", "value" ], f: update.constraints },
+    "update_color":      { signature: ["thing", "color", "name", "value" ],      f: update.colors },
+    "update_physics":    { signature: ["thing", "plane", 
+                                       "width", "height", "Z",
+                                       "speed", "friction",
+                                       "mass", "force", "gravity", "value", 
+                                       "direction", "minimal", "maximal"  ],      f: update.physics },
+
+
 
     // "get_text":    { signature: ["artifact", "line", "anchor"         ], f: get_text    },
     // "get_line":    { signature: ["artifact", "line", "anchor"         ], f: get_text    },

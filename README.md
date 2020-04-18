@@ -3,30 +3,25 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-+ Push
-    + events.EVENT.PUSH and interface
-    + attempt
-        + check constraints
-        + call action
-    + action
-        + actions.ACTION.PUSH and interface
-        + basic handler
-        + place()
-        + fire events
-        - action.handlers
-    + GUI (attempt.push)
-    + written (attempt.push)
-
++ Basic updates
+    + thing(name, API) + plane(spawn, format)
+    + thing(constraints, colors)
+    + update
+- Physics
+    - Written word
+        - library/update.ts (physics, seasons)
+    - Action!
+        - actions/properties.ts (plane, thing)
+    - Show seasons in the title
+- BUG: passable objects: Z-axis set by the bottom line of the box
 
 ## Stage 12. Basic actions
-- Update Properties
-    - plane props: spawn, format
++ Update Properties:  thing(name, API) + plane(spawn, format)
++ Update Constraints
++ Update Colors
 - Update Physics: Thing, Plane
-    - get plane physics
-- Update Constraints
-- Update Colors
 
-## Stage 13. INventory
+## Stage 13. Inventory
 - Pick / Putdown = inventory!
 - Throw
 
@@ -65,7 +60,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 17. [ ] Design docs for `TN2 Release 1`
 
 ## Rough planning for Q2 and Q3
-- April: +GUI, +limbo, basic actions (+move, push), basic updates
+- April: +GUI, +limbo, basic actions (+move, +push), basic updates
 - May: Inventory, Text editor and menu
 - June: Gravity and Seasonality 
 - July: Documenting

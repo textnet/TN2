@@ -1,16 +1,19 @@
 import { BookServer } from "../model/book"
-import { getBookId, isLimbo } from "../model/identity"
+import { getBookId, isLimbo, createPlaneId } from "../model/identity"
 import * as network from "../network/discovery"
 import * as geo from "../model/geometry"
 import { deepCopy } from "../utils"
 import * as cl from "../commandline/commandline"
 import { print } from "../commandline/print"
 
+import * as updateProperties from "./updates/properties"
+
 // updates happen with Things and Planes
 
 export const UPDATE = {
     HOST:   "hostPlane",
     VISITS: "visits",
+    PROPERTIES: "properties"
 }
 
 export interface Update {
@@ -26,6 +29,11 @@ export interface UpdateVisits extends Update {
     planeId: string;
     position: geo.Position;
 }
+export interface UpdateProperties extends Update {
+    plane?: string,
+    thingProperties?: any,
+    planeProperties?: any,
+}
 // --- dispatcher ---
 export async function update(B: BookServer, update: Update) {
     const targetBookId = getBookId(update.id);
@@ -33,7 +41,7 @@ export async function update(B: BookServer, update: Update) {
         name: network.MESSAGE.UPDATE,
         update: update,
     }
-    // print(update)
+    print(update)
     return await B.sendMessage(targetBookId, message)
 }
 
@@ -64,6 +72,8 @@ export const handlers = {
         thing.visits[update.planeId] = deepCopy(update.position)
         await B.things.save(thing)
     },
+
+    properties: updateProperties.properties,
 
 }
 
