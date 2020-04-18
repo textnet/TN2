@@ -67,7 +67,8 @@ export class ThingActor extends BaseActor {
             this.updateFromCommands(engine, delta)
         } 
         // switch sprites
-        this.setDrawing(sprites.code(this.visualState, this.visualDir, sprites.ANIMATION.MAIN));
+        this.setDrawing(sprites.code(this.visualState, this.visualDir, sprites.ANIMATION.MAIN));    
+        
 
         // normalize and update 2.5D visualisation
         this.setZIndex(10000+this.pos.y)
@@ -116,9 +117,7 @@ export class ThingActor extends BaseActor {
             this.visualState = sprites.STATE.MOVE;
             interop.startMoving();
         }
-        if (this.visualDir != sprites.DIR[geo.directionName(dir)]) {
-            this.visualDir   = sprites.DIR[geo.directionName(dir)];
-        }
+        this.visualDir = sprites.DIR[geo.directionName(dir)];
         // velocity
         const velocity = GUI_VELOCITY * physics.velocity(this.data.physics, (this.scene as GameScene).planeData.physics, delta);
         this.vel.x = dir.dx * velocity;
@@ -148,7 +147,12 @@ export class ThingActor extends BaseActor {
         this._pos = position;
         this.body.pos.x = position.x;
         this.body.pos.y = position.y;
-        this.visualDir = sprites.DIR[geo.directionName(position.direction)];
+        if (!this.sprite.sprite.hasDiagonals && sprites.isDiagonal(position.direction)) {
+            this.visualDir = sprites.straightenDiagonalName(position.direction);
+        } else {
+            this.visualDir = sprites.DIR[geo.directionName(position.direction)];            
+        }
+
     }
 
 }

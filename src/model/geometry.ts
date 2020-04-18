@@ -87,6 +87,14 @@ export function directionName(what?: Direction|Position) {
     return "NONE";
 }
 
+export function setRotation(dir: Direction, rotationGrades: number) {
+    const len = lengthDir(dir);
+    const rotationUnits = (rotationGrades-90)*Math.PI/180; // 0 = DOWN
+    dir.rotation = rotationGrades;
+    dir.dx =  len * Math.cos(rotationUnits);
+    dir.dy = -len * Math.sin(rotationUnits);
+}
+
 export function rotationDir(dir?: Direction) {
     if (!dir) return rotationDir(DIRECTION.NONE);
     if (dir.rotation) return dir.rotation;
@@ -107,6 +115,7 @@ export function isIdle(dir: Direction) {
     return isDir("NONE", dir)
 }
 export function toDir(name: string, length?:number, rotation?: number) {
+    name = name.toUpperCase();
     if (!DIRECTION[name]) return deepCopy(DIRECTION.NONE);
     length = length || 1;
     return normalize(DIRECTION[name], length)
@@ -166,12 +175,13 @@ export function scale(dir: Direction, scaleFactor: number) {
     result.dz *= scaleFactor;
     return result;
 }
-export function accumulateDirection(main: Direction, contribution: Direction) {
+export function accumulateDirection(main: Direction, contribution: Direction, scaleFactor?: number) {
+    scaleFactor = scaleFactor || 1;
     main.dz = main.dz || 0;
     contribution.dz = contribution.dz || 0;
-    main.dx += contribution.dx;
-    main.dy += contribution.dy;
-    main.dz += contribution.dz;
+    main.dx += scaleFactor * contribution.dx;
+    main.dy += scaleFactor * contribution.dy;
+    main.dz += scaleFactor * contribution.dz;
 }
 
 export function positionedBox(box: Box, position: Position) {

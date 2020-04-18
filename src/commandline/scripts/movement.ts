@@ -19,9 +19,10 @@ bind P1
 // Startup Written Word for the binded thing
 `
 -- move_to{x=500,   y=200}
--- move_to{x=200,   y=100}
--- move_by{dx=-500, dy=10}
--- move_by{direction="DOWN", distance=100}
+-- move_by{dx=500, dy=10}
+-- move_by{direction="right", distance=100}
+-- move_by{direction="right", duration=5000}
+-- move_by{angle=45, duration=1000}
 
 `
 ];

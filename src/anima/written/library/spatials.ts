@@ -49,22 +49,27 @@ export function move_to( A: WrittenAnima,
  * @optional @param {number}  y
  * @optional @param {string}  direction
  * @optional @param {string}  distance
+ * @optional @param {string}  duration   (ms)
  */
 export function move_by(A: WrittenAnima, 
                         thing?: ThingData|WrittenThing|string,
                         dx?: number, dy?: number, 
-                        direction?: string, distance?:number ) {
+                        direction?: string, distance?: number, 
+                        duration?: number, angle?: number) {
     const aThing = animaThing(A, thing);
     let dir: geo.Direction;
     if (dx === undefined) dx=0;
     if (dy === undefined) dy=0;
     if (direction) {
-        dir = geo.toDir(direction, distance);
+        dir = geo.toDir(direction, distance || 1);
     } else {
         dir = { dx: dx, dy:dy } as geo.Direction;
     }
-    cl.verboseLog(`<${aThing.name}>.move_by( dx=${dx}, dy=${dy}, dir=${direction}, dist=${distance} )`)
-    console.log(dir)
+    if (angle !== undefined && !direction) {
+        dir = geo.DIRECTION.DOWN;
+        geo.setRotation(dir, angle);
+    }
+    cl.verboseLog(`<${aThing.name}>.move_by( dx=${dx}, dy=${dy}, dir=${direction}, dist=${distance}, dur=${duration}, rot=${angle} )`)
     actions.action(A.B, {
         action:  actions.ACTION.MOVE,
         planeId: aThing.hostPlaneId,
@@ -73,7 +78,8 @@ export function move_by(A: WrittenAnima,
         waypoint: {
             kind: movement.WAYPOINT.MOVE_BY,
             direction: dir,
-            distance: distance,
+            distance:  distance,
+            timeLeft:  duration,
         }
     } as actions.ActionAddMovement);
 }

@@ -17,11 +17,12 @@ export const WAYPOINT = {
     STAY:    "stay",
     HALT:    "halt",
 }
-export const MAX_TIME = 60*1000; // movement more than 1 minute long is done.
+export const MAX_TIME     = 60*1000;   // movement more than 1 minute long is done.
+export const MAX_DISTANCE = 1000*1000; // movement more than 1M units is done.
 
 export interface Waypoint {
     kind: string; // WAYPOINT.*
-    timeLeft?:  number; // TODO!
+    timeLeft?:  number; 
 }
 export interface WaypointMoveTo extends Waypoint {
     destination: geo.Position;
@@ -56,12 +57,19 @@ export async function add(B: BookServer, action: actions.ActionAddMovement) {
 
 function prepareWaypoint(thing: ThingData, plane: PlaneData, waypoint: Waypoint) {
     const wp = deepCopy(waypoint);
-    if (!wp.timeLeft) wp.timeLeft = MAX_TIME;
+    const hasDuration = wp.timeLeft;
+    if (!hasDuration) wp.timeLeft = MAX_TIME;
     switch (wp.kind) {
         case WAYPOINT.TURN_TO:
                 const wTurn = wp as WaypointTurnTo;
                 if (!wTurn.rotation) 
                     wTurn.rotation = geo.rotationDir(wTurn.direction);                   
+                break;
+        case WAYPOINT.MOVE_BY:
+                const wMoveBy = wp as WaypointMoveBy;
+                if (hasDuration) 
+                    wMoveBy.direction = geo.scale(wMoveBy.direction, MAX_DISTANCE);
+                break;
     }    
     return wp;
 }
@@ -105,7 +113,6 @@ export function process(B: BookServer, thing: ThingData, plane: PlaneData, timeD
             case WAYPOINT.MOVE_BY:
                         const wMoveBy = (waypoint as WaypointMoveBy);
                         vector = geo.normalize(wMoveBy.direction);
-                        console.log(wMoveBy.direction)
                         break;
 
             case WAYPOINT.TURN_TO:
@@ -127,7 +134,7 @@ export function process(B: BookServer, thing: ThingData, plane: PlaneData, timeD
 }
 
 // returns alternate position
-export function checkWaypoint(B: BookServer, thing: ThingData, newPosition: geo.Position) {
+export function checkWaypoint(B: BookServer, thing: ThingData, newPosition: geo.Position, increment: geo.Direction) {
     let result: geo.Position = newPosition;
     if (B.waypoints[thing.id] && B.waypoints[thing.id].length > 0) {
         const waypoint = B.waypoints[thing.id][0];
@@ -138,6 +145,14 @@ export function checkWaypoint(B: BookServer, thing: ThingData, newPosition: geo.
                         if (geo.distance(newPosition, wMoveTo.destination) <= geo.PROXIMITY.STOP) {
                             result = wMoveTo.destination;
                             arrival = true;
+                        }
+                        break;
+            case WAYPOINT.MOVE_BY:
+                        const wMoveBy = (waypoint as WaypointMoveBy);
+                        if (geo.lengthDir(wMoveBy.direction) <= geo.PROXIMITY.STOP) {
+                            arrival = true;
+                        } else {
+                            geo.accumulateDirection(wMoveBy.direction, increment, -1);
                         }
                         break;
         }

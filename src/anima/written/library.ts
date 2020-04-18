@@ -55,9 +55,10 @@ export const supportedFunctions = {
     // "insert_line": { signature: ["artifact", "line", "anchor", "text" ], f: insert_line },
     // "delete_line": { signature: ["artifact", "line", "anchor"         ], f: delete_line },
 
-    "move_to":  { signature: ["thing", "x", "y", "direction" ],               f: spatials.move_to  },
-    "move_by":  { signature: ["thing", "dx", "dy", "direction", "distance" ], f: spatials.move_by  },
-    "halt":     { signature: ["thing",                       ],               f: spatials.halt },
+    "move_to":  { signature: ["thing", "x", "y", "direction" ],     f: spatials.move_to  },
+    "move_by":  { signature: ["thing", "dx", "dy", "direction", 
+                              "distance", "duration", "angle"],     f: spatials.move_by  },
+    "halt":     { signature: ["thing", ],                           f: spatials.halt },
 
     // "turn_to":  { signature: ["artifact", "directon"            ], f: move_by  },
     // "place_at": { signature: ["artifact", "x", "y", "direction" ], f: place_at },

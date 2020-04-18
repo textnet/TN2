@@ -84,7 +84,7 @@ export async function applyPhysics(B: BookServer, timeDelta:number) {
         geo.accumulateDirection(thing.physics._momentum, thing.physics._inertia);
         const speed = geo.scale(thing.physics._momentum, thing.physics.speed/plane.physics.friction * timeDelta/physics.TIME_MOMENTUM);
         const newPosition = geo.add(plane.things[thing.id], speed);
-        const finalPosition = movement.checkWaypoint(B, thing, newPosition);
+        const finalPosition = movement.checkWaypoint(B, thing, newPosition, speed);
         if (vectorDirection) {
             finalPosition.direction = vectorDirection;
         }

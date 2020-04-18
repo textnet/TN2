@@ -20,6 +20,8 @@ export class ThingSprite {
     sheet: ex.SpriteSheet;
     animations: Record<string, ex.Animation>;
 
+    hasDiagonals: boolean;
+
     /**
      * Build the helper from the artifact.
      */
@@ -35,7 +37,8 @@ export class ThingSprite {
             let mapping = {};           
             let rows = 0;
             for (let code in sprite.mapping) {
-                mapping[code.replace(/\s+/g,"")] = sprite.mapping[code];
+                const shortCode = code.replace(/\s+/g,"");
+                mapping[shortCode] = sprite.mapping[code];
                 if (sprite.mapping[code][0] > rows) {
                     rows = sprite.mapping[code][0];
                 }
