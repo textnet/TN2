@@ -77,7 +77,7 @@ export async function applyPhysics(B: BookServer, timeDelta:number) {
                 }
                 if (gravity.acceleration) {
                     geo.accumulateDirection(thing.physics._inertia, 
-                                            geo.scale(gravity.direction, timeDelta/physics.TIME_ACCELERATION));
+                                            geo.scale(gravity.direction, gravity.acceleration*timeDelta/physics.TIME_ACCELERATION));
                 }
             }
         }

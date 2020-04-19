@@ -115,7 +115,7 @@ export function isIdle(dir: Direction) {
     return isDir("NONE", dir)
 }
 export function toDir(name: string, length?:number, rotation?: number) {
-    name = name.toUpperCase();
+    name = (name || "").toUpperCase();
     if (!DIRECTION[name]) return deepCopy(DIRECTION.NONE);
     length = length || 1;
     return normalize(DIRECTION[name], length)

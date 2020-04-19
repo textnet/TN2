@@ -109,12 +109,79 @@ export function colors( A: WrittenAnima, thing: WrittenThing|string, name?: stri
  *    - mass, force, gravity, value
  *    - direction, minimal, maximal
  */
-export function physics( A: WrittenAnima, thing: WrittenThing|string, 
-                         plane?: string, 
-                         width?: number, height?: number, Z?: number,
+export function physics( A: WrittenAnima, thing: WrittenThing|string, plane?: string, 
+                         width?: number, height?: number, 
+                         anchorX?: number, anchorY?: number,
+                         Z?: number,
                          speed?: number, friction?: number, 
                          mass?: string, force?: string, gravity?: string, value?:number,
-                         direction?: string, minimal?: number, maximal?: number) {
-    // TODO
+                         direction?: string,
+                         minimal?: number, maximal?: number) {
+    let preparedBox: geo.Box = { 
+        w: width, h: height,
+    };
+    if (anchorX && anchorY) {
+        preparedBox.anchor = { x: anchorX, y: anchorY };
+    }
+    if (!width || !height) preparedBox = undefined;
+    const prepared = {mass:{}, force:{}, gravity:{} }
+    updates.update(A.B, {
+        update: updates.UPDATE.PROPERTIES,
+        actorId: A.controller.actorId,
+        id: thingId(A, thing),
+        plane: plane,
+        thingProperties: { 
+            physics: {
+                box: preparedBox,
+                Z: Z,
+                speed: speed,
+                mass:  accumulate(mass, value),
+                force: accumulate(force, value),
+            }
+        },
+        planeProperties: {
+            physics: {
+                friction: friction,
+                gravity: accumulate(gravity, {
+                    acceleration: value,
+                    direction: geo.toDir(direction, 1),
+                    minimalMass: minimal,
+                    maximalMass: maximal,
+                }),
+            }
+        }
+    } as updates.UpdateProperties)
+    return true;
+}
+
+function accumulate(name: string, value: any, accumulator?: any) {
+    if (name === undefined) return;
+    if (accumulator == undefined) accumulator = {};
+    accumulator[name] = value;
+    return accumulator;
+}
+
+/**
+ * Updates physics seasons only.
+ * @param {WrittenAnima} A
+ * @optional @param {FengariMap} all parameters, namely:
+ *    - thing (default is self)
+ *    - plane (default is not plane)
+ *    - width, height, Z, speed -> if thing
+ *    - friction -> if plane
+ *    - mass, force, gravity, value
+ *    - direction, minimal, maximal
+ */
+export function seasons( A: WrittenAnima, thing: WrittenThing|string, plane?: string, 
+                         season?: string, times?: number[], names?: string[]) {
+    updates.update(A.B, {
+        update: updates.UPDATE.PROPERTIES,
+        actorId: A.controller.actorId,
+        id: thingId(A, thing),
+        plane: plane,
+        planeProperties: {
+            seasons: accumulate(season, { times: times, names: names }),
+        }
+    } as updates.UpdateProperties)
     return true;
 }

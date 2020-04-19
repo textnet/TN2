@@ -11,19 +11,23 @@ export async function properties(B: BookServer, update: updates.UpdateProperties
         for (let planeName in thing.planes) {
             if (!update.plane || planeName == update.plane) {
                 const plane = await B.planes.load(createPlaneId(planeName, update.id));
-                const format = update.planeProperties["format"];
-                const spawn  = update.planeProperties["spawn"];
+                for(let key of ["format", "spawn"]) {
+                    if (update.planeProperties[key]) {
+                        plane[key] = update.planeProperties[key];
+                    }
+                }
                 const physics  = update.planeProperties["physics"];
-                if (format) {
-                    plane.format = format;
-                }
-                if (spawn) {
-                    plane.spawn = spawn;
-                }
                 if (physics) {
-                    // TODO
-                    // friction
-                    // gravity, seasons -> update
+                    for (let k of ["friction"]) {
+                        if (physics[k]) thing.physics[k] = physics[k];
+                    }
+                    for (let k of ["gravity", "seasons"]) {
+                        if (physics[k]) {
+                            for (let kk in physics[k]) {
+                                plane.physics[k][kk] = physics[k][kk];
+                            }                            
+                        }
+                    }
                 }
                 await B.planes.save(plane);
             }
@@ -43,9 +47,19 @@ export async function properties(B: BookServer, update: updates.UpdateProperties
                         }
                         break;
                     case "physics":
-                        // TODO
-                        // speed, box, Z
-                        // mass, force -> update
+                        const physics  = value;
+                        if (physics) {
+                            for (let k of ["speed", "box", "Z"]) {
+                                if (physics[k]) thing.physics[k] = physics[k];
+                            }
+                            for (let k of ["mass", "force"]) {
+                                if (physics[k]) {
+                                    for (let kk in physics[k]) {
+                                        thing.physics[k][kk] = physics[k][kk];
+                                    }                            
+                                }
+                            }
+                        }
                         break;
                     default: thing[key] = update.thingProperties[key];
                 }                

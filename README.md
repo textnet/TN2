@@ -7,12 +7,10 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     + thing(name, API) + plane(spawn, format)
     + thing(constraints, colors)
     + update
-- Physics
-    - Written word
-        - library/update.ts (physics, seasons)
-    - Action!
-        - actions/properties.ts (plane, thing)
-    - Show seasons in the title
++ Physics
+    + Written word: library/update.ts (physics, seasons)
+    + Action: actions/properties.ts (plane, thing)
++ BUG: hangs up on quit (zero boxes didn't work)
 - BUG: passable objects: Z-axis set by the bottom line of the box
 
 ## Stage 12. Basic actions
@@ -55,7 +53,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 12. [ ] Push action and basic updates (both GUI and Written Word)
 13. [ ] Inventory concept and actions (incl. throw)
 14. [ ] Text editor and kneeling
-15. [ ] Physics: gravity, speed, friction, seasonality
+15. [ ] Physics: gravity, speed, friction, seasonality (show in the title first)
 16. [ ] Clean up and document
 17. [ ] Design docs for `TN2 Release 1`
 

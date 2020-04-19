@@ -61,6 +61,9 @@ async function findFitting(B: BookServer, thing: ThingData, plane: PlaneData, po
         !(await findCollision(B, thing, plane, position))) {
         return deepCopy(position);
     }
+    if (!thing.physics.box || !thing.physics.box.w || !thing.physics.box.h) {
+        return deepCopy(position)
+    }
     let size = 0;
     let pos = deepCopy(position);
     while (true) {

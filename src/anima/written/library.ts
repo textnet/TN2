@@ -45,16 +45,16 @@ export const supportedFunctions = {
     "enter":       { signature: ["direction"], f: attempt.enter },
     "push":        { signature: ["direction"], f: attempt.push },
     "pickup":      { signature: ["direction"], f: attempt.pickup },
-
+    //
     "update":            { signature: false,                                     f: update.update },
     "update_constraint": { signature: ["thing", "constraint", "name", "value" ], f: update.constraints },
     "update_color":      { signature: ["thing", "color", "name", "value" ],      f: update.colors },
     "update_physics":    { signature: ["thing", "plane", 
-                                       "width", "height", "Z",
+                                       "width", "height", "anchorX", "anchorY", "Z",
                                        "speed", "friction",
                                        "mass", "force", "gravity", "value", 
-                                       "direction", "minimal", "maximal"  ],      f: update.physics },
-
+                                       "direction", "minimal", "maximal" ],      f: update.physics },
+    "update_seasons":    { signature: ["thing", "plane", "names", "times" ],     f: update.seasons },
 
 
     // "get_text":    { signature: ["artifact", "line", "anchor"         ], f: get_text    },
