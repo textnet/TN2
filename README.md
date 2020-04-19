@@ -11,13 +11,13 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     + Written word: library/update.ts (physics, seasons)
     + Action: actions/properties.ts (plane, thing)
 + BUG: hangs up on quit (zero boxes didn't work)
-- BUG: passable objects: Z-axis set by the bottom line of the box
++ BUG: passable objects: Z-axis set by the bottom line of the box
 
 ## Stage 12. Basic actions
 + Update Properties:  thing(name, API) + plane(spawn, format)
 + Update Constraints
 + Update Colors
-- Update Physics: Thing, Plane
++ Update Physics: Thing, Plane
 
 ## Stage 13. Inventory
 - Pick / Putdown = inventory!

@@ -71,7 +71,7 @@ export class ThingActor extends BaseActor {
         
 
         // normalize and update 2.5D visualisation
-        this.setZIndex(10000+this.pos.y)
+        this.setZIndex(10000 + this.pos.y + this.data.physics.box.h/2 + this.data.physics.box.anchor.y);
     }
 
     /**
