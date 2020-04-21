@@ -5,7 +5,7 @@ import { BookData, ThingData, PlaneData, ThingTemplate,
 import { LibraryServer } from "./library"
 import { BookServer } from "./book"
 import { pushDefaults, deepCopy } from "../utils"
-import { createThingId, createPlaneId, stripBookId, getLimboPortalId, isLimboPortalId } from "./identity"
+import { createThingId, createPlaneId, stripBookId, extractPlaneName, getLimboPortalId, isLimboPortalId } from "./identity"
 import * as actions from "../behaviour/actions"
 
 
@@ -49,15 +49,10 @@ export async function createFromThing(B: BookServer, fromId: string, id?: string
         for (let planeName in modelThing.planes) {
             // duplicate plane
             const modelPlane = await B.planes.load(modelThing.planes[planeName])
-            const plane: PlaneData = deepCopy(modelPlane);
-            const planeId = createPlaneId(planeName, thingId);
-            plane.id = planeId;
-            plane.ownerId = thingId;
-            plane.things = {};
+            const plane = await createPlaneFromAnother(B, thingId, modelPlane, planeName, true);
             if (planeName == PLANE.LIMBO) {
                 plane.things[thingId] = plane.spawn || deepCopy(SPAWN_DEFAULT);
             }
-            fixPlaneDefaults(plane);
             await B.planes.save(plane);
             // copy things
             for (let innerId in modelPlane.things) {
@@ -71,7 +66,7 @@ export async function createFromThing(B: BookServer, fromId: string, id?: string
                 }
             }
             await B.planes.save(plane);
-            thing.planes[planeName] = planeId;
+            thing.planes[planeName] = plane.id;
         }
         thing.hostPlaneId = createPlaneId(PLANE.LIMBO, thingId);
         if (differences) {
@@ -86,6 +81,34 @@ export async function createFromThing(B: BookServer, fromId: string, id?: string
     }
 }
 
+export async function createPlaneFromAnotherId(B: BookServer, ownerThingId: string, sourcePlaneId: string, 
+                                               planeName?: string, skipLimboPortal?: boolean) {
+    const originalPlane = await B.planes.load(sourcePlaneId);
+    return createPlaneFromAnother(B, ownerThingId, originalPlane, planeName. skipLimboPortal);
+}
+
+export async function createPlaneFromAnother(B: BookServer, ownerThingId: string, sourcePlane: PlaneData, 
+                                             planeName?: string, skipLimboPortal?: boolean) {
+    planeName = planeName || extractPlaneName(sourcePlane.id);
+    const plane: PlaneData = deepCopy(sourcePlane);
+    const planeId = createPlaneId(planeName, ownerThingId);
+    plane.id = planeId;
+    plane.ownerId = ownerThingId;
+    fixPlaneDefaults(plane);
+    //
+    if (planeName == PLANE.LIMBO && !skipLimboPortal) {
+        const limboPortal = await createFromTemplate(B, LIMBO_PORTAL_TEMPLATE, 
+                                                     stripBookId(getLimboPortalId(ownerThingId)));
+        plane.things[limboPortal.id] = SPAWN_DEFAULT;
+        limboPortal.hostPlaneId = plane.id;
+        limboPortal.lostPlaneId = plane.id;
+        await B.things.save(limboPortal);
+    }
+    //
+    await B.planes.save(plane);
+    return plane;    
+}
+
 export async function createFromTemplate(B: BookServer, templateName?: string, id?: string, differences?: any) {
     const template = getTemplate(templateName);
     const thingId = await createThingId(B, id);
@@ -93,23 +116,8 @@ export async function createFromTemplate(B: BookServer, templateName?: string, i
     thing.id = thingId;
     const planeNames = [ PLANE_DEFAULT, PLANE.LIMBO ];
     for (let planeName of planeNames) {
-        const plane: PlaneData = deepCopy(template.plane);
-        const planeId = createPlaneId(planeName, thingId);
-        plane.id = planeId;
-        plane.ownerId = thingId;
-        fixPlaneDefaults(plane);
-        //
-        if (planeName == PLANE.LIMBO && templateName != LIMBO_PORTAL_TEMPLATE) {
-            const limboPortal = await createFromTemplate(B, LIMBO_PORTAL_TEMPLATE, 
-                                                         stripBookId(getLimboPortalId(thing.id)));
-            plane.things[limboPortal.id] = SPAWN_DEFAULT;
-            limboPortal.hostPlaneId = plane.id;
-            limboPortal.lostPlaneId = plane.id;
-            await B.things.save(limboPortal);
-        }
-        //
-        await B.planes.save(plane);
-        thing.planes[planeName] = planeId;
+        const plane = await createPlaneFromAnother(B, thingId, template.plane, planeName, templateName == LIMBO_PORTAL_TEMPLATE);
+        thing.planes[planeName] = plane.id;
     }
     thing.hostPlaneId = createPlaneId(PLANE.LIMBO, thingId);
     if (differences) {

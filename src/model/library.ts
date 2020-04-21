@@ -3,7 +3,7 @@ import { BookData, ConsoleData } from "./interfaces";
 import { Repository } from "../storage/repo";
 import { BookServer } from "./book"
 import { createFromTemplate, TEMPLATE_BOOK } from "./create"
-import { createBookId, getBookId } from "./identity"
+import { createBookId, getBookId, BOOK_THING_ID } from "./identity"
 import { ok, log, error, verboseLog } from "../commandline/commandline"
 import * as actions from "../behaviour/actions"
 
@@ -47,7 +47,7 @@ export class LibraryServer {
             id: id || createBookId(),
         }
         const tempServer = new BookServer(this, data);
-        const thing = await createFromTemplate(tempServer, TEMPLATE_BOOK, "*");
+        const thing = await createFromTemplate(tempServer, TEMPLATE_BOOK, BOOK_THING_ID);
         data["thingId"] = thing.id;
         await this.books.save(data);
         await this.startBook(data)

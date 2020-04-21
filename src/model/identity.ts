@@ -3,6 +3,13 @@ import { BookServer } from "./book"
 import { BookData, ThingData, PlaneData, PLANE, LIMBO_PORTAL_TEMPLATE } from "./interfaces"
 
 
+export const BOOK_THING_ID    = "Book";
+export const EQUIPMENT_PREFIX = "Equipment of ";
+
+export function getEquipmentId(bookId: string, thingId: string) {
+    return [bookId, BOOK_THING_ID, EQUIPMENT_PREFIX+thingId].join(".");
+}
+
 export function getBookId(id: string) {
     return id.split(".")[0]
 }
@@ -22,7 +29,7 @@ export function isLimbo(planeId: string) {
 }
 export function extractPlaneName(planeId: string) {
     const parts = planeId.split(".");
-    return parts[ parts.length-1 ];
+    return parts[ parts.length-1 ]; 
 }
 export function isInBook(id: string, bookId: string) {
     return getBookId(id) == bookId;
