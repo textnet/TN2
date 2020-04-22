@@ -23,6 +23,7 @@ export interface Update {
 }
 export interface UpdateHostPlane extends Update {
     isUp?: boolean;
+    noVisit: boolean;
     hostPlaneId: string;
 }
 export interface UpdateVisits extends Update {
@@ -58,7 +59,8 @@ export const handlers = {
             thing.lostPlaneId = thing.hostPlaneId;
             thing.hostPlaneId = update.hostPlaneId;
             // movement between limbo & not limbo doesn't add up to the stack
-            if ((!isLimbo(update.hostPlaneId)) && 
+            if ((!update.noVisit) && 
+                (!isLimbo(update.hostPlaneId)) && 
                 (!isLimbo(thing.hostPlaneId) || (thing.lostPlaneId != update.hostPlaneId))) {
                 cl.verboseLog(B, `${thing.id} push to stack «${thing.hostPlaneId}»`);
                 thing.visitsStack.push(update.hostPlaneId)    

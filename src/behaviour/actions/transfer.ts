@@ -77,21 +77,34 @@ export async function turnLimboPortal(B: BookServer, actor: string|ThingData, di
 
 export async function action(B: BookServer, action: actions.ActionTransfer) {
     const thing: ThingData = await B.things.load(action.thingId);
-    const actionLeave: actions.ActionLeave = {
-        action:  actions.ACTION.LEAVE,
-        actorId: action.actorId,
-        planeId: thing.hostPlaneId,
-        thingId: action.thingId,
+    if (action.planeId == thing.hostPlaneId) {
+        const actionPlace: actions.ActionPlace = {
+            action:  actions.ACTION.PLACE,
+            actorId: action.actorId,
+            planeId: action.planeId,
+            thingId: action.thingId,
+            position: action.position,
+        }
+        await actions.action(B, actionPlace);
+    } else {
+        const actionLeave: actions.ActionLeave = {
+            action:  actions.ACTION.LEAVE,
+            actorId: action.actorId,
+            planeId: thing.hostPlaneId,
+            thingId: action.thingId,
+        }
+        const actionEnter: actions.ActionEnter = {
+            action:  actions.ACTION.ENTER,
+            actorId: action.actorId,
+            planeId: action.planeId,
+            thingId: action.thingId,
+            isUp:    action.isUp,
+            noVisit: action.noVisit,
+            position: action.position,
+        }
+        await actions.action(B, actionLeave);
+        await actions.action(B, actionEnter);        
     }
-    const actionEnter: actions.ActionEnter = {
-        action:  actions.ACTION.ENTER,
-        actorId: action.actorId,
-        planeId: action.planeId,
-        thingId: action.thingId,
-        isUp:    action.isUp,
-    }
-    await actions.action(B, actionLeave);
-    await actions.action(B, actionEnter);
 }
 
 // check if the this should be treated as a guest
@@ -122,6 +135,7 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
         id:          thingId,
         hostPlaneId: plane.id,
         isUp:        action.isUp,
+        noVisit:     action.noVisit,
     } as updates.UpdateHostPlane) 
     // place thing
     await actions.handlers.place(B, {

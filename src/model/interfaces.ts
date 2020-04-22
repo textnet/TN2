@@ -59,6 +59,7 @@ export interface ThingTemplate {
     name:  string;
     thing: ThingData,
     plane: PlaneData,
+    equipment?: PlaneData,
 }
 
 export function fixThingDefaults(data) {

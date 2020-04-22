@@ -5,7 +5,8 @@ import { BookData, ThingData, PlaneData, ThingTemplate,
 import { LibraryServer } from "./library"
 import { BookServer } from "./book"
 import { pushDefaults, deepCopy } from "../utils"
-import { createThingId, createPlaneId, stripBookId, extractPlaneName, getLimboPortalId, isLimboPortalId } from "./identity"
+import { createThingId, createPlaneId, stripBookId, extractPlaneName, 
+         getLimboPortalId, isLimboPortalId, getBookThingId, getEquipmentId } from "./identity"
 import * as actions from "../behaviour/actions"
 
 
@@ -84,7 +85,7 @@ export async function createFromThing(B: BookServer, fromId: string, id?: string
 export async function createPlaneFromAnotherId(B: BookServer, ownerThingId: string, sourcePlaneId: string, 
                                                planeName?: string, skipLimboPortal?: boolean) {
     const originalPlane = await B.planes.load(sourcePlaneId);
-    return createPlaneFromAnother(B, ownerThingId, originalPlane, planeName. skipLimboPortal);
+    return createPlaneFromAnother(B, ownerThingId, originalPlane, planeName, skipLimboPortal);
 }
 
 export async function createPlaneFromAnother(B: BookServer, ownerThingId: string, sourcePlane: PlaneData, 
@@ -109,6 +110,22 @@ export async function createPlaneFromAnother(B: BookServer, ownerThingId: string
     return plane;    
 }
 
+export async function createEquipmentPlane(B: BookServer, thingId: string, source?: string|PlaneData) {
+    // choose source of the copy
+    const bookThingId = getBookThingId(B.id())
+    const sourceThingId = (source["id"] || source || bookThingId) as string;
+    const sourceEquipId = getEquipmentId(B.id(), sourceThingId);
+    const equipId = getEquipmentId(B.id(), thingId);
+    const equipPlaneName = extractPlaneName(equipId);
+    let plane;
+    if (source["id"]) {
+        plane = createPlaneFromAnother(B, bookThingId, source as PlaneData, equipPlaneName, true)
+    } else {
+        plane = createPlaneFromAnotherId(B, bookThingId, sourceEquipId, equipPlaneName, true)
+    }
+    return plane;
+}
+
 export async function createFromTemplate(B: BookServer, templateName?: string, id?: string, differences?: any) {
     const template = getTemplate(templateName);
     const thingId = await createThingId(B, id);
@@ -127,6 +144,9 @@ export async function createFromTemplate(B: BookServer, templateName?: string, i
     } 
     fixThingDefaults(thing)
     await B.things.save(thing);
+    if (template.equipment) {
+        const equip = await createEquipmentPlane(B, thing.id, template.equipment);
+    }
     await B.awaken(thing.id)
     return thing;
 }

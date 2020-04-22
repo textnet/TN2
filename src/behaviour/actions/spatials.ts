@@ -12,6 +12,7 @@ import { print } from "../../commandline/print"
 
 
 export async function place(B: BookServer, action: actions.ActionPlace) {
+    const actor = await B.things.load(action.actorId);
     const plane = await B.planes.load(action.planeId);
     const thing = await B.things.load(action.thingId);
     let colliderId: string;

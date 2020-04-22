@@ -25,5 +25,11 @@ export const template: ThingTemplate = {
         ownerId: "<ownerId>",
         things: {},
         text: "",
+    },
+    equipment: {
+        id: "<equipId>",
+        ownerId: "<ownerId>",
+        things: {},
+        text: "",
     }
 }

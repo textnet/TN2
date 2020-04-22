@@ -16,7 +16,8 @@ import * as transfer from "./actions/transfer"
 import * as spatials from "./actions/spatials"
 import * as movement from "./actions/movement"
 import * as attempt  from "./actions/attempt"
-import * as push  from "./actions/push"
+import * as push      from "./actions/push"
+import * as equipment from "./actions/equipment"
 export const handlers = {
     say:        say.action,
     enter:      transfer.enter,
@@ -31,6 +32,8 @@ export const handlers = {
     move:       movement.add,
     halt:       movement.halt,
     push:       push.action,
+    equip:      equipment.equip,
+    unEquip:    equipment.unEquip,
 }
 
 // actions happen on a plane
@@ -45,11 +48,12 @@ export const ACTION = {
     IS_GUEST: "isGuest",
     PLACE: "place",
     SAY: "say",
-    ATTEMPT: "attempt", // attempt a proximal action, e.g. enter
-    PUSH: "push", // successful push
-
     MOVE: "move",
     HALT: "halt",
+    ATTEMPT: "attempt", // attempt a proximal action, e.g. enter
+    PUSH: "push", // successful push
+    EQUIP: "equip",
+    UN_EQUIP: "unEquip",
 }
 
 export const ATTEMPT = attempts.ATTEMPT;
@@ -65,17 +69,26 @@ export interface ActionWithThing extends Action {
 export interface ActionEnter extends ActionWithThing {
     position?: geo.Position;
     isUp?:boolean;
+    noVisit?: boolean;
 }
 export interface ActionLeave extends ActionWithThing {}
-export interface ActionTransfer extends ActionWithThing {
-    isUp?: boolean; // is it up in stack
+export interface ActionEquip extends ActionWithThing {
+    equipThingId?: string;
+    slotName?: string;
 }
+export interface ActionUnEquip extends Action {
+    thingId?: string;   
+    equipThingId?: string;
+    slotName?: string;
+    direction?: geo.Direction;
+}
+export interface ActionTransfer extends ActionEnter {}
 export interface ActionTransferUp extends Action {}
 export interface ActionToLimbo    extends Action {}
 export interface ActionFromLimbo  extends Action {}
 export interface ActionIsGuest    extends ActionWithThing {}
 export interface ActionPlace extends ActionWithThing {
-    position: geo.Position;
+    position?: geo.Position;
     fit?: boolean;
     force?: boolean;
     isEnter?: boolean;

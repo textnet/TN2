@@ -24,6 +24,8 @@ export const EVENT = {
     MOVE_FINISH: "move_finish",
     HALT:        "halt",
     WAYPOINT:    "waypoint",
+    EQUIP:    "equip",
+    UN_EQUIP: "unEquip",
 }
 
 export const EVENT_ROLE = {
@@ -66,7 +68,11 @@ export interface EventMoveStart  extends EventMoveStartFinish {}
 export interface EventHalt       extends EventWaypoint {}
 export interface EventAttempt extends Event {}
 export interface EventPush extends EventAttempt {}
-
+export interface EventEquip extends EventAttempt {
+    equipId:  string;
+    slotName?: string;
+}
+export interface EventUnEquip extends EventEquip {}
 
 
 // ------------------ emitting -------------------------

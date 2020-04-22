@@ -7,6 +7,7 @@ import * as updates from "../updates"
 import * as events from "../events"
 import * as actions from "../actions"
 import * as cl from "../../commandline/commandline"
+import * as equipment from "../../model/equipment"
 
 export async function action(B: BookServer, action: actions.ActionAttempt) {
     // try to do a proximal action:
@@ -55,6 +56,16 @@ export async function action(B: BookServer, action: actions.ActionAttempt) {
                     thingId: next.id,
                     direction: action.direction,
             } as actions.ActionPush);
+        // ----------------------------------------------------------------
+        case actions.ATTEMPT.PICKUP: // pick up
+            return await actions.action(B, {
+                    action:  actions.ACTION.EQUIP,
+                    actorId: actor.id,
+                    planeId: plane.id,
+                    thingId: next.id,
+                    equipThingId: actor.id,
+                    slotName: equipment.DEFAULT_SLOT_NAME,
+            } as actions.ActionEquip);
         // ----------------------------------------------------------------
     }
 

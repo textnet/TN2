@@ -9,6 +9,21 @@ export const EQUIPMENT_PREFIX = "Equipment of ";
 export function getEquipmentId(bookId: string, thingId: string) {
     return [bookId, BOOK_THING_ID, EQUIPMENT_PREFIX+thingId].join(".");
 }
+export function isEquipmentPlaneId(planeId: string) {
+    return getEquipmentOwnerId(planeId) !== undefined;
+}
+export function getEquipmentOwnerId(planeId: string) {
+    const planeName = extractPlaneName(planeId)
+    if (planeName.indexOf(EQUIPMENT_PREFIX) == 0) {
+        return planeName.substr(EQUIPMENT_PREFIX.length);
+    } else {
+        return undefined;
+    }
+}
+
+export function getBookThingId(bookId: string) {
+    return `${bookId}.${BOOK_THING_ID}`
+}
 
 export function getBookId(id: string) {
     return id.split(".")[0]

@@ -4,14 +4,14 @@ import { Repository } from "../storage/repo"
 import * as network from "../network/discovery"
 import { log, error, ok, verboseLog } from "../commandline/commandline"
 import { pushDefaults, nonce } from "../utils"
-import { getBookId, createBookId, createPlaneId, isLimboPortalId, getLimboHost } from "./identity"
+import { getBookId, createBookId, createPlaneId, isLimboPortalId, getLimboHost, getEquipmentId, getBookThingId } from "./identity"
 import { Controller, CONTROLLER } from "../behaviour/controller"
 import * as actions from "../behaviour/actions"
 import * as events from "../behaviour/events"
 import * as updates from "../behaviour/updates"
 import * as anima from "../anima/animate"
 import * as geo from "./geometry"
-import { createFromThing } from "./create"
+import { createFromThing, createEquipmentPlane } from "./create"
 import { applyPhysics } from "../behaviour/physics"
 import { Waypoint } from "../behaviour/actions/movement"
 import { turnLimboPortal } from "../behaviour/actions/transfer"
@@ -120,6 +120,16 @@ export class BookServer {
             await this.unbind(this.guests[thingId]);
             delete this.guests[thingId];
         }
+    }
+
+    async getEquipmentPlane(thingId: string) {
+        const equipId = getEquipmentId(this.id(), thingId);
+        let equipPlane = await this.planes.load(equipId);
+        if (!equipPlane) {
+            equipPlane = await createEquipmentPlane(this, thingId);
+            // create a new plane
+        }
+        return equipPlane;
     }
 
     /**

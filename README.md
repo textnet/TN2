@@ -3,25 +3,40 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-+ Basic updates
-    + thing(name, API) + plane(spawn, format)
-    + thing(constraints, colors)
-    + update
-+ Physics
-    + Written word: library/update.ts (physics, seasons)
-    + Action: actions/properties.ts (plane, thing)
-+ BUG: hangs up on quit (zero boxes didn't work)
-+ BUG: passable objects: Z-axis set by the bottom line of the box
++ Equipment planes
+    + created in the book thing with special naming
+    + `.equipment` in the template
+    + create when needed the first time, if there wasn't any.
++ Refactoring issues
+    + on create: cannot set property "id"
+- PICKUP/PUTDOWN actions
+    + attempt
+    + constraints
+    + action
+    + events
+    - Written Word
+- Visualisation
+    - special sprite
+    - using default sprite w/zoom
+- Cross-plane transfer
+- Cross-book transfer
+- Slots
+    - `slot` flag of the thing
+    - limit transfer only to slots
+    - PICKUP/PUTDOWN to slots
+    - autopickup
+    - special sprites/bodies for being placed in a slot
+    - SHOW/HIDE equipment
+    - transfer of forces
 
-## Stage 12. Basic actions
-+ Update Properties:  thing(name, API) + plane(spawn, format)
-+ Update Constraints
-+ Update Colors
-+ Update Physics: Thing, Plane
 
 ## Stage 13. Inventory
-- Pick / Putdown = inventory!
-- Throw
++ EQUIP action
++ UN_EQUIP action
+- Equipment Slots
+- USE action
+- THROW action
+
 
 ## Stage 14. Text
 - Update Text
@@ -50,7 +65,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 9. [x] Basic Controls in text console
 10. [x] GUI and moving
 11. [x] Interbook operations and limbo, entering and leaving
-12. [ ] Push action and basic updates (both GUI and Written Word)
+12. [x] Push action and basic updates (both GUI and Written Word)
 13. [ ] Inventory concept and actions (incl. throw)
 14. [ ] Text editor and kneeling
 15. [ ] Physics: gravity, speed, friction, seasonality (show in the title first)
@@ -58,7 +73,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 17. [ ] Design docs for `TN2 Release 1`
 
 ## Rough planning for Q2 and Q3
-- April: +GUI, +limbo, basic actions (+move, +push), basic updates
++ April: GUI, limbo, basic actions (move, push), basic updates
 - May: Inventory, Text editor and menu
 - June: Gravity and Seasonality 
 - July: Documenting
