@@ -34,6 +34,7 @@ export const handlers = {
     push:       push.action,
     equip:      equipment.equip,
     unEquip:    equipment.unEquip,
+    reEquip:    equipment.reEquip,
 }
 
 // actions happen on a plane
@@ -54,6 +55,7 @@ export const ACTION = {
     PUSH: "push", // successful push
     EQUIP: "equip",
     UN_EQUIP: "unEquip",
+    RE_EQUIP: "reEquip",
 }
 
 export const ATTEMPT = attempts.ATTEMPT;
@@ -81,6 +83,12 @@ export interface ActionUnEquip extends Action {
     equipThingId?: string;
     slotName?: string;
     direction?: geo.Direction;
+}
+export interface ActionReEquip extends Action {
+    equipFromId: string;
+    equipToId: string;
+    slotFrom?: string;
+    slotTo?:   string;
 }
 export interface ActionTransfer extends ActionEnter {}
 export interface ActionTransferUp extends Action {}

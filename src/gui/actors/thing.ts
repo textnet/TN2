@@ -41,6 +41,7 @@ export class ThingActor extends BaseActor {
         this.body.collider.type = ex.CollisionType.Fixed;
         this.visualState = sprites.STATE.IDLE;
         this.visualDir = sprites.DIR[geo.directionName(data.position.direction)];
+        this.needRelease = true;
     }
 
     bindPlayer(asObserver: boolean) {

@@ -7,7 +7,8 @@ create book Indiana
 create thing Piano as Piano in Indiana @ 200 200
 create thing Player as Jones in Indiana @ 100 200
 create console P1 Indiana.Player
-bind P1
+-- bind P1
+gui P1
 `,`
 
 -- update{thing="Indiana.*", name="Test name", format="txt", spawn={x=10; y=20} }

@@ -10,6 +10,7 @@ import * as say from "./library/say"
 import * as attempt from "./library/attempt"
 import * as spatials from "./library/spatials"
 import * as update from "./library/update"
+import * as equip from "./library/equip"
 
 import { event_on, event_off } from "./library/events"
 
@@ -45,6 +46,9 @@ export const supportedFunctions = {
     "enter":       { signature: ["direction"], f: attempt.enter },
     "push":        { signature: ["direction"], f: attempt.push },
     "pickup":      { signature: ["direction"], f: attempt.pickup },
+    "equip":       { signature: ["thing", "owner", "slot"],         f: equip.equip },
+    "un_equip":     { signature: ["owner", "slot", "direction"],    f: equip.unEquip },
+    "re_equip":     { signature: ["ownerFrom", "ownerTo", "slotFrom", "slotTo"],   f: equip.reEquip },
     //
     "update":            { signature: false,                                     f: update.update },
     "update_constraint": { signature: ["thing", "constraint", "name", "value" ], f: update.constraints },

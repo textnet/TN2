@@ -27,16 +27,42 @@ export async function equip(B: BookServer, action: actions.ActionEquip) {
     return await equipment.transferToSlot(B, action.thingId, action.equipThingId, action.slotName);
 }
 
+export async function reEquip(B: BookServer, action: actions.ActionReEquip) {
+    const equipFrom = await B.things.load(action.equipFromId);
+    const equipTo   = await B.things.load(action.equipToId);
+    const item = await equipment.thingInSlot(B, action.actorId, action.equipFromId, action.slotFrom);
+    if (equipFrom && equipTo && item) {
+        // only send event, don't try to unEquip
+        await events.emit(B, {
+            event: events.EVENT.UN_EQUIP,
+            planeId: equipFrom.hostPlaneId,
+            actorId: action.actorId,
+            thingId: item.id,
+            equipId: equipFrom.id,
+            slotName: action.slotFrom,
+        } as events.EventUnEquip);
+        // now equip!          
+        return await equip(B, {
+            action: actions.ACTION.EQUIP,
+            actorId: action.actorId,
+            planeId: equipTo.hostPlaneId,
+            thingId: item.id,
+            slotName: action.slotTo
+        } as actions.ActionEquip)
+    }
+}
+
 export async function unEquip(B: BookServer, action: actions.ActionUnEquip) {
     const actor = await B.things.load(action.actorId);
     const plane = await B.planes.load(actor.hostPlaneId);
-    let thing, ownerId;
+    let thing: interfaces.ThingData;
+    let ownerId: string;
     if (action.thingId) {
         thing = await B.things.load(action.thingId);
         ownerId = identity.getEquipmentOwnerId(thing.hostPlaneId);
     } else {
         ownerId = action.equipThingId;
-        thing = equipment.thingInSlot(B, actor.id, ownerId, action.slotName);
+        thing = await equipment.thingInSlot(B, actor.id, ownerId, action.slotName);
     }
     if (thing && ownerId) {
         // find position

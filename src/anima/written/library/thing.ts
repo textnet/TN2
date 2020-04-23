@@ -35,6 +35,11 @@ export function writtenThing(A: Anima, thing?: ThingData|WrittenThing|string): W
     return result as WrittenThing;
 }
 
+export function geoDirection(d: geo.Direction|string) {
+    if ((d as string).length !== undefined) return geo.toDir(d as string);
+    else return d as geo.Direction
+}
+
 export function animaThing(A: Anima, thing?: ThingData|WrittenThing|string): ThingData {
     if (!thing) return animaThing(A, A.thingId);
     const result = thing["id"]? animaThing(A, thing["id"]) : A.things.load(thing as string);

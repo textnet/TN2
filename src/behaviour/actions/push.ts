@@ -33,7 +33,7 @@ export async function action(B: BookServer, action: actions.ActionPush) {
             actorId: actor.id,
             thingId: thing.id,
         } as events.EventPush);
-        // TODO convert to movement
+        // TODO convert to movement via 'Move' framework
         await actions.handlers.place(B, {
             action:   actions.ACTION.PLACE,
             actorId:  action.actorId,

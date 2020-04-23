@@ -9,12 +9,13 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     + create when needed the first time, if there wasn't any.
 + Refactoring issues
     + on create: cannot set property "id"
-- PICKUP/PUTDOWN actions
+    + on leave: cannot set property "id"
++ PICKUP/PUTDOWN commands, EQUIP/UN_EQUIP/RE_EQUIP actions
     + attempt
     + constraints
     + action
     + events
-    - Written Word
+    + Written Word
 - Visualisation
     - special sprite
     - using default sprite w/zoom

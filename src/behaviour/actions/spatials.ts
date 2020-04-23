@@ -30,6 +30,7 @@ export async function place(B: BookServer, action: actions.ActionPlace) {
         }
     }
     if (!colliderId) {
+        const plane = await B.planes.load(action.planeId);
         plane.things[thing.id] = position;
         await B.planes.save(plane);
         const event = {
@@ -41,6 +42,7 @@ export async function place(B: BookServer, action: actions.ActionPlace) {
         } as events.EventPlace;
         await events.emit(B, event);
     } else {
+        const thing = await B.things.load(action.thingId);
         thing.physics._inertia = deepCopy(geo.DIRECTION.NONE);
         await B.things.save(thing);
         const event = {
@@ -49,7 +51,7 @@ export async function place(B: BookServer, action: actions.ActionPlace) {
             planeId:  action.planeId,
             thingId:  thing.id,
             colliderId: colliderId,
-            position: position,           
+            position: action.position,           
         } as events.EventCollision;
         await events.emit(B, event);
     }
@@ -100,6 +102,7 @@ async function findFitting(B: BookServer, thing: ThingData, plane: PlaneData, po
             }
         }  
     }
+    // console.log("FIT into ",pos)
     return pos;
 }
 
