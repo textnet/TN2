@@ -3,19 +3,6 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-+ Equipment planes
-    + created in the book thing with special naming
-    + `.equipment` in the template
-    + create when needed the first time, if there wasn't any.
-+ Refactoring issues
-    + on create: cannot set property "id"
-    + on leave: cannot set property "id"
-+ PICKUP/PUTDOWN commands, EQUIP/UN_EQUIP/RE_EQUIP actions
-    + attempt
-    + constraints
-    + action
-    + events
-    + Written Word
 - Visualisation
     - special sprite
     - using default sprite w/zoom
