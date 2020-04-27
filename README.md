@@ -3,43 +3,37 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-+ GUI Server: 
-    + listen to events: equip/unequip
-    + send equipment on those events
-    + send equipment with loadPlane
-    + send the same sprite if there is no special one.
-+ GUI Render: 
-    + attach the actor to the owner's actor
-    + use special EQUIPMENT state
-    + remove/replace actor when needed
-+ Visualisation
-    + special sprite
-    + using default sprite w/zoom
-+ Debug equip/unequip
-    + Equipment(Up) state broken
-    + position of the picked up item is off, need to be more to the left
-    + When unEquip, position is off, especially left and up
-+ Cross-plane transfer
-    + load Plane with equipment
-    + place properly on the new plane
-    + enter with equipment
-+ Cross-book transfer
-    + leave item in equipment here
-    + get it back
-- Slots
-    - `slot` flag of the thing
-    - limit transfer only to slots
-    - PICKUP/PUTDOWN to slots
-    - autopickup
-    - special sprites/bodies for being placed in a slot
-    - SHOW/HIDE equipment
-    - transfer of forces
++ `slot` and `slotOnly` flags in physics
+- create things for slotting
+    - body puppet
+    - slot box
+    - backpack
+- prepare slotted Environment in the setup script
+- equip/unequip actions
+    - slot Support
+- place action
+    - slotOnly support
+- PICKIP/PUTDOWN
+    - slot support
+    - slotOnly support
+- autopickup
+- render borders of small planes
+- make equipment a small plane
+- get equipment inventory
+    - action
+    - written word
+- SHOW/HIDE commands in the GUI
+    - get equipment inventory
+    - special pop up window
+    - zoomed content of the plane
+- transfer of forces
+
 
 
 ## Stage 13. Inventory
 + EQUIP action
 + UN_EQUIP action
-- Visualisation
++ Visualisation
 - Equipment Slots
 - USE action
 - THROW action

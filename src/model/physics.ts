@@ -4,6 +4,7 @@ import { Box, Position, Direction } from "./geometry"
 
 export interface ThingPhysics {
     box: Box;
+    slot?: boolean; 
     Z?:  number; // Z-level required to pass over
     mass?: Record<string,number>;
     force?: Record<string, number>;
@@ -15,6 +16,7 @@ export interface ThingPhysics {
 
 export interface PlanePhysics {
     box?: Box;
+    slotOnly?: boolean; 
     gravity?: Record<string, PlaneGravity>;
     seasons?: Record<string, PlaneSeason>;
     friction?: number; // 100 is 1:1; slowing any movement in any direction
