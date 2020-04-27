@@ -24,6 +24,7 @@ export interface ThingData {
     colors: Record<string,string>; // e.g. text, floor, title, skin, eyes. use constants as keys!
     constraints?: Record<string,boolean|ThingConstraint>; // constraints like "pushable" etc. true/false or min mass
     sprite: Sprite;
+    spriteEquipped?: Sprite;
     physics: ThingPhysics;
     planes:  Record<string, string>;    // name:planeId
     visits?: Record<string, Position>; // position of the previous visit to planeIds.

@@ -3,6 +3,7 @@ import { WrittenAnima } from "../../anima/written/detect"
 import { GuiConsole } from "../../console/gui"
 import * as events from "../../behaviour/events"
 import * as msg from "../messages"
+import * as equip from "../../model/equipment"
 
 
 export async function unsubscribeFromCurrentPlane(gui: GuiConsole) {
@@ -25,8 +26,13 @@ export async function subscribeOnPlane(gui: GuiConsole, planeId: string) {
            hostPlane.ownerId, 
            event, 
            events.EVENT_ROLE.HOST, 
-           (e)=>{ return mapping[event](gui, e.data) }
-       );
+           (e)=>{ 
+                if (e.role == events.EVENT_ROLE.HOST) {
+                    // console.log("E->", e.data.event, e.role, e.targetIds)
+                    mapping[event](gui, e.data)    
+                }
+            }
+        )
     }
 }
 
@@ -59,7 +65,27 @@ async function(gui: GuiConsole, e: events.EventLeave) {
 mapping[events.EVENT.ENTER] = 
 async function(gui: GuiConsole, e: events.EventEnter) {
     const thingData = await msg.renderThingData(gui.B, e.thingId);
+    const thingInHands = await equip.thingInHands(gui.B, e.thingId, e.thingId);
+    const equippedData = thingInHands? (await msg.renderThingData(gui.B, thingInHands)) : undefined;
     return gui.send(msg.RENDER.ENTER, {
         thing: thingData,
+        equipped: equippedData,
     } as msg.Enter);
+}
+
+mapping[events.EVENT.EQUIP] = 
+async function(gui: GuiConsole, e: events.EventEquip) {
+    const thingData = await msg.renderThingData(gui.B, e.thingId);
+    return gui.send(msg.RENDER.EQUIP, {
+        thing: thingData,
+        ownerId: e.equipId,
+    } as msg.Equip);
+}
+
+mapping[events.EVENT.UN_EQUIP] = 
+async function(gui: GuiConsole, e: events.EventUnEquip) {
+    const thingData = await msg.renderThingData(gui.B, e.thingId);
+    return gui.send(msg.RENDER.UN_EQUIP, {
+        thingId: e.thingId
+    } as msg.UnEquip);
 }

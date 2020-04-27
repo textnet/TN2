@@ -3,11 +3,29 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-- Visualisation
-    - special sprite
-    - using default sprite w/zoom
-- Cross-plane transfer
-- Cross-book transfer
++ GUI Server: 
+    + listen to events: equip/unequip
+    + send equipment on those events
+    + send equipment with loadPlane
+    + send the same sprite if there is no special one.
++ GUI Render: 
+    + attach the actor to the owner's actor
+    + use special EQUIPMENT state
+    + remove/replace actor when needed
++ Visualisation
+    + special sprite
+    + using default sprite w/zoom
++ Debug equip/unequip
+    + Equipment(Up) state broken
+    + position of the picked up item is off, need to be more to the left
+    + When unEquip, position is off, especially left and up
++ Cross-plane transfer
+    + load Plane with equipment
+    + place properly on the new plane
+    + enter with equipment
++ Cross-book transfer
+    + leave item in equipment here
+    + get it back
 - Slots
     - `slot` flag of the thing
     - limit transfer only to slots
@@ -21,6 +39,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 ## Stage 13. Inventory
 + EQUIP action
 + UN_EQUIP action
+- Visualisation
 - Equipment Slots
 - USE action
 - THROW action
@@ -62,10 +81,10 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## Rough planning for Q2 and Q3
 + April: GUI, limbo, basic actions (move, push), basic updates
-- May: Inventory, Text editor and menu
-- June: Gravity and Seasonality 
-- July: Documenting
-- July/August/September: Release 1
+- April: Inventory
+- May: Text editor and menu, Gravity & Seasonality
+- June: Graphics, Documentation, Playtests
+- July/August: Release 1
 
 
 ## How to set things up

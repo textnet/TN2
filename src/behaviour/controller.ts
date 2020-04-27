@@ -7,8 +7,9 @@ import * as events from "./events"
 import * as updates from "./updates"
 import * as cl from "../commandline/commandline"
 import { Anima } from "../anima/anima"
-import { getBookId } from "../model/identity"
+import { getBookId, isEquipmentPlaneId, getThingId, getEquipmentOwnerId } from "../model/identity"
 import { Console } from "../console/console"
+import * as equip from "../model/equipment"
 
 
 export const CONTROLLER = {
@@ -47,8 +48,10 @@ export class Controller {
         tids[events.EVENT_ROLE.SUBJECT] = event.actorId;
         tids[events.EVENT_ROLE.OBJECT]  = event.thingId;
         if (event.planeId) {
-            const hostPlane = await this.B.planes.load(event.planeId);
-            tids[events.EVENT_ROLE.HOST] = hostPlane.ownerId;
+            const ownerId = isEquipmentPlaneId(event.planeId) 
+                            ? getEquipmentOwnerId(event.planeId) 
+                            : getThingId(event.planeId);
+            tids[events.EVENT_ROLE.HOST] = ownerId;
         } 
         this.emitter.emit(event.event, {
             data: event,

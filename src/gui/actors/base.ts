@@ -15,7 +15,6 @@ export class BaseActor extends ex.Actor {
     data: msg.ThingRenderData;
     sprite: ThingSprite;
     dir: geo.Direction;
-    scale: ex.Vector;
 
     /**
      * Build an actor for the thing

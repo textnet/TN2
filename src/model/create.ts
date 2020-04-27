@@ -113,15 +113,16 @@ export async function createPlaneFromAnother(B: BookServer, ownerThingId: string
 export async function createEquipmentPlane(B: BookServer, thingId: string, source?: string|PlaneData) {
     // choose source of the copy
     const bookThingId = getBookThingId(B.id())
-    const sourceThingId = (source["id"] || source || bookThingId) as string;
+    const sourceId = source !== undefined ? (source["id"] || source) : undefined;
+    const sourceThingId = (sourceId || bookThingId) as string;
     const sourceEquipId = getEquipmentId(B.id(), sourceThingId);
     const equipId = getEquipmentId(B.id(), thingId);
     const equipPlaneName = extractPlaneName(equipId);
     let plane;
-    if (source["id"]) {
-        plane = createPlaneFromAnother(B, bookThingId, source as PlaneData, equipPlaneName, true)
+    if (source && source["id"]) {
+        plane = await createPlaneFromAnother(B, bookThingId, source as PlaneData, equipPlaneName, true)
     } else {
-        plane = createPlaneFromAnotherId(B, bookThingId, sourceEquipId, equipPlaneName, true)
+        plane = await createPlaneFromAnotherId(B, bookThingId, sourceEquipId, equipPlaneName, true)
     }
     return plane;
 }

@@ -53,7 +53,7 @@ export const STATE = {
     MOVE   : "Move",
     PUSH   : "Push",
     FLY    : "Fly",
-    INVENTORY : "Inventory"
+    EQUIPMENT : "Equipment"
 }
 export const ANIMATION = {
     MAIN : "Main",

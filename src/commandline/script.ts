@@ -6,7 +6,9 @@ import { strip } from "../utils"
 // import { setup } from "./scripts/limbo"
 // import { setup } from "./scripts/movement"
 // import { setup } from "./scripts/push"
-import { setup } from "./scripts/update"
+// import { setup } from "./scripts/update"
+// import { setup } from "./scripts/gui"
+import { setup } from "./scripts/equipment"
 
 
 export async function script(library) {
@@ -24,7 +26,6 @@ export async function script(library) {
         message(`Anima Written Word:${setupWritten}`)
         await anima.call(strip(setupWritten));
     }
-    
 }
 
 

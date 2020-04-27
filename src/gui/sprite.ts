@@ -1,4 +1,4 @@
-/** 
+ /** 
  * Module for sprite rendering.
  * Uses `sprite` part of the Artifact structure to create Excalibur sprites.
  */
@@ -28,7 +28,6 @@ export class ThingSprite {
     constructor(sprite: sprites.Sprite) {
         let that = this;
         this.sprite = sprite;
-
         if (sprite.base64) {
             if (!sprite.mapping) {
                 sprite.mapping = {};
@@ -66,19 +65,23 @@ export class ThingSprite {
         for (let state in sprites.STATE) {
             for (let dir in sprites.DIR) {
                 for (let animation in sprites.ANIMATION) {
-                    const _code = sprites.code(sprites.STATE[state], sprites.DIR[dir], sprites.ANIMATION[animation]);
-                    let code = _code;
-                    if (!this.sprite.mapping[code] && animation != "MAIN") {
-                        continue;
-                    }
-                    if (!this.sprite.mapping[code] && animation == "MAIN") {
-                        code = sprites.code(sprites.STATE[state])
+                    let adjustedState = sprites.STATE[state];
+                    const _code = sprites.code(adjustedState, sprites.DIR[dir], sprites.ANIMATION[animation]);
+                    // starting to fix code
+                    const hasState = this.sprite.mapping[sprites.code(adjustedState)];
+                    if (!hasState) adjustedState = sprites.STATE.IDLE;
+                    let code = sprites.code(adjustedState, sprites.DIR[dir], sprites.ANIMATION[animation]);
+                    const defaultingMapping = ["MAIN"].indexOf(animation) >= 0;
+                    if (!this.sprite.mapping[code]) {
+                        if (sprites.ANIMATION.MAIN != sprites.ANIMATION[animation]) continue;
+                        code = sprites.code(adjustedState)
                         if (!this.sprite.mapping[code]) {
                             code = sprites.code();
-                        }
+                        }                        
                     }
+                    // console.log(this.sprite.symbol, code, "=>", _code)
                     if (!this.animations[code]) {
-                        const row   = this.sprite.mapping[code][0]? this.sprite.mapping[code][0] : 0;
+                        const row = this.sprite.mapping[code][0]? this.sprite.mapping[code][0] : 0;
                         let steps = this.sprite.steps;
                         if (this.sprite.mapping[code][1]) steps = this.sprite.mapping[code][1];
                         if (!steps) steps = 1; 

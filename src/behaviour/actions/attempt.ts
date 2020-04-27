@@ -9,11 +9,45 @@ import * as actions from "../actions"
 import * as cl from "../../commandline/commandline"
 import * as equipment from "../../model/equipment"
 
+async function attemptPickup(B: BookServer, action: actions.ActionAttempt) {
+    const inHands = await equipment.thingInHands(B, action.actorId, action.actorId);
+    if (inHands) {
+        return await actions.action(B, {
+                action:  actions.ACTION.UN_EQUIP,
+                actorId: action.actorId,
+                planeId: action.planeId,
+                equipThingId: action.actorId,
+                slotName: equipment.DEFAULT_SLOT_NAME,
+                direction: action.direction,
+        } as actions.ActionUnEquip);
+    } else {
+        const actor = await B.things.load(action.actorId); // or thingId? unsure
+        const plane = await B.planes.load(action.planeId);
+        const next: ThingData = await getNext(B, actor, plane, action.direction);
+        if (!next) return false;        
+        return await actions.action(B, {
+                action:  actions.ACTION.EQUIP,
+                actorId: action.actorId,
+                planeId: action.planeId,
+                thingId: next.id,
+                equipThingId: action.actorId,
+                slotName: equipment.DEFAULT_SLOT_NAME,
+        } as actions.ActionEquip);
+    }
+
+}
+
 export async function action(B: BookServer, action: actions.ActionAttempt) {
     // try to do a proximal action:
     // - push
     // - enter
     // - pickup
+
+    // 0. putdown
+    // check if we can fit
+    if (action.attempt == actions.ATTEMPT.PICKUP) {
+        return await attemptPickup(B, action)
+    }
 
     // 1. check if there is an object
     const actor = await B.things.load(action.actorId); // or thingId? unsure
@@ -57,19 +91,11 @@ export async function action(B: BookServer, action: actions.ActionAttempt) {
                     direction: action.direction,
             } as actions.ActionPush);
         // ----------------------------------------------------------------
-        case actions.ATTEMPT.PICKUP: // pick up
-            return await actions.action(B, {
-                    action:  actions.ACTION.EQUIP,
-                    actorId: actor.id,
-                    planeId: plane.id,
-                    thingId: next.id,
-                    equipThingId: actor.id,
-                    slotName: equipment.DEFAULT_SLOT_NAME,
-            } as actions.ActionEquip);
-        // ----------------------------------------------------------------
     }
 
 }
+
+
 
 async function getNext(B: BookServer, actor: ThingData, plane: PlaneData, dir?: geo.Direction) {
     if (!dir) {

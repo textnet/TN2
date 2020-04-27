@@ -39,6 +39,7 @@ export class Repository<T> {
     }
 
     async load(id: string)   { 
+        if (id === undefined) return undefined;
         if (!this.isLocal(id)) {
             const that = this;
             // cl.verboseLog(`REMOTE LOAD(${this.bookId}.${this.prefix})->${id}`)

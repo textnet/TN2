@@ -8,6 +8,7 @@ import * as ex from "excalibur";
 import { ipcRenderer } from "electron";
 import { config } from "../config"
 import { ThingActor } from "./actors/thing"
+import { EquipmentActor } from "./actors/equipment"
 import * as interop from "./renderer/send"
 import * as msg from "./messages"
 
@@ -41,6 +42,7 @@ export class GameScene extends ex.Scene {
     animaId: string;
     things?: Record<string, msg.ThingRenderData>;
     thingActors?: Record<string, ThingActor>;
+    equipmentActors?: Record<string, EquipmentActor>;
     environmentActors?: Record<string, ex.Actor>;
 }
 

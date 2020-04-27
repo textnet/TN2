@@ -7,6 +7,7 @@ import * as updates from "../updates"
 import * as events from "../events"
 import * as actions from "../actions"
 import * as cl from "../../commandline/commandline"
+import * as print from "../../commandline/print"
 import * as equipment from "../../model/equipment"
 
 export async function equip(B: BookServer, action: actions.ActionEquip) {
@@ -14,17 +15,17 @@ export async function equip(B: BookServer, action: actions.ActionEquip) {
     const thing = await B.things.load(action.thingId);
     // 1. check constraints
     if (!interfaces.checkConstraint(actor.physics, thing.constraints[ interfaces.CONSTRAINTS.PICKABLE ])) return false;
+    // 3. transfer
+    await equipment.transferToSlot(B, action.actorId, action.thingId, action.equipThingId, action.slotName);
     // 2. event
     await events.emit(B, {
         event: events.EVENT.EQUIP,
-        planeId: thing.hostPlaneId,
+        planeId: action.planeId,
         actorId: actor.id,
         thingId: thing.id,
         equipId: action.equipThingId,
         slotName: action.slotName,
-    } as events.EventEquip);    
-    // 3. transfer
-    return await equipment.transferToSlot(B, action.thingId, action.equipThingId, action.slotName);
+    } as events.EventEquip);
 }
 
 export async function reEquip(B: BookServer, action: actions.ActionReEquip) {
@@ -35,7 +36,7 @@ export async function reEquip(B: BookServer, action: actions.ActionReEquip) {
         // only send event, don't try to unEquip
         await events.emit(B, {
             event: events.EVENT.UN_EQUIP,
-            planeId: equipFrom.hostPlaneId,
+            planeId: action.planeId,
             actorId: action.actorId,
             thingId: item.id,
             equipId: equipFrom.id,
@@ -45,7 +46,7 @@ export async function reEquip(B: BookServer, action: actions.ActionReEquip) {
         return await equip(B, {
             action: actions.ACTION.EQUIP,
             actorId: action.actorId,
-            planeId: equipTo.hostPlaneId,
+            planeId: action.planeId,
             thingId: item.id,
             slotName: action.slotTo
         } as actions.ActionEquip)
@@ -55,44 +56,47 @@ export async function reEquip(B: BookServer, action: actions.ActionReEquip) {
 export async function unEquip(B: BookServer, action: actions.ActionUnEquip) {
     const actor = await B.things.load(action.actorId);
     const plane = await B.planes.load(actor.hostPlaneId);
-    let thing: interfaces.ThingData;
-    let ownerId: string;
-    if (action.thingId) {
-        thing = await B.things.load(action.thingId);
-        ownerId = identity.getEquipmentOwnerId(thing.hostPlaneId);
-    } else {
-        ownerId = action.equipThingId;
-        thing = await equipment.thingInSlot(B, actor.id, ownerId, action.slotName);
-    }
+    const ownerId = action.equipThingId;
+    const thing = await equipment.thingInSlot(B, actor.id, ownerId, action.slotName);
     if (thing && ownerId) {
         // find position
-        const vector: geo.Direction = {
-            dx: actor.physics.box.w/2 + actor.physics.box.anchor.x + 
-                thing.physics.box.w/2 - thing.physics.box.anchor.x,
-
-            dy: actor.physics.box.h/2 + actor.physics.box.anchor.y + 
-                thing.physics.box.h/2 - thing.physics.box.anchor.y,
+        let dx=0, dy=0;
+        if (action.direction.dx < 0) {
+            dx = -actor.physics.box.w/2      -thing.physics.box.w/2
+                 +actor.physics.box.anchor.x -thing.physics.box.anchor.x;
         }
-        //
-        if (action.direction.dx == 0) vector.dx  = 0;
-        if (action.direction.dx <  0) vector.dx *= -1;
-        //
-        if (action.direction.dy == 0) vector.dy  = 0;
-        if (action.direction.dy <  0) vector.dy *= -1;
-        //
+        if (action.direction.dx > 0) {
+            dx = +actor.physics.box.w/2      +thing.physics.box.w/2
+                 +actor.physics.box.anchor.x -thing.physics.box.anchor.x;
+        }
+        if (action.direction.dy < 0) {
+            dy = -actor.physics.box.h/2      -thing.physics.box.h/2
+                 +actor.physics.box.anchor.y -thing.physics.box.anchor.y;
+        } 
+        if (action.direction.dy > 0) {
+            dy = +actor.physics.box.h/2      +thing.physics.box.h/2
+                 +actor.physics.box.anchor.y -thing.physics.box.anchor.y;
+        }
+        const vector: geo.Direction = { dx: dx, dy: dy }
         const position = geo.add(plane.things[actor.id], vector);
         // 1. event
         await events.emit(B, {
             event: events.EVENT.UN_EQUIP,
-            planeId: thing.hostPlaneId,
+            planeId: action.planeId,
             actorId: actor.id,
             thingId: thing.id,
             equipId: ownerId,
             slotName: action.slotName,
         } as events.EventUnEquip);    
         // 2. transfer
-        return await equipment.transferFromSlot(B, action.thingId, ownerId, action.slotName, position);
+        return await equipment.directTransferUnequip(B, actor.id, thing, action.planeId, position)
     } else {
         return false;
     }
 }
+
+
+
+
+
+

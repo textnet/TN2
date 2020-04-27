@@ -4,11 +4,15 @@ import * as msg from "../messages"
 import * as interop from "./send"
 import * as ex from "excalibur"
 import { ThingActor } from "../actors/thing"
+import { EquipmentActor } from "../actors/equipment"
 import { COLORS, COLORS_DEFAULT } from "../../model/interfaces"
 import { reg } from "./setup"
 
 reg(msg.RENDER.ENTER, (game: Game, data: msg.Enter) => {
     const actor = createActor(game, data.thing);
+    if (data.equipped) {
+        const actorInHands = createActor(game, data.equipped, data.thing.id);
+    }
 })
 
 reg(msg.RENDER.READY, (game: Game, data: msg.MessageReady) => {
@@ -26,6 +30,7 @@ reg(msg.RENDER.ENTER_PLANE, (game: Game, data: msg.EnterPlane) => {
     scene.animaId = data.animaThingId;
     scene.things = data.things;
     scene.thingActors = {}
+    scene.equipmentActors = {}
     let playerActor;
     for (let id in data.things) {
         const actor = createActor(game, data.things[id])
@@ -33,6 +38,10 @@ reg(msg.RENDER.ENTER_PLANE, (game: Game, data: msg.EnterPlane) => {
             actor.bindPlayer(data.asObserver);
             playerActor = actor;
         }
+    }
+    // 2a. and their equipment
+    for (let id in data.equipment) {
+        const actor = createActor(game, data.equipment[id], id);
     }
     // 3. create HUD
     const titleHeight = config.gui.planeTitle.height;
@@ -68,11 +77,20 @@ reg(msg.RENDER.ENTER_PLANE, (game: Game, data: msg.EnterPlane) => {
 
 // --- helpers ---
 
-function createActor(game: Game, thing: msg.ThingRenderData) {
-    const actor = new ThingActor(thing);
+export function createActor(game: Game, 
+                     thing: msg.ThingRenderData,
+                     equipmentOwnerid?: string) {
     const scene = game.gameScene();
-    scene.add(actor);
-    scene.thingActors[thing.id] = actor;
+    let actor;
+    if (equipmentOwnerid) {
+        actor = new EquipmentActor(thing);
+        scene.equipmentActors[thing.id] = actor;
+        actor.equip(equipmentOwnerid, scene);
+    } else {
+        actor = new ThingActor(thing);
+        scene.thingActors[thing.id] = actor;
+        scene.add(actor);
+    }
     return actor;
 }
 

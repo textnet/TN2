@@ -4,7 +4,7 @@ import { BookData, ThingData, PlaneData, PLANE, LIMBO_PORTAL_TEMPLATE } from "./
 
 
 export const BOOK_THING_ID    = "Book";
-export const EQUIPMENT_PREFIX = "Equipment of ";
+export const EQUIPMENT_PREFIX = "Equipment-of-";
 
 export function getEquipmentId(bookId: string, thingId: string) {
     return [bookId, BOOK_THING_ID, EQUIPMENT_PREFIX+thingId].join(".");
@@ -36,6 +36,7 @@ export function getThingId(id: string) {
     return `${parts[0]}.${parts[1]}`;
 }
 export function isThingId(id: string) {
+    if (id === undefined) return false;
     return id.split(".").length < 3;
 }
 export function isLimbo(planeId: string) {
@@ -44,7 +45,7 @@ export function isLimbo(planeId: string) {
 }
 export function extractPlaneName(planeId: string) {
     const parts = planeId.split(".");
-    return parts[ parts.length-1 ]; 
+    return parts.slice(2).join("."); 
 }
 export function isInBook(id: string, bookId: string) {
     return getBookId(id) == bookId;

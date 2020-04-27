@@ -79,7 +79,6 @@ export interface ActionEquip extends ActionWithThing {
     slotName?: string;
 }
 export interface ActionUnEquip extends Action {
-    thingId?: string;   
     equipThingId?: string;
     slotName?: string;
     direction?: geo.Direction;

@@ -36,7 +36,6 @@ export class ThingActor extends BaseActor {
     constructor(data: msg.ThingRenderData) {
         super(data);
         this.isPlayer = false;
-        this.scale = new ex.Vector(1,1);
         this.body.pos = new ex.Vector(data.position.x, data.position.y);
         this.body.collider.type = ex.CollisionType.Fixed;
         this.visualState = sprites.STATE.IDLE;
@@ -69,7 +68,6 @@ export class ThingActor extends BaseActor {
         } 
         // switch sprites
         this.setDrawing(sprites.code(this.visualState, this.visualDir, sprites.ANIMATION.MAIN));    
-        
 
         // normalize and update 2.5D visualisation
         this.setZIndex(10000 + this.pos.y + this.data.physics.box.h/2 + this.data.physics.box.anchor.y);
@@ -98,6 +96,11 @@ export class ThingActor extends BaseActor {
                 this.needRelease = true;
                 interop.transferUp();
             }
+            // PICKUP
+            if ((command == COMMAND.PICKUP) && !geo.isIdle(playerDir)) {
+                this.needRelease = true;
+                interop.attempt(msg.ATTEMPT.PICKUP, playerDir);
+            } 
             // PUSH
             if (command == COMMAND.PUSH && !geo.isIdle(playerDir)) {
                 this.needRelease = true;

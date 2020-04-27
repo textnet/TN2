@@ -26,6 +26,8 @@ export const RENDER = {
     LEAVE: "leave",
     ENTER: "enter",
     READY: "ready",
+    EQUIP: "equip",
+    UN_EQUIP: "unEquip",
 }
 
 export interface Message {
@@ -42,6 +44,7 @@ export interface EnterPlane extends Message {
     asObserver: boolean;
     plane: PlaneRenderData;
     things: Record<string, ThingRenderData>;
+    equipment: Record<string, ThingRenderData>;
 }
 export interface Place extends Message {
     position: geo.Position;
@@ -52,6 +55,14 @@ export interface Leave extends Message {
 }
 export interface Enter extends Message {
     thing: ThingRenderData;
+    equipped: ThingRenderData;
+}
+export interface Equip extends Message {
+    thing: ThingRenderData;
+    ownerId: string;
+}
+export interface UnEquip extends Message {
+    thingId: string;
 }
 export interface TransferUp extends Message {}
 export interface Attempt extends Message {
@@ -86,7 +97,8 @@ export interface ThingRenderData {
     position: geo.Position;
 }
 
-export async function renderThingData(B: BookServer, thing: string|model.ThingData) {
+export async function renderThingData(B: BookServer, thing: string|model.ThingData, 
+                                      equipmentOwnerId?: string) {
     if (!thing["id"]) return renderThingData(B, await B.things.load(thing as string));
     thing = thing as model.ThingData;
     const plane = await B.planes.load(thing.hostPlaneId);
@@ -98,7 +110,8 @@ export async function renderThingData(B: BookServer, thing: string|model.ThingDa
         hostPlaneId: thing.hostPlaneId,
         name: thing.name,
         constraints: thing.constraints,
-        sprite: thing.sprite,
+        sprite: (equipmentOwnerId && thing.spriteEquipped)? 
+                 thing.spriteEquipped : thing.sprite,
         physics: physics.patchThingPhysics(thing.physics),
         position: plane.things[thing.id],
     } as ThingRenderData;
