@@ -22,7 +22,9 @@ for (let module of modules) {
  */
 export function interopSetup(game: Game) {
     for (let m in listeners) {
-        ipcRenderer.on(m, (event, args) => { listeners[m](game, args) });
+        ipcRenderer.on(m, (event, args) => {
+            listeners[m](game, args) 
+        });
     }
 }
 

@@ -18,6 +18,7 @@ export const template: ThingTemplate = {
         physics: {
             box: { w: 30, h: 20, anchor: { x: 0, y: 6 } },
             mass:  { mass: 10 },
+            Z: 100, // on top of everything, temp
         },
         planes: {}
     },

@@ -1,3 +1,4 @@
+import { deepCopy } from "../../utils"
 import { config } from "../../config"
 import { Game, GameScene, RadiusAroundActorStrategy } from "../game"
 import * as msg from "../messages"
@@ -26,12 +27,19 @@ reg(msg.RENDER.ENTER_PLANE, (game: Game, data: msg.EnterPlane) => {
     const scene = new GameScene(game);
     game.addScene(game.gameSceneName(), scene);
     game.goToScene(game.gameSceneName())
+    // debug
+    // var axisX = new ex.Actor(0, 0, 600, 1);
+    // var axisY = new ex.Actor(0, 0, 1, 600);
+    // axisX.color = ex.Color.Red;
+    // axisY.color = ex.Color.Green;
+    // scene.add(axisX)
+    // scene.add(axisY)
     // 2. populate actors
     scene.animaId = data.animaThingId;
     scene.things = data.things;
     scene.thingActors = {}
     scene.equipmentActors = {}
-    let playerActor;
+    let playerActor: ThingActor;
     for (let id in data.things) {
         const actor = createActor(game, data.things[id])
         if (id == scene.animaId) {
@@ -66,7 +74,8 @@ reg(msg.RENDER.ENTER_PLANE, (game: Game, data: msg.EnterPlane) => {
     // 5. Camera
     scene.camera.addStrategy(
         new RadiusAroundActorStrategy(playerActor)
-    );    
+    );
+    scene.camera.pos = deepCopy(playerActor.body.pos);
     // 6. Go!
     updateSceneFromPlane(scene, data.plane);
     game.start();
@@ -90,6 +99,9 @@ export function createActor(game: Game,
         actor = new ThingActor(thing);
         scene.thingActors[thing.id] = actor;
         scene.add(actor);
+        // const _ = actor as ThingActor
+        // console.log(thing.id, thing.position.x, thing.position.y, thing.position.z)
+        // console.log(_.body.pos.x, _.body.pos.y)
     }
     return actor;
 }

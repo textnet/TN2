@@ -19,6 +19,9 @@ export async function place(B: BookServer, action: actions.ActionPlace) {
     let position: geo.Position = undefined;
     if (action.fit) {
         position = await findFitting(B, thing, plane, action.position);
+        // console.log(position)
+        // console.log(action.position)
+        // console.log("=====>")
     } else {
         if (action.force) {
             position = deepCopy(action.position);
@@ -70,7 +73,7 @@ async function findFitting(B: BookServer, thing: ThingData, plane: PlaneData, po
     let size = 0;
     let pos = deepCopy(position);
     while (true) {
-        size++;
+        size++;        
         let sequence = [];
         pos = shiftPos(pos, thing.physics.box, 0, 1);
         sequence.push(pos);
@@ -102,25 +105,26 @@ async function findFitting(B: BookServer, thing: ThingData, plane: PlaneData, po
             }
         }  
     }
-    // console.log("FIT into ",pos)
     return pos;
 }
 
 
 function shiftPos(p: geo.Position, body: geo.Box, dx: number, dy: number) {
     const pos = deepCopy(p);
-    pos.x += dx * body.w*2;
-    pos.y += dy * body.h*2;
+    pos.x += dx * body.w;
+    pos.y += dy * body.h;
     return pos;
 }
 
 // will it fit here?
 async function findCollision(B: BookServer, thing: ThingData, plane: PlaneData, position: geo.Position) {
+    if (thing.physics.slot) return; // slots never collide;
     for (let id in plane.things) {
         if (id != thing.id) {
             const another = await B.things.load(id);
             const anotherPos = plane.things[id];
-            if (geo.boxOverlap(
+            if (!another.physics.slot &&
+                geo.boxOverlap(
                 geo.positionedBox(thing.physics.box,   position),
                 geo.positionedBox(another.physics.box, anotherPos))) {
                 return id;

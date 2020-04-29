@@ -37,24 +37,21 @@ export class ThingActor extends BaseActor {
         super(data);
         this.isPlayer = false;
         this.body.pos = new ex.Vector(data.position.x, data.position.y);
-        this.body.collider.type = ex.CollisionType.Fixed;
         this.visualState = sprites.STATE.IDLE;
         this.visualDir = sprites.DIR[geo.directionName(data.position.direction)];
         this.needRelease = true;
+        this.setPassable();
     }
 
     bindPlayer(asObserver: boolean) {
         this.isPlayer = true;
         this.asObserver = asObserver;
-        this.body.collider.type = ex.CollisionType.Active;
+        this.setPassable();
     }
 
-    /**
-     * Happens after main update once per frame.
-     */
-    onPostUpdate(engine: Game, delta: number) {
+    setPassable() {
         // update from properties
-        if (this.isPlayer) {
+        if (this.isPlayer && !this.asObserver) {
             this.body.collider.type = ex.CollisionType.Active;
         } else 
         if (this.data.constraints[ CONSTRAINTS.PASSABLE ]) { // simplified to make it a bit easier on the client
@@ -62,6 +59,13 @@ export class ThingActor extends BaseActor {
         } else {
             this.body.collider.type = ex.CollisionType.Fixed;
         }
+    }
+
+    /**
+     * Happens after main update once per frame.
+     */
+    onPostUpdate(engine: Game, delta: number) {
+        this.setPassable();
         // update position and issue commands
         if (this.isPlayer && !this.asObserver) {
             this.updateFromCommands(engine, delta)
@@ -70,7 +74,9 @@ export class ThingActor extends BaseActor {
         this.setDrawing(sprites.code(this.visualState, this.visualDir, sprites.ANIMATION.MAIN));    
 
         // normalize and update 2.5D visualisation
-        this.setZIndex(10000 + this.pos.y + this.data.physics.box.h/2 + this.data.physics.box.anchor.y);
+        this.setZIndex(this.data.position.z * 1000000 
+                       + this.pos.y 
+                       + this.data.physics.box.h/2 + this.data.physics.box.anchor.y);
     }
 
     /**

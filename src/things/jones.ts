@@ -39,5 +39,5 @@ export const template: ThingTemplate = {
         ownerId: "<ownerId>",
         things: {},
         text: "",
-    }
+    },
 }

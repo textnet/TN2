@@ -49,7 +49,7 @@ config.network.discoveryChannel = `Cybermonks:TN2:${config.version}:discovery`;
 
 config.gui = {} as GUI;
 config.gui.width  = 800;
-config.gui.height = 300;
+config.gui.height = 400;
 config.gui.padding = { horizontal: 50, vertical: 75 };
 config.gui.macTitle = 26;
 config.gui.planeTitle = { height: 24, fontSize: 16, fontFamily: "Nanum Gothic Coding, monospace" };

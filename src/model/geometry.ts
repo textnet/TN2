@@ -208,9 +208,16 @@ export function boxOverlap(aBox?: PositionedBox, bBox?: PositionedBox) {
 }
 
 export function inBounds(pos: Position, box: Box) {
-    if (box.w > 0 && (pos.x < 0 || pos.x > box.w)) return false;
-    if (box.h > 0 && (pos.y < 0 || pos.y > box.h)) return false;
+    const p = anchoredPosition(pos, box)
+    if (box.w > 0 && (p.x < 0 || p.x > box.w)) return false;
+    if (box.h > 0 && (p.y < 0 || p.y > box.h)) return false;
     return true;
+}
+export function anchoredPosition(pos: Position, box: Box) {
+    return position(pos.x + box.w/2 - (box.anchor?box.anchor.x:0),
+                    pos.y + box.h/2 - (box.anchor?box.anchor.y:0),
+                    pos.z,
+                    pos.direction);
 }
 
 export function boxNextTo(dir: Direction, aBox: PositionedBox, bBox: PositionedBox) {

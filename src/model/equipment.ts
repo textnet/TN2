@@ -64,14 +64,19 @@ async function findClosest(B: BookServer, plane: PlaneData, position?: geo.Posit
     position = position || plane.spawn;  
     const min = { id: undefined, dist: undefined }
     for (let id in plane.things) {
-        const dist = geo.distance(position, plane.things[id]);
-        if (min.id === undefined || min.dist > dist) {
-            min.id = id;
-            min.dist = dist;
+        const thing = await B.things.load(id)
+        if (!thing.physics.slot) {
+            const dist = geo.distance(position, plane.things[id]);
+            if (min.id === undefined || min.dist > dist) {
+                min.id = id;
+                min.dist = dist;
+            }
         }
     }
-    const closestThing = await B.things.load(min.id);
-    return closestThing;
+    if (min.id) {
+        const closestThing = await B.things.load(min.id);
+        return closestThing;        
+    } else return undefined;
 }
 
 

@@ -20,6 +20,8 @@ import * as tChest from "../things/chest"
 import * as tPiano from "../things/piano"
 import * as tJones from "../things/jones"
 import * as tLimboPortal from "../things/limbo_portal"
+import * as tSlot from "../things/slot"
+import * as tEquipment from "../things/equipment"
 
 export function registerAllTemplates() {
     registerTemplate(tBook.template);
@@ -28,6 +30,8 @@ export function registerAllTemplates() {
     registerTemplate(tPiano.template);
     registerTemplate(tJones.template);
     registerTemplate(tLimboPortal.template);
+    registerTemplate(tSlot.template);
+    registerTemplate(tEquipment.template);
 }
 export function registerTemplate(t: ThingTemplate) {
     templateRegistry[t.name] = t;

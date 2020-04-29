@@ -4,11 +4,21 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
 + `slot` and `slotOnly` flags in physics
-- create things for slotting
-    - body puppet
-    - slot box
-    - backpack
-- prepare slotted Environment in the setup script
++ create things for slotting
+    + body puppet
+    + slot box
++ prepare slotted Environment in the setup script
+    + create slot command
+        `create slot <name> as <template> in <thingId> @ <x> <y>`
+    + create equipment command
+        `create equipment for <thingId> as <template> @ <x> <y>`
+    + create slots
+    + observe
+    + BUG: equipment is not positioned accurately
+    + BUG: can't match a slot with the equipment sprite
+    + TODO: center camera
+    + TODO: zero coordinates
++ BUG: ids in create slot are off
 - equip/unequip actions
     - slot Support
 - place action
@@ -17,6 +27,9 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     - slot support
     - slotOnly support
 - autopickup
+    - Different version of fit
+    - Chaining small slots
+    - One big slot
 - render borders of small planes
 - make equipment a small plane
 - get equipment inventory
@@ -27,6 +40,12 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     - special pop up window
     - zoomed content of the plane
 - transfer of forces
+- special sprites for equipped items
+- autoscale for equipped items
+    - in hands
+    - in slots
+- use sprite box in inventory calculations
+
 
 
 

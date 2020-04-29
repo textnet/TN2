@@ -7,6 +7,7 @@ import * as updates from "../updates"
 import * as events from "../events"
 import * as actions from "../actions"
 import * as cl from "../../commandline/commandline"
+import * as identity from "../../model/identity"
 import { print, inspect } from "../../commandline/print"
 import { Controller } from "../controller"
 

@@ -35,6 +35,11 @@ export function getThingId(id: string) {
     const parts = id.split(".");
     return `${parts[0]}.${parts[1]}`;
 }
+export function extractThingId(id: string) {
+    const parts = id.split(".");
+    return parts[1];
+
+}
 export function isThingId(id: string) {
     if (id === undefined) return false;
     return id.split(".").length < 3;
@@ -51,6 +56,7 @@ export function isInBook(id: string, bookId: string) {
     return getBookId(id) == bookId;
 }
 export function stripBookId(id: string) {
+    if (id.indexOf(".") < 0) return id;
     return id.substr(getBookId(id).length+1);
 }
 export function getLimboPortalId(id: string) {
@@ -71,15 +77,17 @@ export function createBookId() {
 }
 export async function createThingId(B: BookServer, id?: string) {
     const bookId = B.data.id;
-    id = id || createBookId(); // same rule.
-    let counter = 0;
+    id = stripBookId(id) || createBookId(); // same rule.
+    id = `${bookId}.${id}`;
+    let _id = id;
+    let counter = 1;
     while (true) {
-        counter++;
-        id = `${bookId}.${id}`+((counter < 2)?``:`-${counter}`);
-        const existing = await B.things.load(id);
+        const existing = await B.things.load(_id);
         if (!existing) break;
+        counter++;
+        _id = id + `-${counter}`;
     }
-    return id;
+    return _id;
 }
 export function createPlaneId(name:string, thingId:string) {
     return `${thingId}.${name}`;

@@ -28,7 +28,7 @@ export async function subscribeOnPlane(gui: GuiConsole, planeId: string) {
            events.EVENT_ROLE.HOST, 
            (e)=>{ 
                 if (e.role == events.EVENT_ROLE.HOST) {
-                    // console.log("E->", e.data.event, e.role, e.targetIds)
+                    // console.log(gui.id, "E->", e.data.event, e.role, e.targetIds)
                     mapping[event](gui, e.data)    
                 }
             }
