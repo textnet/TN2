@@ -45,7 +45,8 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     - in hands
     - in slots
 - use sprite box in inventory calculations
-
+- BUG: transfer up -- too many times -- exception
+- BUG: transfer/loadPlane: equipped items are not visible
 
 
 
@@ -95,9 +96,10 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 ## Rough planning for Q2 and Q3
 + April: GUI, limbo, basic actions (move, push), basic updates
 - April: Inventory
-- May: Text editor and menu, Gravity & Seasonality
-- June: Graphics, Documentation, Playtests
-- July/August: Release 1
+- May: Inventory, Text editor and menu
+- June: Graphics, Documentation, Playtests, Gravity & Seasonality
+- July: Fixes
+- August: R1
 
 
 ## How to set things up

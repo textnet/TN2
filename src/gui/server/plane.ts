@@ -17,7 +17,6 @@ reg(msg.SERVER.PLANE, async(gui: GuiConsole, args)=>{
     const equipData: Record<string, msg.ThingRenderData> = {};
     for (let id in hostPlane.things) {
         thingsData[id] = await msg.renderThingData(B, id);
-        // TODO FIX EQUIP
         const equipped = await equip.thingInHands(B, animaThing.id, id);
         if (equipped) {
             equipData[id] = await msg.renderThingData(B, equipped.id, id);

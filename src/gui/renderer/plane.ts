@@ -72,10 +72,12 @@ reg(msg.RENDER.ENTER_PLANE, (game: Game, data: msg.EnterPlane) => {
     }
     // 4. Editor
     // 5. Camera
-    scene.camera.addStrategy(
-        new RadiusAroundActorStrategy(playerActor)
-    );
-    scene.camera.pos = deepCopy(playerActor.body.pos);
+    if (playerActor) {
+        scene.camera.addStrategy(
+            new RadiusAroundActorStrategy(playerActor)
+        );
+        scene.camera.pos = deepCopy(playerActor.body.pos);       
+    }
     // 6. Go!
     updateSceneFromPlane(scene, data.plane);
     game.start();

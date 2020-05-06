@@ -18,7 +18,8 @@ export async function place(B: BookServer, action: actions.ActionPlace) {
     let colliderId: string;
     let position: geo.Position = undefined;
     if (action.fit) {
-        position = await findFitting(B, thing, plane, action.position);
+        position = await findNextFitting(B, thing, plane, action.position);
+        if (!position) return;
         // console.log(position)
         // console.log(action.position)
         // console.log("=====>")
@@ -26,7 +27,7 @@ export async function place(B: BookServer, action: actions.ActionPlace) {
         if (action.force) {
             position = deepCopy(action.position);
         } else {
-            colliderId = await findCollision(B, thing, plane, action.position);
+            colliderId = await findCollisionId(B, thing, plane, action.position);
             if (!colliderId) {
                 position = deepCopy(action.position);
             }
@@ -61,63 +62,41 @@ export async function place(B: BookServer, action: actions.ActionPlace) {
     return position;
 }
 
-// find a position where the thing will fit.
-async function findFitting(B: BookServer, thing: ThingData, plane: PlaneData, position: geo.Position) {
-    if (geo.inBounds(position, plane.physics.box) && 
-        !(await findCollision(B, thing, plane, position))) {
-        return deepCopy(position);
-    }
+
+/**
+ * Backpack-like fitting: first try to fill the horisontal row, if not possible, shift down to the next row.
+ */
+export async function findNextFitting(B: BookServer, thing: ThingData, plane:PlaneData, position: geo.Position, pBox?: geo.PositionedBox) {
     if (!thing.physics.box || !thing.physics.box.w || !thing.physics.box.h) {
-        return deepCopy(position)
+        return position;
     }
-    let size = 0;
-    let pos = deepCopy(position);
-    while (true) {
-        size++;        
-        let sequence = [];
-        pos = shiftPos(pos, thing.physics.box, 0, 1);
-        sequence.push(pos);
-        // 2. go right (size times)
-        for (let i=0; i<size; i++) {
-            sequence.push(shiftPos( pos, thing.physics.box, i+1, 0 ))
-        }
-        // 3. go up (size+1+size)
-        for (let i=0; i<size*2+1; i++) {
-            sequence.push(shiftPos( pos, thing.physics.box, size, -i ))
-        }
-        // 4. go left (size+1+size)
-        for (let i=0; i<size*2+1; i++) {
-            sequence.push(shiftPos( pos, thing.physics.box, size-i, -2*size ))
-        }
-        // 5. go down (size+1+size)
-        for (let i=0; i<size*2+1; i++) {
-            sequence.push(shiftPos( pos, thing.physics.box, -size, -2*size+i ))
-        }
-        // 6. go right.
-        for (let i=0; i<size; i++) {
-            sequence.push(shiftPos( pos, thing.physics.box, -size, 0 ))
-        }
-        // check
-        for (let p of sequence) {
-            if (geo.inBounds(position, plane.physics.box)) {
-                const collider = await findCollision(B, thing, plane, p);
-                if (!collider) return p;
+    let planeBox = geo.positionedBox(plane.physics.box);
+    pBox = pBox || planeBox;
+    let result = deepCopy(position);
+    let stepY = 0;
+    const thingShiftX = thing.physics.box.w/2 - (thing.physics.box.anchor?thing.physics.box.anchor.x:0);
+    while (geo.isBoxEndlessY(pBox) || result.y < pBox.n[3]) {
+        let thingBox = geo.positionedBox(thing.physics.box, result);
+        let collider = await findCollision(B, thing, plane, result);
+        if (collider) {
+            const colliderBox = geo.positionedBox(collider.physics.box, plane.things[collider.id]);
+            result.x = colliderBox.n[2] + thingShiftX;
+            if (stepY == 0 || stepY > colliderBox.n[3]) {
+                stepY = colliderBox.n[3] - pBox.n[1];
             }
-        }  
+        } else {
+            if (geo.boxInBounds(thingBox, planeBox)) {
+                return result;
+            } else {
+                result.y += stepY;
+                stepY = 0;
+            }
+        }
     }
-    return pos;
-}
-
-
-function shiftPos(p: geo.Position, body: geo.Box, dx: number, dy: number) {
-    const pos = deepCopy(p);
-    pos.x += dx * body.w;
-    pos.y += dy * body.h;
-    return pos;
 }
 
 // will it fit here?
-async function findCollision(B: BookServer, thing: ThingData, plane: PlaneData, position: geo.Position) {
+export async function findCollision(B: BookServer, thing: ThingData, plane: PlaneData, position: geo.Position) {
     if (thing.physics.slot) return; // slots never collide;
     for (let id in plane.things) {
         if (id != thing.id) {
@@ -127,15 +106,17 @@ async function findCollision(B: BookServer, thing: ThingData, plane: PlaneData, 
                 geo.boxOverlap(
                 geo.positionedBox(thing.physics.box,   position),
                 geo.positionedBox(another.physics.box, anotherPos))) {
-                return id;
+                return another;
             }
         }
     }
     return undefined;
 }
 
-
-
+export async function findCollisionId(B: BookServer, thing: ThingData, plane: PlaneData, position: geo.Position) {
+    const collider = await findCollision(B, thing, plane, position);
+    return collider? collider.id : undefined;
+}
 
 
 

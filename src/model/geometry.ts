@@ -184,7 +184,8 @@ export function accumulateDirection(main: Direction, contribution: Direction, sc
     main.dz += scaleFactor * contribution.dz;
 }
 
-export function positionedBox(box: Box, position: Position) {
+export function positionedBox(box: Box, position?: Position) {
+    if (!position) position = {x:0, y:0} as Position;
     let aBox: PositionedBox = {n:[0,0,0,0]} // L-U-R-D
     aBox.n[0] = position.x - box.w/2 + (box.anchor?box.anchor.x:0);
     aBox.n[1] = position.y - box.h/2 + (box.anchor?box.anchor.y:0);
@@ -204,6 +205,23 @@ export function boxOverlap(aBox?: PositionedBox, bBox?: PositionedBox) {
     if (aBox.n[1] <= bBox.n[1] && aBox.n[3] <= bBox.n[1]) return false;
     if (aBox.n[1] >= bBox.n[3] && aBox.n[3] >= bBox.n[3]) return false;
     // dbg.log("Overlap!")
+    return true;
+}
+
+export function boxInBounds(inner: PositionedBox, outer: PositionedBox) {
+    if (!positionedInBounds(position(inner.n[0], inner.n[1]), outer)) return false;
+    if (!positionedInBounds(position(inner.n[2], inner.n[3]), outer)) return false;
+    return true;
+}
+
+export function isBoxEndlessX(box: PositionedBox) { return box.n[0] == box.n[2] }
+export function isBoxEndlessY(box: PositionedBox) { return box.n[1] == box.n[3] }
+
+export function positionedInBounds(pos: Position, outer: PositionedBox) {
+    if (isBoxEndlessX(outer)) return true;
+    if (pos.x < outer.n[0] || pos.x > outer.n[2]) return false;
+    if (isBoxEndlessY(outer)) return true;
+    if (pos.y < outer.n[1] || pos.y > outer.n[3]) return false;
     return true;
 }
 
