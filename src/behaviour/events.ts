@@ -74,6 +74,11 @@ export interface EventEquip extends EventAttempt {
 }
 export interface EventUnEquip extends EventEquip {}
 
+export interface EventFullData {
+    data: Event,
+    targetIds: Record<string,string>
+}
+
 
 // ------------------ emitting -------------------------
 export async function emit(B: BookServer, event: Event) {

@@ -56,7 +56,7 @@ export class Controller {
         this.emitter.emit(event.event, {
             data: event,
             targetIds: tids
-        })
+        } as events.EventFullData)
         if (this.isProxy) {
             await this.B.emitEvent(getBookId(this.actorId), this.actorId, event);
         }

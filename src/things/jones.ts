@@ -1,4 +1,5 @@
 import { ThingTemplate } from "../model/interfaces"
+import * as model from "../model/interfaces"
 
 const name = "Jones";
 
@@ -32,7 +33,8 @@ export const template: ThingTemplate = {
             mass:  { mass: 100 },
             force: { mass: 2000 },            
         },
-        planes: {}
+        planes: {},
+        constraints: model.CONSTRAINTS_DEFAULT,
     },
     plane: {
         id: "<planetId>",
@@ -41,3 +43,7 @@ export const template: ThingTemplate = {
         text: "",
     },
 }
+template.thing.constraints[ model.CONSTRAINTS.AUTOPICKING ] = {
+    criticalMass: 100,
+    reverse: true,
+} as model.ThingConstraint;

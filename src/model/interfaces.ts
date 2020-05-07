@@ -36,13 +36,29 @@ export interface ThingData {
 export interface ThingConstraint {
     massName: string;
     criticalMass: number;
+    reverse?: boolean;
 }
 
 export function checkConstraint(thing: ThingPhysics, c: ThingConstraint|boolean|undefined) {
     if (c === undefined) return true;
     if (c === true || c === false) return c;
     c = c as ThingConstraint;
-    return thing.mass[c.massName] && thing.mass[c.massName] >= c.criticalMass;
+    let isCapable = thing.mass[c.massName] >= c.criticalMass;
+    if (c.reverse) isCapable = !isCapable;
+    return thing.mass[c.massName] && isCapable;
+}
+/**
+ *   Is SUBJECT capable of doing <smth> with OBJECT.
+ *   "_____able" name = default behaviour (check constraint of OBJECT)
+ *   "_____ing"  name = useSubjectConstraint = true (check constraint of SUBJECT)
+ */
+export function isCapable(constraintName: string, subject: ThingData, object: ThingData, useSubjectConstraint?: boolean) {
+    if (useSubjectConstraint) {
+        return isCapable(constraintName, object, subject);
+    } else {
+        if (!subject.physics) return true;
+        return checkConstraint(subject.physics, object.constraints[constraintName])        
+    }
 }
 
 
@@ -91,12 +107,14 @@ export const CONSTRAINTS = {
     PASSABLE:  "passable", // Can this thing be passed through?
     PICKABLE:  "pickable", // Can this thing be picked up?
     ENTERABLE: "enterable",   // Can someone enter inside this thing?"
+    AUTOPICKING: "autopicking", // Can this thing automatically pickup others
 }
 export const CONSTRAINTS_DEFAULT = {
     pushable:    true,
     passable:    false,
     pickable:    true,
     enterable:   true,
+    autopicking: false,
 }
 
 export const FORMAT = {

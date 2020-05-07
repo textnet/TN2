@@ -1,10 +1,13 @@
 import { BookServer } from "../model/book"
 import { ThingData, PlaneData, PLANE_DEFAULT } from "../model/interfaces"
+import * as model from "../model/interfaces"
+import * as equipment from "../model/equipment"
 import { Controller } from "../behaviour/controller"
 import * as print from "../commandline/print"
 import * as cl from "../commandline/commandline"
 
 import * as events from "../behaviour/events"
+import * as actions from "../behaviour/actions"
 
 export const ANIMA = {
     PERMANENT: true
@@ -34,11 +37,16 @@ export class Anima {
         return print.str(thing, true);
     }
 
+    autopickupListener;
     async animate(permanent?: boolean) {
         await this.controller.connect();
+        const that = this;
+        this.autopickupListener = function(e) { checkAutoPickup(that, e)}
+        this.controller.on(events.EVENT.COLLISION, this.autopickupListener);
     }
 
     async terminate() {
+        this.controller.off(events.EVENT.COLLISION, this.autopickupListener);
         await this.controller.disconnect(); 
     }
 
@@ -102,6 +110,26 @@ export class Anima {
         }
     }
 
+}
+
+async function checkAutoPickup(B: BookServer, fullEventData: events.EventFullData) {
+    const subjectId  = fullEventData[ events.EVENT_ROLE.SUBJECT ];
+    const objectId   = fullEventData[ events.EVENT_ROLE.OBJECT ];
+    const hostId     = fullEventData[ events.EVENT_ROLE.HOST ];
+    const observerId = fullEventData[ events.EVENT_ROLE.OBSERVER ];
+    //
+    const subject = await B.things.load(subjectId);
+    const object  = await B.things.load(objectId);
+    if (subject && object && 
+        model.isCapable(model.CONSTRAINTS.AUTOPICKING, subject, object, true)) {
+        await actions.action(B, {
+            action: actions.ACTION.EQUIP,
+            actorId: subjectId,
+            planeId: fullEventData.data.planeId,
+            thingId: objectId,
+            slotName: equipment.AUTO_PICKUP_SLOT_NAME,
+        } as actions.ActionEquip)
+    }
 }
 
 

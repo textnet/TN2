@@ -9,6 +9,7 @@ import * as spatials from "../behaviour/actions/spatials"
 
 // functions to work with equipment and slots.
 export const DEFAULT_SLOT_NAME = "Hands"
+export const AUTO_PICKUP_SLOT_NAME = "Backpack"
 
 interface TransferParameters {
     actorId: string;
@@ -56,7 +57,6 @@ export async function getSlots(B: BookServer, ownerId: string, slotName?: string
     }
     return slotName? slots[slotName] : slots;
 }
-
 
 export async function transferToSlot(B: BookServer, actorId: string, thingId: string,
                                      targetThingId?: string, slotName?: string) {

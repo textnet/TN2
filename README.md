@@ -19,15 +19,24 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     + TODO: center camera
     + TODO: zero coordinates
 + BUG: ids in create slot are off
-- equip/unequip actions
-    - slot Support
++ equip/unequip actions
+    + slot Support
+- example of backpack
+    + many chests populated
+    + autopickup into Backpack
+        + autopicking constraint
+        + check it on collision
+        + pick it up
+    - method to print equipment
+    - can't pick piano
+    - can't pick all chests
 - place action
     - slotOnly support
 - PICKIP/PUTDOWN
     - slot support
     - slotOnly support
 - autopickup
-    - Different version of fit
+    + Different version of fit
     - Chaining small slots
     - One big slot
 - render borders of small planes
