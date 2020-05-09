@@ -21,24 +21,31 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 + BUG: ids in create slot are off
 + equip/unequip actions
     + slot Support
-- example of backpack
++ example of backpack
     + many chests populated
     + autopickup into Backpack
         + autopicking constraint
         + check it on collision
         + pick it up
-    - method to print equipment
-    - can't pick piano
-    - can't pick all chests
+    + method to print equipment
+    + runs at all
+    + works w/o slots
+    + prints equipment correctly
+    + autopickup works
+    + can pick up chests (weight + size constraints)
+    + can't pick piano (too big)
+    + can't pick all chests
+    + test chaining slots
+    + custom default/backpack slots
+    + test one big slot
++ BUG: broken pickup when slots are available    
+- BUG: transfer up -- too many times -- exception
+- BUG: transfer/loadPlane: equipped items are not visible   
 - place action
     - slotOnly support
 - PICKIP/PUTDOWN
     - slot support
     - slotOnly support
-- autopickup
-    + Different version of fit
-    - Chaining small slots
-    - One big slot
 - render borders of small planes
 - make equipment a small plane
 - get equipment inventory
@@ -54,8 +61,6 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     - in hands
     - in slots
 - use sprite box in inventory calculations
-- BUG: transfer up -- too many times -- exception
-- BUG: transfer/loadPlane: equipped items are not visible
 
 
 

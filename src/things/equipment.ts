@@ -16,7 +16,7 @@ export const template: ThingTemplate = {
         },
         physics: {
             slot: true,
-            box: { w: 202, h: 320, anchor: { x: 0, y: 0 } },
+            box: { w: 202, h: 320 },
             Z: -2,
         },
         constraints: {

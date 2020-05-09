@@ -1,0 +1,9 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+            "folder_exclude_patterns": ["_storage", "dist", "node_modules"],
+		}
+	]
+}

@@ -40,8 +40,8 @@ export class Anima {
     autopickupListener;
     async animate(permanent?: boolean) {
         await this.controller.connect();
-        const that = this;
-        this.autopickupListener = function(e) { checkAutoPickup(that, e)}
+        const B = this.B;
+        this.autopickupListener = function(e) { checkAutoPickup(B, e) }
         this.controller.on(events.EVENT.COLLISION, this.autopickupListener);
     }
 
@@ -113,10 +113,9 @@ export class Anima {
 }
 
 async function checkAutoPickup(B: BookServer, fullEventData: events.EventFullData) {
-    const subjectId  = fullEventData[ events.EVENT_ROLE.SUBJECT ];
-    const objectId   = fullEventData[ events.EVENT_ROLE.OBJECT ];
-    const hostId     = fullEventData[ events.EVENT_ROLE.HOST ];
-    const observerId = fullEventData[ events.EVENT_ROLE.OBSERVER ];
+    const event = fullEventData.data as events.EventCollision;
+    const subjectId  = event.thingId;
+    const objectId   = event.colliderId;
     //
     const subject = await B.things.load(subjectId);
     const object  = await B.things.load(objectId);
@@ -127,7 +126,7 @@ async function checkAutoPickup(B: BookServer, fullEventData: events.EventFullDat
             actorId: subjectId,
             planeId: fullEventData.data.planeId,
             thingId: objectId,
-            slotName: equipment.AUTO_PICKUP_SLOT_NAME,
+            slotName: subject.equipment.autopicking,
         } as actions.ActionEquip)
     }
 }

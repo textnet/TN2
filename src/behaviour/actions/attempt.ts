@@ -12,12 +12,13 @@ import * as equipment from "../../model/equipment"
 async function attemptPickup(B: BookServer, action: actions.ActionAttempt) {
     const inHands = await equipment.thingInHands(B, action.actorId, action.actorId);
     if (inHands) {
+        const actor = await B.things.load(action.actorId);
         return await actions.action(B, {
                 action:  actions.ACTION.UN_EQUIP,
                 actorId: action.actorId,
                 planeId: action.planeId,
                 equipThingId: action.actorId,
-                slotName: equipment.DEFAULT_SLOT_NAME,
+                slotName: actor.equipment.default,
                 direction: action.direction,
         } as actions.ActionUnEquip);
     } else {
@@ -31,7 +32,7 @@ async function attemptPickup(B: BookServer, action: actions.ActionAttempt) {
                 planeId: action.planeId,
                 thingId: next.id,
                 equipThingId: action.actorId,
-                slotName: equipment.DEFAULT_SLOT_NAME,
+                slotName: actor.equipment.default,
         } as actions.ActionEquip);
     }
 

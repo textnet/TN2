@@ -20,7 +20,7 @@ export interface Position {
 }
 
 export interface PositionedBox {
-    n: number[];
+    n: number[]; // L-U-R-D
 }
 
 export interface Direction {

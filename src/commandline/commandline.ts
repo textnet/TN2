@@ -6,10 +6,13 @@ import { config } from "../config"
 
 import * as baseCommands from "./base"
 import * as thingCommands from "./things"
+import * as equipCommands from "./equipment"
 import * as planeCommands from "./planes"
 import * as written from "./written"
 import * as print from "./print"
 
+export const str = print.str;
+export const debugEquipment = print.debugEquipment;
 
 
 const chalk = require('chalk');
@@ -28,6 +31,7 @@ export function init(library: LibraryServer, config: CommandLineConfig) {
     _config = config;    
     baseCommands.setup();
     thingCommands.setup();
+    equipCommands.setup();
     planeCommands.setup();
     print.setup();
     register("test", function(n, params) { console.log(params) })

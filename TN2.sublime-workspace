@@ -1,0 +1,1003 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"isEq",
+				"isEquipmentSlot\tconst"
+			],
+			[
+				"slo",
+				"slotName\tlet"
+			],
+			[
+				"eq",
+				"equipmentContents\tproperty"
+			],
+			[
+				"Slo",
+				"SlotContents\tinterface"
+			],
+			[
+				"cloo",
+				"candidateLoop\tlabel"
+			],
+			[
+				"epla",
+				"equipmentPlane\tconst"
+			],
+			[
+				"Po",
+				"Position\tinterface"
+			],
+			[
+				"eplane",
+				"equipmentPlane"
+			],
+			[
+				"AU",
+				"AUTO_PICKUP_SLOT_NAME\tconst"
+			],
+			[
+				"pla",
+				"planeId\tproperty"
+			],
+			[
+				"AcP",
+				"ActionEquip\tinterface"
+			],
+			[
+				"CON",
+				"CONSTRAINTS\tconst"
+			],
+			[
+				"TD",
+				"ThingData\tinterface"
+			],
+			[
+				"Thi",
+				"ThingData\tinterface"
+			],
+			[
+				"autop",
+				"checkAutoPickup"
+			],
+			[
+				"isC",
+				"isCapable\tlet"
+			],
+			[
+				"Constr",
+				"ThingConstraint\tinterface"
+			],
+			[
+				"CO",
+				"CONSTRAINTS\tconst"
+			],
+			[
+				"CONS",
+				"CONSTRAINTS_DEFAULT\tconst"
+			],
+			[
+				"const",
+				"constraints\tproperty"
+			],
+			[
+				"pos",
+				"position\tparameter"
+			],
+			[
+				"let",
+				"let\tkeyword"
+			],
+			[
+				"posi",
+				"positionedBox\tfunction"
+			],
+			[
+				"eqi",
+				"equipmentPlane\tconst"
+			],
+			[
+				"thi",
+				"thing\tconst"
+			],
+			[
+				"poin",
+				"positionedInBounds\tfunction"
+			],
+			[
+				"Slot",
+				"SlotData\tinterface"
+			],
+			[
+				"strI",
+				"stripBookId\tfunction"
+			],
+			[
+				"clor",
+				"color\tproperty"
+			],
+			[
+				"slot",
+				"slotThing\tconst"
+			],
+			[
+				"box",
+				"positionedBox\tfunction"
+			],
+			[
+				"get",
+				"getEquipmentPlane\tmethod"
+			],
+			[
+				"getB",
+				"getBookServers"
+			],
+			[
+				"thing",
+				"thing\tconst"
+			],
+			[
+				"thI",
+				"thingInHands\tconst"
+			],
+			[
+				"thingI",
+				"thingInHands\tconst"
+			],
+			[
+				"equp",
+				"equipmentPlane\tconst"
+			],
+			[
+				"equipmen",
+				"equipmentPlane\tconst"
+			],
+			[
+				"eqpan",
+				"equipmentPlane\tconst"
+			],
+			[
+				"eP",
+				"equipmentPlane\tconst"
+			],
+			[
+				"direc",
+				"directTransferUnequip\tfunction"
+			],
+			[
+				"equipm",
+				"equipmentPlane\tconst"
+			],
+			[
+				"getI",
+				"getThingId\talias"
+			],
+			[
+				"coll",
+				"COLLISION\tproperty"
+			],
+			[
+				"targe",
+				"targetData\tconst"
+			],
+			[
+				"getTh",
+				"getThingPosition\tfunction"
+			],
+			[
+				"Boo",
+				"BookServer\talias"
+			],
+			[
+				"gete",
+				"getEquipmentOwnerId\tfunction"
+			],
+			[
+				"equip",
+				"equipPlaneId\tproperty"
+			],
+			[
+				"target",
+				"targetPosition\tparameter"
+			],
+			[
+				"isTarg",
+				"isTargetThing\tconst"
+			],
+			[
+				"isTar",
+				"isTargetThing\tconst"
+			],
+			[
+				"TPara",
+				"TransferParameters\tinterface"
+			],
+			[
+				"def",
+				"defaultingMapping\tconst"
+			],
+			[
+				"ins",
+				"inspect\tfunction"
+			],
+			[
+				"thin",
+				"thingActors\tproperty"
+			],
+			[
+				"id",
+				"id\tlet"
+			],
+			[
+				"Att",
+				"ActionAttempt\tinterface"
+			],
+			[
+				"thinI",
+				"thingInHands\tfunction"
+			],
+			[
+				"GaS",
+				"gameScene\tmethod"
+			],
+			[
+				"plan",
+				"planeId"
+			],
+			[
+				"efrom",
+				"equipFrom"
+			],
+			[
+				"A",
+				"ActionEquip\tinterface"
+			],
+			[
+				"equ",
+				"equipFrom"
+			],
+			[
+				"ofrom",
+				"ownerFrom\tparameter"
+			],
+			[
+				"equi",
+				"equipment\talias"
+			],
+			[
+				"act",
+				"action\tfunction"
+			],
+			[
+				"Wri",
+				"WrittenThing\talias"
+			],
+			[
+				"equim",
+				"isEquipmentPlaneId\tfunction"
+			],
+			[
+				"tra",
+				"transferToSlot\tfunction"
+			],
+			[
+				"thiIn",
+				"thingInSlot\tfunction"
+			],
+			[
+				"sour",
+				"sourcePlane\tparameter"
+			],
+			[
+				"host",
+				"hostPlaneId\tproperty"
+			],
+			[
+				"from",
+				"fromPositionOrThing\tparameter"
+			],
+			[
+				"createPl",
+				"createPlaneFromAnotherId\tfunction"
+			],
+			[
+				"getb",
+				"getBookThingId\tfunction"
+			],
+			[
+				"createpla",
+				"createPlaneFromAnotherId\tfunction"
+			],
+			[
+				"origin",
+				"originalPlane\tconst"
+			],
+			[
+				"planeN",
+				"extractPlaneName\tfunction"
+			],
+			[
+				"bo",
+				"boxNextTo\tfunction"
+			],
+			[
+				"TH",
+				"ThingData\talias"
+			],
+			[
+				"WT",
+				"WrittenThing\tinterface"
+			],
+			[
+				"Writt",
+				"WrittenThing\talias"
+			],
+			[
+				"rotat",
+				"rotationDir\tfunction"
+			],
+			[
+				"Way",
+				"WaypointTurnTo\tinterface"
+			],
+			[
+				"TIM",
+				"TIME_MOMENTUM\tconst"
+			],
+			[
+				"wa",
+				"waypoint"
+			],
+			[
+				"AC",
+				"ActionPlace\tinterface"
+			],
+			[
+				"Plac",
+				"EventPlace\tinterface"
+			],
+			[
+				"acc",
+				"accumulateDirection\tfunction"
+			],
+			[
+				"plane",
+				"planeId\tparameter"
+			],
+			[
+				"time",
+				"timeLeft\tproperty"
+			],
+			[
+				"M",
+				"MOVE_TO\tproperty"
+			],
+			[
+				"move",
+				"movement\talias"
+			],
+			[
+				"Wa",
+				"WaypointMoveTo\tinterface"
+			],
+			[
+				"way",
+				"waypoint\tconst"
+			],
+			[
+				"waypos",
+				"waypoints\tconst"
+			],
+			[
+				"app",
+				"applyPhysics\tfunction"
+			],
+			[
+				"disan",
+				"distance\tfunction"
+			],
+			[
+				"speed",
+				"speedPush\tproperty"
+			],
+			[
+				"accD",
+				"accelerationDir\tconst"
+			],
+			[
+				"vel",
+				"velocityComponent\tconst"
+			],
+			[
+				"tid",
+				"thingId\tlet"
+			],
+			[
+				"tdela",
+				"timeDelta\tparameter"
+			],
+			[
+				"tD",
+				"timeDelta\tparameter"
+			],
+			[
+				"Wsta",
+				"WaypointStay\tinterface"
+			],
+			[
+				"cline",
+				"commandline"
+			],
+			[
+				"in",
+				"inspect\tfunction"
+			],
+			[
+				"po",
+				"position\tparameter"
+			],
+			[
+				"anot",
+				"anotherPos\tconst"
+			],
+			[
+				"Pos",
+				"Position\tinterface"
+			],
+			[
+				"len",
+				"length"
+			],
+			[
+				"isFi",
+				"isFitting\tfunction"
+			],
+			[
+				"Ac",
+				"ActionPlace\tinterface"
+			],
+			[
+				"ths",
+				"things\tproperty"
+			],
+			[
+				"grav",
+				"gravityPlanes\tconst"
+			],
+			[
+				"book",
+				"bookServers\tproperty"
+			],
+			[
+				"tar",
+				"targetBookId"
+			],
+			[
+				"recipi",
+				"recipientId\tproperty"
+			],
+			[
+				"EVENT",
+				"EVENT_ROLE\tconst"
+			],
+			[
+				"eve",
+				"eventData\tparameter"
+			],
+			[
+				"EVE",
+				"EVENT\tconst"
+			],
+			[
+				"con",
+				"connectConsole"
+			],
+			[
+				"Tex",
+				"TextConsole\talias"
+			],
+			[
+				"lo",
+				"loudness\tproperty"
+			],
+			[
+				"actor",
+				"actorId\tproperty"
+			],
+			[
+				"th",
+				"thing\tlet"
+			],
+			[
+				"mod",
+				"modelPlane\tconst"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "README.md",
+			"settings":
+			{
+				"buffer_size": 6319,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/model/equipment.ts",
+			"settings":
+			{
+				"buffer_size": 6719,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"pack",
+				"Preferences: Browse Packages"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/nyaremko/TN2",
+		"/Users/nyaremko/TN2/src",
+		"/Users/nyaremko/TN2/src/behaviour",
+		"/Users/nyaremko/TN2/src/behaviour/actions",
+		"/Users/nyaremko/TN2/src/commandline",
+		"/Users/nyaremko/TN2/src/electron",
+		"/Users/nyaremko/TN2/src/gui",
+		"/Users/nyaremko/TN2/src/model",
+		"/Users/nyaremko/TN2/src/things"
+	],
+	"file_history":
+	[
+		"/Users/nyaremko/TN2/src/commandline/scripts/backpack.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions/spatials.ts",
+		"/Users/nyaremko/TN2/src/commandline/equipment.ts",
+		"/Users/nyaremko/TN2/src/model/equipment.ts",
+		"/Users/nyaremko/TN2/src/commandline/print.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions/equipment.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions/transfer.ts",
+		"/Users/nyaremko/TN2/src/behaviour/events.ts",
+		"/Users/nyaremko/TN2/src/config.ts",
+		"/Users/nyaremko/TN2/src/commandline/commandline.ts",
+		"/Users/nyaremko/TN2/src/commandline/scripts/slots.ts",
+		"/Users/nyaremko/TN2/src/commandline/scripts/equipment.ts",
+		"/Users/nyaremko/TN2/src/anima/anima.ts",
+		"/Users/nyaremko/TN2/src/commandline/base.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions.ts",
+		"/Users/nyaremko/TN2/src/commandline/things.ts",
+		"/Users/nyaremko/TN2/TN2.sublime-project",
+		"/Users/nyaremko/Library/Application Support/Sublime Text 3/Packages/User/TypeScript.sublime-settings",
+		"/Users/nyaremko/Library/Application Support/Sublime Text 3/Packages/TypeScript/Preferences.sublime-settings",
+		"/Users/nyaremko/TN2/src/model/book.ts",
+		"/Users/nyaremko/TN2/src/gui/server/plane.ts",
+		"/Users/nyaremko/TN2/src/model/geometry.ts",
+		"/Users/nyaremko/TN2/src/things/chest.ts",
+		"/Users/nyaremko/TN2/src/gui/server/subscribe.ts",
+		"/Users/nyaremko/TN2/src/behaviour/controller.ts",
+		"/Users/nyaremko/TN2/src/model/interfaces.ts",
+		"/Users/nyaremko/TN2/src/things/jones.ts",
+		"/Users/nyaremko/TN2/src/commandline/script.ts",
+		"/Users/nyaremko/TN2/src/gui/actors/base.ts",
+		"/Users/nyaremko/TN2/src/gui/renderer/plane.ts",
+		"/Users/nyaremko/TN2/src/model/identity.ts",
+		"/Users/nyaremko/TN2/src/gui/actors/thing.ts",
+		"/Users/nyaremko/TN2/src/gui/renderer/move.ts",
+		"/Users/nyaremko/TN2/src/gui/renderer/setup.ts",
+		"/Users/nyaremko/TN2/src/model/create.ts",
+		"/Users/nyaremko/TN2/src/things/slot.ts",
+		"/Users/nyaremko/TN2/src/things/equipment.ts",
+		"/Users/nyaremko/TN2/src/things/something.ts",
+		"/Users/nyaremko/TN2/src/model/physics.ts",
+		"/Users/nyaremko/TN2/src/anima/written/library/update.ts",
+		"/Users/nyaremko/TN2/src/anima/written/library.ts",
+		"/Users/nyaremko/TN2/src/gui/messages.ts",
+		"/Users/nyaremko/TN2/src/gui/actors/equipment.ts",
+		"/Users/nyaremko/TN2/src/commandline/scripts/limbo.ts",
+		"/Users/nyaremko/TN2/src/gui/sprite.ts",
+		"/Users/nyaremko/TN2/src/gui/renderer/equipment.ts",
+		"/Users/nyaremko/TN2/src/model/sprites.ts",
+		"/Users/nyaremko/TN2/README.md",
+		"/Users/nyaremko/TN2/src/gui/server/setup.ts",
+		"/Users/nyaremko/TN2/src/gui/server/equipment.ts",
+		"/Users/nyaremko/TN2/src/anima/written/library/equip.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions/attempt.ts",
+		"/Users/nyaremko/TN2/src/anima/written/detect.ts",
+		"/Users/nyaremko/TN2/src/storage/repo.ts",
+		"/Users/nyaremko/TN2/src/gui/command.ts",
+		"/Users/nyaremko/TN2/src/gui/game.ts",
+		"/Users/nyaremko/TN2/src/commandline/scripts/minimal.ts",
+		"/Users/nyaremko/TN2/src/commandline/scripts/gui.ts",
+		"/Users/nyaremko/TN2/src/anima/written/library/thing.ts",
+		"/Users/nyaremko/TN2/src/gui/server/transfer.ts",
+		"/Users/nyaremko/TN2/src/gui/renderer/send.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions/push.ts",
+		"/Users/nyaremko/TN2/src/model/library.ts",
+		"/Users/nyaremko/TN2/src/behaviour/updates.ts",
+		"/Users/nyaremko/TN2/src/commandline/scripts/update.ts",
+		"/Users/nyaremko/TN2/src/things/book.ts",
+		"/Users/nyaremko/Dropbox/suk51.txt",
+		"/Users/nyaremko/textnet-ex/src/render/interop/setup.ts",
+		"/Users/nyaremko/textnet-ex/src/render/game.ts",
+		"/Users/nyaremko/textnet-ex/src/render/interop/position.ts",
+		"/Users/nyaremko/textnet-ex/src/persistence/startup.ts",
+		"/Users/nyaremko/Desktop/icas_config.json",
+		"/Users/nyaremko/textnet-ex/src/persistence/persist.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions/movement.ts",
+		"/Users/nyaremko/TN2/src/behaviour/physics.ts",
+		"/Users/nyaremko/TN2/src/anima/movement.ts",
+		"/Users/nyaremko/TN2/src/anima/written/library/debug.ts",
+		"/Users/nyaremko/TN2/src/anima/written/library/teleport.ts",
+		"/Users/nyaremko/TN2/src/console/text.ts",
+		"/Users/nyaremko/TN2/src/network/discovery.ts",
+		"/Users/nyaremko/TN2/src/console/console.ts",
+		"/Users/nyaremko/TN2/src/commandline/written.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions/say.ts",
+		"/Users/nyaremko/TN2/src/anima/written/library/say.ts",
+		"/Users/nyaremko/TN2/src/network/permission.ts",
+		"/Users/nyaremko/TN2/src/anima/written/library/events.ts",
+		"/Users/nyaremko/TN2/src/anima/written/library/get.ts",
+		"/Users/nyaremko/TN2/src/anima/written/api.ts",
+		"/Users/nyaremko/TN2/src/anima/written/parser.ts",
+		"/Users/nyaremko/TN2/src/anima/animate.ts",
+		"/Users/nyaremko/TN2/src/anima/written/interop.ts",
+		"/Users/nyaremko/TN2/src/utils.ts",
+		"/Users/nyaremko/TN2/src/behaviour/anima.ts",
+		"/Users/nyaremko/TN2/src/network/callback.ts",
+		"/Users/nyaremko/TN2/src/actions/actions.ts",
+		"/Users/nyaremko/TN2/src/actions/events.ts",
+		"/Users/nyaremko/TN2/src/actions/controller.ts",
+		"/Users/nyaremko/TN2/src/commandline/planes.ts",
+		"/Users/nyaremko/TN2/src/commandline/logging.ts",
+		"/Users/nyaremko/TN2/src/storage/sqlite.ts",
+		"/Users/nyaremko/TN2/.gitignore",
+		"/Users/nyaremko/TN2/src/things/stub.ts",
+		"/Users/nyaremko/TN2/src/headless/headless.ts",
+		"/Users/nyaremko/TN2/src/electron/main.ts",
+		"/Users/nyaremko/TN2/yarn-error.log",
+		"/Users/nyaremko/TN2/webpack.electron.js",
+		"/Users/nyaremko/TN2/tsconfig.json",
+		"/Users/nyaremko/TN2/package.json",
+		"/Users/nyaremko/TN2/package-lock.json",
+		"/Users/nyaremko/TN2/src/network/library.ts",
+		"/Users/nyaremko/TN2/src/network/node.ts",
+		"/Users/nyaremko/TN2/src/model/planet.ts",
+		"/Users/nyaremko/TN2/src/network/p2p.ts",
+		"/Users/nyaremko/TN2/src/console/base.ts",
+		"/Users/nyaremko/TN2/src/storage/abstraction.ts",
+		"/Users/nyaremko/TN2/src/console/commandline.ts",
+		"/Users/nyaremko/TN2/src/console/script.ts",
+		"/Users/nyaremko/TN2/start.sh",
+		"/Users/nyaremko/TN2/src/headless/base.ts",
+		"/Users/nyaremko/TN2/src/headless/script.ts",
+		"/Users/nyaremko/TN2/src/headless/commandLine.ts",
+		"/Users/nyaremko/TN2/src/interfaces/planet.ts",
+		"/Users/nyaremko/TN2/src/headless/main.ts",
+		"/Users/nyaremko/TN2/src/headless/app.js",
+		"/Users/nyaremko/TN2/src/electron/gui.ts",
+		"/Users/nyaremko/TN2/src/nodeapp/app.js",
+		"/Users/nyaremko/textnet-ex/texts/3. Persistence.md",
+		"/Users/nyaremko/textnet-ex/texts/4. Игра.md"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 101.0,
+		"where_history":
+		[
+			"-_storage/*, -dist/*, -node_modules/*, -package-lock.json",
+			"-_storage/*, -dist/*, -node_modules/*",
+			"-_storage/*; -dist/*; -node_modules/*",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"'Equipment'",
+			"'@ ",
+			"@ ",
+			"planes",
+			"console.log",
+			"placing..",
+			"getSlots",
+			"getLibraryServer(",
+			"getBookServer(",
+			"getBookServer",
+			"checkConstraint",
+			"targetIds",
+			".targetIds",
+			"sendMessage",
+			"conductMessage",
+			"shiftPos",
+			"findCollision",
+			"findFitting",
+			"inBounds",
+			"findCollision",
+			"getSlots",
+			"inSlotBounds",
+			"findClosest",
+			"equipped",
+			"inBounds",
+			"findFitting",
+			"createThingI",
+			"? extractThingId(id) ",
+			"createThingId",
+			"84",
+			"84,",
+			"84",
+			".anchor",
+			"isSlot",
+			"sending ",
+			"sending I",
+			"anchor",
+			"owner A",
+			"E->",
+			"Equipped ",
+			"building sprite",
+			"thingInHands",
+			"thingInSlot",
+			"transferToSlot",
+			"unEquip",
+			"transferFromSlot",
+			"ActionUnEquip",
+			"getting thing",
+			"E->",
+			"dx",
+			"targetIds",
+			".spae",
+			"thingInSlot",
+			"hostPL",
+			"findClosest",
+			"hostPlane",
+			"transferFromSlot",
+			"transferToSlot",
+			"transferFromSlot",
+			"transferToSlot",
+			"thingIn",
+			"distance",
+			".distance",
+			"distance",
+			"got:",
+			"entering!",
+			"got",
+			"getting",
+			"findClosest",
+			"nt of",
+			"spawn",
+			"code(",
+			"code",
+			"thingActors",
+			".scale",
+			".sprite",
+			"\n-",
+			"pickup",
+			"console.log(",
+			"isUp:",
+			"loadPlane.",
+			"loadPlane",
+			"pops from the stack",
+			"ActionPlace",
+			"positionedBox(",
+			"positionBox",
+			".isEnter",
+			".isPlace",
+			"let",
+			"registerGuest",
+			"\"*\""
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "README.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6319,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1000,
+								1000
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 278.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/model/equipment.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6719,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3723,
+								3723
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 611.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 39.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.doc":
+	{
+		"height": 0.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "TN2.sublime-project",
+	"replace":
+	{
+		"height": 70.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/Yandex.Disk.localized/Всё моё/100 eCG/Meeting minutes/Meeting Notes.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 263.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

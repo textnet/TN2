@@ -10,7 +10,8 @@ import { strip } from "../utils"
 // import { setup } from "./scripts/gui"
 // import { setup } from "./scripts/equipment"
 // import { setup } from "./scripts/slots"
-import { setup } from "./scripts/backpack"
+// import { setup } from "./scripts/backpack"
+import { setup } from "./scripts/backpack_big"
 
 
 export async function script(library) {

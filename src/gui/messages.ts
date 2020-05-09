@@ -58,6 +58,8 @@ export interface Enter extends Message {
     equipped: ThingRenderData;
 }
 export interface Equip extends Message {
+    slotName: string;
+    equipmentMap: Record<string, string>;
     thing: ThingRenderData;
     ownerId: string;
 }

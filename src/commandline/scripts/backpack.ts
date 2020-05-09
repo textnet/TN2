@@ -20,10 +20,10 @@ create slot Backpack as Slot in Indiana.Player @ -79 138
 create slot Backpack as Slot in Indiana.Player @ -37 138
 create slot Backpack as Slot in Indiana.Player @   5 138
 create slot Backpack as Slot in Indiana.Player @  47 138
+equipment of Indiana.Player
 
 create console P1 Indiana.Player
 gui P1
--- observe Indiana.Equipment
 `
 ,
 // Startup Written Word for the binded thing

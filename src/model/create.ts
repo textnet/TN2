@@ -21,6 +21,7 @@ import * as tPiano from "../things/piano"
 import * as tJones from "../things/jones"
 import * as tLimboPortal from "../things/limbo_portal"
 import * as tSlot from "../things/slot"
+import * as tMegaslot from "../things/slot_mega"
 import * as tEquipment from "../things/equipment"
 
 export function registerAllTemplates() {
@@ -31,6 +32,7 @@ export function registerAllTemplates() {
     registerTemplate(tJones.template);
     registerTemplate(tLimboPortal.template);
     registerTemplate(tSlot.template);
+    registerTemplate(tMegaslot.template);
     registerTemplate(tEquipment.template);
 }
 export function registerTemplate(t: ThingTemplate) {

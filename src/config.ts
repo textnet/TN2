@@ -40,7 +40,7 @@ config.version = "1";
 config.debug = {} as Debug;
 config.debug.forceOffline = true;
 config.debug.verboseConsole = true;
-config.debug.gui = true;
+// config.debug.gui = true;
 config.debug.skipTitle = true;
 // config.debug = {} as Debug; // uncomment to turn off all the debugging
 

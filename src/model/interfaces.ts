@@ -31,6 +31,14 @@ export interface ThingData {
     visitsStack?: string[]; // history of going deeper
     _isLimboPortal?: boolean;
     API?: string[];
+    equipment?: ThingEquipmentMap;
+}
+
+export interface ThingEquipmentMap {
+    default?: string;
+    autopicking?: string;
+    everything?: string;
+    slotsOnly?: boolean;    
 }
 
 export interface ThingConstraint {
@@ -43,8 +51,12 @@ export function checkConstraint(thing: ThingPhysics, c: ThingConstraint|boolean|
     if (c === undefined) return true;
     if (c === true || c === false) return c;
     c = c as ThingConstraint;
-    let isCapable = thing.mass[c.massName] >= c.criticalMass;
-    if (c.reverse) isCapable = !isCapable;
+    let isCapable;
+    if (c.reverse) {
+        isCapable = thing.mass[c.massName] <= c.criticalMass
+    } else {
+        isCapable = thing.mass[c.massName] >= c.criticalMass;
+    }
     return thing.mass[c.massName] && isCapable;
 }
 /**
@@ -83,6 +95,7 @@ export function fixThingDefaults(data) {
     data.constraints = data.constraints || deepCopy(CONSTRAINTS_DEFAULT);
     data.visits = data.visits || {};
     data.visitsStack = data.visitsStack || [];
+    data.equipment = data.equipment || deepCopy(EQUIPMENT_DEFAULT);
     data.API = deepCopy(API);
 }
 export function fixPlaneDefaults(data) {
@@ -115,6 +128,13 @@ export const CONSTRAINTS_DEFAULT = {
     pickable:    true,
     enterable:   true,
     autopicking: false,
+}
+
+export const EQUIPMENT_DEFAULT: ThingEquipmentMap = {
+    default: "Hands",
+    autopicking: "Backpack",
+    everything: "Equipment",
+    slotsOnly: false,
 }
 
 export const FORMAT = {

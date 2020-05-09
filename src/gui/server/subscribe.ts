@@ -76,7 +76,10 @@ async function(gui: GuiConsole, e: events.EventEnter) {
 mapping[events.EVENT.EQUIP] = 
 async function(gui: GuiConsole, e: events.EventEquip) {
     const thingData = await msg.renderThingData(gui.B, e.thingId);
+    const actor = await gui.B.things.load(e.actorId);
     return gui.send(msg.RENDER.EQUIP, {
+        slotName: e.slotName,
+        equipmentMap: actor.equipment,
         thing: thingData,
         ownerId: e.equipId,
     } as msg.Equip);

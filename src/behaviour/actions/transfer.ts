@@ -86,7 +86,7 @@ export async function action(B: BookServer, action: actions.ActionTransfer) {
             thingId: action.thingId,
             position: action.position,
         }
-        await actions.action(B, actionPlace);
+        return await actions.action(B, actionPlace);
     } else {
         const actionLeave: actions.ActionLeave = {
             action:  actions.ACTION.LEAVE,
@@ -104,7 +104,7 @@ export async function action(B: BookServer, action: actions.ActionTransfer) {
             position: action.position,
         }
         await actions.action(B, actionLeave);
-        await actions.action(B, actionEnter);        
+        return await actions.action(B, actionEnter);        
     }
 }
 
@@ -139,7 +139,7 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
         noVisit:     action.noVisit,
     } as updates.UpdateHostPlane) 
     // place thing
-    await actions.handlers.place(B, {
+    return await actions.handlers.place(B, {
         action:   actions.ACTION.PLACE,
         actorId:  action.actorId,
         planeId:  action.planeId,

@@ -10,6 +10,8 @@ import { Event  } from "../behaviour/events"
 import * as geo from "../model/geometry"
 
 
+import * as equipmentCommands from "./equipment"
+
 
 export function setup() {
     const NA = undefined;
@@ -91,4 +93,8 @@ export function print(data: Event|Update|Action) {
     if (data["action"]) commandline.log("Action:")
     if (data["update"]) commandline.log("Update:")
     console.log(data)
+}
+
+export async function debugEquipment(B: BookServer, thingId: string) {
+    await equipmentCommands.list(B.library, {thingId: thingId});
 }

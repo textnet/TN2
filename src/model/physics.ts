@@ -5,6 +5,7 @@ import { Box, Position, Direction } from "./geometry"
 export interface ThingPhysics {
     box: Box;
     slot?: boolean; 
+    slotBackpack?: boolean;
     Z?:  number; // Z-level required to pass over
     mass?: Record<string,number>;
     force?: Record<string, number>;

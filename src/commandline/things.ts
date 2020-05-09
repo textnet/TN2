@@ -31,16 +31,6 @@ export function setup() {
         /(\S+)(\s+to\s+(\S+))?(\s+@\s+(\S+)\s+(\S+))?\s*/,    
         ["fromId", NA, "toId", NA, "x", "y"]);
 
-    register("create slot", slot, 
-        // create slot <name> as <template> in <thing> @ <x> <y>
-        /(\S+)?(\s+as\s+(\S+))?(\s+in\s+(\S+))?(\s+@\s+(\S+)\s+(\S+))?\s*/,  
-        ["name", NA, "template", NA, "thingId", NA, "x", "y"]);    
-
-    register("create equipment for", environment, 
-        // create equipment for <thing> as <template> @ <x> <y>
-        /(\S+)?(\s+as\s+(\S+))?(\s+@\s+(\S+)\s+(\S+))?\s*/,  
-        ["thingId", NA, "template", NA, "x", "y"]);    
-
 }
 
 
@@ -55,7 +45,7 @@ async function list(L: LibraryServer, params) {
     }
 }
 
-async function environment(L: LibraryServer, params) {
+async function equipment(L: LibraryServer, params) {
     const bookId = identity.getBookId(params["thingId"])
     const B = (await getBookServers(L, bookId))[0];
     const thing = await B.things.load(params["thingId"]);

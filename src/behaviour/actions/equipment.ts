@@ -16,7 +16,7 @@ export async function equip(B: BookServer, action: actions.ActionEquip) {
     // 1. check constraints
     if (!interfaces.checkConstraint(actor.physics, thing.constraints[ interfaces.CONSTRAINTS.PICKABLE ])) return false;
     // 3. transfer
-    await equipment.transferToSlot(B, action.actorId, action.thingId, action.equipThingId, action.slotName);
+    if (!await equipment.transferToSlot(B, action.actorId, action.thingId, action.equipThingId, action.slotName)) return false;
     // 2. event
     await events.emit(B, {
         event: events.EVENT.EQUIP,
@@ -26,6 +26,7 @@ export async function equip(B: BookServer, action: actions.ActionEquip) {
         equipId: action.equipThingId,
         slotName: action.slotName,
     } as events.EventEquip);
+    await print.debugEquipment(B, action.actorId);
 }
 
 export async function reEquip(B: BookServer, action: actions.ActionReEquip) {

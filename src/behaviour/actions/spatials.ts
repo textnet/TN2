@@ -20,9 +20,6 @@ export async function place(B: BookServer, action: actions.ActionPlace) {
     if (action.fit) {
         position = await findNextFitting(B, thing, plane, action.position);
         if (!position) return;
-        // console.log(position)
-        // console.log(action.position)
-        // console.log("=====>")
     } else {
         if (action.force) {
             position = deepCopy(action.position);
@@ -75,21 +72,27 @@ export async function findNextFitting(B: BookServer, thing: ThingData, plane:Pla
     let result = deepCopy(position);
     let stepY = 0;
     const thingShiftX = thing.physics.box.w/2 - (thing.physics.box.anchor?thing.physics.box.anchor.x:0);
+    const thingShiftY = thing.physics.box.h/2 - (thing.physics.box.anchor?thing.physics.box.anchor.y:0);
+    let step = 0;
+    let firstTime = true;
     while (geo.isBoxEndlessY(pBox) || result.y < pBox.n[3]) {
+        if (step++ > 10000) break;
         let thingBox = geo.positionedBox(thing.physics.box, result);
         let collider = await findCollision(B, thing, plane, result);
         if (collider) {
             const colliderBox = geo.positionedBox(collider.physics.box, plane.things[collider.id]);
             result.x = colliderBox.n[2] + thingShiftX;
             if (stepY == 0 || stepY > colliderBox.n[3]) {
-                stepY = colliderBox.n[3] - pBox.n[1];
+                stepY = colliderBox.n[3];
             }
         } else {
-            if (geo.boxInBounds(thingBox, planeBox)) {
+            if (geo.boxInBounds(thingBox, pBox)) {
                 return result;
             } else {
-                result.y += stepY;
-                stepY = 0;
+                if (stepY == 0) break;
+                result.y = stepY + thingShiftY;
+                result.x = position.x;
+                stepY = 0;                    
             }
         }
     }

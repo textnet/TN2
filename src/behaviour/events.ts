@@ -92,8 +92,11 @@ export async function emit(B: BookServer, event: Event) {
                 (actor.hostPlaneId == event.planeId) || // controller is on the plane where event happened
                 (actor.id == hostId)                    // controller is the thing that owns the plane
                ){ 
+                // const onlyEvents = [EVENT.EQUIP];
+                // const skipEvents = [];
                 // const skipEvents = [EVENT.PLACE, EVENT.MOVE_START, EVENT.MOVE_FINISH, EVENT.COLLISION]
-                // if (skipEvents.indexOf(event.event) < 0) {
+                // if (skipEvents.indexOf(event.event) < 0 && 
+                //     (onlyEvents.length == 0 || onlyEvents.indexOf(event.event) > -1)) {
                 //     console.log("Emitting ", event.event, event)
                 // }
                 await controller.emit(event)

@@ -30,8 +30,9 @@ export function setup() {
 }
 
 export async function getBookServers(L: LibraryServer, id?: string) {
-    const books: BookServer[] = [];   
+    const books: BookServer[] = [];
     if (id && L.bookServers[id]) {
+        id = getBookId(id);
         books.push(L.bookServers[id])
     } else {
         for (let id in L.bookServers) {
