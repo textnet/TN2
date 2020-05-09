@@ -3,47 +3,45 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-+ equip WRITTEN WORD
-    + slot support
-        + equip
-        + un_equip
-        + re_equip
-    + pickup/putdown
 - render borders of small planes
 - make equipment a small plane
-- get equipment inventory
-    - action
-    - written word
 - SHOW/HIDE commands in the GUI
     - get equipment inventory
     - special pop up window
     - zoomed content of the plane
-- transfer of forces
 - special sprites for equipped items
 - autoscale for equipped items
     - in hands
     - in slots
 - use sprite box in inventory calculations (if there is a special sprite for it)
+
+## ISSUES
 - BUG: transfer up -- too many times -- exception
 - BUG: transfer/loadPlane: equipped items are not visible   
-
 
 
 ## Stage 13. Inventory
 + EQUIP action
 + UN_EQUIP action
 + Visualisation
-- Equipment Slots
++ Equipment Slots
+- Equipment SHOW/HIDE
 - USE action
 - THROW action
 
 
 ## Stage 14. Text
+- `get_text` and `get_line`
 - Update Text
     - anima reboots when thing's text is changed (reacts on event of changing text)
+- universal filter with callback
+    - `filter(id, name, plane, slot, callback)` -- gets item from anywhere (async)
+    - `filter_text(id, name, plane, slot, line, anchor)` -- gets text from that item
+
 
 ## Stage 15. Gravity, speed, friction, seasonality
 - Seasonality events
+- Transfer of forces in the inventory
 
 ## TODO: Document
 - Each book is created from a default template

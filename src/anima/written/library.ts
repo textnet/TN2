@@ -26,8 +26,8 @@ import { EVENT } from "../../behaviour/events"
  */
 export const supportedFunctions = {
     "debug": { signature: ["log", "where", "list"], f: debug },
-    "get_artifacts": { signature: ["host", "plane", "id", "name"], f: get.get_things },
-    "get_artifact":  { signature: ["host", "plane", "id", "name"], f: get.get_thing  },
+    "get_artifacts": { signature: ["plane", "id", "name"], f: get.get_things },
+    "get_artifact":  { signature: ["plane", "id", "name"], f: get.get_thing  },
     "get_myself":    { signature: [],                      f: get.get_myself    },
     "get_next":      { signature: ["direction"],           f: get.get_next      },
     "get_closest":   { signature: ["name"],                f: get.get_closest   },

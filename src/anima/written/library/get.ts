@@ -15,7 +15,6 @@ import { FengariMap } from "../api"
  * Get list of things that suffice a number of (optional) criteria.
  * All criteria are optional.
  * @param           {WrittenAnima} A
- * @optional @param {WrittenThing} host
  * @optional @param {string} plane
  *                            - none    = the default plane
  *                            - "upper" = the world where the anima's thing is placed
@@ -25,7 +24,7 @@ import { FengariMap } from "../api"
  * @returns         {WrittenThing[]}
  */
 export function get_things( A: WrittenAnima, 
-                            host?: WrittenThing, plane?: string, id?: string, name?: string) {
+                            plane?: string, id?: string, name?: string) {
     const thing = A.things.load(A.thingId);
     let _plane: PlaneData;
     plane = plane || PLANE_DEFAULT;
@@ -61,7 +60,7 @@ export function get_things( A: WrittenAnima,
  * @returns         {WrittenThing|false} 
  */
 export function get_thing( A: WrittenAnima, 
-                              host?: WrittenThing, plane?: string, id?: string, name?: string) {
+                              plane?: string, id?: string, name?: string) {
     const result = get_things(A, host, plane, id, name);
     if (result.length > 0) return result[0];
     else return false;
