@@ -7,7 +7,11 @@ export const setup = [
 `
 create book Indiana
 create thing Piano as Piano in Indiana @ 200 200
-create thing Chest as Chest in Indiana @ 200 100
+create thing Chest1 as Chest in Indiana @ 200 100
+create thing Chest2 as Chest in Indiana @ 200 100
+create thing Chest3 as Chest in Indiana @ 200 100
+create thing Chest4 as Chest in Indiana @ 200 100
+create thing Chest5 as Chest in Indiana @ 200 100
 create thing Player as Jones in Indiana @ 100 200
 
 create equipment for Indiana.Player as Equipment
@@ -23,14 +27,24 @@ create slot Backpack as Slot in Indiana.Player @  47 138
 equipment of Indiana.Player
 
 create console P1 Indiana.Player
-gui P1
+-- gui P1
 -- observe Indiana.Equipment
+bind P1
 `
 ,
 // Startup Written Word for the binded thing
 `
--- teleport{thing="Indiana.Player", to="Matrix"}
+equip{thing="Indiana.Chest1", owner="Indiana.Player", slot="Body"}
+-- equip{thing="Indiana.Chest2", owner="Indiana.Player"}
+-- re_equip{owner_from="Indiana.Player", owner_to="Indiana.Player", slot_from="Body", slot_to="Head"}
+-- putdown{direction="DOWN", slot="Body"}
 `
 ];
 
+`
+equip{thing="Indiana.Chest1", owner="Indiana.Player", slot="Body"}
+equip{thing="Indiana.Chest2", owner="Indiana.Player"}
+re_equip{owner_from="Indiana.Player", owner_to="Indiana.Player", slot_from="Body", slot_to="Head"}
+putdown{direction="DOWN", slot="Body"}
+`
 

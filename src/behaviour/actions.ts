@@ -72,6 +72,7 @@ export interface ActionEnter extends ActionWithThing {
     position?: geo.Position;
     isUp?:boolean;
     noVisit?: boolean;
+    force?: boolean;
 }
 export interface ActionLeave extends ActionWithThing {}
 export interface ActionEquip extends ActionWithThing {
@@ -106,6 +107,7 @@ export interface ActionSay extends Action {
 }
 export interface ActionAttempt extends Action {
     direction?: geo.Direction;
+    slotName?: string;
     attempt: string;
 }
 export interface ActionPush extends ActionWithThing {

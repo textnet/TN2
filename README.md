@@ -3,11 +3,12 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-- place action
-    - slotOnly support
-- PICKIP/PUTDOWN
-    - slot support
-    - slotOnly support
++ equip WRITTEN WORD
+    + slot support
+        + equip
+        + un_equip
+        + re_equip
+    + pickup/putdown
 - render borders of small planes
 - make equipment a small plane
 - get equipment inventory
@@ -72,12 +73,11 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 17. [ ] Design docs for `TN2 Release 1`
 
 ## Rough planning for Q2 and Q3
-+ April: GUI, limbo, basic actions (move, push), basic updates
-- April: Inventory
-- May: Inventory, Text editor and menu
-- June: Graphics, Documentation, Playtests, Gravity & Seasonality
-- July: Fixes
-- August: R1
++ April: GUI, limbo, basic actions (move, push), basic updates, start inventory
+- May: Inventory
+- June: Text editor and menu, Graphics, Documentation, Playtests, 
+- July: Fixes, Gravity & Seasonality
+- August/September: R1
 
 
 ## How to set things up
@@ -138,6 +138,10 @@ Because Electron node is not compatible with NPM node, there you have to rebuild
     create thing <id>
     create thing <id> in <book>
     copy <id> from <id> in <book>
+
+    create equipment for <thing>
+    equipment of <thing> <slotName>
+    create slot <name> as <template> in <thing> @ <x> <y>
 
     planes
 

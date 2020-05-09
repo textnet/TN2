@@ -3,7 +3,7 @@ import { WrittenAnima } from "../detect"
 import * as actions from "../../../behaviour/actions"
 import * as geo from "../../../model/geometry"
 
-export function attempt( A: WrittenAnima, action: string, direction?: string|geo.Direction ) {
+export function attempt( A: WrittenAnima, action: string, direction?: string|geo.Direction, slotName?:string ) {
     const thing = A.things.load(A.thingId);
     const plane = A.planes.load(thing.hostPlaneId);
     if (!direction) {
@@ -18,6 +18,7 @@ export function attempt( A: WrittenAnima, action: string, direction?: string|geo
         actorId: thing.id,
         planeId: thing.hostPlaneId,
         direction: direction,
+        slotName: slotName,
         attempt: action,
     } as actions.ActionAttempt);
 }
@@ -31,8 +32,11 @@ export function push( A: WrittenAnima, direction?: geo.Direction ) {
     return attempt(A, actions.ATTEMPT.PUSH, direction);
 }
 
-export function pickup( A: WrittenAnima, direction?: geo.Direction ) {
-    return attempt(A, actions.ATTEMPT.PICKUP, direction);
+export function pickup( A: WrittenAnima, direction?: geo.Direction, slotName?:string ) {
+    return attempt(A, actions.ATTEMPT.PICKUP, direction, slotName);
 }
 
+export function putdown( A: WrittenAnima, direction?: geo.Direction, slotName?:string ) {
+    return attempt(A, actions.ATTEMPT.PUTDOWN, direction, slotName);
+}
 

@@ -14,6 +14,8 @@ import * as equipment from "../../../model/equipment"
 
 import { geoDirection, animaThing, writtenThing, WrittenThing, thingId } from "./thing"
 
+
+
 /**
  * Equips
  * TBD

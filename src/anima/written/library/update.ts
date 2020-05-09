@@ -112,7 +112,7 @@ export function colors( A: WrittenAnima, thing: WrittenThing|string, name?: stri
 export function physics( A: WrittenAnima, thing: WrittenThing|string, plane?: string, 
                          width?: number, height?: number, 
                          anchorX?: number, anchorY?: number,
-                         isSlot?: boolean, slotOnly?: boolean,
+                         isSlot?: boolean,
                          Z?: number,
                          speed?: number, friction?: number, 
                          mass?: string, force?: string, gravity?: string, value?:number,
@@ -144,7 +144,6 @@ export function physics( A: WrittenAnima, thing: WrittenThing|string, plane?: st
         planeProperties: {
             physics: {
                 friction: friction,
-                slotOnly: slotOnly,
                 gravity: accumulate(gravity, {
                     acceleration: value,
                     direction: geo.toDir(direction, 1),

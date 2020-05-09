@@ -38,7 +38,6 @@ export interface ThingEquipmentMap {
     default?: string;
     autopicking?: string;
     everything?: string;
-    slotsOnly?: boolean;    
 }
 
 export interface ThingConstraint {
@@ -134,7 +133,6 @@ export const EQUIPMENT_DEFAULT: ThingEquipmentMap = {
     default: "Hands",
     autopicking: "Backpack",
     everything: "Equipment",
-    slotsOnly: false,
 }
 
 export const FORMAT = {

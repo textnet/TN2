@@ -17,7 +17,6 @@ export interface ThingPhysics {
 
 export interface PlanePhysics {
     box?: Box;
-    slotOnly?: boolean; 
     gravity?: Record<string, PlaneGravity>;
     seasons?: Record<string, PlaneSeason>;
     friction?: number; // 100 is 1:1; slowing any movement in any direction

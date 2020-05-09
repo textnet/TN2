@@ -85,6 +85,7 @@ export async function action(B: BookServer, action: actions.ActionTransfer) {
             planeId: action.planeId,
             thingId: action.thingId,
             position: action.position,
+            force: action.force,
         }
         return await actions.action(B, actionPlace);
     } else {
@@ -102,6 +103,7 @@ export async function action(B: BookServer, action: actions.ActionTransfer) {
             isUp:    action.isUp,
             noVisit: action.noVisit,
             position: action.position,
+            force: action.force,            
         }
         await actions.action(B, actionLeave);
         return await actions.action(B, actionEnter);        
@@ -145,8 +147,8 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
         planeId:  action.planeId,
         thingId:  thingId,
         position: visit,
-        fit:      true,
-        force:    false,
+        fit:      !action.force,
+        force:    action.force,
         isEnter:  true,
     } as actions.ActionPlace)
 }

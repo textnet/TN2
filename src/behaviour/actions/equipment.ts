@@ -26,6 +26,7 @@ export async function equip(B: BookServer, action: actions.ActionEquip) {
         equipId: action.equipThingId,
         slotName: action.slotName,
     } as events.EventEquip);
+    // @@
     await print.debugEquipment(B, action.actorId);
 }
 
