@@ -3,44 +3,6 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO and ISSUES
-+ `slot` and `slotOnly` flags in physics
-+ create things for slotting
-    + body puppet
-    + slot box
-+ prepare slotted Environment in the setup script
-    + create slot command
-        `create slot <name> as <template> in <thingId> @ <x> <y>`
-    + create equipment command
-        `create equipment for <thingId> as <template> @ <x> <y>`
-    + create slots
-    + observe
-    + BUG: equipment is not positioned accurately
-    + BUG: can't match a slot with the equipment sprite
-    + TODO: center camera
-    + TODO: zero coordinates
-+ BUG: ids in create slot are off
-+ equip/unequip actions
-    + slot Support
-+ example of backpack
-    + many chests populated
-    + autopickup into Backpack
-        + autopicking constraint
-        + check it on collision
-        + pick it up
-    + method to print equipment
-    + runs at all
-    + works w/o slots
-    + prints equipment correctly
-    + autopickup works
-    + can pick up chests (weight + size constraints)
-    + can't pick piano (too big)
-    + can't pick all chests
-    + test chaining slots
-    + custom default/backpack slots
-    + test one big slot
-+ BUG: broken pickup when slots are available    
-- BUG: transfer up -- too many times -- exception
-- BUG: transfer/loadPlane: equipped items are not visible   
 - place action
     - slotOnly support
 - PICKIP/PUTDOWN
@@ -60,7 +22,9 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 - autoscale for equipped items
     - in hands
     - in slots
-- use sprite box in inventory calculations
+- use sprite box in inventory calculations (if there is a special sprite for it)
+- BUG: transfer up -- too many times -- exception
+- BUG: transfer/loadPlane: equipped items are not visible   
 
 
 
