@@ -1,7 +1,7 @@
 /**
  * Equipment Actor Module.
  * ----------------------
- * Everything what holds other actors is an {EquipmentActor}.
+ * Everything what other actors hold is an {EquipmentActor}.
  */
 import * as ex from "excalibur";
 

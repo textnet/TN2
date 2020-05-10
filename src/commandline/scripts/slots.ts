@@ -27,14 +27,14 @@ create slot Backpack as Slot in Indiana.Player @  47 138
 equipment of Indiana.Player
 
 create console P1 Indiana.Player
--- gui P1
+-- bind P1
+gui P1
 -- observe Indiana.Equipment
-bind P1
 `
 ,
 // Startup Written Word for the binded thing
 `
-equip{thing="Indiana.Chest1", owner="Indiana.Player", slot="Body"}
+equip{thing="Indiana.Chest1", owner="Indiana.Player", slot="Hands"}
 -- equip{thing="Indiana.Chest2", owner="Indiana.Player"}
 -- re_equip{owner_from="Indiana.Player", owner_to="Indiana.Player", slot_from="Body", slot_to="Head"}
 -- putdown{direction="DOWN", slot="Body"}

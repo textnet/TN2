@@ -215,7 +215,6 @@ export class BookServer {
     }
 
     async receiveConnection(peerBookId: string) {
-        console.log("we have just received a connection", peerBookId)
         const things = await this.things.all();
         for (let thingId in things) {
             if (isLimboPortalId(thingId)) {

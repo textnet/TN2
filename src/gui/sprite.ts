@@ -87,7 +87,7 @@ export class ThingSprite {
                         if (!steps) steps = 1; 
                         const startIndex = row * (this.sprite.steps || steps);
                         const endIndex = startIndex + steps;
-                        this.animations[code] = this.sheet.getAnimationBetween(engine, startIndex, endIndex, sprites.SPEED);                        
+                        this.animations[code] = this.sheet.getAnimationBetween(engine, startIndex, endIndex, sprites.SPEED);
                     }
                     this.animations[_code] = this.animations[code];
                 }

@@ -34,6 +34,7 @@ export interface ThingData {
     equipment?: ThingEquipmentMap;
 }
 
+
 export interface ThingEquipmentMap {
     default?: string;
     autopicking?: string;
@@ -104,7 +105,7 @@ export function fixPlaneDefaults(data) {
 }
 
 export const SPAWN_DEFAULT: Position = {
-    x:100, y:100, z:0,
+    x:0, y:0, z:0,
     direction: DIRECTION.DOWN,
 }
 
@@ -163,11 +164,13 @@ export const COLORS = {
     FLOOR: "floor",
     TITLE: "title",
     NAME:  "name",
+    EQUIPMENT: "equipment",
 }
 
 export const COLORS_DEFAULT = {
-    "text":  "#CDECF7",
-    "floor": "#444444",
-    "title": "#1E76EC",
-    "name":  "#FFFFFF",
+    "text":      "#CDECF7",
+    "floor":     "#444444",
+    "title":     "#1E76EC40",
+    "name":      "#FFFFFF40",
+    "equipment": "#25FFFF40"
 }

@@ -6,6 +6,7 @@
 import * as ex from "excalibur";
 
 import { BaseActor                            } from "./base"
+import { PlaneActor                           } from "./plane"
 import { Game, GameScene                      } from "../game"
 import { ThingSprite                          } from "../sprite"
 import * as msg from "../messages"
@@ -31,6 +32,8 @@ export class ThingActor extends BaseActor {
     visualDir:   string;
     visualState: string;
 
+    equipmentActor: PlaneActor;
+
     _isMoving: boolean;
 
     constructor(data: msg.ThingRenderData) {
@@ -47,6 +50,7 @@ export class ThingActor extends BaseActor {
         this.isPlayer = true;
         this.asObserver = asObserver;
         this.setPassable();
+        // interop.loadEquipment(this.data.id);
     }
 
     setPassable() {
@@ -79,6 +83,13 @@ export class ThingActor extends BaseActor {
                        + this.data.physics.box.h/2 + this.data.physics.box.anchor.y);
     }
 
+    hideEquipment() {
+        if (this.equipmentActor) {
+            this.remove(this.equipmentActor);
+            this.equipmentActor = undefined;
+        }        
+    }
+
     /**
      * Update player's actor based on commands received (e.g. move, push, etc.)
      * @param {Game} engine
@@ -92,8 +103,18 @@ export class ThingActor extends BaseActor {
         if (!this.needRelease) {
             let playerDir = getPlayerDirection(engine);
             let command   = getPlayerCommand(engine);
+            let isIdle    = geo.isIdle(playerDir)
+            // SHOW/HIDE EQUIPMENT
+            if (command == COMMAND.EQUIPMENT && isIdle) {
+                this.needRelease = true;
+                if (this.equipmentActor) {
+                    this.hideEquipment();    
+                } else {
+                    interop.loadEquipment(this.data.id)
+                }
+            }
             // ENTER -> DEEPER
-            if (command == COMMAND.ENTER && !geo.isIdle(playerDir)) {
+            if (command == COMMAND.ENTER && !isIdle) {
                 this.needRelease = true;
                 interop.attempt(msg.ATTEMPT.ENTER, playerDir);
             }
@@ -103,18 +124,18 @@ export class ThingActor extends BaseActor {
                 interop.transferUp();
             }
             // PICKUP
-            if ((command == COMMAND.PICKUP) && !geo.isIdle(playerDir)) {
+            if ((command == COMMAND.PICKUP) && !isIdle) {
                 this.needRelease = true;
                 interop.attempt(msg.ATTEMPT.PICKUP, playerDir);
             } 
             // PUSH
-            if (command == COMMAND.PUSH && !geo.isIdle(playerDir)) {
+            if (command == COMMAND.PUSH && !isIdle) {
                 this.needRelease = true;
                 geo.accumulateDirection(dir, playerDir);
                 interop.attempt(msg.ATTEMPT.PUSH, playerDir);
             } 
             // MOVE               
-            if (command == COMMAND.NONE && !geo.isIdle(playerDir)) {
+            if (command == COMMAND.NONE && !isIdle) {
                 geo.accumulateDirection(dir, playerDir);
             }
         }

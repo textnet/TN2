@@ -63,3 +63,13 @@ export function attempt(attempt: string, direction: geo.Direction) {
  */
 export function transferUp() { send(msg.SERVER.TRANSFER_UP); }
 
+
+/**
+ * INTEROP-> Get Equipment
+ */
+export function loadEquipment(ownerId: string, slotName?: string) {
+    send(msg.SERVER.EQUIPMENT, {
+        ownerId: ownerId,
+        slotName: slotName,
+    } as msg.RequestEquipment);
+}

@@ -61,7 +61,7 @@ export function get_things( A: WrittenAnima,
  */
 export function get_thing( A: WrittenAnima, 
                               plane?: string, id?: string, name?: string) {
-    const result = get_things(A, host, plane, id, name);
+    const result = get_things(A, plane, id, name);
     if (result.length > 0) return result[0];
     else return false;
 }
@@ -86,7 +86,7 @@ export function get_myself( A: WrittenAnima ) {
  * @returns {object}    Written Word thing data
  */
 export function get_closest( A: WrittenAnima, name?: string) {
-    let all = get_things(A, undefined, "upper", undefined, name);
+    let all = get_things(A, "upper", undefined, name);
     let myself = get_myself(A);
     let closestDist = -1;
     let closest: WrittenThing;

@@ -2,10 +2,21 @@
 
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
+## CLUSTERFUCK
+- no alpha colors supported?
+- какой размер экипировки когда она не описана?
+- открывать посередине экрана?
+- перепроверить все тесты
+    - нет слотов вообще
+    - есть только рюкзак
+    - есть сложный набор слотов
+    - есть рюкзак + набор слотов
+
+
+
 ## TODO and ISSUES
-- render borders of small planes
-- make equipment a small plane
-- SHOW/HIDE commands in the GUI
++ make equipment a small plane
++ SHOW/HIDE commands in the GUI
     - get equipment inventory
     - special pop up window
     - zoomed content of the plane
@@ -39,9 +50,11 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     - `filter_text(id, name, plane, slot, line, anchor)` -- gets text from that item
 
 
-## Stage 15. Gravity, speed, friction, seasonality
+## Stage 15. Gravity, speed, friction, seasonality, misc
 - Seasonality events
 - Transfer of forces in the inventory
+- render borders of small planes
+
 
 ## TODO: Document
 - Each book is created from a default template

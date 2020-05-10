@@ -27,6 +27,7 @@ export async function equip(B: BookServer, action: actions.ActionEquip) {
         slotName: action.slotName,
     } as events.EventEquip);
     // @@
+    console.log("@@", action.slotName, action.thingId)
     await print.debugEquipment(B, action.actorId);
 }
 

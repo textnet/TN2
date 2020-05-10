@@ -90,13 +90,13 @@ reg(msg.RENDER.ENTER_PLANE, (game: Game, data: msg.EnterPlane) => {
 
 export function createActor(game: Game, 
                      thing: msg.ThingRenderData,
-                     equipmentOwnerid?: string) {
+                     equipmentOwnerId?: string) {
     const scene = game.gameScene();
     let actor;
-    if (equipmentOwnerid) {
+    if (equipmentOwnerId) {
         actor = new EquipmentActor(thing);
         scene.equipmentActors[thing.id] = actor;
-        actor.equip(equipmentOwnerid, scene);
+        actor.equip(equipmentOwnerId, scene);
     } else {
         actor = new ThingActor(thing);
         scene.thingActors[thing.id] = actor;
@@ -113,8 +113,20 @@ function updateSceneFromPlane(scene: GameScene, data: msg.PlaneRenderData) {
     const label = (scene.environmentActors["label"] as ex.Label);
     const title = (scene.environmentActors["title"] as ex.UIActor)
     label.text = `${data.id} «${data.name}»` // data.name;
-    label.color = ex.Color.fromHex(data.colors[COLORS.NAME] || COLORS_DEFAULT[COLORS.NAME]);
-    title.color = ex.Color.fromHex(data.colors[COLORS.TITLE] || COLORS_DEFAULT[COLORS.TITLE]);
+    label.color = toColor(data.colors[COLORS.NAME] || COLORS_DEFAULT[COLORS.NAME]);
+    title.color = toColor(data.colors[COLORS.TITLE] || COLORS_DEFAULT[COLORS.TITLE]);
     // scene.editor.getSession().setMode('ace/mode/'+worldData.format);
 }
 
+export function toColor(hex: string) {
+    return ex.Color.fromHex(hex)
+    if (hex.length > 7) {
+        const red   = parseInt(hex.substr(1,2), 16);
+        const blue  = parseInt(hex.substr(3,2), 16);
+        const green = parseInt(hex.substr(5,2), 16);
+        const alpha = parseInt(hex.substr(7,2), 16)/255;
+        return ex.Color.fromRGB(red, blue, green, alpha)
+    } else {
+        return ex.Color.fromHex(hex)
+    }
+}

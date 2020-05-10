@@ -36,8 +36,10 @@ export function setup() {
 }
 
 export async function list(L: LibraryServer, params) {
-    const books = await getBookServers(L, params["thingId"])
+    const bookId = identity.getBookId(params["thingId"])
+    const books = await getBookServers(L, bookId)
     for (let server of books) {
+        console.log(server.id())
         const thing = await server.things.load(params["thingId"]);
         const contents = await equipment.getEquipment(server, thing.id, params["slotName"]);
         let isEmpty = true;

@@ -1,9 +1,10 @@
 import { BookServer } from "../model/book"
-import * as model    from "../model/interfaces"
-import * as sprites  from "../model/sprites"
-import * as physics  from "../model/physics"
-import * as geo      from "../model/geometry"
-import * as attempts from "../behaviour/attempts"
+import * as model     from "../model/interfaces"
+import * as sprites   from "../model/sprites"
+import * as physics   from "../model/physics"
+import * as geo       from "../model/geometry"
+import * as equipment from "../model/equipment"
+import * as attempts  from "../behaviour/attempts"
 
 // what should server do (messages sent by renderer)
 export const SERVER = {
@@ -13,6 +14,7 @@ export const SERVER = {
     MOVE_FINISH: "stopMoving",
     PLACE:       "reposition",
     ATTEMPT:     "attempt",    // attempt different actions, see below
+    EQUIPMENT:   "loadEquipment",  // show equipment
     TRANSFER_UP: "transferUp", // go up in the stack
 }
 
@@ -21,6 +23,7 @@ export const ATTEMPT = attempts.ATTEMPT;
 // what should renderer do (messages sent by server)
 export const RENDER = {
     ENTER_PLANE: "enterPlane",
+    EQUIPMENT:   "equipment",
     PLACE: "reposition",
     MOVE:  "move",
     LEAVE: "leave",
@@ -66,6 +69,13 @@ export interface Equip extends Message {
 export interface UnEquip extends Message {
     thingId: string;
 }
+export interface RequestEquipment extends Message {
+    ownerId: string;
+    slotName?: string;
+}
+export interface Equipment extends Message {
+    contents: EquipmentRenderData;
+}
 export interface TransferUp extends Message {}
 export interface Attempt extends Message {
     direction: geo.Direction;
@@ -97,11 +107,22 @@ export interface ThingRenderData {
     sprite: sprites.Sprite;
     physics: physics.ThingPhysics;
     position: geo.Position;
+    equipment: model.ThingEquipmentMap;
+    slotId?: string;
+}
+
+export interface EquipmentRenderData {
+    ownerId: string;
+    slotName?: string;
+    slots?: Record<string, ThingRenderData>;
+    things: Record<string, ThingRenderData>;
+    plane: PlaneRenderData;
+
 }
 
 export async function renderThingData(B: BookServer, thing: string|model.ThingData, 
                                       equipmentOwnerId?: string) {
-    if (!thing["id"]) return renderThingData(B, await B.things.load(thing as string));
+    if (!thing["id"]) return renderThingData(B, await B.things.load(thing as string)) as ThingRenderData;
     thing = thing as model.ThingData;
     const plane = await B.planes.load(thing.hostPlaneId);
     if (!thing.physics.box.anchor) {
@@ -115,12 +136,13 @@ export async function renderThingData(B: BookServer, thing: string|model.ThingDa
         sprite: (equipmentOwnerId && thing.spriteEquipped)? 
                  thing.spriteEquipped : thing.sprite,
         physics: physics.patchThingPhysics(thing.physics),
+        equipment: thing.equipment,
         position: plane.things[thing.id],
     } as ThingRenderData;
 }
 
 export async function renderPlaneData(B: BookServer, plane: string|model.PlaneData) {
-    if (!plane["id"]) return renderPlaneData(B, await B.planes.load(plane as string));
+    if (!plane["id"]) return renderPlaneData(B, await B.planes.load(plane as string)) as PlaneRenderData;
     plane = plane as model.PlaneData;
     const thing = await B.things.load(plane.ownerId);
     return {
@@ -133,3 +155,4 @@ export async function renderPlaneData(B: BookServer, plane: string|model.PlaneDa
         physics: physics.patchPlanePhysics(plane.physics),
     } as PlaneRenderData;
 }
+

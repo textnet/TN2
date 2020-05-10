@@ -24,11 +24,11 @@ export function attempt( A: WrittenAnima, action: string, direction?: string|geo
 }
 
 
-export function enter( A: WrittenAnima, direction?: geo.Direction ) {
+export function enter( A: WrittenAnima, direction?: geo.Direction, slotName?: string ) {
     return attempt(A, actions.ATTEMPT.ENTER, direction);
 }
 
-export function push( A: WrittenAnima, direction?: geo.Direction ) {
+export function push( A: WrittenAnima, direction?: geo.Direction, slotName?: string ) {
     return attempt(A, actions.ATTEMPT.PUSH, direction);
 }
 

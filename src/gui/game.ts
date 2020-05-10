@@ -81,6 +81,8 @@ export class RadiusAroundActorStrategy implements ex.CameraStrategy<ex.Actor> {
             x: config.gui.width/2 - config.gui.padding.horizontal,
             y: config.gui.height/2 - config.gui.padding.vertical,
         }
+        const bounds = new ex.Vector(config.gui.width  - config.gui.padding.horizontal, 
+                                     config.gui.height - config.gui.padding.vertical);
         for (let axis of ["x", "y"]) {
             if (position[axis] + radius[axis] < focus[axis]) {
                 focus[axis] = position[axis] + radius[axis];
@@ -88,6 +90,11 @@ export class RadiusAroundActorStrategy implements ex.CameraStrategy<ex.Actor> {
             if (position[axis] - radius[axis] > focus[axis]) {
                 focus[axis] = position[axis] - radius[axis];
             }
+        }
+        // equipment
+        const thingActor = target as ThingActor;
+        if (thingActor.equipmentActor) {
+            thingActor.equipmentActor.fitInCamera(_eng as Game, focus, bounds)
         }
         // TODO: kneeling here
         return focus;

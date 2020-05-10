@@ -41,20 +41,22 @@ export function getPlayerDirection(game: Game) {
  * Internal mapping of command keys.
  */
 const KEY = {
-    ENTER:   17, // CTRL=17
-    PICKUP:  18, // ALT=18
-    LEAVE:   ex.Input.Keys.Esc, // ENTER+LEAVE
-    PUSH:    ex.Input.Keys.Shift,
-    TEXT:    13, // ENTER
+    ENTER:     17, // CTRL=17
+    PICKUP:    18, // ALT=18
+    LEAVE:     ex.Input.Keys.Esc, // ENTER+LEAVE
+    PUSH:      ex.Input.Keys.Shift,
+    TEXT:      13, // ENTER
+    EQUIPMENT: 9,  // TAB
 }
 export const COMMAND = {
-    NONE:    { description: "No command" },
-    ENTER:   { description: "Attempt to enter artifact's world" },
-    LEAVE:   { description: "Leave the world, return to previous visited" },
-    KNEEL:   { description: "Kneel into written text to alter it" },
-    STAND:   { description: "Finish editing written text and get back" },
-    PICKUP:  { description: "Attempt to pick an artifact up, or to put it down" },
-    PUSH:    { description: "Attempt to push an artifact in the direction of movement" },
+    NONE:      { description: "No command" },
+    ENTER:     { description: "Attempt to enter artifact's world" },
+    LEAVE:     { description: "Leave the world, return to previous visited" },
+    KNEEL:     { description: "Kneel into written text to alter it" },
+    STAND:     { description: "Finish editing written text and get back" },
+    PICKUP:    { description: "Attempt to pick an artifact up, or to put it down" },
+    PUSH:      { description: "Attempt to push an artifact in the direction of movement" },
+    EQUIPMENT: { description: "Show/Hide inventory" },
 }
 
 /**
@@ -70,6 +72,8 @@ export const COMMAND = {
 export function getPlayerCommand(game: Game) {
     const dir = getPlayerDirection(game);
     const name = geo.directionName(dir);
+    if (game.input.keyboard.wasPressed(KEY.EQUIPMENT))  return COMMAND.EQUIPMENT; 
+    // if (game.input.keyboard.wasReleased(KEY.EQUIPMENT)) return COMMAND.EQUIPMENT; // uncomment this if HOLD-TO-SHOW-INVENTORY is true
     if (geo.isIdle(dir)) {
         if (game.input.keyboard.isHeld(KEY.ENTER) && game.input.keyboard.isHeld(KEY.TEXT))  return COMMAND.KNEEL;
         if (game.input.keyboard.isHeld(KEY.ENTER) && game.input.keyboard.isHeld(KEY.LEAVE)) return COMMAND.LEAVE;

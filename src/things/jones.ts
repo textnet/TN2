@@ -42,6 +42,15 @@ export const template: ThingTemplate = {
         things: {},
         text: "",
     },
+    equipment: {
+        id: "<equipId>",
+        ownerId: "<ownerId>",
+        things: {},
+        text: "",
+        physics: {
+            box: { w: 250, h: 350 },
+        },
+    }    
 }
 template.thing.constraints[ model.CONSTRAINTS.AUTOPICKING ] = {
     massName: "mass",
