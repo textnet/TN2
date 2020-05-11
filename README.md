@@ -3,14 +3,18 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## CLUSTERFUCK
-- no alpha colors supported?
-- какой размер экипировки когда она не описана?
-- открывать посередине экрана?
++ no alpha colors supported?
++ всегда выше всех объектов
++ как сделать масштабирование?
+- набор слотов: слоты не ставятся в нужные места и вообще развал
 - перепроверить все тесты
-    - нет слотов вообще
-    - есть только рюкзак
+    * нет слотов вообще
     - есть сложный набор слотов
+    - есть только рюкзак
     - есть рюкзак + набор слотов
+    - отсутствует эквип вообще
+- при выкладывании предмета на пол не делать fit, а делать attempt    
+- какой размер экипировки когда она не описана?
 
 
 
@@ -29,6 +33,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 ## ISSUES
 - BUG: transfer up -- too many times -- exception
 - BUG: transfer/loadPlane: equipped items are not visible   
+- BUG
 
 
 ## Stage 13. Inventory

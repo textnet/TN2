@@ -1,5 +1,6 @@
 import { deepCopy } from "../utils"
 import { Box, Position, Direction, directionName, isIdle } from "./geometry"
+import * as geo from "./geometry"
 // Everything about sprites
 
 // for excalibur we need to extend Sprite.
@@ -98,3 +99,4 @@ export function straightenDiagonalName(dir: Direction) {
         else            return DIR.DOWN;
     }
 }
+

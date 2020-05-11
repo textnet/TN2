@@ -9,8 +9,7 @@ reg(msg.RENDER.LEAVE, (game: Game, data: msg.Leave)=>{
     if (data.thingId == scene.animaId) {
         interop.loadPlane();
     } else {
-        scene.remove(scene.thingActors[data.thingId]);
-        delete scene.thingActors[data.thingId];
+        scene.thingActors[data.thingId].removeItself();
     }
 })
 

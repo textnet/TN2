@@ -101,9 +101,6 @@ export function createActor(game: Game,
         actor = new ThingActor(thing);
         scene.thingActors[thing.id] = actor;
         scene.add(actor);
-        // const _ = actor as ThingActor
-        // console.log(thing.id, thing.position.x, thing.position.y, thing.position.z)
-        // console.log(_.body.pos.x, _.body.pos.y)
     }
     return actor;
 }

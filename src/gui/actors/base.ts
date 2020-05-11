@@ -32,11 +32,8 @@ export class BaseActor extends ex.Actor {
                 })
             })
         });
-        this.scale = new ex.Vector(1,1);
         this.data = data;
         this.sprite = new ThingSprite(data.sprite);
-        this.opacity = 1;
-        this.rotation = 0;
     }
 
     /**
@@ -51,5 +48,12 @@ export class BaseActor extends ex.Actor {
         for (let a in this.sprite.animations) {
             this.addDrawing(a, this.sprite.animations[a]);
         }
+    }
+
+
+    removeItself() {
+        const scene = (this.scene as GameScene);
+        scene.remove(this);
+        delete scene.thingActors[this.data.id];
     }
 }

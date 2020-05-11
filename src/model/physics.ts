@@ -1,6 +1,7 @@
 // TN2 Physics
 
 import { Box, Position, Direction } from "./geometry"
+import * as geo from "./geometry"
 
 export interface ThingPhysics {
     box: Box;

@@ -96,6 +96,7 @@ export interface PlaneRenderData {
     colors: Record<string,string>;
     text: string;
     format: string;
+    equipment: model.ThingEquipmentMap;
     physics: physics.PlanePhysics;
 }
 
@@ -122,7 +123,7 @@ export interface EquipmentRenderData {
 
 export async function renderThingData(B: BookServer, thing: string|model.ThingData, 
                                       equipmentOwnerId?: string) {
-    if (!thing["id"]) return renderThingData(B, await B.things.load(thing as string)) as ThingRenderData;
+    if (!thing["id"]) return renderThingData(B, await B.things.load(thing as string), equipmentOwnerId) as ThingRenderData;
     thing = thing as model.ThingData;
     const plane = await B.planes.load(thing.hostPlaneId);
     if (!thing.physics.box.anchor) {
@@ -134,10 +135,10 @@ export async function renderThingData(B: BookServer, thing: string|model.ThingDa
         name: thing.name,
         constraints: thing.constraints,
         sprite: (equipmentOwnerId && thing.spriteEquipped)? 
-                 thing.spriteEquipped : thing.sprite,
+                thing.spriteEquipped : thing.sprite,
         physics: physics.patchThingPhysics(thing.physics),
         equipment: thing.equipment,
-        position: plane.things[thing.id],
+        position: plane.things[thing.id]
     } as ThingRenderData;
 }
 
@@ -152,6 +153,7 @@ export async function renderPlaneData(B: BookServer, plane: string|model.PlaneDa
         colors: thing.colors,
         text: plane.text,
         format: plane.format,
+        equipment: thing.equipment,
         physics: physics.patchPlanePhysics(plane.physics),
     } as PlaneRenderData;
 }

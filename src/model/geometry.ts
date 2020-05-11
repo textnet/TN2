@@ -175,6 +175,36 @@ export function scale(dir: Direction, scaleFactor: number) {
     result.dz *= scaleFactor;
     return result;
 }
+export function scalePosition(pos: Position, scaleFactor: number) {
+    pos.z = pos.z||0;
+    const result = deepCopy(pos);
+    result.x *= scaleFactor;
+    result.y *= scaleFactor;
+    result.z *= scaleFactor;
+    result.direction = scale(pos.direction, scaleFactor) as Direction;
+    return pos;
+}
+export function scaleBox(box: Box, scaleFactor: number) {
+    const result: Box = {
+        w: box.w * scaleFactor,
+        h: box.h * scaleFactor,
+    };
+    if (box.anchor) {
+        result.anchor = {
+            x: box.anchor.x * scaleFactor,
+            y: box.anchor.y * scaleFactor,
+        }
+    }
+    return result;
+}
+export function scalePositionedBox(pbox: PositionedBox, scaleFactor: number) {
+    const result: PositionedBox = { n:[] }
+    for (let i in pbox.n) {
+        result.n[i] = pbox.n[i]
+    }
+    return result;
+}
+
 export function accumulateDirection(main: Direction, contribution: Direction, scaleFactor?: number) {
     scaleFactor = scaleFactor || 1;
     main.dz = main.dz || 0;

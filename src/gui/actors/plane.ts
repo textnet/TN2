@@ -20,21 +20,22 @@ import { deepCopy } from "../../utils"
 import * as interop from "../renderer/send"
 import { toColor } from "../renderer/plane"
 
-
-export const SCALE = 0.5;
 /**
  * Excalibur Actor extension for Equipment-based actors.
  */
 export class PlaneActor extends ex.Actor {
     scene: GameScene;
     contents: msg.EquipmentRenderData;
+    pbox: geo.PositionedBox;
+    scaleFactor: number;
 
     constructor(contents: msg.EquipmentRenderData) {
-        super({
-            color: toColor(contents.plane.colors[model.COLORS.EQUIPMENT] || model.COLORS_DEFAULT[model.COLORS.EQUIPMENT])
-        });
-        this.scale = new ex.Vector(SCALE, SCALE)
+        super();
         this.contents = contents;
+        this.scaleFactor =contents.plane.equipment.scale || 1;
+        this.calculateBounds();
+        this.width  = this.pbox.n[2] - this.pbox.n[0];
+        this.height = this.pbox.n[3] - this.pbox.n[1];
     }
 
     getOwner() {
@@ -47,32 +48,43 @@ export class PlaneActor extends ex.Actor {
         if (owner) {
             // prep the plane
             const plane = this.contents.plane;
-            const bounds = this.calculateBounds()
-            this.width  = bounds.w;
-            this.height = bounds.h;
+            // add underlay
+            const underlay = new ex.Actor(
+                0, 0, this.width*this.scaleFactor, this.height*this.scaleFactor, 
+                toColor(this.contents.plane.colors[model.COLORS.EQUIPMENT] || model.COLORS_DEFAULT[model.COLORS.EQUIPMENT])
+            )
+            this.add(underlay)
             // add slots
             if (this.contents.slots) {
                 for (let id in this.contents.slots) {
-                    const slotActor = new SlotActor(this.contents.slots[id]);
-                    this.add(slotActor);
+                    const actor = new SlotActor(this.contents.slots[id]);
+                    actor.body.pos.x -= this.pbox[0]
+                    actor.body.pos.y -= this.pbox[1]
+                    this.add(actor);
                 }
             }
             // add things
             if (this.contents.things) {
                 for (let id in this.contents.things) {
-                    const thingActor = new SlotActor(this.contents.things[id]);
-                    this.add(thingActor);
+                    const actor = new SlotActor(this.contents.things[id]);
+                    actor.body.pos.x -= this.pbox[0]
+                    actor.body.pos.y -= this.pbox[1]
+                    this.add(actor);
                 }
             }
             // link to the owner
-            owner.add(this);
+            scene.add(this);
             owner.equipmentActor = this;
         }
     }
     
     calculateBounds() {
-        const result: geo.Box = { w: this.contents.plane.physics.box.w, h:this.contents.plane.physics.box.h }
-        if (!result.w) {
+        const physics = this.contents.plane.physics
+        const result: geo.PositionedBox = {n:[]};
+        if (physics.box.w) {
+            result.n[0] = -physics.box.w/2;
+            result.n[2] = +physics.box.w/2;
+        } else {
             let min, max;
             for (let id in this.contents.slots) {
                 const slot = this.contents.slots[id];
@@ -80,9 +92,13 @@ export class PlaneActor extends ex.Actor {
                 if (min === undefined || min > pBox.n[0]) min = pBox.n[0];
                 if (max === undefined || max < pBox.n[2]) max = pBox.n[2];
             }
-            result.w = max-min;
+            result.n[0] = min;
+            result.n[2] = max;
         }
-        if (!result.h) {
+        if (physics.box.h) {
+            result.n[1] = -physics.box.h/2;
+            result.n[3] = +physics.box.h/2;            
+        } else {
             let min, max;
             for (let id in this.contents.slots) {
                 const slot = this.contents.slots[id];
@@ -90,23 +106,32 @@ export class PlaneActor extends ex.Actor {
                 if (min === undefined || min > pBox.n[1]) min = pBox.n[1];
                 if (max === undefined || max < pBox.n[3]) max = pBox.n[3];
             }
-            result.h = max-min;
+            result.n[1] = min;
+            result.n[3] = max;
         }
-        return result;
+        this.pbox = result;
+    }
+
+    onPostUpdate(engine: Game, delta: number) {
+        const owner = this.getOwner();
+        this.body.pos.x = owner.body.pos.x;
+        this.setZIndex(100000000000) // TODO
     }
 
     fitInCamera(engine: Game, cameraFocus: ex.Vector, cameraBounds: ex.Vector) {
         const owner = this.getOwner();
         const focusDistance = cameraFocus.y - owner.body.pos.y;
         const maxFocusDistance = cameraBounds.y/2;
-        const boxSize = this.height*SCALE;
+        const boxSize = this.height * this.scaleFactor;
         if (maxFocusDistance - focusDistance <= boxSize) {
             // down
-            this.body.pos.y = +this.height/2 *SCALE
+            this.body.pos.y = owner.body.pos.y
+                              +boxSize/2 
                               +owner.sprite.sprite.size.h/2;
         } else {
             // up
-            this.body.pos.y = -this.height/2 *SCALE
+            this.body.pos.y = owner.body.pos.y
+                              -boxSize/2 
                               -owner.sprite.sprite.size.h/2;
         }
     }

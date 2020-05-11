@@ -9,10 +9,14 @@ import { PlaneActor } from "../actors/plane"
 
 reg(msg.RENDER.EQUIP, (game: Game, data: msg.Equip)=>{
     if (!data.slotName || !data.thing.equipment || data.slotName == data.thing.equipment.default) {
-        createActor(game, data.thing, data.ownerId);        
         const scene = game.gameScene();
-        const owner = scene.actors[data.ownerId];
-        updateEquipmentActor(owner)
+        const owner = scene.thingActors[data.ownerId];
+        const showEquipment = owner.equipmentActor != undefined;
+        owner.hideEquipment();
+        createActor(game, data.thing, data.ownerId);        
+        if (showEquipment) {
+            interop.loadEquipment(owner.data.id);            
+        }
     }
 })
 
@@ -20,8 +24,13 @@ reg(msg.RENDER.UN_EQUIP, (game: Game, data: msg.UnEquip)=>{
     const scene = game.gameScene();
     const actor = scene.equipmentActors[data.thingId];
     if (actor) {
+        const owner = actor.getOwner();
+        const showEquipment = owner.equipmentActor != undefined;
+        owner.hideEquipment();
         actor.unequip();
-        updateEquipmentActor(actor.getOwner())
+        if (showEquipment) {
+            interop.loadEquipment(owner.data.id);            
+        }
     }
 })
 
@@ -36,9 +45,3 @@ reg(msg.RENDER.EQUIPMENT, (game: Game, data: msg.Equipment)=>{
 })
 
 
-function updateEquipmentActor(owner: ThingActor) {
-        if (owner && owner.equipmentActor) {
-            owner.hideEquipment();
-            interop.loadEquipment(this.data.id)    
-        }
-}

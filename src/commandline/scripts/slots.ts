@@ -12,7 +12,7 @@ create thing Chest2 as Chest in Indiana @ 200 100
 create thing Chest3 as Chest in Indiana @ 200 100
 create thing Chest4 as Chest in Indiana @ 200 100
 create thing Chest5 as Chest in Indiana @ 200 100
-create thing Player as Jones in Indiana @ 100 200
+create thing Player as Jones in Indiana @ 15 25
 
 create equipment for Indiana.Player as Equipment
 create slot Hands as Slot in Indiana.Player @ -48 11

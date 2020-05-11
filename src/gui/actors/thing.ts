@@ -38,6 +38,7 @@ export class ThingActor extends BaseActor {
 
     constructor(data: msg.ThingRenderData) {
         super(data);
+        this.scale = new ex.Vector(1,1);
         this.isPlayer = false;
         this.body.pos = new ex.Vector(data.position.x, data.position.y);
         this.visualState = sprites.STATE.IDLE;
@@ -85,9 +86,13 @@ export class ThingActor extends BaseActor {
 
     hideEquipment() {
         if (this.equipmentActor) {
-            this.remove(this.equipmentActor);
+            this.scene.remove(this.equipmentActor);
             this.equipmentActor = undefined;
         }        
+    }
+    removeItself() {
+        this.hideEquipment();
+        super.removeItself();
     }
 
     /**
