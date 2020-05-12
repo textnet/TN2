@@ -82,7 +82,6 @@ export async function action(B: BookServer, action: actions.ActionTransfer) {
     const plane: PlaneData = await B.planes.load(action.planeId);
     if (action.fit === undefined) action.fit = true;
     if (action.fit || action.force || await spatials.willFit(B, thing, plane, action.position)) {
-        console.log("@@ action.fit", action.fit, action.force)
         if (action.planeId == thing.hostPlaneId) {
             const actionPlace: actions.ActionPlace = {
                 action:  actions.ACTION.PLACE,

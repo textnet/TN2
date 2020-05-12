@@ -13,7 +13,6 @@ async function attemptPickup(B: BookServer, action: actions.ActionAttempt) {
     const actor = await B.things.load(action.actorId);
     const inSlot = await equipment.thingInSlot(B, action.actorId, action.actorId, action.slotName);
     if (inSlot) {
-        console.log("@@ attempt pickup: ActionUnEquip", inSlot.id)
         return await actions.action(B, {
                 action:  actions.ACTION.UN_EQUIP,
                 actorId: action.actorId,
@@ -26,7 +25,6 @@ async function attemptPickup(B: BookServer, action: actions.ActionAttempt) {
         const plane = await B.planes.load(action.planeId);
         const next: ThingData = await getNext(B, actor, plane, action.direction);
         if (!next) return false;        
-        console.log("@@ attempt pickup: ActionEquip", next.id, action.slotName)
         return await actions.action(B, {
                 action:  actions.ACTION.EQUIP,
                 actorId: action.actorId,

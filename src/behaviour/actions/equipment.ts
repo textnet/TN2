@@ -26,9 +26,7 @@ export async function equip(B: BookServer, action: actions.ActionEquip) {
         equipId: action.equipThingId || actor.id,
         slotName: action.slotName,
     } as events.EventEquip);
-    // @@
-    console.log("@@ action.equip", action.slotName, action.thingId)
-    await print.debugEquipment(B, action.actorId);
+    // await print.debugEquipment(B, action.actorId);
 }
 
 export async function reEquip(B: BookServer, action: actions.ActionReEquip) {
@@ -84,7 +82,6 @@ export async function unEquip(B: BookServer, action: actions.ActionUnEquip) {
         const position = geo.add(plane.things[actor.id], vector);
         const success = await equipment.directTransferUnequip(B, actor.id, thing, action.planeId, position);
         if (success) {
-            console.log("@@ unequip success")
             await events.emit(B, {
                 event: events.EVENT.UN_EQUIP,
                 planeId: action.planeId,

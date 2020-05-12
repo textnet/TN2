@@ -116,7 +116,6 @@ export async function findCollision(B: BookServer, thing: ThingData, plane: Plan
     return undefined;
 }
 export async function willFit(B: BookServer, thing: ThingData, plane: PlaneData, position: geo.Position) {
-    console.log("@@ will not fit?", await findCollision(B, thing, plane, position))
     return !(await findCollision(B, thing, plane, position));
 }
 

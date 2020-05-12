@@ -13,7 +13,6 @@ reg(msg.RENDER.EQUIP, (game: Game, data: msg.Equip)=>{
     if (!data.slotName || !data.thing.equipment || data.slotName == data.thing.equipment.default) {
         createActor(game, data.thing, data.ownerId);
     }
-    console.log("@@ EQUIP ",data, owner)
     if (owner.equipmentActor) {
         interop.loadEquipment(owner.data.id);
     }
@@ -34,9 +33,7 @@ reg(msg.RENDER.UN_EQUIP, (game: Game, data: msg.UnEquip)=>{
 reg(msg.RENDER.EQUIPMENT, (game: Game, data: msg.Equipment)=>{
     const scene = game.gameScene();
     const actor = scene.thingActors[data.contents.ownerId] as ThingActor;
-    console.log("@@ EQUIPMENT", data)
     if (actor) {
-        console.log("hide equip")
         actor.hideEquipment();
     } 
     const planeActor = new PlaneActor(data.contents);
