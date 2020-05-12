@@ -50,7 +50,7 @@ export class PlaneActor extends ex.Actor {
             const plane = this.contents.plane;
             // add underlay
             const underlay = new ex.Actor(
-                0, 0, this.width*this.scaleFactor, this.height*this.scaleFactor, 
+                0, 0, this.width*this.scaleFactor, this.height*this.scaleFactor,
                 toColor(this.contents.plane.colors[model.COLORS.EQUIPMENT] || model.COLORS_DEFAULT[model.COLORS.EQUIPMENT])
             )
             this.add(underlay)
@@ -58,8 +58,7 @@ export class PlaneActor extends ex.Actor {
             if (this.contents.slots) {
                 for (let id in this.contents.slots) {
                     const actor = new SlotActor(this.contents.slots[id]);
-                    actor.body.pos.x -= this.pbox[0]
-                    actor.body.pos.y -= this.pbox[1]
+                    actor.adjustScale(this.scaleFactor);
                     this.add(actor);
                 }
             }
@@ -67,8 +66,7 @@ export class PlaneActor extends ex.Actor {
             if (this.contents.things) {
                 for (let id in this.contents.things) {
                     const actor = new SlotActor(this.contents.things[id]);
-                    actor.body.pos.x -= this.pbox[0]
-                    actor.body.pos.y -= this.pbox[1]
+                    actor.adjustScale(this.scaleFactor);
                     this.add(actor);
                 }
             }
@@ -79,7 +77,7 @@ export class PlaneActor extends ex.Actor {
     }
     
     calculateBounds() {
-        const physics = this.contents.plane.physics
+        const physics = this.contents.plane.physics;
         const result: geo.PositionedBox = {n:[]};
         if (physics.box.w) {
             result.n[0] = -physics.box.w/2;

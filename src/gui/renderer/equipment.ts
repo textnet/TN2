@@ -8,36 +8,35 @@ import { ThingActor } from "../actors/thing"
 import { PlaneActor } from "../actors/plane"
 
 reg(msg.RENDER.EQUIP, (game: Game, data: msg.Equip)=>{
+    const scene = game.gameScene();
+    const owner = scene.thingActors[data.ownerId];
     if (!data.slotName || !data.thing.equipment || data.slotName == data.thing.equipment.default) {
-        const scene = game.gameScene();
-        const owner = scene.thingActors[data.ownerId];
-        const showEquipment = owner.equipmentActor != undefined;
-        owner.hideEquipment();
-        createActor(game, data.thing, data.ownerId);        
-        if (showEquipment) {
-            interop.loadEquipment(owner.data.id);            
-        }
+        createActor(game, data.thing, data.ownerId);
+    }
+    console.log("@@ EQUIP ",data, owner)
+    if (owner.equipmentActor) {
+        interop.loadEquipment(owner.data.id);
     }
 })
 
 reg(msg.RENDER.UN_EQUIP, (game: Game, data: msg.UnEquip)=>{
     const scene = game.gameScene();
     const actor = scene.equipmentActors[data.thingId];
-    if (actor) {
-        const owner = actor.getOwner();
-        const showEquipment = owner.equipmentActor != undefined;
-        owner.hideEquipment();
+    const owner = actor.getOwner();
+    if (actor && owner) {
         actor.unequip();
-        if (showEquipment) {
-            interop.loadEquipment(owner.data.id);            
+        if (owner.equipmentActor) {
+            interop.loadEquipment(owner.data.id);
         }
     }
 })
 
 reg(msg.RENDER.EQUIPMENT, (game: Game, data: msg.Equipment)=>{
     const scene = game.gameScene();
-    const actor = scene.actors[data.contents.ownerId] as ThingActor;
+    const actor = scene.thingActors[data.contents.ownerId] as ThingActor;
+    console.log("@@ EQUIPMENT", data)
     if (actor) {
+        console.log("hide equip")
         actor.hideEquipment();
     } 
     const planeActor = new PlaneActor(data.contents);

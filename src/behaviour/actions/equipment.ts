@@ -23,11 +23,11 @@ export async function equip(B: BookServer, action: actions.ActionEquip) {
         planeId: action.planeId,
         actorId: actor.id,
         thingId: thing.id,
-        equipId: action.equipThingId,
+        equipId: action.equipThingId || actor.id,
         slotName: action.slotName,
     } as events.EventEquip);
     // @@
-    console.log("@@", action.slotName, action.thingId)
+    console.log("@@ action.equip", action.slotName, action.thingId)
     await print.debugEquipment(B, action.actorId);
 }
 
@@ -59,7 +59,7 @@ export async function reEquip(B: BookServer, action: actions.ActionReEquip) {
 export async function unEquip(B: BookServer, action: actions.ActionUnEquip) {
     const actor = await B.things.load(action.actorId);
     const plane = await B.planes.load(actor.hostPlaneId);
-    const ownerId = action.equipThingId;
+    const ownerId = action.equipThingId || actor.id;
     const thing = await equipment.thingInSlot(B, actor.id, ownerId, action.slotName);
     if (thing && ownerId) {
         // find position
@@ -82,17 +82,19 @@ export async function unEquip(B: BookServer, action: actions.ActionUnEquip) {
         }
         const vector: geo.Direction = { dx: dx, dy: dy }
         const position = geo.add(plane.things[actor.id], vector);
-        // 1. event
-        await events.emit(B, {
-            event: events.EVENT.UN_EQUIP,
-            planeId: action.planeId,
-            actorId: actor.id,
-            thingId: thing.id,
-            equipId: ownerId,
-            slotName: action.slotName,
-        } as events.EventUnEquip);    
-        // 2. transfer
-        return await equipment.directTransferUnequip(B, actor.id, thing, action.planeId, position)
+        const success = await equipment.directTransferUnequip(B, actor.id, thing, action.planeId, position);
+        if (success) {
+            console.log("@@ unequip success")
+            await events.emit(B, {
+                event: events.EVENT.UN_EQUIP,
+                planeId: action.planeId,
+                actorId: actor.id,
+                thingId: thing.id,
+                equipId: ownerId,
+                slotName: action.slotName,
+            } as events.EventUnEquip);                
+        }
+        return success;
     } else {
         return false;
     }

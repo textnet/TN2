@@ -11,28 +11,29 @@ import * as equipment from "../../model/equipment"
 
 async function attemptPickup(B: BookServer, action: actions.ActionAttempt) {
     const actor = await B.things.load(action.actorId);
-    const slotName = action.slotName || actor.equipment.default;
-    const inSlot = await equipment.thingInSlot(B, action.actorId, action.actorId, slotName);
+    const inSlot = await equipment.thingInSlot(B, action.actorId, action.actorId, action.slotName);
     if (inSlot) {
+        console.log("@@ attempt pickup: ActionUnEquip", inSlot.id)
         return await actions.action(B, {
                 action:  actions.ACTION.UN_EQUIP,
                 actorId: action.actorId,
                 planeId: action.planeId,
                 equipThingId: action.actorId,
-                slotName: action.slotName || actor.equipment.default,
+                slotName: action.slotName,
                 direction: action.direction,
         } as actions.ActionUnEquip);
     } else {
         const plane = await B.planes.load(action.planeId);
         const next: ThingData = await getNext(B, actor, plane, action.direction);
         if (!next) return false;        
+        console.log("@@ attempt pickup: ActionEquip", next.id, action.slotName)
         return await actions.action(B, {
                 action:  actions.ACTION.EQUIP,
                 actorId: action.actorId,
                 planeId: action.planeId,
                 thingId: next.id,
                 equipThingId: action.actorId,
-                slotName: slotName,
+                slotName: action.slotName,
         } as actions.ActionEquip);
     }
 }

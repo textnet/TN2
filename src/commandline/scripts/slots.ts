@@ -20,10 +20,10 @@ create slot Offhand as Slot in Indiana.Player @ 48 11
 create slot Head as Slot in Indiana.Player @ 0 -85
 create slot Body as Slot in Indiana.Player @ 0 -13
 create slot Legs as Slot in Indiana.Player @ 0 83
-create slot Backpack as Slot in Indiana.Player @ -79 138
-create slot Backpack as Slot in Indiana.Player @ -37 138
-create slot Backpack as Slot in Indiana.Player @   5 138
-create slot Backpack as Slot in Indiana.Player @  47 138
+create slot Pocket as Slot in Indiana.Player @ -79 138
+create slot Pocket as Slot in Indiana.Player @ -37 138
+create slot Pocket as Slot in Indiana.Player @   5 138
+create slot Pocket as Slot in Indiana.Player @  47 138
 equipment of Indiana.Player
 
 create console P1 Indiana.Player

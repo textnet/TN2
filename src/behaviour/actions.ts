@@ -73,6 +73,7 @@ export interface ActionEnter extends ActionWithThing {
     isUp?:boolean;
     noVisit?: boolean;
     force?: boolean;
+    fit?: boolean;
 }
 export interface ActionLeave extends ActionWithThing {}
 export interface ActionEquip extends ActionWithThing {

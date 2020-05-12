@@ -10,6 +10,7 @@ import * as cl from "../../commandline/commandline"
 import * as identity from "../../model/identity"
 import { print, inspect } from "../../commandline/print"
 import { Controller } from "../controller"
+import * as spatials from "./spatials"
 
 
 export async function transferUp(B: BookServer, action: actions.ActionTransferUp) {
@@ -78,35 +79,42 @@ export async function turnLimboPortal(B: BookServer, actor: string|ThingData, di
 
 export async function action(B: BookServer, action: actions.ActionTransfer) {
     const thing: ThingData = await B.things.load(action.thingId);
-    if (action.planeId == thing.hostPlaneId) {
-        const actionPlace: actions.ActionPlace = {
-            action:  actions.ACTION.PLACE,
-            actorId: action.actorId,
-            planeId: action.planeId,
-            thingId: action.thingId,
-            position: action.position,
-            force: action.force,
+    const plane: PlaneData = await B.planes.load(action.planeId);
+    if (action.fit === undefined) action.fit = true;
+    if (action.fit || action.force || await spatials.willFit(B, thing, plane, action.position)) {
+        console.log("@@ action.fit", action.fit, action.force)
+        if (action.planeId == thing.hostPlaneId) {
+            const actionPlace: actions.ActionPlace = {
+                action:  actions.ACTION.PLACE,
+                actorId: action.actorId,
+                planeId: action.planeId,
+                thingId: action.thingId,
+                position: action.position,
+                force: action.force,
+                fit:   action.fit,
+            }
+            return await actions.action(B, actionPlace);
+        } else {
+            const actionLeave: actions.ActionLeave = {
+                action:  actions.ACTION.LEAVE,
+                actorId: action.actorId,
+                planeId: thing.hostPlaneId,
+                thingId: action.thingId,
+            }
+            const actionEnter: actions.ActionEnter = {
+                action:  actions.ACTION.ENTER,
+                actorId: action.actorId,
+                planeId: action.planeId,
+                thingId: action.thingId,
+                isUp:    action.isUp,
+                noVisit: action.noVisit,
+                position: action.position,
+                force: action.force,            
+                fit:   action.fit,            
+            }
+            await actions.action(B, actionLeave);
+            return await actions.action(B, actionEnter);        
         }
-        return await actions.action(B, actionPlace);
-    } else {
-        const actionLeave: actions.ActionLeave = {
-            action:  actions.ACTION.LEAVE,
-            actorId: action.actorId,
-            planeId: thing.hostPlaneId,
-            thingId: action.thingId,
-        }
-        const actionEnter: actions.ActionEnter = {
-            action:  actions.ACTION.ENTER,
-            actorId: action.actorId,
-            planeId: action.planeId,
-            thingId: action.thingId,
-            isUp:    action.isUp,
-            noVisit: action.noVisit,
-            position: action.position,
-            force: action.force,            
-        }
-        await actions.action(B, actionLeave);
-        return await actions.action(B, actionEnter);        
     }
 }
 
@@ -119,6 +127,7 @@ export async function isGuest(B: BookServer, action: actions.ActionIsGuest) {
 }    
 
 export async function enter(B: BookServer, action: actions.ActionEnter) {
+    if (action.fit === undefined) action.fit = true;
     const plane = await B.planes.load(action.planeId);
     let   thing = await B.things.load(action.thingId);
     const visit = action.position || thing.visits[plane.id] || plane.spawn;
@@ -147,7 +156,7 @@ export async function enter(B: BookServer, action: actions.ActionEnter) {
         planeId:  action.planeId,
         thingId:  thingId,
         position: visit,
-        fit:      !action.force,
+        fit:      action.fit,
         force:    action.force,
         isEnter:  true,
     } as actions.ActionPlace)

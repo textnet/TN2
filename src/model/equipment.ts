@@ -19,21 +19,21 @@ interface TransferParameters {
 }
 
 export async function thingInHands(B: BookServer, actorId: string, ownerId: string) {
-    const actor = await B.things.load(actorId);
-    return thingInSlot(B, actorId, ownerId, actor.equipment.default);
+    const owner = await B.things.load(ownerId);
+    return thingInSlot(B, actorId, ownerId);
 }
 
 export async function thingInSlot(B: BookServer, actorId: string, ownerId: string, slotName?: string) {
+    const owner = await B.things.load(ownerId);
+    slotName = slotName || owner.equipment.default;
     const equipmentPlane = await B.getEquipmentPlane(ownerId);
-    if (slotName) {
-        const slots = await getSlots(B, ownerId);
-        if (slots[slotName]) {
-            for (let slot of slots[slotName]) {
-                const thing = await findClosest(B, equipmentPlane, slot.position, slot.physics.box);
-                if (thing) return thing;
-            }
-            return undefined;
+    const slots = await getSlots(B, ownerId);
+    if (slots[slotName]) {
+        for (let slot of slots[slotName]) {
+            const thing = await findClosest(B, equipmentPlane, slot.position, slot.physics.box);
+            if (thing) return thing;
         }
+        return undefined;
     }
     const thing = await findClosest(B, equipmentPlane);    
     return thing;
@@ -49,11 +49,14 @@ export interface SlotContents extends SlotData {
 export interface EquipmentContents extends Record<string,SlotContents> {}
 
 export async function getSlots(B: BookServer, ownerId: string, slotName?: string) {
+    const owner = await B.things.load(ownerId);
     const equipmentPlane = await B.getEquipmentPlane(ownerId);
     const slots: SlotMap = {}
     for (let id in equipmentPlane.things) {
         const thing = await B.things.load(id) as SlotData;
         if (thing.physics.slot && (!slotName || thing.name == slotName)) {
+            // @@ check
+            console.log("@@   Slot:", thing.id)
             thing.position = equipmentPlane.things[id];
             if (!slots[thing.name]) slots[thing.name] = [];
             slots[thing.name].push(thing);
@@ -62,43 +65,52 @@ export async function getSlots(B: BookServer, ownerId: string, slotName?: string
     return slots;
 }
 
+
 // NB: squashes all slots with the same name into one SlotContents
 export async function getEquipment(B: BookServer, actorId: string, slotName?: string) {
     const equipmentPlane = await B.getEquipmentPlane(actorId);
     const slots = await getSlots(B, actorId, slotName);
     const targetThing = await B.things.load(actorId);
     const contents: EquipmentContents = {}
-    // TODO can be refactored
-    if (isNoSlotsFound(slotName, targetThing, slots)) {
-        const name = targetThing.equipment.default;
-        contents[name] = targetThing as SlotContents;
-        contents[name].equipmentContents = [];
-        for (let id in equipmentPlane.things) {
-            const candidate = await B.things.load(id);
-            contents[name].equipmentContents.push(candidate);
-        }
-    } else {
-        for (let name in slots) {
-            contents[name] = slots[name][0] as SlotContents;
-            contents[name].equipmentContents = [];
-        }
-        for (let id in equipmentPlane.things) {
-            const candidate = await B.things.load(id);
-            const candidatePos = equipmentPlane.things[id];
-            if (!candidate.physics.slot) {
-                slotsLoop: for (let name in slots) {
-                    if (!slotName || name == slotName) {
-                        for (let c in slots[name]) {
-                            const container = slots[name][c];
-                            if (fitsInSlot(container, candidate, candidatePos)) {
-                                contents[name].equipmentContents.push(candidate);
-                            }
-                        }                    
-                    }
+
+    console.log("@@ slots list; slotName=", slotName)
+    let noSlots = slotName === undefined;
+    for (let name in slots) {
+        contents[name] = slots[name][0] as SlotContents;
+        contents[name].equipmentContents = []
+        noSlots = false;
+        console.log("@@   slot:", name);
+    }
+    if (noSlots) {
+        contents[ targetThing.equipment.default ] = targetThing as SlotContents;
+        contents[ targetThing.equipment.default ].equipmentContents = [];
+    }
+    console.log("@@ things checking:")
+    for (let id in equipmentPlane.things) {
+        const candidate = await B.things.load(id);
+        const candidatePos = equipmentPlane.things[id];
+        // console.log("@@   thing:", candidate.id);
+        if (!candidate.physics.slot) {
+            // console.log("@@     not a slot!");
+            if (noSlots) {
+                console.log("@@    thing:", candidate.id)
+                const name = targetThing.equipment.default;
+                contents[name].equipmentContents.push(candidate);                
+            }
+            slotsLoop: for (let name in slots) {
+                if (!slotName || name == slotName) {
+                    for (let c in slots[name]) {
+                        const container = slots[name][c];
+                        if (fitsInSlot(container, candidate, candidatePos)) {
+                            console.log("@@   thing:", candidate.id);
+                            console.log("@@     found", container.id);
+                            contents[name].equipmentContents.push(candidate);
+                        }
+                    }                    
                 }
             }
-        }        
-    }
+        }
+    }        
     return contents;
 }
 
@@ -116,29 +128,20 @@ export function isEmpty(contents: EquipmentContents) {
     return true;
 }
 
-function isNoSlotsFound(slotName: string, targetThing: ThingData, slots) {
-    if (slotName === undefined) return true;
-    if ([targetThing.equipment.default].indexOf(slotName) >= 0) {
-        for (let id in slots[slotName]) {
-            return false;
-        }        
-        return true;
-    }
-    return false;
-}
-
-
 export async function transferToSlot(B: BookServer, actorId: string, thingId: string,
                                      targetThingId?: string, slotName?: string) {
     targetThingId = targetThingId || actorId;    
     const targetThing = await B.things.load(targetThingId)
     const equipmentPlane = await B.getEquipmentPlane(targetThingId);
     const thing = await B.things.load(thingId);
-    const slots = slotName? (await getSlots(B, targetThingId, slotName)):undefined;
     let target: geo.Position;
-
-    if (!isNoSlotsFound(slotName, targetThing, slots)) {
+    slotName = slotName || targetThing.equipment.default;
+    const slots = await getSlots(B, targetThingId, slotName);
+    if (slots[slotName] || slotName==targetThing.equipment.default) {
+        // there is a proper slot
+        console.log("@@ transfer", slotName, slots)
         for (let i in slots[slotName]) {
+            console.log("@@ - check", i)
             const slot = slots[slotName][i];
             const slotBox = geo.positionedBox(slot.physics.box, slot.position);
             let position = slot.position;
@@ -149,23 +152,28 @@ export async function transferToSlot(B: BookServer, actorId: string, thingId: st
                 position = geo.add(geo.position(slotBox.n[0], slotBox.n[1], position.z, position.direction), delta)
             }
             target = await spatials.findNextFitting(B, thing, equipmentPlane, position, slotBox);
+            console.log(target, slotBox)
             if (target) break;
         }
-    } else {
-        target = await spatials.findNextFitting(B, thing, equipmentPlane, equipmentPlane.spawn)
-    }
-    if (!target) {
-        return;
-    } else {
-        target.z = 0; // slots are -1
-        return await actions.action(B, {
-            action:   actions.ACTION.TRANSFER,
-            actorId:  actorId,
-            thingId:  thingId,
-            planeId:  equipmentPlane.id,
-            position: target,
-            noVisit:  true,
-        } as actions.ActionTransfer)        
+        if (!target && (!slots[slotName] && slotName==targetThing.equipment.default)) {
+            console.log("@@ - next fitting", geo.positionedBox(equipmentPlane.physics.box))
+            target = await spatials.findNextFitting(
+                B, thing, equipmentPlane, geo.position(0,0), 
+                geo.positionedBox(equipmentPlane.physics.box)
+            );
+            console.log("@@ - result", target)
+        }
+        if (target) {
+            target.z = 0; // slots are -1
+            return await actions.action(B, {
+                action:   actions.ACTION.TRANSFER,
+                actorId:  actorId,
+                thingId:  thingId,
+                planeId:  equipmentPlane.id,
+                position: target,
+                noVisit:  true,
+            } as actions.ActionTransfer)        
+        }        
     }
 }
 
@@ -173,16 +181,18 @@ export async function directTransferUnequip(B: BookServer, actorId: string,
                                             thing: ThingData, targetPlaneId: string,                                  
                                             targetPosition: geo.Position) {
     if (thing) {
-        await actions.action(B, {
+        return await actions.action(B, {
             action:   actions.ACTION.TRANSFER,
             actorId:  actorId,
             thingId:  thing.id,
             planeId:  targetPlaneId,
             position: targetPosition,
             noVisit:  true,
+            fit: false,
         } as actions.ActionTransfer)
+    } else {
+        return;
     }
-    return thing;
 }
 
 async function findClosest(B: BookServer, plane: PlaneData, position?: geo.Position, bounds?: geo.Box) {

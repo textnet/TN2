@@ -23,7 +23,6 @@ export class BaseActor extends ex.Actor {
     constructor(data: msg.ThingRenderData) {
         super({
             pos: new ex.Vector(data.position.x, data.position.y),
-            scale: new ex.Vector(0.75, 0.75),
             body: new ex.Body({
                 collider: new ex.Collider({
                     type:   ex.CollisionType.Passive, 

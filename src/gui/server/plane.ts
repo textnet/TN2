@@ -2,6 +2,7 @@ import { ipcMain } from "electron"
 import { GuiConsole } from "../../console/gui";
 import { subscribeOnPlane } from "./subscribe"
 import * as cl from "../../commandline/commandline"
+import * as print from "../../commandline/print"
 
 import * as msg from "../messages"
 import * as equip from "../../model/equipment"
@@ -41,8 +42,9 @@ reg(msg.SERVER.EQUIPMENT, async(gui: GuiConsole, args)=>{
     cl.verboseLog(`GUI(${gui.id}): loadEquipment(${args.ownerId}).`);
     const message = args as msg.RequestEquipment;
     const B = gui.anima.B;
-    const owner = await B.things.load(args.ownerId);
+    const owner = await B.things.load(message.ownerId);
     const contents = await equip.getEquipment(B, message.ownerId, message.slotName);
+    console.log("@@ message slot name", message.slotName)
     const slots = await equip.getSlots(B, message.ownerId, message.slotName)
     //
     if (!message.slotName && contents[owner.equipment.everything]) {
@@ -73,4 +75,8 @@ reg(msg.SERVER.EQUIPMENT, async(gui: GuiConsole, args)=>{
             plane: await msg.renderPlaneData(B, equipmentPlane),
         }
     } as msg.Equipment);
+    //
+    console.log("@@ loadEquipment", message.ownerId, message.slotName)
+    await print.debugEquipment(B, args.ownerId);
+
 })

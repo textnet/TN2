@@ -31,7 +31,7 @@ export const template: ThingTemplate = {
             box: { w: 30, h: 20, anchor: { x: 5, y: 15 } },
             Z: 0,
             mass:  { mass: 100 },
-            force: { mass: 2000 },            
+            force: { mass: 2000 }, // can lift piano (500)        
         },
         planes: {},
         constraints: model.CONSTRAINTS_DEFAULT,
