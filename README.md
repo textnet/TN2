@@ -2,25 +2,26 @@
 
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
-## TODO and ISSUES
-- special sprites for equipped items
-- autoscale for equipped items
-    - in hands
-    - in slots
-- use sprite box in inventory calculations (if there is a special sprite for it)
+## Equipment Sprites
+- create sprite with specific inventory sizing/rendering
+- replace sprite when in hands
+- replace sprite when in slots
+- check inventory calculations using the special sprite
+- autoscale property of a thing
+    - always fit slots
+    - scale sprite to fit it right there
 
 ## ISSUES
 - BUG: transfer up -- too many times -- exception
 - BUG: transfer/loadPlane: equipped items are not visible   
-
-
 
 ## Stage 13. Inventory
 + EQUIP action
 + UN_EQUIP action
 + Visualisation
 + Equipment Slots
-- Equipment SHOW/HIDE
++ Equipment SHOW/HIDE
+- Equipment Sprites
 - USE action
 - THROW action
 
