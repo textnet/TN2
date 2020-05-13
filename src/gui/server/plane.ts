@@ -20,7 +20,8 @@ reg(msg.SERVER.PLANE, async(gui: GuiConsole, args)=>{
         thingsData[id] = await msg.renderThingData(B, id);
         const equipped = await equip.thingInHands(B, animaThing.id, id);
         if (equipped) {
-            equipData[id] = await msg.renderThingData(B, equipped.id, id);
+            const slot = await equip.getSlot(B, animaThing, hostPlane.things[id]);
+            equipData[id] = await msg.renderThingData(B, equipped.id, slot);
         }
     }
     //
@@ -60,7 +61,7 @@ reg(msg.SERVER.EQUIPMENT, async(gui: GuiConsole, args)=>{
     for (let name in contents) {
         const slot = contents[name];
         for (let thing of slot.equipmentContents) {
-            thingsData[thing.id] = await msg.renderThingData(B, thing);
+            thingsData[thing.id] = await msg.renderThingData(B, thing, slot);
             thingsData[thing.id].slotId = slot.id;
         }
     }

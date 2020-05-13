@@ -16,7 +16,6 @@ export const template: ThingTemplate = {
         },
         physics: {
             box: { w: 42, h: 42 }, 
-            slot: true,
             Z: -1,
         },
         constraints: {
@@ -25,7 +24,11 @@ export const template: ThingTemplate = {
             pushable:  false,
             enterable: false,
         },
-        planes: {}
+        planes: {},
+        equipment: {
+            thingSlot: true,
+        }
+
     },
     plane: {
         id: "<planetId>",

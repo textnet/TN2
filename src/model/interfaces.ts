@@ -2,6 +2,7 @@ import { Position, Direction, Box, DIRECTION } from "./geometry"
 import { Sprite } from "./sprites"
 import { ThingPhysics, PlanePhysics, PLANE_PHYSICS_DEFAULT } from "./physics"
 import { deepCopy } from "../utils"
+import * as geo from "./geometry";
 
 // Structures that are saved in the Book storage.
 // Should not have circular references or references to deeper objects.
@@ -24,7 +25,6 @@ export interface ThingData {
     colors: Record<string,string>; // e.g. text, floor, title, skin, eyes. use constants as keys!
     constraints?: Record<string,boolean|ThingConstraint>; // constraints like "pushable" etc. true/false or min mass
     sprite: Sprite;
-    spriteEquipped?: Sprite;
     physics: ThingPhysics;
     planes:  Record<string, string>;    // name:planeId
     visits?: Record<string, Position>; // position of the previous visit to planeIds.
@@ -36,10 +36,19 @@ export interface ThingData {
 
 
 export interface ThingEquipmentMap {
-    default?: string;
-    autopicking?: string;
-    everything?: string;
-    scale?: number;
+    default?:     string;     // which slot is the default for pickup 
+    autopicking?: string;     // if there is such a slot, autopickup will work
+    everything?:  string;     // which slot encapsulate all slots (serves as a background)
+    scaleSlots?:  number;     // should we scale up/down slots when visualising?
+
+    thingSlot?: boolean;      // this thing is actually a slot
+    thingBackpack?: boolean;  // this thing is actually a backpack for autopickup
+    thingSprite?: Sprite;     // this thing should have a special sprite while equipped
+    thingScale?:  boolean;    // this thing should be scaled to the size of the slot while equipped
+}
+
+export interface SlotData extends ThingData {
+    position: geo.Position;
 }
 
 export interface ThingConstraint {
@@ -104,6 +113,23 @@ export function fixPlaneDefaults(data) {
     data.format  = data.format    || FORMAT_DEFAULT;
     data.spawn   = data.spawn     || deepCopy(SPAWN_DEFAULT);
 }
+export function getThingBox(thing: ThingData, slotBox?: geo.Box) {
+    let baseline = thing.physics.box;
+    if (thing.equipment.thingSprite) {
+        baseline = thing.equipment.thingSprite.size;
+    }
+    if (slotBox) {
+        const ratioW = slotBox.w / baseline.w;
+        const ratioH = slotBox.h / baseline.h;
+        const ratio = ratioW < ratioH ? ratioW : ratioH;
+        return {
+            w: baseline.w * ratio,
+            h: baseline.h * ratio,
+        } as geo.Box;
+    } else {
+        return baseline;
+    }
+}
 
 export const SPAWN_DEFAULT: Position = {
     x:0, y:0, z:0,
@@ -135,7 +161,9 @@ export const EQUIPMENT_DEFAULT: ThingEquipmentMap = {
     default: "Hands",
     autopicking: "Backpack",
     everything: "Equipment",
-    scale: 0.5, 
+    scaleSlots: 0.5,
+    thingSprite: undefined,
+    thingScale:  true,
 }
 
 export const FORMAT = {

@@ -6,12 +6,29 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 + create sprites with specific inventory sizing/rendering
     + tent with its roll
     + heap of hay
-- replace sprite when in hands
-- replace sprite when in slots
-- check inventory calculations using the special sprite
-- autoscale property of a thing
-    - always fit slots
-    - scale sprite to fit it right there
++ render
+    + replace sprite when in hands
+    + replace sprite when in slots
++ equipment fitting
+    + check on equip
+    + check on transfer
+    + pass customThingBox around fitting
++ autoscale property of a thing
+    + always fit slots
+    + scale sprite to fit it right there
+
+- стог сена не выкладывается
+- палатка пропадает куда-то
+- стог сена всё ещё выглядит большим
+
+- make sure it works
+    - equipment         (no slots, just pickup/putdow)
+    - equipment_sprites (show sprites in equipment)
+    - equipment_slots   (slots, no sprites)
+    - backpack          (autopickup in backpack pocket slots)
+    - backpack_big      (autopickup in massive backpack)
+    - backpack_sprites  (show fitted sprites in backpack)
+    - backpack_slots    (show scaled down sprites in pockets)
 
 ## ISSUES
 - BUG: transfer up -- too many times -- exception
@@ -26,6 +43,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 - Equipment Sprites
 - USE action
 - THROW action
+
 
 
 ## Stage 14. Text

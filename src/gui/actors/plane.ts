@@ -32,7 +32,7 @@ export class PlaneActor extends ex.Actor {
     constructor(contents: msg.EquipmentRenderData) {
         super();
         this.contents = contents;
-        this.scaleFactor =contents.plane.equipment.scale || 1;
+        this.scaleFactor =contents.plane.equipment.scaleSlots || 1;
         this.calculateBounds();
         this.width  = this.pbox.n[2] - this.pbox.n[0];
         this.height = this.pbox.n[3] - this.pbox.n[1];

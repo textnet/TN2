@@ -63,22 +63,27 @@ export async function place(B: BookServer, action: actions.ActionPlace) {
 /**
  * Backpack-like fitting: first try to fill the horisontal row, if not possible, shift down to the next row.
  */
-export async function findNextFitting(B: BookServer, thing: ThingData, plane:PlaneData, position: geo.Position, pBox?: geo.PositionedBox) {
-    if (!thing.physics.box || !thing.physics.box.w || !thing.physics.box.h) {
+export async function findNextFitting(B: BookServer, 
+                                      thing: ThingData, 
+                                      plane:PlaneData, 
+                                      position: geo.Position, 
+                                      pBox?: geo.PositionedBox,
+                                      thingBoxSource?: geo.Box) {
+    thingBoxSource = thingBoxSource || thing.physics.box;
+    if (!thingBoxSource || !thingBoxSource.w || !thingBoxSource.h) {
         return position;
     }
-    let planeBox = geo.positionedBox(plane.physics.box);
-    pBox = pBox || planeBox;
+    pBox = pBox || geo.positionedBox(plane.physics.box);
     let result = deepCopy(position);
     let stepY = 0;
-    const thingShiftX = thing.physics.box.w/2 - (thing.physics.box.anchor?thing.physics.box.anchor.x:0);
-    const thingShiftY = thing.physics.box.h/2 - (thing.physics.box.anchor?thing.physics.box.anchor.y:0);
+    const thingShiftX = thingBoxSource.w/2 - (thingBoxSource.anchor ? thingBoxSource.anchor.x : 0);
+    const thingShiftY = thingBoxSource.h/2 - (thingBoxSource.anchor ? thingBoxSource.anchor.y : 0);
     let step = 0;
     let firstTime = true;
     while (geo.isBoxEndlessY(pBox) || result.y < pBox.n[3]) {
         if (step++ > 10000) break;
-        let thingBox = geo.positionedBox(thing.physics.box, result);
-        let collider = await findCollision(B, thing, plane, result);
+        let thingBox = geo.positionedBox(thingBoxSource, result);
+        let collider = await findCollision(B, thing, plane, result, thingBoxSource);
         if (collider) {
             const colliderBox = geo.positionedBox(collider.physics.box, plane.things[collider.id]);
             result.x = colliderBox.n[2] + thingShiftX;
@@ -99,15 +104,20 @@ export async function findNextFitting(B: BookServer, thing: ThingData, plane:Pla
 }
 
 // will it fit here?
-export async function findCollision(B: BookServer, thing: ThingData, plane: PlaneData, position: geo.Position) {
-    if (thing.physics.slot) return; // slots never collide;
+export async function findCollision(B: BookServer, 
+                                    thing: ThingData, 
+                                    plane: PlaneData, 
+                                    position: geo.Position,
+                                    thingBoxSource?: geo.Box) {
+    if (thing.equipment.thingSlot) return; // slots never collide;
+    thingBoxSource = thingBoxSource || thing.physics.box;
     for (let id in plane.things) {
         if (id != thing.id) {
             const another = await B.things.load(id);
             const anotherPos = plane.things[id];
-            if (!another.physics.slot &&
+            if (!another.equipment.thingSlot &&
                 geo.boxOverlap(
-                geo.positionedBox(thing.physics.box,   position),
+                geo.positionedBox(thingBoxSource,      position),
                 geo.positionedBox(another.physics.box, anotherPos))) {
                 return another;
             }
@@ -115,6 +125,7 @@ export async function findCollision(B: BookServer, thing: ThingData, plane: Plan
     }
     return undefined;
 }
+
 export async function willFit(B: BookServer, thing: ThingData, plane: PlaneData, position: geo.Position) {
     return !(await findCollision(B, thing, plane, position));
 }

@@ -118,25 +118,29 @@ export interface EquipmentRenderData {
     slots?: Record<string, ThingRenderData>;
     things: Record<string, ThingRenderData>;
     plane: PlaneRenderData;
-
 }
 
 export async function renderThingData(B: BookServer, thing: string|model.ThingData, 
-                                      equipmentOwnerId?: string) {
-    if (!thing["id"]) return renderThingData(B, await B.things.load(thing as string), equipmentOwnerId) as ThingRenderData;
+                                      slot?: model.SlotData) {
+    if (!thing["id"]) return renderThingData(B, await B.things.load(thing as string), slot) as ThingRenderData;
     thing = thing as model.ThingData;
     const plane = await B.planes.load(thing.hostPlaneId);
     if (!thing.physics.box.anchor) {
         thing.physics.box.anchor = { x:0, y: 0 };
+    }
+    let renderPhysics = physics.patchThingPhysics(thing.physics);
+    let renderSprite = thing.sprite;
+    if (slot && thing.equipment.thingSprite) {
+        renderSprite = thing.equipment.thingSprite;
+        renderPhysics.box = model.getThingBox(thing, slot.physics.box);
     }
     return {
         id: thing.id,
         hostPlaneId: thing.hostPlaneId,
         name: thing.name,
         constraints: thing.constraints,
-        sprite: (equipmentOwnerId && thing.spriteEquipped)? 
-                thing.spriteEquipped : thing.sprite,
-        physics: physics.patchThingPhysics(thing.physics),
+        sprite: renderSprite,
+        physics: renderPhysics,
         equipment: thing.equipment,
         position: plane.things[thing.id]
     } as ThingRenderData;

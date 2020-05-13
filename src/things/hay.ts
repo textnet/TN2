@@ -18,7 +18,10 @@ export const template: ThingTemplate = {
             box: { w: 60, h: 42, anchor: { x: 0, y: 9 } },
             mass:  { mass: 100 },
         },
-        planes: {}
+        planes: {},
+        equipment: {
+            thingScale: true,
+        },        
     },
     plane: {
         id: "<planetId>",

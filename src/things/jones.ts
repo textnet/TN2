@@ -42,7 +42,7 @@ export const template: ThingTemplate = {
         things: {},
         text: "",
     },
-    equipment: {
+    equipment : {
         id: "<equipId>",
         ownerId: "<ownerId>",
         things: {},

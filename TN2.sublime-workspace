@@ -4,6 +4,62 @@
 		"selected_items":
 		[
 			[
+				"thS",
+				"thingScale"
+			],
+			[
+				"thingS",
+				"thingSprite\tproperty"
+			],
+			[
+				"equipp",
+				"spriteEquipped\tproperty"
+			],
+			[
+				"cus",
+				"customThingBox\tparameter"
+			],
+			[
+				"srp",
+				"spriteEquipped\tproperty"
+			],
+			[
+				"resp",
+				"renderSprite\tlet"
+			],
+			[
+				"patH",
+				"patchedPhysics\tconst"
+			],
+			[
+				"equi",
+				"equipmentOwnerId\tparameter"
+			],
+			[
+				"thing",
+				"thingActors\tproperty"
+			],
+			[
+				"equii",
+				"equipThingId\tproperty"
+			],
+			[
+				"own",
+				"ownerId\tproperty"
+			],
+			[
+				"inter",
+				"interop\talias"
+			],
+			[
+				"scale",
+				"scaleFactor\tproperty"
+			],
+			[
+				"scal",
+				"scaleFactor\tproperty"
+			],
+			[
 				"eplan",
 				"equipmentPlane\tconst"
 			],
@@ -18,10 +74,6 @@
 			[
 				"_sc",
 				"_slotScale\tproperty"
-			],
-			[
-				"equi",
-				"equipment\tproperty"
 			],
 			[
 				"eq",
@@ -276,10 +328,6 @@
 				"getBookServers"
 			],
 			[
-				"thing",
-				"thing\tconst"
-			],
-			[
 				"thI",
 				"thingInHands\tconst"
 			],
@@ -466,54 +514,6 @@
 			[
 				"Way",
 				"WaypointTurnTo\tinterface"
-			],
-			[
-				"TIM",
-				"TIME_MOMENTUM\tconst"
-			],
-			[
-				"wa",
-				"waypoint"
-			],
-			[
-				"AC",
-				"ActionPlace\tinterface"
-			],
-			[
-				"Plac",
-				"EventPlace\tinterface"
-			],
-			[
-				"acc",
-				"accumulateDirection\tfunction"
-			],
-			[
-				"plane",
-				"planeId\tparameter"
-			],
-			[
-				"time",
-				"timeLeft\tproperty"
-			],
-			[
-				"M",
-				"MOVE_TO\tproperty"
-			],
-			[
-				"move",
-				"movement\talias"
-			],
-			[
-				"Wa",
-				"WaypointMoveTo\tinterface"
-			],
-			[
-				"way",
-				"waypoint\tconst"
-			],
-			[
-				"waypos",
-				"waypoints\tconst"
 			]
 		]
 	},
@@ -523,34 +523,7 @@
 			"file": "README.md",
 			"settings":
 			{
-				"buffer_size": 6011,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/gui/server/plane.ts",
-			"settings":
-			{
-				"buffer_size": 3029,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/commandline/scripts/slots.ts",
-			"settings":
-			{
-				"buffer_size": 1694,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/gui/actors/plane.ts",
-			"settings":
-			{
-				"buffer_size": 5208,
+				"buffer_size": 5752,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -559,16 +532,42 @@
 			"file": "src/model/equipment.ts",
 			"settings":
 			{
-				"buffer_size": 8415,
+				"buffer_size": 8590,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/commandline/script.ts",
+			"file": "src/gui/messages.ts",
 			"settings":
 			{
-				"buffer_size": 1102,
+				"buffer_size": 4969,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/model/geometry.ts",
+			"settings":
+			{
+				"buffer_size": 9505,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/gui/actors/plane.ts",
+			"settings":
+			{
+				"buffer_size": 5046,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/gui/server/plane.ts",
+			"settings":
+			{
+				"buffer_size": 2853,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -620,32 +619,39 @@
 		"/Users/nyaremko/TN2/src/behaviour/actions",
 		"/Users/nyaremko/TN2/src/commandline",
 		"/Users/nyaremko/TN2/src/commandline/scripts",
-		"/Users/nyaremko/TN2/src/gui",
-		"/Users/nyaremko/TN2/src/gui/actors",
-		"/Users/nyaremko/TN2/src/gui/renderer",
-		"/Users/nyaremko/TN2/src/gui/server",
-		"/Users/nyaremko/TN2/src/model"
+		"/Users/nyaremko/TN2/src/model",
+		"/Users/nyaremko/TN2/src/things"
 	],
 	"file_history":
 	[
+		"/Users/nyaremko/TN2/src/model/interfaces.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions/spatials.ts",
+		"/Users/nyaremko/TN2/src/things/tent.ts",
+		"/Users/nyaremko/TN2/src/model/equipment.ts",
+		"/Users/nyaremko/TN2/src/things/hay.ts",
 		"/Users/nyaremko/TN2/src/things/jones.ts",
-		"/Users/nyaremko/TN2/src/behaviour/actions/equipment.ts",
-		"/Users/nyaremko/TN2/src/anima/anima.ts",
-		"/Users/nyaremko/TN2/src/behaviour/actions/attempt.ts",
-		"/Users/nyaremko/TN2/src/commandline/script.ts",
-		"/Users/nyaremko/TN2/src/commandline/equipment.ts",
-		"/Users/nyaremko/TN2/src/gui/server/plane.ts",
-		"/Users/nyaremko/TN2/src/gui/renderer/equipment.ts",
-		"/Users/nyaremko/TN2/src/gui/actors/base.ts",
-		"/Users/nyaremko/TN2/src/gui/renderer/leave.ts",
 		"/Users/nyaremko/TN2/src/gui/messages.ts",
+		"/Users/nyaremko/TN2/src/commandline/scripts/equipment_sprites.ts",
+		"/Users/nyaremko/TN2/src/gui/renderer/equipment.ts",
+		"/Users/nyaremko/TN2/src/commandline/script.ts",
+		"/Users/nyaremko/TN2/src/model/create.ts",
+		"/Users/nyaremko/TN2/src/gui/server/plane.ts",
+		"/Users/nyaremko/TN2/src/gui/actors/thing.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions/attempt.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions/equipment.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions/transfer.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions.ts",
+		"/Users/nyaremko/TN2/src/gui/server/subscribe.ts",
+		"/Users/nyaremko/TN2/src/gui/actors/plane.ts",
+		"/Users/nyaremko/TN2/src/config.ts",
+		"/Users/nyaremko/TN2/src/gui/actors/slot.ts",
+		"/Users/nyaremko/TN2/src/gui/actors/base.ts",
+		"/Users/nyaremko/TN2/src/commandline/scripts/slots.ts",
+		"/Users/nyaremko/TN2/src/anima/anima.ts",
+		"/Users/nyaremko/TN2/src/commandline/equipment.ts",
+		"/Users/nyaremko/TN2/src/gui/renderer/leave.ts",
 		"/Users/nyaremko/TN2/src/gui/sprite.ts",
 		"/Users/nyaremko/TN2/src/gui/actors/equipment.ts",
-		"/Users/nyaremko/TN2/src/behaviour/actions/spatials.ts",
-		"/Users/nyaremko/TN2/src/model/interfaces.ts",
-		"/Users/nyaremko/TN2/src/gui/actors/plane.ts",
-		"/Users/nyaremko/TN2/src/gui/actors/thing.ts",
-		"/Users/nyaremko/TN2/src/gui/actors/slot.ts",
 		"/Users/nyaremko/TN2/src/model/geometry.ts",
 		"/Users/nyaremko/TN2/src/commandline/scripts/equipment.ts",
 		"/Users/nyaremko/TN2/src/model/sprites.ts",
@@ -653,8 +659,6 @@
 		"/Users/nyaremko/TN2/src/gui/renderer/plane.ts",
 		"/Users/nyaremko/TN2/src/commandline/base.ts",
 		"/Users/nyaremko/TN2/src/things/piano.ts",
-		"/Users/nyaremko/TN2/src/commandline/scripts/slots.ts",
-		"/Users/nyaremko/TN2/src/model/equipment.ts",
 		"/Users/nyaremko/TN2/src/gui/renderer/send.ts",
 		"/Users/nyaremko/TN2/src/gui/game.ts",
 		"/Users/nyaremko/TN2/src/things/book.ts",
@@ -662,19 +666,14 @@
 		"/Users/nyaremko/TN2/src/gui/command.ts",
 		"/Users/nyaremko/TN2/package.json",
 		"/Users/nyaremko/TN2/src/things/chest.ts",
-		"/Users/nyaremko/TN2/src/gui/server/subscribe.ts",
 		"/Users/nyaremko/TN2/src/anima/written/library/get.ts",
 		"/Users/nyaremko/TN2/README.md",
-		"/Users/nyaremko/TN2/src/config.ts",
 		"/Users/nyaremko/TN2/src/anima/written/library/attempt.ts",
 		"/Users/nyaremko/TN2/src/anima/written/library/equip.ts",
 		"/Users/nyaremko/TN2/src/anima/written/library.ts",
-		"/Users/nyaremko/TN2/src/behaviour/actions.ts",
 		"/Users/nyaremko/TN2/src/behaviour/attempts.ts",
 		"/Users/nyaremko/TN2/src/anima/written/library/update.ts",
-		"/Users/nyaremko/TN2/src/behaviour/actions/transfer.ts",
 		"/Users/nyaremko/TN2/src/things/equipment.ts",
-		"/Users/nyaremko/TN2/src/model/create.ts",
 		"/Users/nyaremko/TN2/src/commandline/scripts/backpack_big.ts",
 		"/Users/nyaremko/TN2/src/things/slot_mega.ts",
 		"/Users/nyaremko/TN2/src/things/slot.ts",
@@ -752,10 +751,7 @@
 		"/Users/nyaremko/TN2/src/console/base.ts",
 		"/Users/nyaremko/TN2/src/storage/abstraction.ts",
 		"/Users/nyaremko/TN2/src/console/commandline.ts",
-		"/Users/nyaremko/TN2/src/console/script.ts",
-		"/Users/nyaremko/TN2/start.sh",
-		"/Users/nyaremko/TN2/src/headless/base.ts",
-		"/Users/nyaremko/TN2/src/headless/script.ts"
+		"/Users/nyaremko/TN2/src/console/script.ts"
 	],
 	"find":
 	{
@@ -777,6 +773,17 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"scaleB",
+			"spriteEq",
+			"t.scale",
+			".scale",
+			"willFit",
+			"@@",
+			".actors",
+			".scale",
+			"equipment.scale",
+			"scaleFactor",
+			"\"@@\",",
 			"getEquipment(",
 			"getEquipment",
 			"getSlots",
@@ -893,18 +900,7 @@
 			"distance",
 			".distance",
 			"distance",
-			"got:",
-			"entering!",
-			"got",
-			"getting",
-			"findClosest",
-			"nt of",
-			"spawn",
-			"code(",
-			"code",
-			"thingActors",
-			".scale",
-			".sprite"
+			"got:"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -922,7 +918,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -931,15 +927,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6011,
+						"buffer_size": 5752,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1040,
-								1040
+								440,
+								440
 							]
 						],
 						"settings":
@@ -956,24 +952,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "src/gui/server/plane.ts",
+					"file": "src/model/equipment.ts",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3029,
+						"buffer_size": 8590,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1736,
-								1736
+								3945,
+								3945
 							]
 						],
 						"settings":
@@ -982,56 +978,85 @@
 							"use_tab_stops": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 120.0,
+						"translation.y": 1322.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/gui/messages.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4969,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3914,
+								3957
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1650.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/model/geometry.ts",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 9505,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5433,
+								5439
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2401.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "src/commandline/scripts/slots.ts",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1694,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								958,
-								958
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
-							"use_tab_stops": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
+					"buffer": 4,
 					"file": "src/gui/actors/plane.ts",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5208,
+						"buffer_size": 5046,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2975,
-								2975
+								1268,
+								1268
 							]
 						],
 						"settings":
@@ -1047,61 +1072,38 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "src/model/equipment.ts",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8415,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6125,
-								6125
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
-							"use_tab_stops": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1686.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
 					"buffer": 5,
-					"file": "src/commandline/script.ts",
+					"file": "src/gui/server/plane.ts",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1102,
+						"buffer_size": 2853,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								772,
-								772
+								2470,
+								2470
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"typescript_plugin_format_options":
+							{
+								"convertTabsToSpaces": true,
+								"indentSize": 4,
+								"tabSize": 4
+							},
 							"use_tab_stops": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 48.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 5,
 					"type": "text"
 				}
 			]
@@ -1192,7 +1194,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 211.0,
+	"side_bar_width": 257.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
