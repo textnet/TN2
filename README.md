@@ -3,7 +3,9 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## Equipment Sprites
-- create sprite with specific inventory sizing/rendering
++ create sprites with specific inventory sizing/rendering
+    + tent with its roll
+    + heap of hay
 - replace sprite when in hands
 - replace sprite when in slots
 - check inventory calculations using the special sprite

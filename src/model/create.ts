@@ -23,6 +23,8 @@ import * as tLimboPortal from "../things/limbo_portal"
 import * as tSlot from "../things/slot"
 import * as tMegaslot from "../things/slot_mega"
 import * as tEquipment from "../things/equipment"
+import * as tTent from "../things/tent"
+import * as tHay from "../things/hay"
 
 export function registerAllTemplates() {
     registerTemplate(tBook.template);
@@ -34,6 +36,8 @@ export function registerAllTemplates() {
     registerTemplate(tSlot.template);
     registerTemplate(tMegaslot.template);
     registerTemplate(tEquipment.template);
+    registerTemplate(tTent.template);
+    registerTemplate(tHay.template);
 }
 export function registerTemplate(t: ThingTemplate) {
     templateRegistry[t.name] = t;
