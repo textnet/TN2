@@ -130,9 +130,16 @@ export async function renderThingData(B: BookServer, thing: string|model.ThingDa
     }
     let renderPhysics = physics.patchThingPhysics(thing.physics);
     let renderSprite = thing.sprite;
-    if (slot && thing.equipment.thingSprite) {
-        renderSprite = thing.equipment.thingSprite;
-        renderPhysics.box = model.getThingBox(thing, slot.physics.box);
+    console.log("@@ render scale?", thing.id, thing.equipment.thingScale, slot?true:false)
+    if (slot) {
+        if (thing.equipment.thingSprite) {
+            renderSprite = thing.equipment.thingSprite;
+        }
+        if (thing.equipment.thingScale) {
+            renderSprite.visualScale = geo.deriveBoxScale(thing.physics.box, slot.physics.box);
+            renderPhysics.box =  model.getThingBox(thing, slot.physics.box);
+            console.log("@@ visualScale", renderSprite.visualScale)
+        }
     }
     return {
         id: thing.id,

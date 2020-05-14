@@ -205,6 +205,17 @@ export function scalePositionedBox(pbox: PositionedBox, scaleFactor: number) {
     return result;
 }
 
+export function fitBoxInBox(inner: Box, outer: Box) {
+    const scale = deriveBoxScale(inner, outer);
+    console.log("@@ fitB-B", scale)
+    return scaleBox(inner, scale);
+}
+export function deriveBoxScale(inner: Box, outer: Box) {
+    const ratioW = outer.w / inner.w;
+    const ratioH = outer.h / inner.h;
+    return ratioW < ratioH ? ratioW : ratioH;
+}
+
 export function accumulateDirection(main: Direction, contribution: Direction, scaleFactor?: number) {
     scaleFactor = scaleFactor || 1;
     main.dz = main.dz || 0;

@@ -19,7 +19,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 - стог сена не выкладывается
 - палатка пропадает куда-то
-- стог сена всё ещё выглядит большим
++ стог сена всё ещё выглядит большим = визуального масштабирования спрайта не происходит
 
 - make sure it works
     - equipment         (no slots, just pickup/putdow)

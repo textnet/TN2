@@ -118,14 +118,9 @@ export function getThingBox(thing: ThingData, slotBox?: geo.Box) {
     if (thing.equipment.thingSprite) {
         baseline = thing.equipment.thingSprite.size;
     }
-    if (slotBox) {
-        const ratioW = slotBox.w / baseline.w;
-        const ratioH = slotBox.h / baseline.h;
-        const ratio = ratioW < ratioH ? ratioW : ratioH;
-        return {
-            w: baseline.w * ratio,
-            h: baseline.h * ratio,
-        } as geo.Box;
+    if (thing.equipment.thingScale && slotBox) {
+        console.log("@@ scaling")
+        return geo.fitBoxInBox(baseline, slotBox)
     } else {
         return baseline;
     }
@@ -158,12 +153,12 @@ export const CONSTRAINTS_DEFAULT = {
 }
 
 export const EQUIPMENT_DEFAULT: ThingEquipmentMap = {
-    default: "Hands",
+    default:     "Hands",
     autopicking: "Backpack",
-    everything: "Equipment",
-    scaleSlots: 0.5,
+    everything:  "Equipment",
+    scaleSlots:  0.75,
     thingSprite: undefined,
-    thingScale:  true,
+    thingScale:  false,
 }
 
 export const FORMAT = {

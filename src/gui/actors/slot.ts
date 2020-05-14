@@ -17,6 +17,12 @@ export class SlotActor extends BaseActor {
 
     adjustScale(factor: number) {
         const _scale = this.scale;
+        console.log("adjusting scale", this.data.id, this.scale, this.sprite.visualScale, factor)
+        //
+        factor *= this.sprite.visualScale;
+        this.body.pos.x /= this.sprite.visualScale;
+        this.body.pos.y /= this.sprite.visualScale;
+        //
         this.body.pos.x = this.body.pos.x * factor / _scale.x;
         this.body.pos.y = this.body.pos.y * factor / _scale.y;
         this.scale = new ex.Vector(factor, factor);

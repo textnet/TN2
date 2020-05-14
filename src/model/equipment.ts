@@ -1,7 +1,6 @@
 import * as cl from "../commandline/commandline"
 import { deepCopy } from "../utils"
 import { BookServer } from "./book"
-import { ThingData, PlaneData } from "./interfaces"
 import * as identity from "./identity"
 import * as geo from "./geometry"
 import * as model from "./interfaces"
@@ -11,12 +10,12 @@ import * as spatials from "../behaviour/actions/spatials"
 // functions to work with equipment and slots.
 
 interface TransferParameters {
-    actorId: string;
-    thingId: string;
-    thing: ThingData;
-    equipPlane: PlaneData;
-    slotName: string;
-    position?: geo.Position;
+    actorId:    string;
+    thingId:    string;
+    thing:      model.ThingData;
+    equipPlane: model.PlaneData;
+    slotName:   string;
+    position?:  geo.Position;
 }
 
 export async function thingInHands(B: BookServer, actorId: string, ownerId: string) {
@@ -41,12 +40,9 @@ export async function thingInSlot(B: BookServer, actorId: string, ownerId: strin
 }
 
 
-export interface SlotData extends ThingData {
-    position: geo.Position;
-}
-export interface SlotMap extends Record<string, SlotData[]> {}
-export interface SlotContents extends SlotData {
-    equipmentContents: ThingData[];    
+export interface SlotMap extends Record<string, model.SlotData[]> {}
+export interface SlotContents extends model.SlotData {
+    equipmentContents: model.ThingData[];    
 }
 export interface EquipmentContents extends Record<string,SlotContents> {}
 
@@ -55,7 +51,7 @@ export async function getSlots(B: BookServer, ownerId: string, slotName?: string
     const equipmentPlane = await B.getEquipmentPlane(ownerId);
     const slots: SlotMap = {}
     for (let id in equipmentPlane.things) {
-        const thing = await B.things.load(id) as SlotData;
+        const thing = await B.things.load(id) as model.SlotData;
         if (thing.equipment.thingSlot && (!slotName || thing.name == slotName)) {
             thing.position = equipmentPlane.things[id];
             if (!slots[thing.name]) slots[thing.name] = [];
@@ -65,14 +61,31 @@ export async function getSlots(B: BookServer, ownerId: string, slotName?: string
     return slots;
 }
 
-export async function getSlot(B: BookServer, owner: ThingData, pos: geo.Position) {
+export async function getSlot(B: BookServer, owner: model.ThingData, pos: geo.Position) {
     const equipmentPlane = await B.getEquipmentPlane(owner.id);
     for (let id in equipmentPlane.things) {
         const thing = await B.things.load(id);
         if (thing.equipment.thingSlot && thing.name != owner.equipment.everything) {
             const box = model.getThingBox(thing);
             if (geo.inBounds(pos, box)) {
-                const slot = thing as SlotData;
+                const slot = thing as model.SlotData;
+                slot.position = equipmentPlane.things[id];
+                return slot
+            }
+        }            
+    }
+    return;
+}
+export async function getSlotByThingId(B: BookServer, owner: model.ThingData, thingId: string) {
+    const equipmentPlane = await B.getEquipmentPlane(owner.id);
+    const pos = equipmentPlane[thingId];
+    if (!pos) return;
+    for (let id in equipmentPlane.things) {
+        const candidate = await B.things.load(id);
+        if (candidate.equipment.thingSlot && candidate.name != owner.equipment.everything) {
+            const box = model.getThingBox(candidate);
+            if (geo.inBounds(pos, box)) {
+                const slot = candidate as model.SlotData;
                 slot.position = equipmentPlane.things[id];
                 return slot
             }
@@ -121,7 +134,7 @@ export async function getEquipment(B: BookServer, actorId: string, slotName?: st
     return contents;
 }
 
-function fitsInSlot(slot: SlotData, thing: ThingData, pos: geo.Position) {
+function fitsInSlot(slot: model.SlotData, thing: model.ThingData, pos: geo.Position) {
     if (!slot.physics.box || !thing.physics.box) return true;
     const thingBoxSource = model.getThingBox(thing, slot.physics.box);
     const thingBox = geo.positionedBox(thingBoxSource, pos);
@@ -186,7 +199,7 @@ export async function transferToSlot(B: BookServer, actorId: string, thingId: st
 }
 
 export async function directTransferUnequip(B: BookServer, actorId: string, 
-                                            thing: ThingData, targetPlaneId: string,                                  
+                                            thing: model.ThingData, targetPlaneId: string,                                  
                                             targetPosition: geo.Position) {
     if (thing) {
         return await actions.action(B, {
@@ -203,7 +216,7 @@ export async function directTransferUnequip(B: BookServer, actorId: string,
     }
 }
 
-async function findClosest(B: BookServer, plane: PlaneData, position?: geo.Position, bounds?: geo.Box) {
+async function findClosest(B: BookServer, plane: model.PlaneData, position?: geo.Position, bounds?: geo.Box) {
     position = position || plane.spawn;
     bounds = bounds || plane.physics.box;
     const pBox = bounds? geo.positionedBox(bounds, position): undefined;

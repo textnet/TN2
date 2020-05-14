@@ -7,6 +7,7 @@ import * as geo from "./geometry"
 // default sprite is a storage structure.
 export interface Sprite {
     size: Box;
+    visualScale?: number;  // should we scale sprite visually?
     symbol: string;  // mandatory!
     base64?: string; // shortcut for one static idle unidirectional image
     steps?: number;  // default number of steps in animations

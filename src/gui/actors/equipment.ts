@@ -17,7 +17,7 @@ import { getPlayerDirection, getPlayerCommand, COMMAND } from "../command"
 import { deepCopy } from "../../utils"
 import * as interop from "../renderer/send"
 
-const SCALE = 0.33;
+const SCALE = 0.5;
 /**
  * Excalibur Actor extension for Equipment-based actors.
  */

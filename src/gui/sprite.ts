@@ -16,6 +16,7 @@ import * as interop from "./renderer/send"
  */
 export class ThingSprite {
     sprite: sprites.Sprite;
+    visualScale: number;  // should we scale sprite?
 
     sheet: ex.SpriteSheet;
     animations: Record<string, ex.Animation>;
@@ -28,6 +29,7 @@ export class ThingSprite {
     constructor(sprite: sprites.Sprite) {
         let that = this;
         this.sprite = sprite;
+        this.visualScale = sprite.visualScale || 1;
         if (sprite.base64) {
             if (!sprite.mapping) {
                 sprite.mapping = {};
