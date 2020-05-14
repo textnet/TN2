@@ -12,6 +12,7 @@ import * as equipment from "../../model/equipment"
 async function attemptPickup(B: BookServer, action: actions.ActionAttempt) {
     const actor = await B.things.load(action.actorId);
     const inSlot = await equipment.thingInSlot(B, action.actorId, action.actorId, action.slotName);
+    console.log("attempting pickup", action.actorId, action.slotName, inSlot)
     if (inSlot) {
         return await actions.action(B, {
                 action:  actions.ACTION.UN_EQUIP,

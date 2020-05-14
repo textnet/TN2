@@ -55,6 +55,7 @@ export async function reEquip(B: BookServer, action: actions.ActionReEquip) {
 }
 
 export async function unEquip(B: BookServer, action: actions.ActionUnEquip) {
+    console.log("@@ action unequip")
     const actor = await B.things.load(action.actorId);
     const plane = await B.planes.load(actor.hostPlaneId);
     const ownerId = action.equipThingId || actor.id;

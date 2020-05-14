@@ -89,6 +89,7 @@ async function(gui: GuiConsole, e: events.EventEquip) {
 
 mapping[events.EVENT.UN_EQUIP] = 
 async function(gui: GuiConsole, e: events.EventUnEquip) {
+    console.log("@@ unequip")
     const thingData = await msg.renderThingData(gui.B, e.thingId);
     return gui.send(msg.RENDER.UN_EQUIP, {
         thingId: e.thingId

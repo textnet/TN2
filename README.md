@@ -17,8 +17,8 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     + always fit slots
     + scale sprite to fit it right there
 
-- стог сена не выкладывается
-- палатка пропадает куда-то
++ стог сена не выкладывается
++ палатка пропадает куда-то
 + стог сена всё ещё выглядит большим = визуального масштабирования спрайта не происходит
 
 - make sure it works
@@ -29,6 +29,8 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     - backpack_big      (autopickup in massive backpack)
     - backpack_sprites  (show fitted sprites in backpack)
     - backpack_slots    (show scaled down sprites in pockets)
+- written word methods to adjust equipment params
+- written methods to compose equipment slots (and things?)
 
 ## ISSUES
 - BUG: transfer up -- too many times -- exception
