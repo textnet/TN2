@@ -100,6 +100,14 @@ export async function action(B: BookServer, action: actions.ActionTransfer) {
                 planeId: thing.hostPlaneId,
                 thingId: action.thingId,
             }
+            const actionUndo: actions.ActionEnter = {
+                action: actions.ACTION.ENTER,
+                actorId: action.actorId,
+                planeId: thing.hostPlaneId,
+                thingId: action.thingId,
+                isUp:    action.isUp,
+                noVisit: action.noVisit,
+            }
             const actionEnter: actions.ActionEnter = {
                 action:  actions.ACTION.ENTER,
                 actorId: action.actorId,
@@ -112,7 +120,11 @@ export async function action(B: BookServer, action: actions.ActionTransfer) {
                 fit:   action.fit,            
             }
             await actions.action(B, actionLeave);
-            return await actions.action(B, actionEnter);        
+            const success = await actions.action(B, actionEnter);        
+            if (!success) {
+                await actions.action(B, actionUndo);
+            }
+            return success;
         }
     }
 }

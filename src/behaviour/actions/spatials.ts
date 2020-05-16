@@ -2,6 +2,8 @@ import { BookServer } from "../../model/book"
 import { ThingData, PlaneData, SAY } from "../../model/interfaces"
 import { getBookId, createThingId } from "../../model/identity"
 import { deepCopy } from "../../utils"
+import * as identity from "../../model/identity"
+import * as model from "../../model/interfaces"
 import * as geo from "../../model/geometry"
 import * as updates from "../updates"
 import * as events from "../events"
@@ -17,7 +19,7 @@ export async function place(B: BookServer, action: actions.ActionPlace) {
     const thing = await B.things.load(action.thingId);
     let colliderId: string;
     let position: geo.Position = undefined;
-    if (action.fit) {
+    if (action.fit && !action.force) {
         position = await findNextFitting(B, thing, plane, action.position);
         if (!position) return;
     } else {
@@ -68,8 +70,11 @@ export async function findNextFitting(B: BookServer,
                                       plane:PlaneData, 
                                       position: geo.Position, 
                                       pBox?: geo.PositionedBox,
-                                      thingBoxSource?: geo.Box) {
-    thingBoxSource = thingBoxSource || thing.physics.box;
+                                      ) {
+    const isEquip = identity.isEquipmentPlaneId(plane.id);
+    const thingBoxSource = isEquip
+                         ? model.getThingBox(thing, geo.fromPositionedBox(pBox))
+                         : thing.physics.box;
     if (!thingBoxSource || !thingBoxSource.w || !thingBoxSource.h) {
         return position;
     }
@@ -80,12 +85,15 @@ export async function findNextFitting(B: BookServer,
     const thingShiftY = thingBoxSource.h/2 - (thingBoxSource.anchor ? thingBoxSource.anchor.y : 0);
     let step = 0;
     let firstTime = true;
-    while (geo.isBoxEndlessY(pBox) || result.y < pBox.n[3]) {
+    while (geo.isBoxEndlessY(pBox) || result.y < pBox.n[3]) {       
         if (step++ > 10000) break;
         let thingBox = geo.positionedBox(thingBoxSource, result);
-        let collider = await findCollision(B, thing, plane, result, thingBoxSource);
+        let collider = await findCollision(B, thing, plane, result, pBox);
         if (collider) {
-            const colliderBox = geo.positionedBox(collider.physics.box, plane.things[collider.id]);
+            const colliderBoxSource = isEquip
+                                    ? model.getThingBox(collider, geo.fromPositionedBox(pBox))
+                                    : collider.physics.box;
+            const colliderBox = geo.positionedBox(colliderBoxSource, plane.things[collider.id]);
             result.x = colliderBox.n[2] + thingShiftX;
             if (stepY == 0 || stepY > colliderBox.n[3]) {
                 stepY = colliderBox.n[3];
@@ -108,17 +116,23 @@ export async function findCollision(B: BookServer,
                                     thing: ThingData, 
                                     plane: PlaneData, 
                                     position: geo.Position,
-                                    thingBoxSource?: geo.Box) {
+                                    pBox?: geo.PositionedBox) {
     if (thing.equipment.thingSlot) return; // slots never collide;
-    thingBoxSource = thingBoxSource || thing.physics.box;
+    const isEquip = identity.isEquipmentPlaneId(plane.id)
+    const thingBox = isEquip
+                   ? model.getThingBox(thing, geo.fromPositionedBox(pBox))
+                   : thing.physics.box
     for (let id in plane.things) {
         if (id != thing.id) {
             const another = await B.things.load(id);
             const anotherPos = plane.things[id];
+            const anotherBox = isEquip
+                             ? model.getThingBox(another, geo.fromPositionedBox(pBox))
+                             : another.physics.box
             if (!another.equipment.thingSlot &&
                 geo.boxOverlap(
-                geo.positionedBox(thingBoxSource,      position),
-                geo.positionedBox(another.physics.box, anotherPos))) {
+                geo.positionedBox(thingBox,   position),
+                geo.positionedBox(anotherBox, anotherPos))) {
                 return another;
             }
         }

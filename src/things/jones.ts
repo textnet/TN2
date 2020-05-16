@@ -54,6 +54,6 @@ export const template: ThingTemplate = {
 }
 template.thing.constraints[ model.CONSTRAINTS.AUTOPICKING ] = {
     massName: "mass",
-    criticalMass: 2000,
+    criticalMass: 1000,
     reverse: true,
 } as model.ThingConstraint;

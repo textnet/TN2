@@ -206,8 +206,10 @@ export function scalePositionedBox(pbox: PositionedBox, scaleFactor: number) {
 }
 
 export function fitBoxInBox(inner: Box, outer: Box) {
-    const scale = deriveBoxScale(inner, outer);
-    console.log("@@ fitB-B", scale)
+    let scale = deriveBoxScale(inner, outer);
+    if (scale > 1) {
+        scale = 1;
+    }
     return scaleBox(inner, scale);
 }
 export function deriveBoxScale(inner: Box, outer: Box) {
@@ -233,6 +235,14 @@ export function positionedBox(box: Box, position?: Position) {
     aBox.n[2] = aBox.n[0] + box.w;
     aBox.n[3] = aBox.n[1] + box.h;
     return aBox;
+}
+export function fromPositionedBox(pbox: PositionedBox) {
+    if (!pbox) return;
+    const box = {
+        w: pbox.n[2]-pbox.n[0],
+        h: pbox.n[3]-pbox.n[1]
+    } as Box;
+    return box;
 }
 
 export function boxOverlap(aBox?: PositionedBox, bBox?: PositionedBox) {

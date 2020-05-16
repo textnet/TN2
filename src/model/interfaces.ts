@@ -119,7 +119,6 @@ export function getThingBox(thing: ThingData, slotBox?: geo.Box) {
         baseline = thing.equipment.thingSprite.size;
     }
     if (thing.equipment.thingScale && slotBox) {
-        console.log("@@ scaling")
         return geo.fitBoxInBox(baseline, slotBox)
     } else {
         return baseline;
@@ -156,7 +155,7 @@ export const EQUIPMENT_DEFAULT: ThingEquipmentMap = {
     default:     "Hands",
     autopicking: "Backpack",
     everything:  "Equipment",
-    scaleSlots:  0.75,
+    scaleSlots:  1, // 0.75,
     thingSprite: undefined,
     thingScale:  false,
 }

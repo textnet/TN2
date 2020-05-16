@@ -120,7 +120,9 @@ async function checkAutoPickup(B: BookServer, fullEventData: events.EventFullDat
     const subject = await B.things.load(subjectId);
     const object  = await B.things.load(objectId);
     if (subject && object && 
-        model.isCapable(model.CONSTRAINTS.AUTOPICKING, subject, object, true)) {
+        model.isCapable(model.CONSTRAINTS.AUTOPICKING, subject, object, true) &&
+        subject.equipment.autopicking
+        ) {
         await actions.action(B, {
             action:   actions.ACTION.EQUIP,
             actorId:  subjectId,

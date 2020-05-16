@@ -4,6 +4,50 @@
 		"selected_items":
 		[
 			[
+				"auto",
+				"autopicking\tproperty"
+			],
+			[
+				"tbo",
+				"thingBoxSource\tconst"
+			],
+			[
+				"eq",
+				"equipment_sprites\tscript"
+			],
+			[
+				"scal",
+				"scaleBox\tfunction"
+			],
+			[
+				"v",
+				"visualScale"
+			],
+			[
+				"rende",
+				"renderSprite\tlet"
+			],
+			[
+				"redner",
+				"renderSprite"
+			],
+			[
+				"ani",
+				"animaThing\tconst"
+			],
+			[
+				"poi",
+				"positionedBox\tfunction"
+			],
+			[
+				"get",
+				"getSlot\tfunction"
+			],
+			[
+				"bo",
+				"boxInBounds\tfunction"
+			],
+			[
 				"thS",
 				"thingScale"
 			],
@@ -56,10 +100,6 @@
 				"scaleFactor\tproperty"
 			],
 			[
-				"scal",
-				"scaleFactor\tproperty"
-			],
-			[
 				"eplan",
 				"equipmentPlane\tconst"
 			],
@@ -74,10 +114,6 @@
 			[
 				"_sc",
 				"_slotScale\tproperty"
-			],
-			[
-				"eq",
-				"equipment\tproperty"
 			],
 			[
 				"Posi",
@@ -320,10 +356,6 @@
 				"positionedBox\tfunction"
 			],
 			[
-				"get",
-				"getEquipmentPlane\tmethod"
-			],
-			[
 				"getB",
 				"getBookServers"
 			],
@@ -482,38 +514,6 @@
 			[
 				"createpla",
 				"createPlaneFromAnotherId\tfunction"
-			],
-			[
-				"origin",
-				"originalPlane\tconst"
-			],
-			[
-				"planeN",
-				"extractPlaneName\tfunction"
-			],
-			[
-				"bo",
-				"boxNextTo\tfunction"
-			],
-			[
-				"TH",
-				"ThingData\talias"
-			],
-			[
-				"WT",
-				"WrittenThing\tinterface"
-			],
-			[
-				"Writt",
-				"WrittenThing\talias"
-			],
-			[
-				"rotat",
-				"rotationDir\tfunction"
-			],
-			[
-				"Way",
-				"WaypointTurnTo\tinterface"
 			]
 		]
 	},
@@ -523,7 +523,16 @@
 			"file": "README.md",
 			"settings":
 			{
-				"buffer_size": 5752,
+				"buffer_size": 6413,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/commandline/script.ts",
+			"settings":
+			{
+				"buffer_size": 1220,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -532,16 +541,35 @@
 			"file": "src/model/equipment.ts",
 			"settings":
 			{
-				"buffer_size": 8590,
+				"buffer_size": 10123,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/gui/messages.ts",
+			"file": "src/things/tent.ts",
 			"settings":
 			{
-				"buffer_size": 4969,
+				"buffer_size": 14011,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 120 files for \"\"\"\" (case sensitive)\n\n/Users/nyaremko/TN2/src/utils.ts:\n   10  \n   11  export function strip(s) {\n   12:     const ss = s.replace(/^\\s+/, \"\");\n   13:     return ss.replace(/\\s+$/, \"\")\n   14  }\n   15  \n\n/Users/nyaremko/TN2/src/anima/written/detect.ts:\n   34          if (config.debug.verboseConsole) {\n   35              cl.verboseLog(await this.str() + ` <Written Word> ready.` + \n   36:                           ((permanent||hasSubscriptions)?\" And left alive.\":\"\"));    \n   37          }\n   38          if (!permanent || hasSubscriptions) {\n   ..\n   42  \n   43      async call(code: string) {\n   44:         if (strip(code) != \"\") {\n   45              await this.prepareMemory()\n   46              let success = fengari_load(this.L, code);\n   ..\n  162  export async function capture(B: BookServer, thing: ThingData) {\n  163      const source = await extractSource(B, thing);\n  164:     if (strip(source) != \"\") {\n  165          return new WrittenAnima(B, thing.id, source);\n  166      } else {\n\n/Users/nyaremko/TN2/src/anima/written/interop.ts:\n   57  `this` isn't allowed to be null, so bind the empty string\n   58  */\n   59: const toString = String.prototype.concat.bind(\"\");\n   60  \n   61  const isobject = function(o) {\n\n/Users/nyaremko/TN2/src/anima/written/library.ts:\n   74      \"move_by\":  { signature: [\"thing\", \"dx\", \"dy\", \"direction\", \n   75                                \"distance\", \"duration\", \"angle\"],       f: spatials.move_by  },\n   76:     \"turn_to\":  { signature: [\"thing\", \"\", \"\", \"\", \"\", \"\", \"angle\"],  f: spatials.move_by  },\n   77      \"halt\":     { signature: [\"thing\", ],                             f: spatials.halt },\n   78  \n\n/Users/nyaremko/TN2/src/anima/written/parser.ts:\n   17  export function getChunks(input) {\n   18      let lines = input.split(\"\\n\");\n   19:     lines.push(\"\");\n   20      let inCode = false;\n   21      let pushChunk = false;\n\n/Users/nyaremko/TN2/src/anima/written/library/debug.ts:\n   53              const pos = plane.things[thing.id];\n   54              const name = print.str(thing);\n   55:             const planePrefix = (animaThing.hostPlaneId == plane.id)?\"\":`${print.str(plane)} -> `\n   56              cl.log(`- {x:${pos.x}, y:${pos.y}, z:${pos.z}}<${geo.directionName(pos)}> ${name}`)\n   57          }\n\n/Users/nyaremko/TN2/src/anima/written/library/get.ts:\n  129  export function get_next( A: WrittenAnima, direction: string|number) {\n  130      const thing = A.things.load(A.thingId);\n  131:     let dir = geo.toDir(\"\"+direction);\n  132      if (geo.isIdle(dir)) {\n  133:         const rotation = parseInt(\"\"+direction, 10);\n  134          if (rotation != NaN) {\n  135              dir = geo.toDir(\"NONE\", 1, rotation);\n\n/Users/nyaremko/TN2/src/commandline/print.ts:\n   66  \n   67  export function strThing(thing: ThingData, short?:boolean) {\n   68:     return `${thing.sprite.symbol}«${thing.name}»` + (short?\"\":` id:${thing.id}`);\n   69  }\n   70  \n\n/Users/nyaremko/TN2/src/commandline/script.ts:\n   22      const lines = setupScript.split(\"\\n\");\n   23      for (let line of lines) {\n   24:         line = line.replace(/^\\s+/, \"\").replace(/\\s+$/, \"\");\n   25:         if (line != \"\" && line.substr(0,2) != \"--\") {\n   26              await call(library, line);\n   27          }\n\n/Users/nyaremko/TN2/src/console/console.ts:\n   25              this.id = `<observer:${thingId}>`\n   26          }\n   27:         this.anima = new WrittenAnima(this.B, thingId, \"\");\n   28          await this.anima.animate(ANIMA.PERMANENT);\n   29          await this.anima.prepareMemory();\n\n/Users/nyaremko/TN2/src/electron/window.ts:\n   23          mainWindow.webContents.openDevTools({mode:\"bottom\"})   // ({ mode:\"detach\" })\n   24      }\n   25:     const id = gui.id + (gui.isObserver?\"//observer\":\"\");\n   26      await mainWindow.loadFile('dist/index.html', { search: id });\n   27      mainWindow.on(\"close\", (e)=>{ \n\n/Users/nyaremko/TN2/src/gui/sprite.ts:\n   39              let rows = 0;\n   40              for (let code in sprite.mapping) {\n   41:                 const shortCode = code.replace(/\\s+/g,\"\");\n   42                  mapping[shortCode] = sprite.mapping[code];\n   43                  if (sprite.mapping[code][0] > rows) {\n   ..\n   48              rows +=1;\n   49              const steps = this.sprite.steps || 1;\n   50:             let mainTexture = new ex.Texture(\"\");\n   51              mainTexture.setData(b64toBlob(this.sprite.base64, \"image/png\"))\n   52              mainTexture.load()\n\n/Users/nyaremko/TN2/src/model/geometry.ts:\n  116  }\n  117  export function toDir(name: string, length?:number, rotation?: number) {\n  118:     name = (name || \"\").toUpperCase();\n  119      if (!DIRECTION[name]) return deepCopy(DIRECTION.NONE);\n  120      length = length || 1;\n\n/Users/nyaremko/TN2/src/model/sprites.ts:\n   68      const myState     = state       === undefined? STATE.IDLE     : state;\n   69      const myDir       = dir         === undefined? DIR.NONE       : dir;\n   70:     const myAnimation = (animation || ANIMATION.MAIN == ANIMATION.MAIN) ? \"\" : `->${animation}`;\n   71      return `${myState}(${myDir})${myAnimation}`;\n   72  }\n\n/Users/nyaremko/TN2/src/network/discovery.ts:\n   91              book.receiveConnection(info.id)\n   92              // incoming -----------------------------------------\n   93:             let connectionDataTail = \"\";\n   94              conn.on('data', data => {\n   95                  // console.log(`${id}: Tail -->`, connectionDataTail)\n\n/Users/nyaremko/TN2/src/storage/repo.ts:\n   23      constructor(prefix: string, bookId: string, server?: BookServer) {\n   24          this.prefix = prefix;\n   25:         this.bookId = bookId || \"\";\n   26          this.storage = createStorage(this.bookId+\".\"+this.prefix);\n   27          this.isFree = false;\n\n/Users/nyaremko/TN2/src/things/book.ts:\n   25          ownerId: \"<ownerId>\",\n   26          things: {},\n   27:         text: \"\",\n   28      },\n   29      equipment: {\n   ..\n   31          ownerId: \"<ownerId>\",\n   32          things: {},\n   33:         text: \"\",\n   34      }\n   35  }\n\n/Users/nyaremko/TN2/src/things/chest.ts:\n   25          ownerId: \"<ownerId>\",\n   26          things: {},\n   27:         text: \"\",\n   28      }\n   29  }\n\n/Users/nyaremko/TN2/src/things/equipment.ts:\n   34          ownerId: \"<ownerId>\",\n   35          things: {},\n   36:         text: \"\",\n   37      }\n   38  }\n\n/Users/nyaremko/TN2/src/things/hay.ts:\n   28          ownerId: \"<ownerId>\",\n   29          things: {},\n   30:         text: \"\",\n   31      }\n   32  }\n\n/Users/nyaremko/TN2/src/things/jones.ts:\n   41          ownerId: \"<ownerId>\",\n   42          things: {},\n   43:         text: \"\",\n   44      },\n   45      equipment : {\n   ..\n   47          ownerId: \"<ownerId>\",\n   48          things: {},\n   49:         text: \"\",\n   50          physics: {\n   51              box: { w: 250, h: 350 },\n\n/Users/nyaremko/TN2/src/things/limbo_portal.ts:\n   36          ownerId: \"<ownerId>\",\n   37          things: {},\n   38:         text: \"\",\n   39      }\n   40  }\n\n/Users/nyaremko/TN2/src/things/piano.ts:\n   25          ownerId: \"<ownerId>\",\n   26          things: {},\n   27:         text: \"\",\n   28      }\n   29  }\n\n/Users/nyaremko/TN2/src/things/slot.ts:\n   35          ownerId: \"<ownerId>\",\n   36          things: {},\n   37:         text: \"\",\n   38      }\n   39  }\n\n/Users/nyaremko/TN2/src/things/slot_mega.ts:\n   35          ownerId: \"<ownerId>\",\n   36          things: {},\n   37:         text: \"\",\n   38      }\n   39  }\n\n/Users/nyaremko/TN2/src/things/something.ts:\n   27          ownerId: \"<ownerId>\",\n   28          things: {},\n   29:         text: \"\",\n   30      }\n   31  }\n\n/Users/nyaremko/TN2/src/things/tent.ts:\n   32          ownerId: \"<ownerId>\",\n   33          things: {},\n   34:         text: \"\",\n   35      }\n   36  }\n\n/Users/nyaremko/TN2/src/z.gfx_temp/TN2.sketch:\n    <binary>\n\n107 matches across 28 files\n\n\nSearching 120 files for \"@@\" (case sensitive)\n\n/Users/nyaremko/TN2/src/anima/anima.ts:\n  124          subject.equipment.autopicking\n  125          ) {\n  126:         console.log(\"@@@@@@@@ AUTOPICKING\")\n  127          await actions.action(B, {\n  128              action:   actions.ACTION.EQUIP,\n\n/Users/nyaremko/TN2/src/behaviour/actions/equipment.ts:\n   17      if (!interfaces.checkConstraint(actor.physics, thing.constraints[ interfaces.CONSTRAINTS.PICKABLE ])) return false;\n   18      // 3. transfer\n   19:     console.log(\"@@@@ entering transfer\")\n   20      if (!await equipment.transferToSlot(B, action.actorId, action.thingId, action.equipThingId, action.slotName)) return false;\n   21      // 2. event\n   ..\n   28          slotName: action.slotName,\n   29      } as events.EventEquip);\n   30:     // @@\n   31      await print.debugEquipment(B, action.actorId);\n   32  }\n   ..\n   58  \n   59  export async function unEquip(B: BookServer, action: actions.ActionUnEquip) {\n   60:     console.log(\"@@ action unequip\")\n   61      const actor = await B.things.load(action.actorId);\n   62      const plane = await B.planes.load(actor.hostPlaneId);\n\n/Users/nyaremko/TN2/src/behaviour/actions/spatials.ts:\n   79      const thingShiftX = thingBoxSource.w/2 - (thingBoxSource.anchor ? thingBoxSource.anchor.x : 0);\n   80      const thingShiftY = thingBoxSource.h/2 - (thingBoxSource.anchor ? thingBoxSource.anchor.y : 0);\n   81:     console.log(\"@@ shiftX\", thingShiftX, result)\n   82      let step = 0;\n   83      let firstTime = true;\n   ..\n   85          if (step++ > 10000) break;\n   86          let thingBox = geo.positionedBox(thingBoxSource, result);\n   87:         console.log(\"@@ next fitting...\", thingBox)\n   88          let collider = await findCollision(B, thing, plane, result, thingBoxSource);\n   89          if (collider) {\n\n/Users/nyaremko/TN2/src/gui/messages.ts:\n  131      let renderPhysics = physics.patchThingPhysics(thing.physics);\n  132      let renderSprite = thing.sprite;\n  133:     console.log(\"@@ render scale?\", thing.id, thing.equipment.thingScale, slot?true:false)\n  134      if (slot) {\n  135          if (thing.equipment.thingSprite) {\n  ...\n  142              }\n  143              renderPhysics.box =  model.getThingBox(thing, slot.physics.box);\n  144:             console.log(\"@@ visualScale\", renderSprite.visualScale)\n  145          }\n  146      }\n\n/Users/nyaremko/TN2/src/gui/server/subscribe.ts:\n   90  mapping[events.EVENT.UN_EQUIP] = \n   91  async function(gui: GuiConsole, e: events.EventUnEquip) {\n   92:     console.log(\"@@ unequip\")\n   93      const thingData = await msg.renderThingData(gui.B, e.thingId);\n   94      return gui.send(msg.RENDER.UN_EQUIP, {\n\n/Users/nyaremko/TN2/src/model/equipment.ts:\n   32          for (let slot of slots[slotName]) {\n   33              const thing = await findClosest(B, equipmentPlane, slot.position, slot.physics.box);\n   34:             console.log(\"@@ found?\", thing?thing.id: \"no at\", slot.physics.box)\n   35              if (thing) return thing;\n   36          }\n   ..\n   38      }\n   39      const thing = await findClosest(B, equipmentPlane);    \n   40:     console.log(\"@@ no slots found?\", thing?thing.id: \"no\")\n   41      return thing;\n   42  }\n   ..\n  154  \n  155  \n  156: // @@@@\n  157  //\n  158  // TODO: figure out why we can't place a tent properly.\n  159  //\n  160: // @@@@\n  161  \n  162  export async function transferToSlot(B: BookServer, actorId: string, thingId: string,\n  ...\n  171      if (slots[slotName] || slotName==targetThing.equipment.default) {\n  172          // there is a proper slot\n  173:         console.log(\"@@@ - proper slot to transfer to\")\n  174          let slotBox, position;\n  175          for (let i in slots[slotName]) {\n  ...\n  185              }\n  186              target = await spatials.findNextFitting(B, thing, equipmentPlane, position, slotBox, thingBoxSource);\n  187:             console.log(\"@@ transfer\", thing.id, thingBoxSource, position, target)\n  188              if (target) break;\n  189          }\n  ...\n  215                                              targetPosition: geo.Position) {\n  216      if (thing) {\n  217:         console.log(\"@@ transferring back\")\n  218          return await actions.action(B, {\n  219              action:   actions.ACTION.TRANSFER,\n  ...\n  239          const thingBox = model.getThingBox(thing, bounds);\n  240          const tBox = geo.positionedBox( thingBox, plane.things[id]);\n  241:         console.log(\"@@\", thing.id, thingBox, bounds, plane.things[id], position)\n  242:         console.log(\"@@\", tBox, pBox, geo.boxInBounds(tBox, pBox))\n  243          if (!thing.equipment.thingSlot && (!bounds || geo.boxInBounds(tBox, pBox))) {\n  244              const dist = geo.distance(position, plane.things[id]);\n  245:             console.log(\"@@ distance\", dist)\n  246              if (min.id === undefined || min.dist > dist) {\n  247:                 console.log(\"@@ found!\", min.id)\n  248                  min.id = id;\n  249                  min.dist = dist;\n\n/Users/nyaremko/TN2/src/model/geometry.ts:\n  211          scale = 1;\n  212      }\n  213:     console.log(\"@@ fitB-B\", scale)\n  214      return scaleBox(inner, scale);\n  215  }\n\n/Users/nyaremko/TN2/src/model/interfaces.ts:\n  120      }\n  121      if (thing.equipment.thingScale && slotBox) {\n  122:         console.log(\"@@ scaling\")\n  123          return geo.fitBoxInBox(baseline, slotBox)\n  124      } else {\n\n/Users/nyaremko/TN2/src/z.gfx_temp/TN2.sketch:\n    <binary>\n\n114 matches across 9 files\n\n\nSearching 120 files for \"@@\" (case sensitive)\n\n/Users/nyaremko/TN2/src/behaviour/actions/equipment.ts:\n   17      if (!interfaces.checkConstraint(actor.physics, thing.constraints[ interfaces.CONSTRAINTS.PICKABLE ])) return false;\n   18      // 3. transfer\n   19:     console.log(\"@@@@ entering transfer\")\n   20      if (!await equipment.transferToSlot(B, action.actorId, action.thingId, action.equipThingId, action.slotName)) return false;\n   21      // 2. event\n   ..\n   28          slotName: action.slotName,\n   29      } as events.EventEquip);\n   30:     // @@\n   31      await print.debugEquipment(B, action.actorId);\n   32  }\n   ..\n   58  \n   59  export async function unEquip(B: BookServer, action: actions.ActionUnEquip) {\n   60:     console.log(\"@@ action unequip\")\n   61      const actor = await B.things.load(action.actorId);\n   62      const plane = await B.planes.load(actor.hostPlaneId);\n\n/Users/nyaremko/TN2/src/behaviour/actions/spatials.ts:\n   79      const thingShiftX = thingBoxSource.w/2 - (thingBoxSource.anchor ? thingBoxSource.anchor.x : 0);\n   80      const thingShiftY = thingBoxSource.h/2 - (thingBoxSource.anchor ? thingBoxSource.anchor.y : 0);\n   81:     console.log(\"@@ shiftX\", thingShiftX, result)\n   82      let step = 0;\n   83      let firstTime = true;\n   ..\n   85          if (step++ > 10000) break;\n   86          let thingBox = geo.positionedBox(thingBoxSource, result);\n   87:         console.log(\"@@ next fitting...\", thingBox)\n   88          let collider = await findCollision(B, thing, plane, result, thingBoxSource);\n   89          if (collider) {\n\n/Users/nyaremko/TN2/src/gui/messages.ts:\n  131      let renderPhysics = physics.patchThingPhysics(thing.physics);\n  132      let renderSprite = thing.sprite;\n  133:     console.log(\"@@ render scale?\", thing.id, thing.equipment.thingScale, slot?true:false)\n  134      if (slot) {\n  135          if (thing.equipment.thingSprite) {\n  ...\n  142              }\n  143              renderPhysics.box =  model.getThingBox(thing, slot.physics.box);\n  144:             console.log(\"@@ visualScale\", renderSprite.visualScale)\n  145          }\n  146      }\n\n/Users/nyaremko/TN2/src/gui/server/subscribe.ts:\n   90  mapping[events.EVENT.UN_EQUIP] = \n   91  async function(gui: GuiConsole, e: events.EventUnEquip) {\n   92:     console.log(\"@@ unequip\")\n   93      const thingData = await msg.renderThingData(gui.B, e.thingId);\n   94      return gui.send(msg.RENDER.UN_EQUIP, {\n\n/Users/nyaremko/TN2/src/model/equipment.ts:\n   32          for (let slot of slots[slotName]) {\n   33              const thing = await findClosest(B, equipmentPlane, slot.position, slot.physics.box);\n   34:             console.log(\"@@ found?\", thing?thing.id: \"no at\", slot.physics.box)\n   35              if (thing) return thing;\n   36          }\n   ..\n   38      }\n   39      const thing = await findClosest(B, equipmentPlane);    \n   40:     console.log(\"@@ no slots found?\", thing?thing.id: \"no\")\n   41      return thing;\n   42  }\n   ..\n  154  \n  155  \n  156: // @@@@\n  157  //\n  158  // TODO: figure out why we can't place a tent properly.\n  159  //\n  160: // @@@@\n  161  \n  162  export async function transferToSlot(B: BookServer, actorId: string, thingId: string,\n  ...\n  171      if (slots[slotName] || slotName==targetThing.equipment.default) {\n  172          // there is a proper slot\n  173:         console.log(\"@@@ - proper slot to transfer to\")\n  174          let slotBox, position;\n  175          for (let i in slots[slotName]) {\n  ...\n  185              }\n  186              target = await spatials.findNextFitting(B, thing, equipmentPlane, position, slotBox, thingBoxSource);\n  187:             console.log(\"@@ transfer\", thing.id, thingBoxSource, position, target)\n  188              if (target) break;\n  189          }\n  ...\n  215                                              targetPosition: geo.Position) {\n  216      if (thing) {\n  217:         console.log(\"@@ transferring back\")\n  218          return await actions.action(B, {\n  219              action:   actions.ACTION.TRANSFER,\n  ...\n  239          const thingBox = model.getThingBox(thing, bounds);\n  240          const tBox = geo.positionedBox( thingBox, plane.things[id]);\n  241:         console.log(\"@@\", thing.id, thingBox, bounds, plane.things[id], position)\n  242:         console.log(\"@@\", tBox, pBox, geo.boxInBounds(tBox, pBox))\n  243          if (!thing.equipment.thingSlot && (!bounds || geo.boxInBounds(tBox, pBox))) {\n  244              const dist = geo.distance(position, plane.things[id]);\n  245:             console.log(\"@@ distance\", dist)\n  246              if (min.id === undefined || min.dist > dist) {\n  247:                 console.log(\"@@ found!\", min.id)\n  248                  min.id = id;\n  249                  min.dist = dist;\n\n/Users/nyaremko/TN2/src/model/geometry.ts:\n  211          scale = 1;\n  212      }\n  213:     console.log(\"@@ fitB-B\", scale)\n  214      return scaleBox(inner, scale);\n  215  }\n\n/Users/nyaremko/TN2/src/model/interfaces.ts:\n  120      }\n  121      if (thing.equipment.thingScale && slotBox) {\n  122:         console.log(\"@@ scaling\")\n  123          return geo.fitBoxInBox(baseline, slotBox)\n  124      } else {\n\n/Users/nyaremko/TN2/src/z.gfx_temp/TN2.sketch:\n    <binary>\n\n110 matches across 8 files\n\n\nSearching 120 files for \"@@\" (case sensitive)\n\n/Users/nyaremko/TN2/src/behaviour/actions/spatials.ts:\n   79      const thingShiftX = thingBoxSource.w/2 - (thingBoxSource.anchor ? thingBoxSource.anchor.x : 0);\n   80      const thingShiftY = thingBoxSource.h/2 - (thingBoxSource.anchor ? thingBoxSource.anchor.y : 0);\n   81:     console.log(\"@@ shiftX\", thingShiftX, result)\n   82      let step = 0;\n   83      let firstTime = true;\n   ..\n   85          if (step++ > 10000) break;\n   86          let thingBox = geo.positionedBox(thingBoxSource, result);\n   87:         console.log(\"@@ next fitting...\", thingBox)\n   88          let collider = await findCollision(B, thing, plane, result, thingBoxSource);\n   89          if (collider) {\n\n/Users/nyaremko/TN2/src/gui/messages.ts:\n  131      let renderPhysics = physics.patchThingPhysics(thing.physics);\n  132      let renderSprite = thing.sprite;\n  133:     console.log(\"@@ render scale?\", thing.id, thing.equipment.thingScale, slot?true:false)\n  134      if (slot) {\n  135          if (thing.equipment.thingSprite) {\n  ...\n  142              }\n  143              renderPhysics.box =  model.getThingBox(thing, slot.physics.box);\n  144:             console.log(\"@@ visualScale\", renderSprite.visualScale)\n  145          }\n  146      }\n\n/Users/nyaremko/TN2/src/gui/server/subscribe.ts:\n   90  mapping[events.EVENT.UN_EQUIP] = \n   91  async function(gui: GuiConsole, e: events.EventUnEquip) {\n   92:     console.log(\"@@ unequip\")\n   93      const thingData = await msg.renderThingData(gui.B, e.thingId);\n   94      return gui.send(msg.RENDER.UN_EQUIP, {\n\n/Users/nyaremko/TN2/src/model/equipment.ts:\n   32          for (let slot of slots[slotName]) {\n   33              const thing = await findClosest(B, equipmentPlane, slot.position, slot.physics.box);\n   34:             console.log(\"@@ found?\", thing?thing.id: \"no at\", slot.physics.box)\n   35              if (thing) return thing;\n   36          }\n   ..\n   38      }\n   39      const thing = await findClosest(B, equipmentPlane);    \n   40:     console.log(\"@@ no slots found?\", thing?thing.id: \"no\")\n   41      return thing;\n   42  }\n   ..\n  154  \n  155  \n  156: // @@@@\n  157  //\n  158  // TODO: figure out why we can't place a tent properly.\n  159  //\n  160: // @@@@\n  161  \n  162  export async function transferToSlot(B: BookServer, actorId: string, thingId: string,\n  ...\n  171      if (slots[slotName] || slotName==targetThing.equipment.default) {\n  172          // there is a proper slot\n  173:         console.log(\"@@@ - proper slot to transfer to\")\n  174          let slotBox, position;\n  175          for (let i in slots[slotName]) {\n  ...\n  185              }\n  186              target = await spatials.findNextFitting(B, thing, equipmentPlane, position, slotBox, thingBoxSource);\n  187:             console.log(\"@@ transfer\", thing.id, thingBoxSource, position, target)\n  188              if (target) break;\n  189          }\n  ...\n  215                                              targetPosition: geo.Position) {\n  216      if (thing) {\n  217:         console.log(\"@@ transferring back\")\n  218          return await actions.action(B, {\n  219              action:   actions.ACTION.TRANSFER,\n  ...\n  239          const thingBox = model.getThingBox(thing, bounds);\n  240          const tBox = geo.positionedBox( thingBox, plane.things[id]);\n  241:         console.log(\"@@\", thing.id, thingBox, bounds, plane.things[id], position)\n  242:         console.log(\"@@\", tBox, pBox, geo.boxInBounds(tBox, pBox))\n  243          if (!thing.equipment.thingSlot && (!bounds || geo.boxInBounds(tBox, pBox))) {\n  244              const dist = geo.distance(position, plane.things[id]);\n  245:             console.log(\"@@ distance\", dist)\n  246              if (min.id === undefined || min.dist > dist) {\n  247:                 console.log(\"@@ found!\", min.id)\n  248                  min.id = id;\n  249                  min.dist = dist;\n\n/Users/nyaremko/TN2/src/model/geometry.ts:\n  211          scale = 1;\n  212      }\n  213:     console.log(\"@@ fitB-B\", scale)\n  214      return scaleBox(inner, scale);\n  215  }\n\n/Users/nyaremko/TN2/src/model/interfaces.ts:\n  120      }\n  121      if (thing.equipment.thingScale && slotBox) {\n  122:         console.log(\"@@ scaling\")\n  123          return geo.fitBoxInBox(baseline, slotBox)\n  124      } else {\n\n/Users/nyaremko/TN2/src/z.gfx_temp/TN2.sketch:\n    <binary>\n\n106 matches across 7 files\n\n\nSearching 120 files for \"@@\" (case sensitive)\n\n/Users/nyaremko/TN2/src/gui/messages.ts:\n  131      let renderPhysics = physics.patchThingPhysics(thing.physics);\n  132      let renderSprite = thing.sprite;\n  133:     console.log(\"@@ render scale?\", thing.id, thing.equipment.thingScale, slot?true:false)\n  134      if (slot) {\n  135          if (thing.equipment.thingSprite) {\n  ...\n  142              }\n  143              renderPhysics.box =  model.getThingBox(thing, slot.physics.box);\n  144:             console.log(\"@@ visualScale\", renderSprite.visualScale)\n  145          }\n  146      }\n\n/Users/nyaremko/TN2/src/gui/server/subscribe.ts:\n   90  mapping[events.EVENT.UN_EQUIP] = \n   91  async function(gui: GuiConsole, e: events.EventUnEquip) {\n   92:     console.log(\"@@ unequip\")\n   93      const thingData = await msg.renderThingData(gui.B, e.thingId);\n   94      return gui.send(msg.RENDER.UN_EQUIP, {\n\n/Users/nyaremko/TN2/src/model/equipment.ts:\n   32          for (let slot of slots[slotName]) {\n   33              const thing = await findClosest(B, equipmentPlane, slot.position, slot.physics.box);\n   34:             console.log(\"@@ found?\", thing?thing.id: \"no at\", slot.physics.box)\n   35              if (thing) return thing;\n   36          }\n   ..\n   38      }\n   39      const thing = await findClosest(B, equipmentPlane);    \n   40:     console.log(\"@@ no slots found?\", thing?thing.id: \"no\")\n   41      return thing;\n   42  }\n   ..\n  154  \n  155  \n  156: // @@@@\n  157  //\n  158  // TODO: figure out why we can't place a tent properly.\n  159  //\n  160: // @@@@\n  161  \n  162  export async function transferToSlot(B: BookServer, actorId: string, thingId: string,\n  ...\n  171      if (slots[slotName] || slotName==targetThing.equipment.default) {\n  172          // there is a proper slot\n  173:         console.log(\"@@@ - proper slot to transfer to\")\n  174          let slotBox, position;\n  175          for (let i in slots[slotName]) {\n  ...\n  185              }\n  186              target = await spatials.findNextFitting(B, thing, equipmentPlane, position, slotBox, thingBoxSource);\n  187:             console.log(\"@@ transfer\", thing.id, thingBoxSource, position, target)\n  188              if (target) break;\n  189          }\n  ...\n  215                                              targetPosition: geo.Position) {\n  216      if (thing) {\n  217:         console.log(\"@@ transferring back\")\n  218          return await actions.action(B, {\n  219              action:   actions.ACTION.TRANSFER,\n  ...\n  239          const thingBox = model.getThingBox(thing, bounds);\n  240          const tBox = geo.positionedBox( thingBox, plane.things[id]);\n  241:         console.log(\"@@\", thing.id, thingBox, bounds, plane.things[id], position)\n  242:         console.log(\"@@\", tBox, pBox, geo.boxInBounds(tBox, pBox))\n  243          if (!thing.equipment.thingSlot && (!bounds || geo.boxInBounds(tBox, pBox))) {\n  244              const dist = geo.distance(position, plane.things[id]);\n  245:             console.log(\"@@ distance\", dist)\n  246              if (min.id === undefined || min.dist > dist) {\n  247:                 console.log(\"@@ found!\", min.id)\n  248                  min.id = id;\n  249                  min.dist = dist;\n\n/Users/nyaremko/TN2/src/model/geometry.ts:\n  211          scale = 1;\n  212      }\n  213:     console.log(\"@@ fitB-B\", scale)\n  214      return scaleBox(inner, scale);\n  215  }\n\n/Users/nyaremko/TN2/src/model/interfaces.ts:\n  120      }\n  121      if (thing.equipment.thingScale && slotBox) {\n  122:         console.log(\"@@ scaling\")\n  123          return geo.fitBoxInBox(baseline, slotBox)\n  124      } else {\n\n/Users/nyaremko/TN2/src/z.gfx_temp/TN2.sketch:\n    <binary>\n\n104 matches across 6 files\n\n\nSearching 120 files for \"@@\" (case sensitive)\n\n/Users/nyaremko/TN2/src/gui/messages.ts:\n  141              }\n  142              renderPhysics.box =  model.getThingBox(thing, slot.physics.box);\n  143:             console.log(\"@@ visualScale\", renderSprite.visualScale)\n  144          }\n  145      }\n\n/Users/nyaremko/TN2/src/gui/server/subscribe.ts:\n   90  mapping[events.EVENT.UN_EQUIP] = \n   91  async function(gui: GuiConsole, e: events.EventUnEquip) {\n   92:     console.log(\"@@ unequip\")\n   93      const thingData = await msg.renderThingData(gui.B, e.thingId);\n   94      return gui.send(msg.RENDER.UN_EQUIP, {\n\n/Users/nyaremko/TN2/src/model/equipment.ts:\n   32          for (let slot of slots[slotName]) {\n   33              const thing = await findClosest(B, equipmentPlane, slot.position, slot.physics.box);\n   34:             console.log(\"@@ found?\", thing?thing.id: \"no at\", slot.physics.box)\n   35              if (thing) return thing;\n   36          }\n   ..\n   38      }\n   39      const thing = await findClosest(B, equipmentPlane);    \n   40:     console.log(\"@@ no slots found?\", thing?thing.id: \"no\")\n   41      return thing;\n   42  }\n   ..\n  154  \n  155  \n  156: // @@@@\n  157  //\n  158  // TODO: figure out why we can't place a tent properly.\n  159  //\n  160: // @@@@\n  161  \n  162  export async function transferToSlot(B: BookServer, actorId: string, thingId: string,\n  ...\n  171      if (slots[slotName] || slotName==targetThing.equipment.default) {\n  172          // there is a proper slot\n  173:         console.log(\"@@@ - proper slot to transfer to\")\n  174          let slotBox, position;\n  175          for (let i in slots[slotName]) {\n  ...\n  185              }\n  186              target = await spatials.findNextFitting(B, thing, equipmentPlane, position, slotBox, thingBoxSource);\n  187:             console.log(\"@@ transfer\", thing.id, thingBoxSource, position, target)\n  188              if (target) break;\n  189          }\n  ...\n  215                                              targetPosition: geo.Position) {\n  216      if (thing) {\n  217:         console.log(\"@@ transferring back\")\n  218          return await actions.action(B, {\n  219              action:   actions.ACTION.TRANSFER,\n  ...\n  239          const thingBox = model.getThingBox(thing, bounds);\n  240          const tBox = geo.positionedBox( thingBox, plane.things[id]);\n  241:         console.log(\"@@\", thing.id, thingBox, bounds, plane.things[id], position)\n  242:         console.log(\"@@\", tBox, pBox, geo.boxInBounds(tBox, pBox))\n  243          if (!thing.equipment.thingSlot && (!bounds || geo.boxInBounds(tBox, pBox))) {\n  244              const dist = geo.distance(position, plane.things[id]);\n  245:             console.log(\"@@ distance\", dist)\n  246              if (min.id === undefined || min.dist > dist) {\n  247:                 console.log(\"@@ found!\", min.id)\n  248                  min.id = id;\n  249                  min.dist = dist;\n\n/Users/nyaremko/TN2/src/model/geometry.ts:\n  211          scale = 1;\n  212      }\n  213:     console.log(\"@@ fitB-B\", scale)\n  214      return scaleBox(inner, scale);\n  215  }\n\n/Users/nyaremko/TN2/src/model/interfaces.ts:\n  120      }\n  121      if (thing.equipment.thingScale && slotBox) {\n  122:         console.log(\"@@ scaling\")\n  123          return geo.fitBoxInBox(baseline, slotBox)\n  124      } else {\n\n/Users/nyaremko/TN2/src/z.gfx_temp/TN2.sketch:\n    <binary>\n\n103 matches across 6 files\n\n\nSearching 120 files for \"@@\" (case sensitive)\n\n/Users/nyaremko/TN2/src/gui/server/subscribe.ts:\n   90  mapping[events.EVENT.UN_EQUIP] = \n   91  async function(gui: GuiConsole, e: events.EventUnEquip) {\n   92:     console.log(\"@@ unequip\")\n   93      const thingData = await msg.renderThingData(gui.B, e.thingId);\n   94      return gui.send(msg.RENDER.UN_EQUIP, {\n\n/Users/nyaremko/TN2/src/model/equipment.ts:\n   32          for (let slot of slots[slotName]) {\n   33              const thing = await findClosest(B, equipmentPlane, slot.position, slot.physics.box);\n   34:             console.log(\"@@ found?\", thing?thing.id: \"no at\", slot.physics.box)\n   35              if (thing) return thing;\n   36          }\n   ..\n   38      }\n   39      const thing = await findClosest(B, equipmentPlane);    \n   40:     console.log(\"@@ no slots found?\", thing?thing.id: \"no\")\n   41      return thing;\n   42  }\n   ..\n  154  \n  155  \n  156: // @@@@\n  157  //\n  158  // TODO: figure out why we can't place a tent properly.\n  159  //\n  160: // @@@@\n  161  \n  162  export async function transferToSlot(B: BookServer, actorId: string, thingId: string,\n  ...\n  171      if (slots[slotName] || slotName==targetThing.equipment.default) {\n  172          // there is a proper slot\n  173:         console.log(\"@@@ - proper slot to transfer to\")\n  174          let slotBox, position;\n  175          for (let i in slots[slotName]) {\n  ...\n  185              }\n  186              target = await spatials.findNextFitting(B, thing, equipmentPlane, position, slotBox, thingBoxSource);\n  187:             console.log(\"@@ transfer\", thing.id, thingBoxSource, position, target)\n  188              if (target) break;\n  189          }\n  ...\n  215                                              targetPosition: geo.Position) {\n  216      if (thing) {\n  217:         console.log(\"@@ transferring back\")\n  218          return await actions.action(B, {\n  219              action:   actions.ACTION.TRANSFER,\n  ...\n  239          const thingBox = model.getThingBox(thing, bounds);\n  240          const tBox = geo.positionedBox( thingBox, plane.things[id]);\n  241:         console.log(\"@@\", thing.id, thingBox, bounds, plane.things[id], position)\n  242:         console.log(\"@@\", tBox, pBox, geo.boxInBounds(tBox, pBox))\n  243          if (!thing.equipment.thingSlot && (!bounds || geo.boxInBounds(tBox, pBox))) {\n  244              const dist = geo.distance(position, plane.things[id]);\n  245:             console.log(\"@@ distance\", dist)\n  246              if (min.id === undefined || min.dist > dist) {\n  247:                 console.log(\"@@ found!\", min.id)\n  248                  min.id = id;\n  249                  min.dist = dist;\n\n/Users/nyaremko/TN2/src/model/geometry.ts:\n  211          scale = 1;\n  212      }\n  213:     console.log(\"@@ fitB-B\", scale)\n  214      return scaleBox(inner, scale);\n  215  }\n\n/Users/nyaremko/TN2/src/model/interfaces.ts:\n  120      }\n  121      if (thing.equipment.thingScale && slotBox) {\n  122:         console.log(\"@@ scaling\")\n  123          return geo.fitBoxInBox(baseline, slotBox)\n  124      } else {\n\n/Users/nyaremko/TN2/src/z.gfx_temp/TN2.sketch:\n    <binary>\n\n102 matches across 5 files\n\n\nSearching 120 files for \"@@\" (case sensitive)\n\n/Users/nyaremko/TN2/src/model/equipment.ts:\n   32          for (let slot of slots[slotName]) {\n   33              const thing = await findClosest(B, equipmentPlane, slot.position, slot.physics.box);\n   34:             console.log(\"@@ found?\", thing?thing.id: \"no at\", slot.physics.box)\n   35              if (thing) return thing;\n   36          }\n   ..\n   38      }\n   39      const thing = await findClosest(B, equipmentPlane);    \n   40:     console.log(\"@@ no slots found?\", thing?thing.id: \"no\")\n   41      return thing;\n   42  }\n   ..\n  154  \n  155  \n  156: // @@@@\n  157  //\n  158  // TODO: figure out why we can't place a tent properly.\n  159  //\n  160: // @@@@\n  161  \n  162  export async function transferToSlot(B: BookServer, actorId: string, thingId: string,\n  ...\n  171      if (slots[slotName] || slotName==targetThing.equipment.default) {\n  172          // there is a proper slot\n  173:         console.log(\"@@@ - proper slot to transfer to\")\n  174          let slotBox, position;\n  175          for (let i in slots[slotName]) {\n  ...\n  185              }\n  186              target = await spatials.findNextFitting(B, thing, equipmentPlane, position, slotBox, thingBoxSource);\n  187:             console.log(\"@@ transfer\", thing.id, thingBoxSource, position, target)\n  188              if (target) break;\n  189          }\n  ...\n  215                                              targetPosition: geo.Position) {\n  216      if (thing) {\n  217:         console.log(\"@@ transferring back\")\n  218          return await actions.action(B, {\n  219              action:   actions.ACTION.TRANSFER,\n  ...\n  239          const thingBox = model.getThingBox(thing, bounds);\n  240          const tBox = geo.positionedBox( thingBox, plane.things[id]);\n  241:         console.log(\"@@\", thing.id, thingBox, bounds, plane.things[id], position)\n  242:         console.log(\"@@\", tBox, pBox, geo.boxInBounds(tBox, pBox))\n  243          if (!thing.equipment.thingSlot && (!bounds || geo.boxInBounds(tBox, pBox))) {\n  244              const dist = geo.distance(position, plane.things[id]);\n  245:             console.log(\"@@ distance\", dist)\n  246              if (min.id === undefined || min.dist > dist) {\n  247:                 console.log(\"@@ found!\", min.id)\n  248                  min.id = id;\n  249                  min.dist = dist;\n\n/Users/nyaremko/TN2/src/model/geometry.ts:\n  211          scale = 1;\n  212      }\n  213:     console.log(\"@@ fitB-B\", scale)\n  214      return scaleBox(inner, scale);\n  215  }\n\n/Users/nyaremko/TN2/src/model/interfaces.ts:\n  120      }\n  121      if (thing.equipment.thingScale && slotBox) {\n  122:         console.log(\"@@ scaling\")\n  123          return geo.fitBoxInBox(baseline, slotBox)\n  124      } else {\n\n/Users/nyaremko/TN2/src/z.gfx_temp/TN2.sketch:\n    <binary>\n\n101 matches across 4 files\n\n\nSearching 120 files for \"@@\" (case sensitive)\n\n/Users/nyaremko/TN2/src/model/equipment.ts:\n  152  \n  153  \n  154: // @@@@\n  155  //\n  156  // TODO: figure out why we can't place a tent properly.\n  157  //\n  158: // @@@@\n  159  \n  160  export async function transferToSlot(B: BookServer, actorId: string, thingId: string,\n  ...\n  236          if (!thing.equipment.thingSlot && (!bounds || geo.boxInBounds(tBox, pBox))) {\n  237              const dist = geo.distance(position, plane.things[id]);\n  238:             console.log(\"@@ distance\", dist)\n  239              if (min.id === undefined || min.dist > dist) {\n  240                  min.id = id;\n\n/Users/nyaremko/TN2/src/model/geometry.ts:\n  211          scale = 1;\n  212      }\n  213:     console.log(\"@@ fitB-B\", scale)\n  214      return scaleBox(inner, scale);\n  215  }\n\n/Users/nyaremko/TN2/src/model/interfaces.ts:\n  120      }\n  121      if (thing.equipment.thingScale && slotBox) {\n  122:         console.log(\"@@ scaling\")\n  123          return geo.fitBoxInBox(baseline, slotBox)\n  124      } else {\n\n/Users/nyaremko/TN2/src/z.gfx_temp/TN2.sketch:\n    <binary>\n\n93 matches across 4 files\n\n\nSearching 120 files for \"@@\" (case sensitive)\n\n/Users/nyaremko/TN2/src/model/equipment.ts:\n  152  \n  153  \n  154: // @@@@\n  155  //\n  156  // TODO: figure out why we can't place a tent properly.\n  157  //\n  158: // @@@@\n  159  \n  160  export async function transferToSlot(B: BookServer, actorId: string, thingId: string,\n\n/Users/nyaremko/TN2/src/model/geometry.ts:\n  211          scale = 1;\n  212      }\n  213:     console.log(\"@@ fitB-B\", scale)\n  214      return scaleBox(inner, scale);\n  215  }\n\n/Users/nyaremko/TN2/src/model/interfaces.ts:\n  120      }\n  121      if (thing.equipment.thingScale && slotBox) {\n  122:         console.log(\"@@ scaling\")\n  123          return geo.fitBoxInBox(baseline, slotBox)\n  124      } else {\n\n/Users/nyaremko/TN2/src/z.gfx_temp/TN2.sketch:\n    <binary>\n\n92 matches across 4 files\n\n\nSearching 120 files for \"@@\" (case sensitive)\n\n/Users/nyaremko/TN2/src/model/equipment.ts:\n  152  \n  153  \n  154: // @@@@\n  155  //\n  156  // TODO: figure out why we can't place a tent properly.\n  157  //\n  158: // @@@@\n  159  \n  160  export async function transferToSlot(B: BookServer, actorId: string, thingId: string,\n\n/Users/nyaremko/TN2/src/model/interfaces.ts:\n  120      }\n  121      if (thing.equipment.thingScale && slotBox) {\n  122:         console.log(\"@@ scaling\")\n  123          return geo.fitBoxInBox(baseline, slotBox)\n  124      } else {\n\n/Users/nyaremko/TN2/src/z.gfx_temp/TN2.sketch:\n    <binary>\n\n91 matches across 3 files\n\n\nSearching 120 files for \"@@\" (case sensitive)\n\n/Users/nyaremko/TN2/src/model/equipment.ts:\n  152  \n  153  \n  154: // @@@@\n  155  //\n  156  // TODO: figure out why we can't place a tent properly.\n  157  //\n  158: // @@@@\n  159  \n  160  export async function transferToSlot(B: BookServer, actorId: string, thingId: string,\n\n/Users/nyaremko/TN2/src/model/interfaces.ts:\n  120      }\n  121      if (thing.equipment.thingScale && slotBox) {\n  122:         console.log(\"@@ scaling\")\n  123          return geo.fitBoxInBox(baseline, slotBox)\n  124      } else {\n\n/Users/nyaremko/TN2/src/z.gfx_temp/TN2.sketch:\n    <binary>\n\n91 matches across 3 files\n",
+			"settings":
+			{
+				"buffer_size": 39649,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "src/model/interfaces.ts",
+			"settings":
+			{
+				"buffer_size": 6203,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -550,24 +578,52 @@
 			"file": "src/model/geometry.ts",
 			"settings":
 			{
-				"buffer_size": 9505,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/gui/actors/plane.ts",
-			"settings":
-			{
-				"buffer_size": 5046,
+				"buffer_size": 9870,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/gui/server/plane.ts",
+			"file": "src/gui/server/subscribe.ts",
 			"settings":
 			{
-				"buffer_size": 2853,
+				"buffer_size": 3179,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/behaviour/actions/equipment.ts",
+			"settings":
+			{
+				"buffer_size": 4113,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/anima/anima.ts",
+			"settings":
+			{
+				"buffer_size": 5407,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/behaviour/actions/spatials.ts",
+			"settings":
+			{
+				"buffer_size": 5413,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/gui/messages.ts",
+			"settings":
+			{
+				"buffer_size": 5162,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -625,37 +681,44 @@
 	"file_history":
 	[
 		"/Users/nyaremko/TN2/src/model/interfaces.ts",
-		"/Users/nyaremko/TN2/src/behaviour/actions/spatials.ts",
 		"/Users/nyaremko/TN2/src/things/tent.ts",
-		"/Users/nyaremko/TN2/src/model/equipment.ts",
-		"/Users/nyaremko/TN2/src/things/hay.ts",
 		"/Users/nyaremko/TN2/src/things/jones.ts",
-		"/Users/nyaremko/TN2/src/gui/messages.ts",
+		"/Users/nyaremko/TN2/src/anima/anima.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions/equipment.ts",
+		"/Users/nyaremko/TN2/src/model/geometry.ts",
 		"/Users/nyaremko/TN2/src/commandline/scripts/equipment_sprites.ts",
+		"/Users/nyaremko/TN2/src/gui/actors/plane.ts",
+		"/Users/nyaremko/TN2/src/model/sprites.ts",
+		"/Users/nyaremko/TN2/src/gui/server/subscribe.ts",
+		"/Users/nyaremko/TN2/src/gui/server/plane.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions/attempt.ts",
+		"/Users/nyaremko/TN2/src/model/equipment.ts",
+		"/Users/nyaremko/TN2/src/gui/messages.ts",
+		"/Users/nyaremko/TN2/src/things/hay.ts",
+		"/Users/nyaremko/TN2/src/gui/actors/slot.ts",
+		"/Users/nyaremko/TN2/README.md",
+		"/Users/nyaremko/TN2/src/gui/actors/equipment.ts",
+		"/Users/nyaremko/TN2/src/gui/sprite.ts",
+		"/Users/nyaremko/TN2/src/behaviour/actions/spatials.ts",
+		"/Users/nyaremko/TN2/src/model/identity.ts",
+		"/Users/nyaremko/TN2/src/gui/server/setup.ts",
+		"/Users/nyaremko/TN2/src/console/gui.ts",
+		"/Users/nyaremko/TN2/src/things/equipment.ts",
+		"/Users/nyaremko/TN2/src/things/slot.ts",
+		"/Users/nyaremko/TN2/src/things/slot_mega.ts",
+		"/Users/nyaremko/TN2/src/model/physics.ts",
 		"/Users/nyaremko/TN2/src/gui/renderer/equipment.ts",
 		"/Users/nyaremko/TN2/src/commandline/script.ts",
 		"/Users/nyaremko/TN2/src/model/create.ts",
-		"/Users/nyaremko/TN2/src/gui/server/plane.ts",
 		"/Users/nyaremko/TN2/src/gui/actors/thing.ts",
-		"/Users/nyaremko/TN2/src/behaviour/actions/attempt.ts",
-		"/Users/nyaremko/TN2/src/behaviour/actions/equipment.ts",
 		"/Users/nyaremko/TN2/src/behaviour/actions/transfer.ts",
 		"/Users/nyaremko/TN2/src/behaviour/actions.ts",
-		"/Users/nyaremko/TN2/src/gui/server/subscribe.ts",
-		"/Users/nyaremko/TN2/src/gui/actors/plane.ts",
 		"/Users/nyaremko/TN2/src/config.ts",
-		"/Users/nyaremko/TN2/src/gui/actors/slot.ts",
 		"/Users/nyaremko/TN2/src/gui/actors/base.ts",
 		"/Users/nyaremko/TN2/src/commandline/scripts/slots.ts",
-		"/Users/nyaremko/TN2/src/anima/anima.ts",
 		"/Users/nyaremko/TN2/src/commandline/equipment.ts",
 		"/Users/nyaremko/TN2/src/gui/renderer/leave.ts",
-		"/Users/nyaremko/TN2/src/gui/sprite.ts",
-		"/Users/nyaremko/TN2/src/gui/actors/equipment.ts",
-		"/Users/nyaremko/TN2/src/model/geometry.ts",
 		"/Users/nyaremko/TN2/src/commandline/scripts/equipment.ts",
-		"/Users/nyaremko/TN2/src/model/sprites.ts",
-		"/Users/nyaremko/TN2/src/model/physics.ts",
 		"/Users/nyaremko/TN2/src/gui/renderer/plane.ts",
 		"/Users/nyaremko/TN2/src/commandline/base.ts",
 		"/Users/nyaremko/TN2/src/things/piano.ts",
@@ -667,16 +730,12 @@
 		"/Users/nyaremko/TN2/package.json",
 		"/Users/nyaremko/TN2/src/things/chest.ts",
 		"/Users/nyaremko/TN2/src/anima/written/library/get.ts",
-		"/Users/nyaremko/TN2/README.md",
 		"/Users/nyaremko/TN2/src/anima/written/library/attempt.ts",
 		"/Users/nyaremko/TN2/src/anima/written/library/equip.ts",
 		"/Users/nyaremko/TN2/src/anima/written/library.ts",
 		"/Users/nyaremko/TN2/src/behaviour/attempts.ts",
 		"/Users/nyaremko/TN2/src/anima/written/library/update.ts",
-		"/Users/nyaremko/TN2/src/things/equipment.ts",
 		"/Users/nyaremko/TN2/src/commandline/scripts/backpack_big.ts",
-		"/Users/nyaremko/TN2/src/things/slot_mega.ts",
-		"/Users/nyaremko/TN2/src/things/slot.ts",
 		"/Users/nyaremko/TN2/src/commandline/scripts/backpack.ts",
 		"/Users/nyaremko/TN2/src/commandline/print.ts",
 		"/Users/nyaremko/TN2/src/behaviour/events.ts",
@@ -686,12 +745,10 @@
 		"/Users/nyaremko/Library/Application Support/Sublime Text 3/Packages/User/TypeScript.sublime-settings",
 		"/Users/nyaremko/Library/Application Support/Sublime Text 3/Packages/TypeScript/Preferences.sublime-settings",
 		"/Users/nyaremko/TN2/src/behaviour/controller.ts",
-		"/Users/nyaremko/TN2/src/model/identity.ts",
 		"/Users/nyaremko/TN2/src/gui/renderer/move.ts",
 		"/Users/nyaremko/TN2/src/gui/renderer/setup.ts",
 		"/Users/nyaremko/TN2/src/things/something.ts",
 		"/Users/nyaremko/TN2/src/commandline/scripts/limbo.ts",
-		"/Users/nyaremko/TN2/src/gui/server/setup.ts",
 		"/Users/nyaremko/TN2/src/gui/server/equipment.ts",
 		"/Users/nyaremko/TN2/src/anima/written/detect.ts",
 		"/Users/nyaremko/TN2/src/storage/repo.ts",
@@ -750,8 +807,7 @@
 		"/Users/nyaremko/TN2/src/network/p2p.ts",
 		"/Users/nyaremko/TN2/src/console/base.ts",
 		"/Users/nyaremko/TN2/src/storage/abstraction.ts",
-		"/Users/nyaremko/TN2/src/console/commandline.ts",
-		"/Users/nyaremko/TN2/src/console/script.ts"
+		"/Users/nyaremko/TN2/src/console/commandline.ts"
 	],
 	"find":
 	{
@@ -773,6 +829,46 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"@@",
+			"@@\n",
+			"@@",
+			"\"\"",
+			"@@",
+			"\"\"",
+			"autopicking",
+			"autopi",
+			"findNextFitting",
+			"fitBoxInBox",
+			"derive",
+			"findClosest",
+			"scaleFactor",
+			"scaleSlots",
+			"getThingBox",
+			"thingBox",
+			".equipId",
+			"EventEquip",
+			"renderThingData",
+			"ThingDat",
+			"SlotData",
+			"getThingBox",
+			"adjustScale",
+			"getThingBox",
+			"renderThingData",
+			".PLANE",
+			"PLANE",
+			"SERVER",
+			"msg",
+			"<model",
+			"@@ TODO",
+			".everything",
+			"slotBackpack",
+			"Backpack",
+			"physics.slotBackpack",
+			"physics.slot",
+			"s.slot",
+			".slot",
+			"physics.slot",
+			"getThingBox",
 			"scaleB",
 			"spriteEq",
 			"t.scale",
@@ -860,47 +956,7 @@
 			"inSlotBounds",
 			"findClosest",
 			"equipped",
-			"inBounds",
-			"findFitting",
-			"createThingI",
-			"? extractThingId(id) ",
-			"createThingId",
-			"84",
-			"84,",
-			"84",
-			".anchor",
-			"isSlot",
-			"sending ",
-			"sending I",
-			"anchor",
-			"owner A",
-			"E->",
-			"Equipped ",
-			"building sprite",
-			"thingInHands",
-			"thingInSlot",
-			"transferToSlot",
-			"unEquip",
-			"transferFromSlot",
-			"ActionUnEquip",
-			"getting thing",
-			"E->",
-			"dx",
-			"targetIds",
-			".spae",
-			"thingInSlot",
-			"hostPL",
-			"findClosest",
-			"hostPlane",
-			"transferFromSlot",
-			"transferToSlot",
-			"transferFromSlot",
-			"transferToSlot",
-			"thingIn",
-			"distance",
-			".distance",
-			"distance",
-			"got:"
+			"inBounds"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -908,6 +964,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"equipment.thingSlot"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -918,7 +975,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 5,
 			"sheets":
 			[
 				{
@@ -927,49 +984,43 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5752,
+						"buffer_size": 6413,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								440,
-								440
+								719,
+								719
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
-							"typescript_plugin_format_options":
-							{
-								"convertTabsToSpaces": true,
-								"indentSize": 4,
-								"tabSize": 4
-							}
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "src/model/equipment.ts",
+					"file": "src/commandline/script.ts",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8590,
+						"buffer_size": 1220,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3945,
-								3945
+								707,
+								707
 							]
 						],
 						"settings":
@@ -978,85 +1029,27 @@
 							"use_tab_stops": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1322.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "src/gui/messages.ts",
+					"file": "src/model/equipment.ts",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4969,
+						"buffer_size": 10123,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3914,
-								3957
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
-							"use_tab_stops": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1650.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/model/geometry.ts",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 9505,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5433,
-								5439
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
-							"use_tab_stops": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2401.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "src/gui/actors/plane.ts",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5046,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1268,
-								1268
+								9818,
+								9818
 							]
 						],
 						"settings":
@@ -1072,20 +1065,1041 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "src/gui/server/plane.ts",
+					"buffer": 3,
+					"file": "src/things/tent.ts",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2853,
+						"buffer_size": 14011,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2470,
-								2470
+								11580,
+								11580
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 39649,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										163,
+										165
+									],
+									[
+										205,
+										207
+									],
+									[
+										489,
+										491
+									],
+									[
+										655,
+										657
+									],
+									[
+										935,
+										937
+									],
+									[
+										1201,
+										1203
+									],
+									[
+										1522,
+										1524
+									],
+									[
+										1526,
+										1528
+									],
+									[
+										1530,
+										1532
+									],
+									[
+										1534,
+										1536
+									],
+									[
+										1538,
+										1540
+									],
+									[
+										1838,
+										1840
+									],
+									[
+										2146,
+										2148
+									],
+									[
+										2510,
+										2512
+									],
+									[
+										2600,
+										2602
+									],
+									[
+										2904,
+										2906
+									],
+									[
+										3122,
+										3124
+									],
+									[
+										3142,
+										3144
+									],
+									[
+										3174,
+										3176
+									],
+									[
+										3448,
+										3450
+									],
+									[
+										3771,
+										3773
+									],
+									[
+										4079,
+										4081
+									],
+									[
+										4355,
+										4357
+									],
+									[
+										4641,
+										4643
+									],
+									[
+										5045,
+										5047
+									],
+									[
+										5348,
+										5350
+									],
+									[
+										5670,
+										5672
+									],
+									[
+										5910,
+										5912
+									],
+									[
+										6043,
+										6045
+									],
+									[
+										6196,
+										6198
+									],
+									[
+										6353,
+										6355
+									],
+									[
+										6504,
+										6506
+									],
+									[
+										6657,
+										6659
+									],
+									[
+										6791,
+										6793
+									],
+									[
+										6999,
+										7001
+									],
+									[
+										7152,
+										7154
+									],
+									[
+										7304,
+										7306
+									],
+									[
+										7461,
+										7463
+									],
+									[
+										7618,
+										7620
+									],
+									[
+										7770,
+										7772
+									],
+									[
+										8067,
+										8069
+									],
+									[
+										8069,
+										8071
+									],
+									[
+										8071,
+										8073
+									],
+									[
+										8073,
+										8075
+									],
+									[
+										8416,
+										8418
+									],
+									[
+										8418,
+										8420
+									],
+									[
+										8697,
+										8699
+									],
+									[
+										8890,
+										8892
+									],
+									[
+										9331,
+										9333
+									],
+									[
+										9571,
+										9573
+									],
+									[
+										9908,
+										9910
+									],
+									[
+										10198,
+										10200
+									],
+									[
+										10451,
+										10453
+									],
+									[
+										10820,
+										10822
+									],
+									[
+										11046,
+										11048
+									],
+									[
+										11155,
+										11157
+									],
+									[
+										11157,
+										11159
+									],
+									[
+										11253,
+										11255
+									],
+									[
+										11255,
+										11257
+									],
+									[
+										11511,
+										11513
+									],
+									[
+										11812,
+										11814
+									],
+									[
+										12066,
+										12068
+									],
+									[
+										12367,
+										12369
+									],
+									[
+										12456,
+										12458
+									],
+									[
+										12701,
+										12703
+									],
+									[
+										12823,
+										12825
+									],
+									[
+										13026,
+										13028
+									],
+									[
+										13239,
+										13241
+									],
+									[
+										13700,
+										13702
+									],
+									[
+										13702,
+										13704
+									],
+									[
+										13981,
+										13983
+									],
+									[
+										14174,
+										14176
+									],
+									[
+										14615,
+										14617
+									],
+									[
+										14855,
+										14857
+									],
+									[
+										15192,
+										15194
+									],
+									[
+										15482,
+										15484
+									],
+									[
+										15735,
+										15737
+									],
+									[
+										16104,
+										16106
+									],
+									[
+										16330,
+										16332
+									],
+									[
+										16439,
+										16441
+									],
+									[
+										16441,
+										16443
+									],
+									[
+										16537,
+										16539
+									],
+									[
+										16539,
+										16541
+									],
+									[
+										16795,
+										16797
+									],
+									[
+										17096,
+										17098
+									],
+									[
+										17350,
+										17352
+									],
+									[
+										17651,
+										17653
+									],
+									[
+										17740,
+										17742
+									],
+									[
+										17985,
+										17987
+									],
+									[
+										18107,
+										18109
+									],
+									[
+										18310,
+										18312
+									],
+									[
+										18523,
+										18525
+									],
+									[
+										19044,
+										19046
+									],
+									[
+										19284,
+										19286
+									],
+									[
+										19621,
+										19623
+									],
+									[
+										19911,
+										19913
+									],
+									[
+										20164,
+										20166
+									],
+									[
+										20533,
+										20535
+									],
+									[
+										20759,
+										20761
+									],
+									[
+										20868,
+										20870
+									],
+									[
+										20870,
+										20872
+									],
+									[
+										20966,
+										20968
+									],
+									[
+										20968,
+										20970
+									],
+									[
+										21224,
+										21226
+									],
+									[
+										21525,
+										21527
+									],
+									[
+										21779,
+										21781
+									],
+									[
+										22080,
+										22082
+									],
+									[
+										22169,
+										22171
+									],
+									[
+										22414,
+										22416
+									],
+									[
+										22536,
+										22538
+									],
+									[
+										22739,
+										22741
+									],
+									[
+										22952,
+										22954
+									],
+									[
+										23362,
+										23364
+									],
+									[
+										23652,
+										23654
+									],
+									[
+										23905,
+										23907
+									],
+									[
+										24274,
+										24276
+									],
+									[
+										24500,
+										24502
+									],
+									[
+										24609,
+										24611
+									],
+									[
+										24611,
+										24613
+									],
+									[
+										24707,
+										24709
+									],
+									[
+										24709,
+										24711
+									],
+									[
+										24965,
+										24967
+									],
+									[
+										25266,
+										25268
+									],
+									[
+										25520,
+										25522
+									],
+									[
+										25821,
+										25823
+									],
+									[
+										25910,
+										25912
+									],
+									[
+										26155,
+										26157
+									],
+									[
+										26277,
+										26279
+									],
+									[
+										26480,
+										26482
+									],
+									[
+										26693,
+										26695
+									],
+									[
+										27099,
+										27101
+									],
+									[
+										27352,
+										27354
+									],
+									[
+										27721,
+										27723
+									],
+									[
+										27947,
+										27949
+									],
+									[
+										28056,
+										28058
+									],
+									[
+										28058,
+										28060
+									],
+									[
+										28154,
+										28156
+									],
+									[
+										28156,
+										28158
+									],
+									[
+										28412,
+										28414
+									],
+									[
+										28713,
+										28715
+									],
+									[
+										28967,
+										28969
+									],
+									[
+										29268,
+										29270
+									],
+									[
+										29357,
+										29359
+									],
+									[
+										29602,
+										29604
+									],
+									[
+										29724,
+										29726
+									],
+									[
+										29927,
+										29929
+									],
+									[
+										30140,
+										30142
+									],
+									[
+										30547,
+										30549
+									],
+									[
+										30916,
+										30918
+									],
+									[
+										31142,
+										31144
+									],
+									[
+										31251,
+										31253
+									],
+									[
+										31253,
+										31255
+									],
+									[
+										31349,
+										31351
+									],
+									[
+										31351,
+										31353
+									],
+									[
+										31607,
+										31609
+									],
+									[
+										31908,
+										31910
+									],
+									[
+										32162,
+										32164
+									],
+									[
+										32463,
+										32465
+									],
+									[
+										32552,
+										32554
+									],
+									[
+										32797,
+										32799
+									],
+									[
+										32919,
+										32921
+									],
+									[
+										33122,
+										33124
+									],
+									[
+										33335,
+										33337
+									],
+									[
+										33794,
+										33796
+									],
+									[
+										34020,
+										34022
+									],
+									[
+										34129,
+										34131
+									],
+									[
+										34131,
+										34133
+									],
+									[
+										34227,
+										34229
+									],
+									[
+										34229,
+										34231
+									],
+									[
+										34485,
+										34487
+									],
+									[
+										34786,
+										34788
+									],
+									[
+										35040,
+										35042
+									],
+									[
+										35341,
+										35343
+									],
+									[
+										35430,
+										35432
+									],
+									[
+										35675,
+										35677
+									],
+									[
+										35797,
+										35799
+									],
+									[
+										36000,
+										36002
+									],
+									[
+										36213,
+										36215
+									],
+									[
+										36511,
+										36513
+									],
+									[
+										36513,
+										36515
+									],
+									[
+										36609,
+										36611
+									],
+									[
+										36611,
+										36613
+									],
+									[
+										36920,
+										36922
+									],
+									[
+										37149,
+										37151
+									],
+									[
+										37362,
+										37364
+									],
+									[
+										37659,
+										37661
+									],
+									[
+										37661,
+										37663
+									],
+									[
+										37757,
+										37759
+									],
+									[
+										37759,
+										37761
+									],
+									[
+										37970,
+										37972
+									],
+									[
+										38183,
+										38185
+									],
+									[
+										38480,
+										38482
+									],
+									[
+										38482,
+										38484
+									],
+									[
+										38578,
+										38580
+									],
+									[
+										38580,
+										38582
+									],
+									[
+										38827,
+										38829
+									],
+									[
+										39124,
+										39126
+									],
+									[
+										39126,
+										39128
+									],
+									[
+										39222,
+										39224
+									],
+									[
+										39224,
+										39226
+									],
+									[
+										39471,
+										39473
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								39474,
+								39474
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 12,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 18684.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/model/interfaces.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6203,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3251,
+								3253
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1517.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/model/geometry.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9870,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6099,
+								6099
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "src/gui/server/subscribe.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3179,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3017,
+								3017
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "src/behaviour/actions/equipment.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4113,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2357,
+								2357
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "src/anima/anima.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5407,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4449,
+								4449
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "src/behaviour/actions/spatials.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5413,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3398,
+								3398
 							]
 						],
 						"settings":
@@ -1100,10 +2114,39 @@
 							"use_tab_stops": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 48.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "src/gui/messages.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5162,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4250,
+								4250
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
 					"type": "text"
 				}
 			]

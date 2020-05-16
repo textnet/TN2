@@ -24,7 +24,6 @@ export async function thingInHands(B: BookServer, actorId: string, ownerId: stri
 }
 
 export async function thingInSlot(B: BookServer, actorId: string, ownerId: string, slotName?: string) {
-    // @@@
     const owner = await B.things.load(ownerId);
     slotName = slotName || owner.equipment.default;
     const equipmentPlane = await B.getEquipmentPlane(ownerId);
@@ -32,13 +31,11 @@ export async function thingInSlot(B: BookServer, actorId: string, ownerId: strin
     if (slots[slotName]) {
         for (let slot of slots[slotName]) {
             const thing = await findClosest(B, equipmentPlane, slot.position, slot.physics.box);
-            console.log("@@ found?", thing?thing.id: "no at", slot.physics.box)
             if (thing) return thing;
         }
         return undefined;
     }
     const thing = await findClosest(B, equipmentPlane);    
-    console.log("@@ no slots found?", thing?thing.id: "no")
     return thing;
 }
 
@@ -153,6 +150,7 @@ export function isEmpty(contents: EquipmentContents) {
     return true;
 }
 
+
 export async function transferToSlot(B: BookServer, actorId: string, thingId: string,
                                      targetThingId?: string, slotName?: string) {
     targetThingId = targetThingId || actorId;    
@@ -168,23 +166,21 @@ export async function transferToSlot(B: BookServer, actorId: string, thingId: st
         for (let i in slots[slotName]) {
             const slot = slots[slotName][i];
             slotBox = geo.positionedBox(slot.physics.box, slot.position);
+            const thingBoxSource = model.getThingBox(thing, slot.physics.box);
             position = slot.position;
             if (slot.equipment.thingBackpack) {
-                const thingShiftX = thing.physics.box.w/2 - (thing.physics.box.anchor?thing.physics.box.anchor.x:0);
-                const thingShiftY = thing.physics.box.h/2 - (thing.physics.box.anchor?thing.physics.box.anchor.y:0);
+                const thingShiftX = thingBoxSource.w/2 - (thingBoxSource.anchor?thingBoxSource.anchor.x:0);
+                const thingShiftY = thingBoxSource.h/2 - (thingBoxSource.anchor?thingBoxSource.anchor.y:0);
                 const delta: geo.Direction = { dx: thingShiftX, dy: thingShiftY }
                 position = geo.add(geo.position(slotBox.n[0], slotBox.n[1], position.z, position.direction), delta)
             }
-            const thingBoxSource = model.getThingBox(thing, slot.physics.box);
-            target = await spatials.findNextFitting(B, thing, equipmentPlane, position, slotBox, thingBoxSource);
+            target = await spatials.findNextFitting(B, thing, equipmentPlane, position, slotBox);
             if (target) break;
         }
         if (!target && (!slots[slotName] && slotName==targetThing.equipment.default)) {
-            const thingBoxSource = thing.equipment.thingSprite ? thing.equipment.thingSprite.size : thing.physics.box;
             target = await spatials.findNextFitting(
                 B, thing, equipmentPlane, geo.position(0,0), 
                 geo.positionedBox(equipmentPlane.physics.box),
-                thingBoxSource
             );
         }
         if (target) {
@@ -206,7 +202,6 @@ export async function directTransferUnequip(B: BookServer, actorId: string,
                                             thing: model.ThingData, targetPlaneId: string,                                  
                                             targetPosition: geo.Position) {
     if (thing) {
-        console.log("@@ transferring back")
         return await actions.action(B, {
             action:   actions.ACTION.TRANSFER,
             actorId:  actorId,
@@ -230,13 +225,9 @@ async function findClosest(B: BookServer, plane: model.PlaneData, position?: geo
         const thing = await B.things.load(id)
         const thingBox = model.getThingBox(thing, bounds);
         const tBox = geo.positionedBox( thingBox, plane.things[id]);
-        console.log("@@", thing.id, thingBox, bounds, plane.things[id], position)
-        console.log("@@", tBox, pBox, geo.boxInBounds(tBox, pBox))
         if (!thing.equipment.thingSlot && (!bounds || geo.boxInBounds(tBox, pBox))) {
             const dist = geo.distance(position, plane.things[id]);
-            console.log("@@ distance", dist)
             if (min.id === undefined || min.dist > dist) {
-                console.log("@@ found!", min.id)
                 min.id = id;
                 min.dist = dist;
             }

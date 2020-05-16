@@ -41,5 +41,4 @@ export function done(gui: GuiConsole) {
 
 reg(msg.SERVER.LOG, async(gui: GuiConsole, message: msg.MessageLog)=>{
     cl.log(`GUI of «${gui.id}»:`)
-    console.log(message.data);
 });

@@ -81,7 +81,6 @@ export class ThingSprite {
                             code = sprites.code();
                         }                        
                     }
-                    // console.log(this.sprite.symbol, code, "=>", _code)
                     if (!this.animations[code]) {
                         const row = this.sprite.mapping[code][0]? this.sprite.mapping[code][0] : 0;
                         let steps = this.sprite.steps;
