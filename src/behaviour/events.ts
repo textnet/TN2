@@ -26,6 +26,7 @@ export const EVENT = {
     WAYPOINT:    "waypoint",
     EQUIP:    "equip",
     UN_EQUIP: "unEquip",
+    USE:      "use",
 }
 
 export const EVENT_ROLE = {
@@ -66,7 +67,12 @@ export interface EventMoveStartFinish extends EventWaypoint {}
 export interface EventMoveFinish extends EventMoveStartFinish {}
 export interface EventMoveStart  extends EventMoveStartFinish {}
 export interface EventHalt       extends EventWaypoint {}
-export interface EventAttempt extends Event {}
+export interface EventAttempt extends Event {
+    direction?: geo.Direction;
+}
+export interface EventUse extends EventAttempt {
+    slotName?: string;
+}
 export interface EventPush extends EventAttempt {}
 export interface EventEquip extends EventAttempt {
     equipId:  string;

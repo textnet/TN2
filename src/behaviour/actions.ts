@@ -17,6 +17,7 @@ import * as spatials from "./actions/spatials"
 import * as movement from "./actions/movement"
 import * as attempt  from "./actions/attempt"
 import * as push      from "./actions/push"
+import * as use       from "./actions/use"
 import * as equipment from "./actions/equipment"
 export const handlers = {
     say:        say.action,
@@ -32,6 +33,7 @@ export const handlers = {
     move:       movement.add,
     halt:       movement.halt,
     push:       push.action,
+    use:        use.action,
     equip:      equipment.equip,
     unEquip:    equipment.unEquip,
     reEquip:    equipment.reEquip,
@@ -56,6 +58,7 @@ export const ACTION = {
     EQUIP: "equip",
     UN_EQUIP: "unEquip",
     RE_EQUIP: "reEquip",
+    USE: "use",
 }
 
 export const ATTEMPT = attempts.ATTEMPT;
@@ -112,6 +115,10 @@ export interface ActionAttempt extends Action {
     attempt: string;
 }
 export interface ActionPush extends ActionWithThing {
+    direction: geo.Direction;
+}
+export interface ActionUse extends ActionWithThing {
+    slotName?: string;
     direction: geo.Direction;
 }
 

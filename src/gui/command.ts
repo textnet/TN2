@@ -36,6 +36,18 @@ export function getPlayerDirection(game: Game) {
     // Normalise direction
     return geo.normalize(result);
 }
+function directionPressed(game: Game) {
+    const directions = [
+        ex.Input.Keys.Left, 
+        ex.Input.Keys.Right, 
+        ex.Input.Keys.Up, 
+        ex.Input.Keys.Down,
+    ]
+    for (let d of directions) {
+        if (game.input.keyboard.wasPressed(d)) return true;
+    }
+    return false;
+}
 
 /**
  * Internal mapping of command keys.
@@ -57,7 +69,11 @@ export const COMMAND = {
     PICKUP:    { description: "Attempt to pick an artifact up, or to put it down" },
     PUSH:      { description: "Attempt to push an artifact in the direction of movement" },
     EQUIPMENT: { description: "Show/Hide inventory" },
+    WAIT:      { description: "Don't process commands until idle"}
+    // USE:    is PUSH with item. 
 }
+
+// USE   = PUSH with item 
 
 /**
  * Returns the command that player is trying to give.
@@ -78,9 +94,17 @@ export function getPlayerCommand(game: Game) {
         if (game.input.keyboard.isHeld(KEY.ENTER) && game.input.keyboard.wasReleased(KEY.TEXT))  return COMMAND.KNEEL;
         if (game.input.keyboard.isHeld(KEY.ENTER) && game.input.keyboard.wasReleased(KEY.LEAVE)) return COMMAND.LEAVE;
     } else {
-        if (game.input.keyboard.isHeld(KEY.ENTER))   return COMMAND.ENTER;
-        if (game.input.keyboard.isHeld(KEY.PUSH))    return COMMAND.PUSH;
-        if (game.input.keyboard.isHeld(KEY.PICKUP))  return COMMAND.PICKUP;
+        if (game.input.keyboard.isHeld(KEY.ENTER)) {
+            if (directionPressed(game)) return COMMAND.ENTER;
+            else return COMMAND.WAIT;
+        }
+        if (game.input.keyboard.isHeld(KEY.PUSH)) {
+            if (directionPressed(game)) return COMMAND.PUSH;
+            else return COMMAND.WAIT;
+        }
+        if (game.input.keyboard.isHeld(KEY.PICKUP))  
+            if (directionPressed(game)) return COMMAND.PICKUP;
+            else return COMMAND.WAIT;
     }
     return COMMAND.NONE
 }

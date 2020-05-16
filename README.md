@@ -21,8 +21,8 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 + Equipment Slots
 + Equipment SHOW/HIDE
 + Equipment Sprites
-- USE action
-- THROW action
++ USE action as PUSH with item: just fire the event
+
 
 
 

@@ -15,7 +15,7 @@ import * as sprites from "../../model/sprites"
 import * as physics from "../../model/physics"
 import { CONSTRAINTS } from "../../model/interfaces"
 import { getPlayerDirection, getPlayerCommand, COMMAND } from "../command"
-import * as command from "../command"
+import * as commands from "../command"
 import { deepCopy } from "../../utils"
 import * as interop from "../renderer/send"
 
@@ -103,44 +103,48 @@ export class ThingActor extends BaseActor {
     updateFromCommands(engine: Game, delta: number) {
         let dir: geo.Direction = deepCopy(geo.DIRECTION.NONE)
         // TODO kneeled
-        if (this.needRelease && command.wasReleased(engine)) {
+        if (this.needRelease) {
             this.needRelease = false;
         }
-        if (!this.needRelease) {
+        else {
+        // if (!this.needRelease) {
             let playerDir = getPlayerDirection(engine);
             let command   = getPlayerCommand(engine);
             let isIdle    = geo.isIdle(playerDir)
-            // SHOW/HIDE EQUIPMENT
-            if (command == COMMAND.EQUIPMENT && isIdle) {
-                if (this.equipmentActor) {
-                    this.hideEquipment();    
-                } else {
-                    interop.loadEquipment(this.data.id)
+            if (!isIdle && command == COMMAND.WAIT) {
+                this.needRelease = true;
+            } else {
+                // SHOW/HIDE EQUIPMENT
+                if (command == COMMAND.EQUIPMENT && isIdle) {
+                    if (this.equipmentActor) {
+                        this.hideEquipment();    
+                    } else {
+                        interop.loadEquipment(this.data.id)
+                    }
                 }
-            }
-            // ENTER -> DEEPER
-            if (command == COMMAND.ENTER && !isIdle) {
-                this.needRelease = true;
-                interop.attempt(msg.ATTEMPT.ENTER, playerDir);
-            }
-            // LEAVE -> TRANSFER UP
-            if (command == COMMAND.LEAVE && isIdle) {
-                interop.transferUp();
-            }
-            // PICKUP
-            if ((command == COMMAND.PICKUP) && !isIdle) {
-                this.needRelease = true;
-                interop.attempt(msg.ATTEMPT.PICKUP, playerDir);
-            } 
-            // PUSH
-            if (command == COMMAND.PUSH && !isIdle) {
-                this.needRelease = true;
-                geo.accumulateDirection(dir, playerDir);
-                interop.attempt(msg.ATTEMPT.PUSH, playerDir);
-            } 
-            // MOVE               
-            if (command == COMMAND.NONE && !isIdle) {
-                geo.accumulateDirection(dir, playerDir);
+                // ENTER -> DEEPER
+                if (command == COMMAND.ENTER && !isIdle) {
+                    this.needRelease = true;
+                    interop.attempt(msg.ATTEMPT.ENTER, playerDir);
+                }
+                // LEAVE -> TRANSFER UP
+                if (command == COMMAND.LEAVE && isIdle) {
+                    interop.transferUp();
+                }
+                // PICKUP
+                if ((command == COMMAND.PICKUP) && !isIdle) {
+                    this.needRelease = true;
+                    interop.attempt(msg.ATTEMPT.PICKUP, playerDir);
+                } 
+                // PUSH
+                if (command == COMMAND.PUSH && !isIdle) {
+                    // geo.accumulateDirection(dir, playerDir);
+                    interop.attempt(msg.ATTEMPT.PUSH, playerDir);
+                } 
+                // MOVE               
+                if (command == COMMAND.NONE && !isIdle) {
+                    geo.accumulateDirection(dir, playerDir);
+                }                
             }
         }
         const wasIdle = this.visualState == sprites.STATE.IDLE;

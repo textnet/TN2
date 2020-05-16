@@ -36,16 +36,41 @@ async function attemptPickup(B: BookServer, action: actions.ActionAttempt) {
     }
 }
 
+export async function attemptUse(B: BookServer, action: actions.ActionAttempt) {
+    const plane = await B.planes.load(action.planeId);
+    const actor = await B.things.load(action.actorId);
+    const inSlot = await equipment.thingInSlot(B, action.actorId, action.actorId, action.slotName);
+    if (inSlot) {
+        return { 
+            success: await actions.action(B, {
+                action:  actions.ACTION.USE,
+                actorId: actor.id,
+                planeId: plane.id,
+                thingId: inSlot.id,
+                direction: action.direction,
+                slotName: action.slotName,
+            } as actions.ActionUse)
+        }
+    } else {
+        return false;
+    }
+}
+
 export async function action(B: BookServer, action: actions.ActionAttempt) {
     // try to do a proximal action:
     // - push
     // - enter
     // - pickup/putdown
 
-    // 0. putdown
+    // 0. putdown and use
     // check if we can fit
     if (action.attempt == actions.ATTEMPT.PICKUP || action.attempt == actions.ATTEMPT.PUTDOWN) {
         return await attemptPickup(B, action)
+    }
+    // check if we can use instead of push
+    if (action.attempt == actions.ATTEMPT.PUSH) {
+        const wasUsed = await attemptUse(B, action);
+        if (wasUsed) return wasUsed["result"];
     }
 
     // 1. check if there is an object
