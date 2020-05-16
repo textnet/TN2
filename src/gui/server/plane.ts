@@ -40,7 +40,7 @@ reg(msg.SERVER.PLANE, async(gui: GuiConsole, args)=>{
 
 
 reg(msg.SERVER.EQUIPMENT, async(gui: GuiConsole, args)=>{
-    cl.verboseLog(`GUI(${gui.id}): loadEquipment(${args.ownerId}).`);
+    // cl.verboseLog(`GUI(${gui.id}): loadEquipment(${args.ownerId}).`);
     const message = args as msg.RequestEquipment;
     const B = gui.anima.B;
     const owner = await B.things.load(message.ownerId);

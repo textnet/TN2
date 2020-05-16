@@ -72,16 +72,32 @@ export const COMMAND = {
 export function getPlayerCommand(game: Game) {
     const dir = getPlayerDirection(game);
     const name = geo.directionName(dir);
-    if (game.input.keyboard.wasPressed(KEY.EQUIPMENT))  return COMMAND.EQUIPMENT; 
+    if (game.input.keyboard.wasReleased(KEY.EQUIPMENT))  return COMMAND.EQUIPMENT; 
     // if (game.input.keyboard.wasReleased(KEY.EQUIPMENT)) return COMMAND.EQUIPMENT; // uncomment this if HOLD-TO-SHOW-INVENTORY is true
     if (geo.isIdle(dir)) {
-        if (game.input.keyboard.isHeld(KEY.ENTER) && game.input.keyboard.isHeld(KEY.TEXT))  return COMMAND.KNEEL;
-        if (game.input.keyboard.isHeld(KEY.ENTER) && game.input.keyboard.isHeld(KEY.LEAVE)) return COMMAND.LEAVE;
+        if (game.input.keyboard.isHeld(KEY.ENTER) && game.input.keyboard.wasReleased(KEY.TEXT))  return COMMAND.KNEEL;
+        if (game.input.keyboard.isHeld(KEY.ENTER) && game.input.keyboard.wasReleased(KEY.LEAVE)) return COMMAND.LEAVE;
     } else {
         if (game.input.keyboard.isHeld(KEY.ENTER))   return COMMAND.ENTER;
         if (game.input.keyboard.isHeld(KEY.PUSH))    return COMMAND.PUSH;
         if (game.input.keyboard.isHeld(KEY.PICKUP))  return COMMAND.PICKUP;
     }
     return COMMAND.NONE
+}
+
+function isCommandKey(key: number) {
+    for (let name in KEY) {
+        if (KEY[name] == key) return true;
+    }
+    return false;
+}
+
+export function wasReleased(game: Game) {
+    const keys = game.input.keyboard.getKeys()
+    let release = true;
+    for (let key of keys) {
+        release = false;
+    }
+    return release;
 }
 

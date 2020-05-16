@@ -120,7 +120,7 @@ export async function action(B: BookServer, action: actions.ActionTransfer) {
                 fit:   action.fit,            
             }
             await actions.action(B, actionLeave);
-            const success = await actions.action(B, actionEnter);        
+            const success = await actions.action(B, actionEnter);
             if (!success) {
                 await actions.action(B, actionUndo);
             }

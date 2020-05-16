@@ -99,6 +99,39 @@ export function colors( A: WrittenAnima, thing: WrittenThing|string, name?: stri
 }
 
 /**
+ * Updates equipment parameters.
+ * @param {WrittenAnima} A
+ * @optional @param {FengariMap} all parameters, namely:
+ *    - default, autopicking, everything slot-names
+ *    - scaleSlots - if inventory has to be scaled visually
+ *    - thingSprite - special sprite for the thing 
+ *    - thingScale - should we scale this thing up to the slot
+ */
+export function equipment( A: WrittenAnima, thing: WrittenThing|string, 
+            dflt: string, autopicking: string, everything: string,
+            scaleSlots: number,
+            thingSprite: any,
+            thingScale: boolean,
+    ) {
+    updates.update(A.B, {
+        update: updates.UPDATE.PROPERTIES,
+        actorId: A.controller.actorId,
+        id: thingId(A, thing),
+        thingProperties: { 
+            equipment: {
+                default: dflt,
+                autopicking: autopicking,
+                everything: everything,
+                scaleSlots: scaleSlots,
+                thingSprite: thingSprite,
+                thingScale: thingScale,
+            }
+        },
+    } as updates.UpdateProperties)
+    return true;
+}
+
+/**
  * Updates physics.
  * @param {WrittenAnima} A
  * @optional @param {FengariMap} all parameters, namely:

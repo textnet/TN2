@@ -15,6 +15,7 @@ import * as sprites from "../../model/sprites"
 import * as physics from "../../model/physics"
 import { CONSTRAINTS } from "../../model/interfaces"
 import { getPlayerDirection, getPlayerCommand, COMMAND } from "../command"
+import * as command from "../command"
 import { deepCopy } from "../../utils"
 import * as interop from "../renderer/send"
 
@@ -43,7 +44,7 @@ export class ThingActor extends BaseActor {
         this.body.pos = new ex.Vector(data.position.x, data.position.y);
         this.visualState = sprites.STATE.IDLE;
         this.visualDir = sprites.DIR[geo.directionName(data.position.direction)];
-        this.needRelease = true;
+        this.needRelease = false;
         this.setPassable();
     }
 
@@ -102,7 +103,7 @@ export class ThingActor extends BaseActor {
     updateFromCommands(engine: Game, delta: number) {
         let dir: geo.Direction = deepCopy(geo.DIRECTION.NONE)
         // TODO kneeled
-        if (this.needRelease && engine.input.keyboard.getKeys().length == 0) {
+        if (this.needRelease && command.wasReleased(engine)) {
             this.needRelease = false;
         }
         if (!this.needRelease) {
@@ -111,7 +112,6 @@ export class ThingActor extends BaseActor {
             let isIdle    = geo.isIdle(playerDir)
             // SHOW/HIDE EQUIPMENT
             if (command == COMMAND.EQUIPMENT && isIdle) {
-                this.needRelease = true;
                 if (this.equipmentActor) {
                     this.hideEquipment();    
                 } else {
@@ -124,8 +124,7 @@ export class ThingActor extends BaseActor {
                 interop.attempt(msg.ATTEMPT.ENTER, playerDir);
             }
             // LEAVE -> TRANSFER UP
-            if (command == COMMAND.LEAVE) {
-                this.needRelease = true;
+            if (command == COMMAND.LEAVE && isIdle) {
                 interop.transferUp();
             }
             // PICKUP

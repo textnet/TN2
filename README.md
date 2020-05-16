@@ -3,34 +3,16 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## Equipment Sprites
-+ create sprites with specific inventory sizing/rendering
-    + tent with its roll
-    + heap of hay
-+ render
-    + replace sprite when in hands
-    + replace sprite when in slots
-+ equipment fitting
-    + check on equip
-    + check on transfer
-    + pass customThingBox around fitting
-+ autoscale property of a thing
-    + always fit slots
-    + scale sprite to fit it right there
-
-+ make sure it works
-    * equipment         (no slots, just pickup/putdow)
-    * equipment_slots   (slots, no sprites)
-    * equipment_scale   (fit in the slot)
-    * equipment_sprites (show sprites in equipment, autopickup)
-    * backpack          (autopickup in backpack pocket slots)
-    * backpack_big      (autopickup in massive backpack)
-- written word methods to adjust equipment params
-- written methods to compose equipment slots (and things?)
-- written slot equip
++ `update` work with `equipment` subparams
++ written word methods to adjust equipment params
 
 ## ISSUES
-- BUG: transfer up -- too many times -- exception
-- BUG: transfer/loadPlane: equipped items are not visible   
++ BUG: packed equipment up very much: client error on putdown
++ BUG: when unequip: item stays in slot visually
++ BUG: transfer/loadPlane: equipped items are not visible   
+? BUG: transfer up/down with moving chests got into wrong seq.
+    ^ can't reproduce
++ needRelease: drop when any of the function keys is released    
 
 ## Stage 13. Inventory
 + EQUIP action
@@ -38,7 +20,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 + Visualisation
 + Equipment Slots
 + Equipment SHOW/HIDE
-- Equipment Sprites
++ Equipment Sprites
 - USE action
 - THROW action
 
@@ -57,6 +39,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 - Seasonality events
 - Transfer of forces in the inventory
 - render borders of small planes
+- Written methods to create and copy things, incl. slots
 
 
 ## TODO: Document

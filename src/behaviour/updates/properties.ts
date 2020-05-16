@@ -2,6 +2,7 @@ import { BookServer } from "../../model/book"
 import { getBookId, isLimbo, createPlaneId } from "../../model/identity"
 import * as geo from "../../model/geometry"
 import * as updates from "../updates"
+import * as model from "../../model/interfaces"
 
 
 export async function properties(B: BookServer, update: updates.UpdateProperties) {
@@ -61,6 +62,15 @@ export async function properties(B: BookServer, update: updates.UpdateProperties
                             }
                         }
                         break;
+                    case "equipment": 
+                        const equipment = value;
+                        if (equipment) {
+                            for (let k in model.EQUIPMENT_DEFAULT) {
+                                if (equipment[k]) {
+                                    thing.equipment[k] = equipment[k];
+                                }
+                            }
+                        }
                     default: thing[key] = update.thingProperties[key];
                 }                
             }

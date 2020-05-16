@@ -21,12 +21,12 @@ reg(msg.RENDER.EQUIP, (game: Game, data: msg.Equip)=>{
 reg(msg.RENDER.UN_EQUIP, (game: Game, data: msg.UnEquip)=>{
     const scene = game.gameScene();
     const actor = scene.equipmentActors[data.thingId];
-    const owner = actor.getOwner();
-    if (actor && owner) {
+    if (actor) {
+        const owner = actor.getOwner();
         actor.unequip();
-        if (owner.equipmentActor) {
+        if (owner && owner.equipmentActor) {
             interop.loadEquipment(owner.data.id);
-        }
+        }        
     }
 })
 

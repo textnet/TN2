@@ -47,6 +47,7 @@ export const supportedFunctions = {
     "push":         { signature: ["direction"], f: attempt.push },
     "pickup":       { signature: ["direction", "slot"], f: attempt.pickup },
     "putdown":      { signature: ["direction", "slot"], f: attempt.putdown },
+    //
     "equip":        { signature: ["thing", "owner", "slot"],         f: equip.equip },
     "un_equip":     { signature: ["owner", "slot", "direction"],     f: equip.unEquip },
     "re_equip":     { signature: ["owner_from", "slot_from", "owner_to", "slot_to"], f: equip.reEquip },
@@ -60,6 +61,8 @@ export const supportedFunctions = {
                                        "speed", "friction",
                                        "mass", "force", "gravity", "value", 
                                        "direction", "minimal", "maximal" ],      f: update.physics },
+    "update_equipment":  { signature: ["thing", "default", "autopicking", "everything", 
+                                       "scale_slots", "thing_sprite", "thing_sScale"], f: update.equipment },
     "update_seasons":    { signature: ["thing", "plane", "names", "times" ],     f: update.seasons },
 
 
