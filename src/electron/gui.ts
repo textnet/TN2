@@ -7,6 +7,7 @@ import * as ex from "excalibur";
 import * as jquery from "jquery";
 import { ipcRenderer } from "electron";
 import { Game, GameScene, startPlaying } from "../gui/game"
+import { Editor, initEditor } from "../gui/editor"
 import { MenuScene } from "../gui/menu"
 import { config } from "../config"
 import * as interop from "../gui/renderer/send"
@@ -20,6 +21,7 @@ export function runGame() {
     baseCSS();
     const id = interop.id();
     const game = new Game();
+    game.editor = initEditor(game);
     game.backgroundColor = ex.Color.fromRGB(0,0,0,0);
     game.bind(id);
     clientInterop.interopSetup(game);

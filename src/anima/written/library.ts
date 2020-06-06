@@ -26,8 +26,8 @@ import { EVENT } from "../../behaviour/events"
  */
 export const supportedFunctions = {
     "debug": { signature: ["log", "where", "list"], f: debug },
-    "get_artifacts": { signature: ["plane", "id", "name"], f: get.get_things },
-    "get_artifact":  { signature: ["plane", "id", "name"], f: get.get_thing  },
+    "get_things":    { signature: ["plane", "id", "name"], f: get.get_things },
+    "get_thing":     { signature: ["plane", "id", "name"], f: get.get_thing  },
     "get_myself":    { signature: [],                      f: get.get_myself    },
     "get_next":      { signature: ["direction"],           f: get.get_next      },
     "get_closest":   { signature: ["name"],                f: get.get_closest   },
@@ -52,6 +52,7 @@ export const supportedFunctions = {
     "un_equip":     { signature: ["owner", "slot", "direction"],     f: equip.unEquip },
     "re_equip":     { signature: ["owner_from", "slot_from", "owner_to", "slot_to"], f: equip.reEquip },
     //
+    "self":              { signature: false,                                     f: update.update },
     "update":            { signature: false,                                     f: update.update },
     "update_constraint": { signature: ["thing", "constraint", "name", "value" ], f: update.constraints },
     "update_color":      { signature: ["thing", "color", "name", "value" ],      f: update.colors },
@@ -82,6 +83,11 @@ export const supportedFunctions = {
     // "turn_to":  { signature: ["artifact", "directon"            ], f: move_by  },
     // "place_at": { signature: ["artifact", "x", "y", "direction" ], f: place_at },
     // "fit_at":   { signature: ["artifact", "x", "y", "direction" ], f: fit_at },
+}
+// synonyms
+supportedFunctions["self"] = supportedFunctions["update"];
+for (let name of ["constraint", "color", "physics", "equipment", "seasons"]) {
+    supportedFunctions[name] = supportedFunctions[ "update_"+name ];
 }
 
 export const supportedEvents = [ 

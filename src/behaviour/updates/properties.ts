@@ -7,6 +7,7 @@ import * as model from "../../model/interfaces"
 
 export async function properties(B: BookServer, update: updates.UpdateProperties) {
     const thing = await B.things.load(update.id);
+    if (!thing) return;
     // 1. plane properties
     if (update.planeProperties) {
         for (let planeName in thing.planes) {

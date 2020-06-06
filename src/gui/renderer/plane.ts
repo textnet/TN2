@@ -8,6 +8,7 @@ import { ThingActor } from "../actors/thing"
 import { EquipmentActor } from "../actors/equipment"
 import { COLORS, COLORS_DEFAULT } from "../../model/interfaces"
 import { reg } from "./setup"
+import * as editor from "../editor"
 
 reg(msg.RENDER.ENTER, (game: Game, data: msg.Enter) => {
     const actor = createActor(game, data.thing);
@@ -71,6 +72,8 @@ reg(msg.RENDER.ENTER_PLANE, (game: Game, data: msg.EnterPlane) => {
         label:  text,
     }
     // 4. Editor
+    // scene.editor = game.editor;
+    // updateEditor(scene);    
     // 5. Camera
     if (playerActor) {
         scene.camera.addStrategy(
@@ -80,6 +83,8 @@ reg(msg.RENDER.ENTER_PLANE, (game: Game, data: msg.EnterPlane) => {
     }
     // 6. Go!
     updateSceneFromPlane(scene, data.plane);
+    scene.editor = game.editor;
+    editor.updateEditorContent(scene)
     game.start();
 })
 
@@ -112,7 +117,7 @@ function updateSceneFromPlane(scene: GameScene, data: msg.PlaneRenderData) {
     label.text = `${data.id} «${data.name}»` // data.name;
     label.color = toColor(data.colors[COLORS.NAME] || COLORS_DEFAULT[COLORS.NAME]);
     title.color = toColor(data.colors[COLORS.TITLE] || COLORS_DEFAULT[COLORS.TITLE]);
-    // scene.editor.getSession().setMode('ace/mode/'+worldData.format);
+    // scene.editor.getSession().setMode('ace/mode/'+data.format);
 }
 
 export function toColor(hex: string) {

@@ -32,9 +32,13 @@ export function update( A: WrittenAnima, params: FengariMap) {
         }
     }
     // TODO: plane properties
+    let spawn = undefined;
+    if (params.get("spawn")) {
+        spawn = geo.position(params.get("spawn").get("x"), params.get("spawn").get("y"));
+    }
     const planeProperties = {
         format: params.get("format"),
-        spawn: geo.position(params.get("spawn").get("x"), params.get("spawn").get("y")),
+        spawn: spawn,
     }
     updates.update(A.B, {
         update: updates.UPDATE.PROPERTIES,

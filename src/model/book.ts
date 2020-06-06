@@ -81,9 +81,11 @@ export class BookServer {
             this._online = false; 
         }
     }
-    async awaken(thingId:string) {
-        const thing = await this.things.load(thingId);
-        await anima.animate(this, thing);
+    async awaken(thingId: string) {
+        if (this.isOnline()) {
+            const thing = await this.things.load(thingId);
+            await anima.animate(this, thing);            
+        }
     }
     async getOrCopy(thingId: string, actorId: string) {
         const thing = await this.things.load(thingId);

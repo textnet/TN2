@@ -26,6 +26,7 @@ const GUI_VELOCITY = 75; // more = faster
  */
 export class ThingActor extends BaseActor {
     isPlayer: boolean;
+    isKneeled: boolean;
     asObserver: boolean;
     needRelease: boolean;
 
@@ -41,6 +42,7 @@ export class ThingActor extends BaseActor {
         super(data);
         this.scale = new ex.Vector(1,1);
         this.isPlayer = false;
+        this.isKneeled = false;
         this.body.pos = new ex.Vector(data.position.x, data.position.y);
         this.visualState = sprites.STATE.IDLE;
         this.visualDir = sprites.DIR[geo.directionName(data.position.direction)];

@@ -9,11 +9,12 @@ import { strip } from "../utils"
 // import { setup } from "./scripts/update"
 // import { setup } from "./scripts/gui"
 // import { setup } from "./scripts/equipment"
-import { setup } from "./scripts/equipment_slots"
+// import { setup } from "./scripts/equipment_slots"
 // import { setup } from "./scripts/equipment_scale"
 // import { setup } from "./scripts/equipment_sprites"
 // import { setup } from "./scripts/backpack"
 // import { setup } from "./scripts/backpack_big"
+import { setup } from "./scripts/text"
 
 
 export async function script(library) {

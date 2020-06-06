@@ -2,40 +2,33 @@
 
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
-## Equipment Sprites
-+ `update` work with `equipment` subparams
-+ written word methods to adjust equipment params
-
-## ISSUES
-+ BUG: packed equipment up very much: client error on putdown
-+ BUG: when unequip: item stays in slot visually
-+ BUG: transfer/loadPlane: equipped items are not visible   
-? BUG: transfer up/down with moving chests got into wrong seq.
-    ^ can't reproduce
-+ needRelease: drop when any of the function keys is released    
-
-## Stage 13. Inventory
-+ EQUIP action
-+ UN_EQUIP action
-+ Visualisation
-+ Equipment Slots
-+ Equipment SHOW/HIDE
-+ Equipment Sprites
-+ USE action as PUSH with item: just fire the event
-
-
-
-
-## Stage 14. Text
+## Stage 14: Text editor and Kneeling
++ show text editor again
++ non-empty book
++ scroll as I go down.
++ make sure Written Word doesn't break
+- kneel — enter the text
+- unkneel — get back
+- rebuild anima on kneeling
+- actions to store text (also partials)
 - `get_text` and `get_line`
-- Update Text
-    - anima reboots when thing's text is changed (reacts on event of changing text)
+- reposition cursor
+- move sample text from the default book into a script
+- horizontal scrolling
+
 - universal filter with callback
     - `filter(id, name, plane, slot, callback)` -- gets item from anywhere (async)
     - `filter_text(id, name, plane, slot, line, anchor)` -- gets text from that item
 
 
-## Stage 15. Gravity, speed, friction, seasonality, misc
+## Finalizing things
+
+- command do load a thing by url
+- written word for ^
+
+
+
+## Other things
 - Seasonality events
 - Transfer of forces in the inventory
 - render borders of small planes
@@ -63,18 +56,18 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 10. [x] GUI and moving
 11. [x] Interbook operations and limbo, entering and leaving
 12. [x] Push action and basic updates (both GUI and Written Word)
-13. [ ] Inventory concept and actions (incl. throw)
+13. [x] Inventory concept and actions (incl. use)
 14. [ ] Text editor and kneeling
-15. [ ] Physics: gravity, speed, friction, seasonality (show in the title first)
-16. [ ] Clean up and document
-17. [ ] Design docs for `TN2 Release 1`
+15. [ ] Clean up and document; make graphics
+16. [ ] Design docs for `TN2 Release 1`
+17. [ ] Playtesting and fixes
+18. [ ] Physics: gravity, speed, friction, seasonality (show in the title first)
 
-## Rough planning for Q2 and Q3
-+ April: GUI, limbo, basic actions (move, push), basic updates, start inventory
-- May: Inventory
-- June: Text editor and menu, Graphics, Documentation, Playtests, 
-- July: Fixes, Gravity & Seasonality
-- August/September: R1
+## Rough release planning
+- June: Minimal menu, Graphics, Documentation
+- July: Playtests, Fixes
+- August: Playtests, Fixes, Seasonality
+- September: R1
 
 
 ## How to set things up
@@ -153,11 +146,18 @@ You can still invoke regular commands prepended with `/`. E.g. `/exit`.
 
 ## GUI Controls
 + `Cursor keys` = move around
-- `Shift+Enter` = push/touch; if picked up — throw
-- `Alt+Enter`   = pick up / put down
++ `Shift+Enter` = push/touch; if picked up — use
++ `Alt+Enter`   = pick up / put down
 + `Ctrl+Cursor` = enter into a thing in the direction of cursor
 + `Ctrl+Esc`    = undo the above — get up one level of things
 - `Ctrl+Enter`  = kneel to Written Word; or raise up
-- `Shift+Alt+Enter` = pull (no plans to implement)
-- `Ctrl+Space`  = start/stop flying (no plans to implement)
 
+No plans to implement in first releases
+
+- `Shift+Alt+Enter` = pull
+- `Ctrl+Space`  = start/stop flying
+
+
+
+------------------------------------------------------------
+Loading things by URL

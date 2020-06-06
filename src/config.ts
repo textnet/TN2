@@ -21,6 +21,12 @@ export interface GUI {
         fontSize: number;  // font size for the title
         fontFamily: string;
     }
+    editor: {
+        fontSize:   number;
+        fontFamily: string;
+        lineHeight: number;
+        characterWidth: number;
+    }
 }
 
 
@@ -53,3 +59,6 @@ config.gui.height = 600;
 config.gui.padding = { horizontal: 50, vertical: 75 };
 config.gui.macTitle = 26;
 config.gui.planeTitle = { height: 24, fontSize: 16, fontFamily: "Nanum Gothic Coding, monospace" };
+config.gui.editor     = { lineHeight: 20, characterWidth: 9,
+                          fontSize: 15, fontFamily: "Nanum Gothic Coding, monospace" };
+

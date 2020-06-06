@@ -35,7 +35,7 @@ export class WrittenAnima extends Anima {
             cl.verboseLog(await this.str() + ` <Written Word> ready.` + 
                           ((permanent||hasSubscriptions)?" And left alive.":""));    
         }
-        if (!permanent || hasSubscriptions) {
+        if (!permanent && !hasSubscriptions) {
             await this.terminate();
         }
     }
@@ -138,7 +138,7 @@ export class WrittenAnima extends Anima {
         const handler = this.subscribedKeys[key];
         if (handler) {
             this.controller.off(event, handler["listener"]);
-            // cl.verboseLog(this.B, `${thingId} unsubscribe <${thingId}> #${event}:${role}`)
+            cl.verboseLog(this.B, `${thingId} unsubscribe <${thingId}> #${event}:${role}`)
             delete this.subscribedKeys[key];
         }
     }      

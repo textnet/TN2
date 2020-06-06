@@ -9,6 +9,7 @@ import { ipcRenderer } from "electron";
 import { config } from "../config"
 import { ThingActor } from "./actors/thing"
 import { EquipmentActor } from "./actors/equipment"
+import * as editor from "./editor"
 import * as interop from "./renderer/send"
 import * as msg from "./messages"
 
@@ -17,6 +18,7 @@ import * as msg from "./messages"
  * with world boundaries from the config.
  */
 export class Game extends ex.Engine {
+    editor?: editor.Editor;
     id: string;
     isReadyToPlay: boolean;
     interopListeners: Record<string,any>;
@@ -37,7 +39,7 @@ export class Game extends ex.Engine {
 
 
 export class GameScene extends ex.Scene {
-    // editor?: Editor;
+    editor?: editor.Editor;
     planeData?: msg.PlaneRenderData;
     animaId: string;
     things?: Record<string, msg.ThingRenderData>;
@@ -93,10 +95,13 @@ export class RadiusAroundActorStrategy implements ex.CameraStrategy<ex.Actor> {
         }
         // equipment
         const thingActor = target as ThingActor;
+        const scene = target.scene as GameScene
         if (thingActor.equipmentActor) {
             thingActor.equipmentActor.fitInCamera(_eng as Game, focus, bounds)
         }
-        // TODO: kneeling here
+        if (scene.editor && !thingActor.isKneeled) {
+            editor.adjustEditorFocus(scene.editor, focus)
+        }
         return focus;
     }
 }
