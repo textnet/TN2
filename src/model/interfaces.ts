@@ -90,6 +90,7 @@ export interface PlaneData {
     physics?: PlanePhysics;
     things: Record<string, Position>;
     text: string;
+    textAnchor?: Position;
     format?: string;
     spawn?: Position;
 }
@@ -109,9 +110,10 @@ export function fixThingDefaults(data) {
     data.API = deepCopy(API);
 }
 export function fixPlaneDefaults(data) {
-    data.physics = data.physics   || deepCopy(PLANE_PHYSICS_DEFAULT);
-    data.format  = data.format    || FORMAT_DEFAULT;
-    data.spawn   = data.spawn     || deepCopy(SPAWN_DEFAULT);
+    data.physics    = data.physics    || deepCopy(PLANE_PHYSICS_DEFAULT);
+    data.format     = data.format     || FORMAT_DEFAULT;
+    data.spawn      = data.spawn      || deepCopy(SPAWN_DEFAULT);
+    data.textAnchor = data.textAnchor || deepCopy(SPAWN_DEFAULT);
 }
 export function getThingBox(thing: ThingData, slotBox?: geo.Box) {
     let baseline = thing.physics.box;

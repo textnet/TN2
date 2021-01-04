@@ -18,6 +18,7 @@ import { getPlayerDirection, getPlayerCommand, COMMAND } from "../command"
 import * as commands from "../command"
 import { deepCopy } from "../../utils"
 import * as interop from "../renderer/send"
+import * as editor from "../editor"
 
 const GUI_VELOCITY = 75; // more = faster
 
@@ -132,6 +133,12 @@ export class ThingActor extends BaseActor {
                 // LEAVE -> TRANSFER UP
                 if (command == COMMAND.LEAVE && isIdle) {
                     interop.transferUp();
+                }
+                // KNEEL
+                if (command == COMMAND.KNEEL) {
+                    this.needRelease = true;
+                    this.isKneeled = true;
+                    editor.focusEditor(this);
                 }
                 // PICKUP
                 if ((command == COMMAND.PICKUP) && !isIdle) {

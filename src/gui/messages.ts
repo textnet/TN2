@@ -95,6 +95,7 @@ export interface PlaneRenderData {
     name: string;
     colors: Record<string,string>;
     text: string;
+    textAnchor: geo.Position;
     format: string;
     equipment: model.ThingEquipmentMap;
     physics: physics.PlanePhysics;
@@ -164,6 +165,7 @@ export async function renderPlaneData(B: BookServer, plane: string|model.PlaneDa
         name: thing.name,
         colors: thing.colors,
         text: plane.text,
+        textAnchor: plane.textAnchor,
         format: plane.format,
         equipment: thing.equipment,
         physics: physics.patchPlanePhysics(plane.physics),

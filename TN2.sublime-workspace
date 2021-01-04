@@ -4,6 +4,38 @@
 		"selected_items":
 		[
 			[
+				"getSc",
+				"getScrollTop\tmethod"
+			],
+			[
+				"pda",
+				"planeData\tproperty"
+			],
+			[
+				"pla",
+				"planeData\tparameter"
+			],
+			[
+				"tit",
+				"planeTitle\tproperty"
+			],
+			[
+				"lin",
+				"lineHeight"
+			],
+			[
+				"tex",
+				"textAnchor\tproperty"
+			],
+			[
+				"Pla",
+				"PlaneRenderData\tinterface"
+			],
+			[
+				"con",
+				"controllers\tproperty"
+			],
+			[
 				"support",
 				"supportedFunctions\tvar"
 			],
@@ -316,10 +348,6 @@
 				"AUTO_PICKUP_SLOT_NAME\tconst"
 			],
 			[
-				"pla",
-				"planeId\tproperty"
-			],
-			[
 				"AcP",
 				"ActionEquip\tinterface"
 			],
@@ -486,34 +514,6 @@
 			[
 				"Att",
 				"ActionAttempt\tinterface"
-			],
-			[
-				"GaS",
-				"gameScene\tmethod"
-			],
-			[
-				"plan",
-				"planeId"
-			],
-			[
-				"efrom",
-				"equipFrom"
-			],
-			[
-				"A",
-				"ActionEquip\tinterface"
-			],
-			[
-				"ofrom",
-				"ownerFrom\tparameter"
-			],
-			[
-				"act",
-				"action\tfunction"
-			],
-			[
-				"Wri",
-				"WrittenThing\talias"
 			]
 		]
 	},
@@ -523,25 +523,25 @@
 			"file": "README.md",
 			"settings":
 			{
-				"buffer_size": 5274,
+				"buffer_size": 5592,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/model/book.ts",
+			"file": "src/gui/actors/thing.ts",
 			"settings":
 			{
-				"buffer_size": 10880,
+				"buffer_size": 7282,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/anima/written/detect.ts",
+			"file": "src/gui/editor.ts",
 			"settings":
 			{
-				"buffer_size": 6238,
+				"buffer_size": 8836,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -589,24 +589,28 @@
 	[
 		"/Users/nyaremko/TN2",
 		"/Users/nyaremko/TN2/src",
-		"/Users/nyaremko/TN2/src/anima",
-		"/Users/nyaremko/TN2/src/anima/written",
-		"/Users/nyaremko/TN2/src/anima/written/library",
-		"/Users/nyaremko/TN2/src/behaviour",
-		"/Users/nyaremko/TN2/src/behaviour/updates",
-		"/Users/nyaremko/TN2/src/commandline",
-		"/Users/nyaremko/TN2/src/commandline/scripts",
 		"/Users/nyaremko/TN2/src/electron",
-		"/Users/nyaremko/TN2/src/model",
-		"/Users/nyaremko/TN2/src/things"
+		"/Users/nyaremko/TN2/src/gui",
+		"/Users/nyaremko/TN2/src/gui/actors",
+		"/Users/nyaremko/TN2/src/gui/renderer",
+		"/Users/nyaremko/TN2/src/model"
 	],
 	"file_history":
 	[
+		"/Users/nyaremko/TN2/src/electron/window.ts",
+		"/Users/nyaremko/TN2/src/config.ts",
+		"/Users/nyaremko/TN2/src/gui/game.ts",
+		"/Users/nyaremko/TN2/src/model/interfaces.ts",
+		"/Users/nyaremko/TN2/src/gui/messages.ts",
+		"/Users/nyaremko/TN2/src/gui/command.ts",
+		"/Users/nyaremko/TN2/src/model/book.ts",
+		"/Users/nyaremko/TN2/src/anima/anima.ts",
+		"/Users/nyaremko/TN2/src/anima/written/detect.ts",
+		"/Users/nyaremko/TN2/src/behaviour/controller.ts",
 		"/Users/nyaremko/TN2/src/anima/written/library.ts",
 		"/Users/nyaremko/TN2/src/anima/written/library/update.ts",
 		"/Users/nyaremko/TN2/src/model/create.ts",
 		"/Users/nyaremko/TN2/src/gui/editor.ts",
-		"/Users/nyaremko/TN2/src/gui/game.ts",
 		"/Users/nyaremko/TN2/src/gui/renderer/plane.ts",
 		"/Users/nyaremko/TN2/src/commandline/scripts/text.ts",
 		"/Users/nyaremko/TN2/src/behaviour/updates/properties.ts",
@@ -616,16 +620,13 @@
 		"/Users/nyaremko/TN2/src/gui/actors/thing.ts",
 		"/Users/nyaremko/TN2/src/model/physics.ts",
 		"/Users/nyaremko/TN2/src/behaviour/actions/transfer.ts",
-		"/Users/nyaremko/TN2/src/model/interfaces.ts",
 		"/Users/nyaremko/TN2/src/gui/renderer/../editor.ts",
 		"/Users/nyaremko/TN2/src/behaviour/events.ts",
 		"/Users/nyaremko/TN2/src/behaviour/actions/use.ts",
 		"/Users/nyaremko/TN2/src/behaviour/actions/push.ts",
 		"/Users/nyaremko/TN2/src/behaviour/actions.ts",
 		"/Users/nyaremko/TN2/src/behaviour/actions/attempt.ts",
-		"/Users/nyaremko/TN2/src/gui/messages.ts",
 		"/Users/nyaremko/TN2/src/gui/renderer/equipment.ts",
-		"/Users/nyaremko/TN2/src/gui/command.ts",
 		"/Users/nyaremko/TN2/src/behaviour/attempts.ts",
 		"/Users/nyaremko/TN2/src/gui/server/plane.ts",
 		"/Users/nyaremko/TN2/src/behaviour/actions/equipment.ts",
@@ -637,7 +638,6 @@
 		"/Users/nyaremko/TN2/src/things/tent.ts",
 		"/Users/nyaremko/TN2/src/gui/server/setup.ts",
 		"/Users/nyaremko/TN2/src/gui/actors/slot.ts",
-		"/Users/nyaremko/TN2/src/anima/anima.ts",
 		"/Users/nyaremko/TN2/src/things/jones.ts",
 		"/Users/nyaremko/TN2/src/commandline/scripts/equipment_sprites.ts",
 		"/Users/nyaremko/TN2/src/gui/actors/plane.ts",
@@ -650,7 +650,6 @@
 		"/Users/nyaremko/TN2/src/things/equipment.ts",
 		"/Users/nyaremko/TN2/src/things/slot.ts",
 		"/Users/nyaremko/TN2/src/things/slot_mega.ts",
-		"/Users/nyaremko/TN2/src/config.ts",
 		"/Users/nyaremko/TN2/src/gui/actors/base.ts",
 		"/Users/nyaremko/TN2/src/commandline/scripts/slots.ts",
 		"/Users/nyaremko/TN2/src/commandline/equipment.ts",
@@ -660,7 +659,6 @@
 		"/Users/nyaremko/TN2/src/things/piano.ts",
 		"/Users/nyaremko/TN2/src/gui/renderer/send.ts",
 		"/Users/nyaremko/TN2/src/things/book.ts",
-		"/Users/nyaremko/TN2/src/model/book.ts",
 		"/Users/nyaremko/TN2/package.json",
 		"/Users/nyaremko/TN2/src/things/chest.ts",
 		"/Users/nyaremko/TN2/src/anima/written/library/get.ts",
@@ -674,13 +672,11 @@
 		"/Users/nyaremko/TN2/TN2.sublime-project",
 		"/Users/nyaremko/Library/Application Support/Sublime Text 3/Packages/User/TypeScript.sublime-settings",
 		"/Users/nyaremko/Library/Application Support/Sublime Text 3/Packages/TypeScript/Preferences.sublime-settings",
-		"/Users/nyaremko/TN2/src/behaviour/controller.ts",
 		"/Users/nyaremko/TN2/src/gui/renderer/move.ts",
 		"/Users/nyaremko/TN2/src/gui/renderer/setup.ts",
 		"/Users/nyaremko/TN2/src/things/something.ts",
 		"/Users/nyaremko/TN2/src/commandline/scripts/limbo.ts",
 		"/Users/nyaremko/TN2/src/gui/server/equipment.ts",
-		"/Users/nyaremko/TN2/src/anima/written/detect.ts",
 		"/Users/nyaremko/TN2/src/storage/repo.ts",
 		"/Users/nyaremko/TN2/src/commandline/scripts/minimal.ts",
 		"/Users/nyaremko/TN2/src/commandline/scripts/gui.ts",
@@ -728,8 +724,7 @@
 		"/Users/nyaremko/TN2/yarn-error.log",
 		"/Users/nyaremko/TN2/webpack.electron.js",
 		"/Users/nyaremko/TN2/tsconfig.json",
-		"/Users/nyaremko/TN2/package-lock.json",
-		"/Users/nyaremko/TN2/src/network/library.ts"
+		"/Users/nyaremko/TN2/package-lock.json"
 	],
 	"find":
 	{
@@ -751,6 +746,12 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"positionCursor",
+			"adjustEditorFocus",
+			"@@",
+			"left alive",
+			"connectAnima",
+			"left alive",
 			"planes",
 			"awaken",
 			"isInterop",
@@ -872,13 +873,7 @@
 			"physics, ",
 			"@@",
 			"findNextFitting",
-			"anchor",
-			"-1",
-			"@@",
-			"autopickup",
-			"autopicking",
-			"autopickup",
-			"@@"
+			"anchor"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -907,15 +902,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5274,
+						"buffer_size": 5592,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								478,
-								478
+								619,
+								619
 							]
 						],
 						"settings":
@@ -926,59 +921,53 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "src/model/book.ts",
+					"file": "src/gui/actors/thing.ts",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 10880,
+						"buffer_size": 7282,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1980,
-								1980
+								860,
+								860
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
-							"typescript_plugin_format_options":
-							{
-								"convertTabsToSpaces": true,
-								"indentSize": 4,
-								"tabSize": 4
-							},
 							"use_tab_stops": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "src/anima/written/detect.ts",
+					"file": "src/gui/editor.ts",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6238,
+						"buffer_size": 8836,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3009,
-								3009
+								881,
+								881
 							]
 						],
 						"settings":
@@ -993,7 +982,7 @@
 							"use_tab_stops": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1086.0,
+						"translation.y": 333.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -1065,7 +1054,7 @@
 		[
 			[
 				"",
-				"~/Yandex.Disk.localized/Всё моё/100 eCG/Meeting minutes/Meeting Notes.sublime-project"
+				"~/Yandex.Disk.localized/Всё моё/Всё моё.sublime-project"
 			]
 		],
 		"width": 380.0

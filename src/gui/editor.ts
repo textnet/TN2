@@ -10,6 +10,7 @@ import { ThingActor } from "./actors/thing"
 import { Game, GameScene } from "./game"
 import * as model from "../model/interfaces"
 import { config } from "../config"
+import * as msg from "./messages"
 
 /**
  * We extend Ace9 Editor with a link to the player actor.
@@ -36,26 +37,89 @@ export function updateEditorContent(scene: GameScene) {
  * @param {Editor}    editor
  * @param {ex.Vector} focus (of the camera)
  */
-export function adjustEditorFocus(editor: Editor, focus: ex.Vector) {
+export function adjustEditorFocus(editor: Editor, focus: ex.Vector, 
+                                  planeData: msg.PlaneRenderData) {
     const homeY   = config.gui.height/2 + config.gui.padding.vertical;
     const cameraY = focus.y;
-    let distance = cameraY - homeY + config.gui.padding.vertical;
+    let distance = focus.y // where camera should look
+                   -planeData.textAnchor.y // shift if the text starts not from 0
+                   -homeY // shift up to compensate the camera position in the center
+                   +config.gui.padding.vertical // compensate for being shifted
     if (distance - editor["renderer"].getScrollTop() != 0) {
         editor["renderer"].scrollToY(distance)
     }
 }
 
-// /**
-//  * Positions the text cursor to closely match the position of the player.
-//  * @param {Editor}        editor
-//  * @param {ArtifactActor} actor
-//  */
-// export function positionCursor(editor: Editor, actor: ArtifactActor) {
-//     const height = actor.pos.y + visualBounds.margin + visualBounds.top;
-//     const width  = actor.pos.x - visualBounds.left;
-//     const col = Math.floor( width / editorSettings.characterWidth ) -1;
-//     const row = Math.floor( height/ editorSettings.lineHeight )
-//     editor.moveCursorTo(row, col);
+/**
+ * Positions the text cursor to closely match the position of the player.
+ * @param {Editor}     editor
+ * @param {ThingActor} actor
+ */
+export function positionCursor(editor: Editor, actor: ThingActor, 
+                               planeData: msg.PlaneRenderData) {
+    const scene = actor.scene as GameScene;
+    let distance = actor.pos.y 
+                   -planeData.textAnchor.y 
+                   -config.gui.padding.vertical;
+    if (distance < 0) {
+        // add lines to the top
+        const rows = Math.ceil(-distance / config.gui.editor.lineHeight)+5
+        const difference = rows * config.gui.editor.lineHeight
+        planeData.textAnchor.y -= difference;
+        const r = [];
+        for (let i=0; i<rows; i++) {
+            r.push("\n")
+        }
+        r.push(planeData.text);
+        planeData.text = r.join("");
+        editor["renderer"].scrollToY(distance - difference);
+        distance = distance - difference;
+        updateEditorContent(scene);
+    }
+    // @@ TODO add lines to the bottom
+    // @@ TODO add spaces
+
+
+    // @@ TODO horizontal scrolling
+    const left = actor.pos.x
+                 -scene.camera.pos.x
+                 +config.gui.width/2;
+    //
+    const top  = actor.pos.y 
+                 -scene.camera.pos.y 
+                 +config.gui.height/2 
+                 +config.gui.planeTitle.height
+    //
+    let c = editor.renderer.screenToTextCoordinates(left, top);
+    let backTop = editor.renderer.textToScreenCoordinates(c["row"], c["column"])
+    let bottomLineCount = Math.floor((top-backTop.pageY)/config.gui.editor.lineHeight);
+    if (bottomLineCount > 0) {
+        const r = [];
+        for (let i=0; i<bottomLineCount; i++) {
+            r.push("\n")
+        }
+        scene.planeData.text += r.join("");
+        updateEditorContent(scene)
+        adjustEditorFocus(editor, actor.pos, planeData);
+        c = editor.renderer.screenToTextCoordinates(left, top);
+    }
+    console.log(c, editor.session.doc.getLength())
+    console.log("CAMERA", scene.camera.pos)
+    console.log("ACTOR", actor.pos)
+    console.log("EDITOR", backTop, top, bottomLineCount)
+    editor.moveCursorTo(c["row"], c["column"]);
+}
+
+// function findRow(editor: Editor, y: number) {
+//     for(let startRow = editor.renderer["layerConfig"].firstRowScreen;
+//         startRow++;
+//         startRow <= editor.renderer["layerConfig"].lastRow) {
+//         //
+//         const coords = editor.renderer.textToScreenCoordinates
+//     }
+//     const c = editor.renderer.screenToTextCoordinates()
+    
+
 // }
 
 // /**
@@ -63,6 +127,7 @@ export function adjustEditorFocus(editor: Editor, focus: ex.Vector) {
 //  * @param {Editor} editor
 //  */
 // export function positionFromCursor(editor: Editor) {
+//     editor.renderer.textToScreenCoordinates(row, column)
 //     const cursor = editor.getCursorPosition()
 //     const position: Position = {
 //         x: (cursor.column+1) * editorSettings.characterWidth + visualBounds.left,
@@ -80,9 +145,9 @@ export function adjustEditorFocus(editor: Editor, focus: ex.Vector) {
  */
 export function focusEditor(actor: ThingActor) {
     const scene: GameScene = actor.scene as GameScene;
-    // updateEditor(scene); // TODO
+    updateEditorContent(scene);
     const editor = scene.editor;
-    // positionCursor(editor, actor); TODO
+    positionCursor(editor, actor, scene.planeData);
     editor.playerActor = actor;
     editor.setReadOnly(false);
     editor.setOption("showGutter", true);
@@ -91,6 +156,7 @@ export function focusEditor(actor: ThingActor) {
     jquery("canvas").css({  opacity: 0.2 })
     jquery("#editor").css({ opacity: 1 })
     jquery("#editor").find(".ace_gutter").css({ opacity: 1 })
+    jquery("#editor").find(".ace_scrollbar").css({ overflow: "hidden" })
 }
 
 /**
@@ -98,14 +164,16 @@ export function focusEditor(actor: ThingActor) {
  * @param {Editor} editor
  */
 export function blurEditor(editor) {
-    editor.playerActor = null;
+    if (editor.playerActor) {
+        editor.playerActor.isKneeled = false;
+        editor.playerActor = null;
+    }
     editor.setReadOnly(true);
     editor.blur();
     jquery("canvas").css({  opacity: 1 })
-    jquery("#editor").css({ opacity: 0.7, 
-        // width: worldWidth+visualBounds.left+visualBounds.right, 
-    })
+    jquery("#editor").css({ opacity: 0.7, });
     jquery("#editor").find(".ace_gutter").css({ opacity: 0 })
+    jquery("#editor").find(".ace_scrollbar").css({ overflow: "hidden" })
     editor.renderer.$cursorLayer.element.style.visibility = "hidden"
 }
 
@@ -140,7 +208,10 @@ export function initEditor(game: Game) {
     editor.getSession().setTabSize(4);
     editor.getSession().setUseSoftTabs(true);
     function standup() {
-        // TODO
+        const cursor = editor.getCursorPosition()
+        console.log(cursor)
+
+        // TODO @@@@
         // const scene = game.gameScene()
         // const text = editor.getValue()
         // const x = 100;
@@ -171,13 +242,12 @@ export function initEditor(game: Game) {
  * Internal: stylize bare HTML with CSS. Called from `initEditor`
  */
 function customizeCSS() {
-    // jquery("body").css({ padding: 0, margin: 0, background:"#24251F" });
     jquery("#editor").css({
         zIndex: 1000,
         width: config.gui.width,
         left: 0,
         top: config.gui.planeTitle.height,
-        bottom: 0,
+        height: config.gui.height - config.gui.planeTitle.height,
         position:"absolute"
     })
     jquery("#wrapper").css({

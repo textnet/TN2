@@ -100,7 +100,7 @@ export class RadiusAroundActorStrategy implements ex.CameraStrategy<ex.Actor> {
             thingActor.equipmentActor.fitInCamera(_eng as Game, focus, bounds)
         }
         if (scene.editor && !thingActor.isKneeled) {
-            editor.adjustEditorFocus(scene.editor, focus)
+            editor.adjustEditorFocus(scene.editor, focus, scene.planeData)
         }
         return focus;
     }

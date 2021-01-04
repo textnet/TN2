@@ -3,14 +3,23 @@
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## Stage 14: Text editor and Kneeling
-+ show text editor again
-+ non-empty book
-+ scroll as I go down.
-+ make sure Written Word doesn't break
-- kneel — enter the text
-- unkneel — get back
++ kneel — enter the text
++ unkneel — get back
+
+- добавляй строки в конце
+- добавляй пробелы чтобы курсор вернулся
+- возвращай персонажа в ту позицию
+- горизонтальный скроллинг
+    - смещение экрана, когда убегает
+    - фокус текста в экран при приседании
+    - вернуть фокус, когда встаёт
+    - анимируй движение фокуса
+- не посылай пробелы туда-сюда, если изменений текста не было
+    - но запрашивай новое состояние
+
 - rebuild anima on kneeling
 - actions to store text (also partials)
+- updates of text coming from server to renderer
 - `get_text` and `get_line`
 - reposition cursor
 - move sample text from the default book into a script

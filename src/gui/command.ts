@@ -91,8 +91,10 @@ export function getPlayerCommand(game: Game) {
     if (game.input.keyboard.wasReleased(KEY.EQUIPMENT))  return COMMAND.EQUIPMENT; 
     // if (game.input.keyboard.wasReleased(KEY.EQUIPMENT)) return COMMAND.EQUIPMENT; // uncomment this if HOLD-TO-SHOW-INVENTORY is true
     if (geo.isIdle(dir)) {
-        if (game.input.keyboard.isHeld(KEY.ENTER) && game.input.keyboard.wasReleased(KEY.TEXT))  return COMMAND.KNEEL;
-        if (game.input.keyboard.isHeld(KEY.ENTER) && game.input.keyboard.wasReleased(KEY.LEAVE)) return COMMAND.LEAVE;
+        if (game.input.keyboard.isHeld(KEY.ENTER) 
+            && game.input.keyboard.wasReleased(KEY.TEXT))  return COMMAND.KNEEL;
+        if (game.input.keyboard.isHeld(KEY.ENTER) 
+            && game.input.keyboard.wasReleased(KEY.LEAVE)) return COMMAND.LEAVE;
     } else {
         if (game.input.keyboard.isHeld(KEY.ENTER)) {
             if (directionPressed(game)) return COMMAND.ENTER;
