@@ -18,6 +18,7 @@ import * as msg from "./messages"
  */
 export interface Editor extends ace.Editor {
     playerActor?: ThingActor;
+    focusVector?: ex.Vector;
 }
 
 /**
@@ -40,7 +41,7 @@ export function updateEditorContent(scene: GameScene) {
 export function adjustEditorFocus(editor: Editor, focus: ex.Vector, 
                                   planeData: msg.PlaneRenderData) {
     const homeY   = config.gui.height/2 + config.gui.padding.vertical;
-    const cameraY = focus.y;
+    editor.focusVector = new ex.Vector(focus.x, focus.y);
     let distance = focus.y // where camera should look
                    -planeData.textAnchor.y // shift if the text starts not from 0
                    -homeY // shift up to compensate the camera position in the center
@@ -58,9 +59,13 @@ export function adjustEditorFocus(editor: Editor, focus: ex.Vector,
 export function positionCursor(editor: Editor, actor: ThingActor, 
                                planeData: msg.PlaneRenderData) {
     const scene = actor.scene as GameScene;
-    let distance = actor.pos.y 
-                   -planeData.textAnchor.y 
-                   -config.gui.padding.vertical;
+    const homeY   = config.gui.height/2 
+                    +config.gui.padding.vertical;
+    let distance = editor.focusVector.y // where camera should look
+                   -planeData.textAnchor.y // shift if the text starts not from 0
+                   -homeY // shift up to compensate the camera position in the center
+                   +config.gui.padding.vertical // compensate for being shifted
+    let shift = 0;
     if (distance < 0) {
         // add lines to the top
         const rows = Math.ceil(-distance / config.gui.editor.lineHeight)+5
@@ -73,14 +78,13 @@ export function positionCursor(editor: Editor, actor: ThingActor,
         r.push(planeData.text);
         planeData.text = r.join("");
         editor["renderer"].scrollToY(distance - difference);
+        shift = difference;
         distance = distance - difference;
         updateEditorContent(scene);
-    }
-    // @@ TODO add lines to the bottom
+        adjustEditorFocus(editor, editor.focusVector, planeData);
+    }    
+    
     // @@ TODO add spaces
-
-
-    // @@ TODO horizontal scrolling
     const left = actor.pos.x
                  -scene.camera.pos.x
                  +config.gui.width/2;
@@ -92,7 +96,7 @@ export function positionCursor(editor: Editor, actor: ThingActor,
     //
     let c = editor.renderer.screenToTextCoordinates(left, top);
     let backTop = editor.renderer.textToScreenCoordinates(c["row"], c["column"])
-    let bottomLineCount = Math.floor((top-backTop.pageY)/config.gui.editor.lineHeight);
+    let bottomLineCount = Math.floor((top-backTop.pageY)/config.gui.editor.lineHeight)+5;
     if (bottomLineCount > 0) {
         const r = [];
         for (let i=0; i<bottomLineCount; i++) {
@@ -100,13 +104,9 @@ export function positionCursor(editor: Editor, actor: ThingActor,
         }
         scene.planeData.text += r.join("");
         updateEditorContent(scene)
-        adjustEditorFocus(editor, actor.pos, planeData);
+        adjustEditorFocus(editor, editor.focusVector, planeData);
         c = editor.renderer.screenToTextCoordinates(left, top);
     }
-    console.log(c, editor.session.doc.getLength())
-    console.log("CAMERA", scene.camera.pos)
-    console.log("ACTOR", actor.pos)
-    console.log("EDITOR", backTop, top, bottomLineCount)
     editor.moveCursorTo(c["row"], c["column"]);
 }
 

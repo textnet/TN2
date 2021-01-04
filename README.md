@@ -5,25 +5,17 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 ## Stage 14: Text editor and Kneeling
 + kneel — enter the text
 + unkneel — get back
-
-- добавляй строки в конце
-- добавляй пробелы чтобы курсор вернулся
-- возвращай персонажа в ту позицию
-- горизонтальный скроллинг
-    - смещение экрана, когда убегает
-    - фокус текста в экран при приседании
-    - вернуть фокус, когда встаёт
-    - анимируй движение фокуса
-- не посылай пробелы туда-сюда, если изменений текста не было
-    - но запрашивай новое состояние
-
++ add (excessive) lines in the beginning and in the end.
+- add spaces if the line is too short
+- trim text and don't send it back/forth if no change
+    - though ask for the updated state
 - rebuild anima on kneeling
 - actions to store text (also partials)
 - updates of text coming from server to renderer
 - `get_text` and `get_line`
 - reposition cursor
 - move sample text from the default book into a script
-- horizontal scrolling
+- horizontal scrolling (FORGOT WHAT THAT IS)
 
 - universal filter with callback
     - `filter(id, name, plane, slot, callback)` -- gets item from anywhere (async)
@@ -32,7 +24,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## Finalizing things
 
-- command do load a thing by url
+- command to load a thing by url
 - written word for ^
 
 
@@ -42,6 +34,8 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 - Transfer of forces in the inventory
 - render borders of small planes
 - Written methods to create and copy things, incl. slots
+- Spoken text
+- `summon` command
 
 
 ## TODO: Document
@@ -67,16 +61,18 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 12. [x] Push action and basic updates (both GUI and Written Word)
 13. [x] Inventory concept and actions (incl. use)
 14. [ ] Text editor and kneeling
-15. [ ] Clean up and document; make graphics
-16. [ ] Design docs for `TN2 Release 1`
-17. [ ] Playtesting and fixes
-18. [ ] Physics: gravity, speed, friction, seasonality (show in the title first)
+15. [ ] Create things easily
+16. [ ] Clean up and document; make graphics
+17. [ ] Design docs for `TN2 Release 1`
+18. [ ] Playtesting and fixes
+19. [ ] Physics: gravity, speed, friction, seasonality (show in the title first)
 
 ## Rough release planning
-- June: Minimal menu, Graphics, Documentation
-- July: Playtests, Fixes
-- August: Playtests, Fixes, Seasonality
-- September: R1
+- January: Written Word
+- February: Minimal menu, Graphics, Documentation
+- March: Playtests, Fixes
+- April: Demo
+- May: R1
 
 
 ## How to set things up
