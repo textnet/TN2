@@ -13,6 +13,14 @@ export function strip(s) {
     return ss.replace(/\s+$/, "")
 }
 
+export function repeat(s: string, times: number, joiner: string = "") {
+    let ss = []
+    for (let i=0; i<times; i++) {
+        ss[i] = s
+    }
+    return ss.join(joiner);
+}
+
 
 
 /**

@@ -6,7 +6,6 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 + kneel — enter the text
 + unkneel — get back
 + add (excessive) lines in the beginning and in the end.
-- add spaces if the line is too short
 - trim text and don't send it back/forth if no change
     - though ask for the updated state
 - rebuild anima on kneeling

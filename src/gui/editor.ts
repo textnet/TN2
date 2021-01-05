@@ -11,6 +11,7 @@ import { Game, GameScene } from "./game"
 import * as model from "../model/interfaces"
 import { config } from "../config"
 import * as msg from "./messages"
+import * as utils from "../utils"
 
 /**
  * We extend Ace9 Editor with a link to the player actor.
