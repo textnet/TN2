@@ -94,3 +94,29 @@ async function(gui: GuiConsole, e: events.EventUnEquip) {
         thingId: e.thingId
     } as msg.UnEquip);
 }
+
+
+mapping[events.EVENT.KNEEL] = 
+async function(gui: GuiConsole, e: events.EventKneel) {
+    const thingData = await msg.renderThingData(gui.B, e.thingId);
+    return gui.send(msg.RENDER.KNEEL, {
+        thingId: e.thingId
+    } as msg.Kneel);
+}
+mapping[events.EVENT.STANDUP] = 
+async function(gui: GuiConsole, e: events.EventStandUp) {
+    const thingData = await msg.renderThingData(gui.B, e.thingId);
+    return gui.send(msg.RENDER.STANDUP, {
+        thingId: e.thingId
+    } as msg.StandUp);
+}
+mapping[events.EVENT.TEXT] = 
+async function(gui: GuiConsole, e: events.EventUpdateText) {
+    const thingData = await msg.renderThingData(gui.B, e.thingId);
+    return gui.send(msg.RENDER.TEXT, {
+        thingId: e.thingId,
+        text: e.text,
+        anchor: e.anchor,
+    } as msg.UpdateText);
+}
+

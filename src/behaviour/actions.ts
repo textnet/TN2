@@ -19,6 +19,7 @@ import * as attempt  from "./actions/attempt"
 import * as push      from "./actions/push"
 import * as use       from "./actions/use"
 import * as equipment from "./actions/equipment"
+import * as text      from "./actions/text"
 export const handlers = {
     say:        say.action,
     enter:      transfer.enter,
@@ -37,6 +38,9 @@ export const handlers = {
     equip:      equipment.equip,
     unEquip:    equipment.unEquip,
     reEquip:    equipment.reEquip,
+    text:       text.updateText,
+    standUp:    text.standUp,
+    kneel:      text.kneel,
 }
 
 // actions happen on a plane
@@ -59,6 +63,9 @@ export const ACTION = {
     UN_EQUIP: "unEquip",
     RE_EQUIP: "reEquip",
     USE: "use",
+    STANDUP: "standUp",
+    KNEEL: "kneel",
+    TEXT: "text",
 }
 
 export const ATTEMPT = attempts.ATTEMPT;
@@ -94,6 +101,13 @@ export interface ActionReEquip extends Action {
     slotFrom?: string;
     slotTo?:   string;
 }
+
+export interface ActionKneel   extends Action {}
+export interface ActionStandUp extends Action {
+    anchor?: geo.Position;
+    text: string;
+}
+export interface ActionText extends ActionStandUp {}
 export interface ActionTransfer extends ActionEnter {}
 export interface ActionTransferUp extends Action {}
 export interface ActionToLimbo    extends Action {}

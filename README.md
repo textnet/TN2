@@ -6,22 +6,32 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 + kneel — enter the text
 + unkneel — get back
 + add (excessive) lines in the beginning and in the end.
-- trim text and don't send it back/forth if no change
-    - though ask for the updated state
+- send kneel/standup
+    + send from renderer
+    + send from gui
+    + stored in plane
++ events: kneel, standup, text
++ render:
+    + kneel
+    + standup
+- update text on `text` event
+- Written Text support
 - rebuild anima on kneeling
-- actions to store text (also partials)
-- updates of text coming from server to renderer
+- render other kneeled things
+    + entering the plane
+    + changing in the plane
++ actions to store text 
+- partials for store text
 - `get_text` and `get_line`
-- reposition cursor
 - move sample text from the default book into a script
-- horizontal scrolling (FORGOT WHAT THAT IS)
 
-- universal filter with callback
-    - `filter(id, name, plane, slot, callback)` -- gets item from anywhere (async)
-    - `filter_text(id, name, plane, slot, line, anchor)` -- gets text from that item
+
 
 
 ## Finalizing things
+- universal filter with callback
+    - `filter(id, name, plane, slot, callback)` -- gets item from anywhere (async)
+    - `filter_text(id, name, plane, slot, line, anchor)` -- gets text from that item
 
 - command to load a thing by url
 - written word for ^

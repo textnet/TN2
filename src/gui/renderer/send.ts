@@ -40,6 +40,20 @@ export function startMoving() { send(msg.SERVER.MOVE_START);  }
 export function stopMoving()  { send(msg.SERVER.MOVE_FINISH); }
 
 /**
+ * INTEROP-> Kneel/StandUp
+ */
+export function kneel() { 
+    send(msg.SERVER.KNEEL);  
+}
+export function standUp(text: string, anchor: geo.Position)  { 
+    send(msg.SERVER.STANDUP, {
+        anchor: anchor,
+        text: text
+    } as msg.StandUp); 
+}
+
+
+/**
  * INTEROP-> Reposition
  */
 export function reposition(position: geo.Position) {

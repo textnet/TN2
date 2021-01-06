@@ -7,13 +7,16 @@ import * as cl from "../commandline/commandline"
 import { print } from "../commandline/print"
 
 import * as updateProperties from "./updates/properties"
+import * as updateText       from "./updates/text"
 
 // updates happen with Things and Planes
 
 export const UPDATE = {
     HOST:   "hostPlane",
     VISITS: "visits",
-    PROPERTIES: "properties"
+    PROPERTIES: "properties",
+    TEXT: "text",
+    KNEELED: "kneeled",
 }
 
 export interface Update {
@@ -35,6 +38,16 @@ export interface UpdateProperties extends Update {
     thingProperties?: any,
     planeProperties?: any,
 }
+export interface UpdateText extends Update {
+    planeId: string,
+    text: string,
+    anchor?: geo.Position
+}
+export interface UpdateKneeled extends Update {
+    isKneeled: boolean;
+}
+
+
 // --- dispatcher ---
 export async function update(B: BookServer, update: Update) {
     const targetBookId = getBookId(update.id);
@@ -76,6 +89,8 @@ export const handlers = {
     },
 
     properties: updateProperties.properties,
+    text:       updateText.text,
+    kneeled:    updateText.kneeled,
 
 }
 

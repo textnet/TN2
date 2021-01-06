@@ -155,6 +155,9 @@ export function vector(from: Position, to: Position) {
 export function distance(from: Position, to: Position) {
     return lengthDir(vector(from, to))
 }
+export function isEqual(a: Position, b: Position) {
+    return a.x==b.x && a.y==b.y && a.z==b.z
+}
 export function add(pos: Position, dir: Direction) {
     dir.dz = dir.dz || 0;
     pos.z  = pos.z  || 0;

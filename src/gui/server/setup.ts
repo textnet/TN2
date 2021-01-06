@@ -3,7 +3,7 @@ import { GuiConsole } from "../../console/gui";
 import * as cl from "../../commandline/commandline"
 import * as msg from "../messages"
 
-const modules = ["plane", "move", "attempt", "transfer"]
+const modules = ["plane", "move", "attempt", "transfer", "text"]
 
 // ---------------------------------------------------------------------------
 let listeners: Record<string, any>;

@@ -16,6 +16,8 @@ export const SERVER = {
     ATTEMPT:     "attempt",    // attempt different actions, see below
     EQUIPMENT:   "loadEquipment",  // show equipment
     TRANSFER_UP: "transferUp", // go up in the stack
+    KNEEL:       "kneel", // kneel to edit the text
+    STANDUP:     "standUp", // stand back up
 }
 
 export const ATTEMPT = attempts.ATTEMPT;
@@ -31,6 +33,9 @@ export const RENDER = {
     READY: "ready",
     EQUIP: "equip",
     UN_EQUIP: "unEquip",
+    KNEEL: "kneel",
+    STANDUP: "standUp",
+    TEXT: "text",
 }
 
 export interface Message {
@@ -56,6 +61,16 @@ export interface Place extends Message {
 export interface Leave extends Message {
     thingId: string; 
 }
+
+export interface Kneel   extends Message {
+    thingId: string;     
+}
+export interface StandUp extends Kneel {
+    anchor?: geo.Position;
+    text?: string;
+}
+export interface UpdateText extends StandUp {}
+
 export interface Enter extends Message {
     thing: ThingRenderData;
     equipped: ThingRenderData;
@@ -106,6 +121,7 @@ export interface ThingRenderData {
     hostPlaneId: string;
     name: string;
     constraints: Record<string,boolean|model.ThingConstraint>;
+    isKneeled: boolean;
     sprite: sprites.Sprite;
     physics: physics.ThingPhysics;
     position: geo.Position;
@@ -148,6 +164,7 @@ export async function renderThingData(B: BookServer, thing: string|model.ThingDa
         hostPlaneId: thing.hostPlaneId,
         name: thing.name,
         constraints: thing.constraints,
+        isKneeled: thing.isKneeled,
         sprite: renderSprite,
         physics: renderPhysics,
         equipment: thing.equipment,

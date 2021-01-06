@@ -24,6 +24,7 @@ export interface ThingData {
     name: string;
     colors: Record<string,string>; // e.g. text, floor, title, skin, eyes. use constants as keys!
     constraints?: Record<string,boolean|ThingConstraint>; // constraints like "pushable" etc. true/false or min mass
+    isKneeled?: boolean;
     sprite: Sprite;
     physics: ThingPhysics;
     planes:  Record<string, string>;    // name:planeId
@@ -106,6 +107,7 @@ export function fixThingDefaults(data) {
     data.constraints = data.constraints || deepCopy(CONSTRAINTS_DEFAULT);
     data.visits = data.visits || {};
     data.visitsStack = data.visitsStack || [];
+    data.isKneeled = data.isKneeled || false;
     data.equipment = data.equipment || deepCopy(EQUIPMENT_DEFAULT);
     data.API = deepCopy(API);
 }
@@ -144,6 +146,7 @@ export const CONSTRAINTS = {
     PICKABLE:  "pickable", // Can this thing be picked up?
     ENTERABLE: "enterable",   // Can someone enter inside this thing?"
     AUTOPICKING: "autopicking", // Can this thing automatically pickup others
+    EDITABLE:  "editable", // Can the texts of this thing be updated
 }
 export const CONSTRAINTS_DEFAULT = {
     pushable:    true,
@@ -151,6 +154,7 @@ export const CONSTRAINTS_DEFAULT = {
     pickable:    true,
     enterable:   true,
     autopicking: false,
+    editable:    true,
 }
 
 export const EQUIPMENT_DEFAULT: ThingEquipmentMap = {

@@ -5,7 +5,7 @@ import { ipcRenderer } from "electron";
 import { Game } from "../game"
 import * as msg from "../messages"
 
-const modules = ["plane", "move", "leave", "equipment"]
+const modules = ["plane", "move", "leave", "equipment", "text"]
 
 let listeners: Record<string, any>;
 export function registerRenderListener(messageName: string, listener) {

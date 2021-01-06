@@ -12,6 +12,8 @@ import * as model from "../model/interfaces"
 import { config } from "../config"
 import * as msg from "./messages"
 import * as utils from "../utils"
+import * as interop from "./renderer/send"
+
 
 /**
  * We extend Ace9 Editor with a link to the player actor.
@@ -209,16 +211,10 @@ export function initEditor(game: Game) {
     editor.getSession().setTabSize(4);
     editor.getSession().setUseSoftTabs(true);
     function standup() {
-        const cursor = editor.getCursorPosition()
-        console.log(cursor)
-
-        // TODO @@@@
-        // const scene = game.gameScene()
-        // const text = editor.getValue()
-        // const x = 100;
-        // const y = 100;
-        // const pos = positionFromCursor(editor);
-        // sendInterop.stand(editor.playerActor, text, pos)
+        const scene = game.gameScene()
+        const text = editor.getValue()
+        const anchor = scene.planeData.textAnchor;
+        interop.standUp(text, anchor)
         blurEditor(editor);
     }
     editor.commands.addCommand({

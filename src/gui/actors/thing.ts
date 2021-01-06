@@ -138,6 +138,7 @@ export class ThingActor extends BaseActor {
                 if (command == COMMAND.KNEEL) {
                     this.needRelease = true;
                     this.isKneeled = true;
+                    interop.kneel();
                     editor.focusEditor(this);
                 }
                 // PICKUP

@@ -27,6 +27,9 @@ export const EVENT = {
     EQUIP:    "equip",
     UN_EQUIP: "unEquip",
     USE:      "use",
+    KNEEL:    "kneel",
+    STANDUP:  "standUp",
+    TEXT:     "text",
 }
 
 export const EVENT_ROLE = {
@@ -43,7 +46,7 @@ export interface Event {
     actorId:    string;
     planeId?:   string;
     thingId?:   string;
-    isProxied:  boolean;
+    isProxied?: boolean;
 }
 export interface TimerEvent extends Event {
     delta: number;
@@ -79,6 +82,14 @@ export interface EventEquip extends EventAttempt {
     slotName?: string;
 }
 export interface EventUnEquip extends EventEquip {}
+
+export interface EventKneel   extends Event {}
+export interface EventStandUp extends Event {}
+
+export interface EventUpdateText extends Event {
+    text: string;
+    anchor: geo.Position;
+}
 
 export interface EventFullData {
     data: Event,
