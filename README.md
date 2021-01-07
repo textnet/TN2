@@ -2,29 +2,8 @@
 
 This is an Excalibur+Electron/Node prototype of the TXTNET.
 
-## Stage 14: Text editor and Kneeling
-+ kneel — enter the text
-+ unkneel — get back
-+ add (excessive) lines in the beginning and in the end.
-+ send kneel/standup
-    + send from renderer
-    + send from gui
-    + stored in plane
-+ events: kneel, standup, text
-+ render:
-    + kneel
-    + standup
-+ update text on `text` event
-+ rebuild anima on adjusting text
-+ render other kneeled things
-    + entering the plane
-    + changing in the plane
-+ actions to store text 
-+ Written Text support
-    + get_text/line/anchor
-    + update_text
-    + update_line
-    + insert/delete line
+# 15. Create things easily
+- come up with an approach
 
 
 
