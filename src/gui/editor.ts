@@ -33,6 +33,7 @@ export function updateEditorContent(scene: GameScene) {
     if (scene.editor.getValue() != scene.planeData.text) {
         scene.editor.setValue(scene.planeData.text, -1) 
     }
+    adjustEditorFocus(scene.editor, scene.editor.focusVector, scene.planeData);
 }
 
 /**
@@ -44,6 +45,9 @@ export function updateEditorContent(scene: GameScene) {
 export function adjustEditorFocus(editor: Editor, focus: ex.Vector, 
                                   planeData: msg.PlaneRenderData) {
     const homeY   = config.gui.height/2 + config.gui.padding.vertical;
+    if (!focus) {
+        focus = new ex.Vector(0,0);
+    }
     editor.focusVector = new ex.Vector(focus.x, focus.y);
     let distance = focus.y // where camera should look
                    -planeData.textAnchor.y // shift if the text starts not from 0
@@ -112,34 +116,6 @@ export function positionCursor(editor: Editor, actor: ThingActor,
     }
     editor.moveCursorTo(c["row"], c["column"]);
 }
-
-// function findRow(editor: Editor, y: number) {
-//     for(let startRow = editor.renderer["layerConfig"].firstRowScreen;
-//         startRow++;
-//         startRow <= editor.renderer["layerConfig"].lastRow) {
-//         //
-//         const coords = editor.renderer.textToScreenCoordinates
-//     }
-//     const c = editor.renderer.screenToTextCoordinates()
-    
-
-// }
-
-// /**
-//  * Calculates a position in the game World for the current text cursor.
-//  * @param {Editor} editor
-//  */
-// export function positionFromCursor(editor: Editor) {
-//     editor.renderer.textToScreenCoordinates(row, column)
-//     const cursor = editor.getCursorPosition()
-//     const position: Position = {
-//         x: (cursor.column+1) * editorSettings.characterWidth + visualBounds.left,
-//         y: cursor.row        * editorSettings.lineHeight     - visualBounds.margin 
-//                                                              - visualBounds.top,
-//         dir: DIR.DOWN,
-//     } 
-//     return position;
-// }
 
 /**
  * Focuses the editor: positions its text cursor, makes game transparent, 

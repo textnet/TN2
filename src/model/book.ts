@@ -185,6 +185,16 @@ export class BookServer {
         }
         return false;
     }
+    getControllers(thingId: string, onlyAnima?: boolean) {
+        let result: Controller[] = []
+        for (let t of this.controllers) {
+            if (t.actorId == thingId && (!onlyAnima || t.anima)) {
+                result.push(t)
+            }
+        }
+        return result;
+
+    }
 
     _callbackRegistry: Record<string,any> = {}
     // will be used to send events and to issue commands

@@ -14,13 +14,13 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 + render:
     + kneel
     + standup
-- update text on `text` event
-- Written Text support
-- rebuild anima on kneeling
++ update text on `text` event
++ rebuild anima on adjusting text
 - render other kneeled things
-    + entering the plane
-    + changing in the plane
+    - entering the plane
+    - changing in the plane
 + actions to store text 
+- Written Text support
 - partials for store text
 - `get_text` and `get_line`
 - move sample text from the default book into a script
@@ -45,6 +45,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 - Written methods to create and copy things, incl. slots
 - Spoken text
 - `summon` command
+- check if I can do continious push 
 
 
 ## TODO: Document

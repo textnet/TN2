@@ -2,6 +2,7 @@ import { Game, GameScene } from "../game"
 import * as msg from "../messages"
 import * as sprites from "../../model/sprites"
 import { reg } from "./setup"
+import * as editor from "../editor"
 
 const KNEEL_SCALE = 0.5
 
@@ -25,3 +26,11 @@ reg(msg.RENDER.STANDUP, (game: Game, data: msg.StandUp)=>{
     }
 })
 
+
+reg(msg.RENDER.TEXT, (game: Game, data: msg.UpdateText)=>{
+    const scene = game.gameScene();
+    if (!scene.editor || !scene.planeData) return;
+    scene.planeData.text       = data.text;
+    scene.planeData.textAnchor = data.anchor;
+    editor.updateEditorContent(scene)
+})

@@ -45,6 +45,11 @@ export class Anima {
         this.controller.on(events.EVENT.COLLISION, this.autopickupListener);
     }
 
+    async reanimate(permanent?: boolean) {
+        this.terminate();
+        this.animate(permanent);
+    }
+
     async terminate() {
         this.controller.off(events.EVENT.COLLISION, this.autopickupListener);
         await this.controller.disconnect(); 
