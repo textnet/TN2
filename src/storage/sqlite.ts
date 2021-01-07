@@ -65,6 +65,7 @@ export class Storage {
         return result;
     }
 
+
     /**
      * Remove `key` from the storage
      * @param   {string} key

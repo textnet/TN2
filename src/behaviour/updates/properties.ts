@@ -6,13 +6,13 @@ import * as model from "../../model/interfaces"
 
 
 export async function properties(B: BookServer, update: updates.UpdateProperties) {
-    const thing = await B.things.load(update.id);
+    const thing = B.things.loadLocal(update.id);
     if (!thing) return;
     // 1. plane properties
     if (update.planeProperties) {
         for (let planeName in thing.planes) {
             if (!update.plane || planeName == update.plane) {
-                const plane = await B.planes.load(createPlaneId(planeName, update.id));
+                const plane = B.planes.loadLocal(createPlaneId(planeName, update.id));
                 for(let key of ["format", "spawn"]) {
                     if (update.planeProperties[key]) {
                         plane[key] = update.planeProperties[key];
@@ -31,13 +31,13 @@ export async function properties(B: BookServer, update: updates.UpdateProperties
                         }
                     }
                 }
-                await B.planes.save(plane);
+                B.planes.save(plane);
             }
         }
     }
     // 1. thing properties
     if (update.thingProperties) {
-        const thing = await B.things.load(update.id);
+        const thing = B.things.loadLocal(update.id);
         for (let key of thing.API) {
             const value = update.thingProperties[key];
             if (value) {
@@ -76,7 +76,7 @@ export async function properties(B: BookServer, update: updates.UpdateProperties
                 }                
             }
         }  
-        await B.things.save(thing)                     
+        B.things.save(thing)                     
     }    
 }
 

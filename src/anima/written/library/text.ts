@@ -3,7 +3,7 @@
  * Unlike all the commands, these functions work in synchronous manner.
  */
 
-import { ThingData, PlaneData, PLANE_DEFAULT, ANCHOR } from "../../../model/interfaces"
+import { ThingData, PlaneData, PLANE_DEFAULT } from "../../../model/interfaces"
 import * as geo from "../../../model/geometry"
 import { WrittenThing, writtenThing, animaThing, animaPlane } from "./thing"
 import { WrittenAnima } from "../detect"
@@ -40,13 +40,7 @@ export function get_text( A: WrittenAnima,
             else                     return "";
         } 
         if (anchor !== undefined) {
-            anchor = ANCHOR + anchor;
-            for (let l of lines) {
-                if (l.substr(0, anchor.length) == anchor) {
-                    return utils.strip(l.substr(anchor.length))
-                }
-            }
-            return ""
+            return utils.findAnchor(text, anchor).value;
         }
         return text;
     } else {
@@ -66,6 +60,28 @@ export function update_text( A: WrittenAnima,
                          plane?: string,
                          text?: string
                          ) {
+    return update_line(A, thing, plane, undefined, undefined, text)
+}
+
+
+/**
+ * Updates only one line in the text of the thing's plane
+ * @param           {WrittenAnima} A
+ * @optional @param {WrittenThing} thing @see "get.ts"
+ * @optional @param {string}  plane
+ * @optional @param {number}  line
+ * @optional @param {string}  anchor
+ * @optional @param {string}  text
+ * @optional @param {string}  special
+ */
+export function update_line( A: WrittenAnima, 
+                         thing?: ThingData|WrittenThing|string, 
+                         plane?: string,
+                         line?: number,
+                         anchor?: string,
+                         text?: string,
+                         special?: string,
+                         ) {
     const aThing = animaThing(A, thing);
     if (!plane) plane = PLANE_DEFAULT
     const aPlane = animaPlane(A, plane, aThing);
@@ -75,9 +91,49 @@ export function update_text( A: WrittenAnima,
             planeId: aPlane.id,
             actorId: A.thingId,
             thingId: aThing.id,
+            line: line,
+            lineAnchor: anchor,
             text: text || "",
+            special: special,
         } as actions.ActionText)
         return true;
     }
     return false;
+}
+
+
+/**
+ * Inserts a new line BEFORE the one mentioned
+ * @param           {WrittenAnima} A
+ * @optional @param {WrittenThing} thing @see "get.ts"
+ * @optional @param {string}  plane
+ * @optional @param {number}  line
+ * @optional @param {string}  anchor
+ * @optional @param {string}  text
+ */
+export function insert_line( A: WrittenAnima, 
+                         thing?: ThingData|WrittenThing|string, 
+                         plane?: string,
+                         line?: number,
+                         anchor?: string,
+                         text?: string,
+                         ) {
+    return update_line(A, thing, plane, line, anchor, text, "insert")
+}
+
+/**
+ * Deletes the mentioned line
+ * @param           {WrittenAnima} A
+ * @optional @param {WrittenThing} thing @see "get.ts"
+ * @optional @param {string}  plane
+ * @optional @param {number}  line
+ * @optional @param {string}  anchor
+ */
+export function delete_line( A: WrittenAnima, 
+                         thing?: ThingData|WrittenThing|string, 
+                         plane?: string,
+                         line?: number,
+                         anchor?: string,
+                         ) {
+    return update_line(A, thing, plane, line, anchor, "", "delete")
 }

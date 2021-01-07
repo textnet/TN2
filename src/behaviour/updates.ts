@@ -41,7 +41,10 @@ export interface UpdateProperties extends Update {
 export interface UpdateText extends Update {
     planeId: string,
     text: string,
-    anchor?: geo.Position
+    anchor?: geo.Position,
+    line?: number,
+    lineAnchor?: string,
+    special?: string,
 }
 export interface UpdateKneeled extends Update {
     isKneeled: boolean;

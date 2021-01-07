@@ -89,6 +89,9 @@ export interface EventStandUp extends Event {}
 export interface EventUpdateText extends Event {
     text: string;
     anchor: geo.Position;
+    line?: number;
+    lineAnchor?: string;
+    special?: string;
 }
 
 export interface EventFullData {

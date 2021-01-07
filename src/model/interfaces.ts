@@ -172,8 +172,6 @@ export const FORMAT = {
 }
 export const FORMAT_DEFAULT = FORMAT.MARKDOWN
 
-export const ANCHOR = "#" // for get_text(anchor)
-
 export const API = [ 
               "name",
               "constraints",

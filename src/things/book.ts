@@ -34,6 +34,10 @@ export const template: ThingTemplate = {
     }
 }
 
+const _ = `
+
+`
+
 // TODO move to commands somewhere
 template.plane.text = `
 Welcome to Textnet Game v.2.0!
@@ -55,13 +59,15 @@ Yes, this text is a fine example of what this game is about. Not only you can al
     end
     function welcome(event)
         print("Welcome "..event.object.name.."!")
+        insert_line{ anchor="guests", text="- "..event.object.name }
     end
     on{ event="enter", role="host", handler=welcome }
 
-    print(get_text{ line=2 })
-    print(get_text{ anchor="health" })
-
-    update_text{ text="cleanup" }
+    print("Second line of this text: "..get_text{ line=2 })
+    print("Value of #health: "..get_text{ anchor="health" })
+    update_line{ line=2, text="-------------"}
+    update_line{ anchor="health", text="50"}
+    update_line{ anchor="money", text="1000"}
 
 You see, once you indented a block of text by a couple spaces, it becomes a chunk of *Written Word*. Written word is LUA with some special sauce.
 
@@ -70,7 +76,9 @@ I bet you were hoping to find god inside here.
 
 Not just yet, chap.
 
+Guest visits:
+#guests
+
 P.S.
 Here is a simple way to transfer any parameters around:
-#health 100
-`;
+#health 100`;

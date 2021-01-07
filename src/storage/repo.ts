@@ -48,9 +48,13 @@ export class Repository<T> {
                 return that.server.loadRemote(that.prefix, id)
             })
         } else {
-            return this.storage.get(id) as T     
+            return this.loadLocal(id);
         }
     }
+    loadLocal(id: string) {
+        return this.storage.get(id) as T         
+    }
+
     async save(value: T) { 
         return this.storage.set(value["id"], value) 
     }

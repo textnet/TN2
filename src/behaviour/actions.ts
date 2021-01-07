@@ -107,7 +107,11 @@ export interface ActionStandUp extends Action {
     anchor?: geo.Position;
     text: string;
 }
-export interface ActionText extends ActionStandUp {}
+export interface ActionText extends ActionStandUp {
+    line?: number;
+    lineAnchor?: string;
+    special?: string;
+}
 export interface ActionTransfer extends ActionEnter {}
 export interface ActionTransferUp extends Action {}
 export interface ActionToLimbo    extends Action {}

@@ -69,15 +69,20 @@ export async function updateText(B: BookServer, action: actions.ActionText) {
             planeId: plane.id,
             text:    action.text,
             anchor:  action.anchor,
+            line:    action.line,
+            lineAnchor: action.lineAnchor,
+            special: action.special,
         } as updates.UpdateText)
+        // get updated text
+        const updatedPlane = await B.planes.load(action.planeId);
         // emit event
         await events.emit(B, {
             event: events.EVENT.TEXT,
             planeId: action.planeId,
             actorId: actor.id,
             thingId: owner.id,
-            text:    action.text,
-            anchor:  action.anchor,
+            text:    updatedPlane.text,
+            anchor:  updatedPlane.textAnchor,
         } as events.EventUpdateText);
     }
 }

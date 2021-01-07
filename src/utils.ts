@@ -21,6 +21,21 @@ export function repeat(s: string, times: number, joiner: string = "") {
     return ss.join(joiner);
 }
 
+export const ANCHOR = "#"
+export function findAnchor(text: string, anchor: string) {
+    const newAnchor = ANCHOR + anchor;
+    const lines = text.split("\n")
+    for (let ll=0; ll<lines.length; ll++) {
+        let l = lines[ll];
+        if (l.substr(0, newAnchor.length) == newAnchor) {
+            return {
+                value: strip(l.substr(newAnchor.length)),
+                index: ll,
+            }
+        }
+    }
+    return undefined;
+}
 
 
 /**

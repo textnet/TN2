@@ -67,12 +67,12 @@ export const supportedFunctions = {
     "update_seasons":    { signature: ["thing", "plane", "names", "times" ],     f: update.seasons },
 
 
-    "get_text":    { signature: ["thing", "plane", "line", "anchor"      ], f: text.get_text    },
-    "get_line":    { signature: ["thing", "plane", "line", "anchor"      ], f: text.get_text    },
-    "update_text": { signature: ["thing", "plane", "text",               ], f: text.update_text },
-    // "update_line": { signature: ["artifact", "line", "anchor", "text" ], f: update_line },
-    // "insert_line": { signature: ["artifact", "line", "anchor", "text" ], f: insert_line },
-    // "delete_line": { signature: ["artifact", "line", "anchor"         ], f: delete_line },
+    "get_text":    { signature: ["thing", "plane", "line", "anchor"          ], f: text.get_text    },
+    "get_line":    { signature: ["thing", "plane", "line", "anchor"          ], f: text.get_text    },
+    "update_text": { signature: ["thing", "plane", "text",                   ], f: text.update_text },
+    "update_line": { signature: ["thing", "plane", "line", "anchor", "text", ], f: text.update_line },
+    "insert_line": { signature: ["thing", "plane", "line", "anchor", "text", ], f: text.insert_line },
+    "delete_line": { signature: ["thing", "plane", "line", "anchor"        , ], f: text.delete_line },
 
     "move_to":  { signature: ["thing", "x", "y", "direction" ],       f: spatials.move_to  },
     "move_by":  { signature: ["thing", "dx", "dy", "direction", 
