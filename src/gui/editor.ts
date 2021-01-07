@@ -144,7 +144,7 @@ export function focusEditor(actor: ThingActor) {
  */
 export function blurEditor(editor) {
     if (editor.playerActor) {
-        editor.playerActor.isKneeled = false;
+        editor.playerActor.kneelUp()
         editor.playerActor = null;
     }
     editor.setReadOnly(true);

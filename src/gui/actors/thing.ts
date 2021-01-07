@@ -21,6 +21,7 @@ import * as interop from "../renderer/send"
 import * as editor from "../editor"
 
 const GUI_VELOCITY = 75; // more = faster
+const KNEEL_SCALE = 0.5;
 
 /**
  * Excalibur Actor extension for Thing-based actors.
@@ -49,6 +50,7 @@ export class ThingActor extends BaseActor {
         this.visualDir = sprites.DIR[geo.directionName(data.position.direction)];
         this.needRelease = false;
         this.setPassable();
+        if (data.isKneeled) this.kneelDown()
     }
 
     bindPlayer(asObserver: boolean) {
@@ -68,6 +70,19 @@ export class ThingActor extends BaseActor {
         } else {
             this.body.collider.type = ex.CollisionType.Fixed;
         }
+    }
+
+    kneelDown(forcible?: boolean) {
+        if (this.isKneeled && !forcible) return;
+        this.isKneeled = true;
+        this.scale.x *= KNEEL_SCALE;
+        this.scale.y *= KNEEL_SCALE;
+    }
+    kneelUp(forcible?: boolean) {
+        if (!this.isKneeled && !forcible) return;
+        this.isKneeled = false;
+        this.scale.x /= KNEEL_SCALE;
+        this.scale.y /= KNEEL_SCALE;
     }
 
     /**
@@ -137,7 +152,7 @@ export class ThingActor extends BaseActor {
                 // KNEEL
                 if (command == COMMAND.KNEEL) {
                     this.needRelease = true;
-                    this.isKneeled = true;
+                    this.kneelDown();
                     interop.kneel();
                     editor.focusEditor(this);
                 }
