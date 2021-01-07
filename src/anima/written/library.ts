@@ -11,13 +11,13 @@ import * as attempt from "./library/attempt"
 import * as spatials from "./library/spatials"
 import * as update from "./library/update"
 import * as equip from "./library/equip"
+import * as text from "./library/text"
 
 import { event_on, event_off } from "./library/events"
 
 import { EVENT } from "../../behaviour/events"
 
-// import { update } from "./library/properties"
-// import { move_to, move_by, place_at, fit_at, halt } from "./library/spatial"
+// import { place_at, fit_at } from "./library/spatial"
 // import { get_text, update_text, update_line, insert_line, delete_line } from "./library/text"
 
 /**
@@ -67,9 +67,9 @@ export const supportedFunctions = {
     "update_seasons":    { signature: ["thing", "plane", "names", "times" ],     f: update.seasons },
 
 
-    // "get_text":    { signature: ["artifact", "line", "anchor"         ], f: get_text    },
-    // "get_line":    { signature: ["artifact", "line", "anchor"         ], f: get_text    },
-    // "update_text": { signature: ["artifact", "text",                  ], f: update_text },
+    "get_text":    { signature: ["thing", "plane", "line", "anchor"      ], f: text.get_text    },
+    "get_line":    { signature: ["thing", "plane", "line", "anchor"      ], f: text.get_text    },
+    "update_text": { signature: ["thing", "plane", "text",               ], f: text.update_text },
     // "update_line": { signature: ["artifact", "line", "anchor", "text" ], f: update_line },
     // "insert_line": { signature: ["artifact", "line", "anchor", "text" ], f: insert_line },
     // "delete_line": { signature: ["artifact", "line", "anchor"         ], f: delete_line },
@@ -80,7 +80,6 @@ export const supportedFunctions = {
     "turn_to":  { signature: ["thing", "", "", "", "", "", "angle"],  f: spatials.move_by  },
     "halt":     { signature: ["thing", ],                             f: spatials.halt },
 
-    // "turn_to":  { signature: ["artifact", "directon"            ], f: move_by  },
     // "place_at": { signature: ["artifact", "x", "y", "direction" ], f: place_at },
     // "fit_at":   { signature: ["artifact", "x", "y", "direction" ], f: fit_at },
 }

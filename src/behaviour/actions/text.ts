@@ -52,7 +52,7 @@ export async function kneel(B: BookServer, action: actions.ActionKneel) {
 export async function updateText(B: BookServer, action: actions.ActionText) {
     const plane = await B.planes.load(action.planeId);
     const actor = await B.things.load(action.actorId);
-    const owner = await B.things.load(plane.ownerId)
+    const owner = await B.things.load(plane.ownerId);
     // 1. check constraints
     if (!interfaces.checkConstraint(actor.physics, owner.constraints[ interfaces.CONSTRAINTS.EDITABLE ])) return false;
     // 2. update text

@@ -3,6 +3,7 @@ import { ThingData, PlaneData } from "../../../model/interfaces"
 import { Anima } from "../../anima"
 import * as geo from "../../../model/geometry"
 import { deepCopy } from '../../../utils'
+import * as identity from "../../../model/identity"
 
 
 // filtering some stuff out
@@ -51,8 +52,16 @@ export function thingId(A: Anima, thing?: ThingData|WrittenThing|string) {
     return thingId;
 }
 
-export function animaPlane(A: Anima, plane: string): PlaneData {
-    return A.planes.load(plane)
+export function animaPlane(A: Anima, plane: string, thing?: ThingData|WrittenThing|string): PlaneData {
+    if (thing) {
+        // get the planeId from thing+planeName
+        let thingId = thing ? ( (thing as WrittenThing).id || (thing as string)) : A.thingId;
+        let realThing = A.things.load(thingId);
+        if (realThing) {
+            plane = realThing.planes[plane]; 
+        } 
+    }
+    return A.planes.load(plane)        
 }
 
 

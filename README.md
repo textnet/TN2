@@ -16,13 +16,15 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
     + standup
 + update text on `text` event
 + rebuild anima on adjusting text
-- render other kneeled things
-    - entering the plane
-    - changing in the plane
++ render other kneeled things
+    + entering the plane
+    + changing in the plane
 + actions to store text 
 - Written Text support
+    + get_text/line/anchor
+    + update_text
+    - update/insert/delete line
 - partials for store text
-- `get_text` and `get_line`
 - move sample text from the default book into a script
 
 

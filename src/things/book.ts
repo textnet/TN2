@@ -58,6 +58,11 @@ Yes, this text is a fine example of what this game is about. Not only you can al
     end
     on{ event="enter", role="host", handler=welcome }
 
+    print(get_text{ line=2 })
+    print(get_text{ anchor="health" })
+
+    update_text{ text="cleanup" }
+
 You see, once you indented a block of text by a couple spaces, it becomes a chunk of *Written Word*. Written word is LUA with some special sauce.
 
 Currently, there is no special sauce, as there are no more objects than those two sad chairs. There is no *Spoken Word* yet either. And for sure, there are no Gods.
