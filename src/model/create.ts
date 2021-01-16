@@ -10,13 +10,6 @@ import { createThingId, createPlaneId, stripBookId, extractPlaneName,
 import * as actions from "../behaviour/actions"
 
 
-export const SUMMON_SOURCE = {
-    LOCAL:    "library",
-    TEMPLATE: "template",
-    HTTPS:    "https",
-    HTTP:     "http",
-}
-export const SUMMON_SOURCE_DEFAULT = SUMMON_SOURCE.LOCAL;
 
 const templateRegistry: Record<string, ThingTemplate> = {};
 export const TEMPLATE_DEFAULT = "Something";

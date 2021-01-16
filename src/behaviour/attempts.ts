@@ -5,5 +5,4 @@ export const ATTEMPT = {
     PUSH:    "push",
     PICKUP:  "pickup",
     PUTDOWN: "putdown",
-    SUMMON:  "summon",
 }

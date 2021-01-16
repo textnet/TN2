@@ -36,21 +36,6 @@ async function attemptPickup(B: BookServer, action: actions.ActionAttempt) {
     }
 }
 
-async function attemptSummon(B: BookServer, action: actions.ActionAttempt) {
-    const actor = await B.things.load(action.actorId);
-    // proceed with action
-    return await actions.action(B, {
-            action:  actions.ACTION.SUMMON,
-            actorId: action.actorId,
-            planeId: action.planeId,
-            prototypeId: action.summonPrototypeId,
-            idPostfix: action.summonId,
-            position: action.position,
-            direction: action.direction,
-            source: action.summonSource,
-    } as actions.ActionSummon);
-}
-
 export async function attemptUse(B: BookServer, action: actions.ActionAttempt) {
     const plane = await B.planes.load(action.planeId);
     const actor = await B.things.load(action.actorId);
@@ -76,7 +61,6 @@ export async function action(B: BookServer, action: actions.ActionAttempt) {
     // - push
     // - enter
     // - pickup/putdown
-    // - summon
 
     // 0. putdown and use
     // check if we can fit
@@ -88,11 +72,6 @@ export async function action(B: BookServer, action: actions.ActionAttempt) {
         const wasUsed = await attemptUse(B, action);
         if (wasUsed) return wasUsed["result"];
     }
-    // check if we can summon
-    if (action.attempt == actions.ATTEMPT.SUMMON) {
-        return await attemptSummon(B, action)
-    }
-
 
     // 1. check if there is an object
     const actor = await B.things.load(action.actorId); // or thingId? unsure

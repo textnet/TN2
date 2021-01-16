@@ -30,7 +30,6 @@ export const EVENT = {
     KNEEL:    "kneel",
     STANDUP:  "standUp",
     TEXT:     "text",
-    SUMMON:   "summon", 
 }
 
 export const EVENT_ROLE = {
@@ -93,10 +92,6 @@ export interface EventUpdateText extends Event {
     line?: number;
     lineAnchor?: string;
     special?: string;
-}
-export interface EventSummon extends EventEnter {
-    source?: string;
-    prototypeId?: string;
 }
 
 export interface EventFullData {
