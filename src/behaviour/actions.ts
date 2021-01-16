@@ -20,6 +20,7 @@ import * as push      from "./actions/push"
 import * as use       from "./actions/use"
 import * as equipment from "./actions/equipment"
 import * as text      from "./actions/text"
+import * as summon    from "./actions/summon"
 export const handlers = {
     say:        say.action,
     enter:      transfer.enter,
@@ -41,6 +42,7 @@ export const handlers = {
     text:       text.updateText,
     standUp:    text.standUp,
     kneel:      text.kneel,
+    summon:     summon.summon,
 }
 
 // actions happen on a plane
@@ -66,6 +68,7 @@ export const ACTION = {
     STANDUP: "standUp",
     KNEEL: "kneel",
     TEXT: "text",
+    SUMMON: "summon",
 }
 
 export const ATTEMPT = attempts.ATTEMPT;
@@ -102,6 +105,14 @@ export interface ActionReEquip extends Action {
     slotTo?:   string;
 }
 
+export interface ActionSummon extends Action {
+    position?:  geo.Position;
+    direction?: geo.Direction;
+    idPostfix?: string;
+    prototypeId?: string;
+    source?:   string;
+}
+
 export interface ActionKneel   extends Action {}
 export interface ActionStandUp extends Action {
     anchor?: geo.Position;
@@ -128,8 +139,13 @@ export interface ActionSay extends Action {
     loudness: number;
 }
 export interface ActionAttempt extends Action {
+    position?: geo.Position;
     direction?: geo.Direction;
     slotName?: string;
+    idPostfix?: string;
+    summonId?: string;
+    summonPrototypeId?: string;
+    summonSource?: string;
     attempt: string;
 }
 export interface ActionPush extends ActionWithThing {

@@ -4,6 +4,22 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 # 15. Create things easily
 - come up with an approach
+    `summon{ id, prototype, package, plane, x, y }`
+- summon from existing prototype
+    + attempt
+    + written
+    - action
+        - from book
+        - from library
+        - from local template
+    - default x/y
+    - fitting as unEquip does
+- packages
+    - create first package doc
+    - approach to deal with sprites
+    - get data from the doc
+    - summon
+    - deal with sprites
 
 
 
@@ -29,7 +45,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 
 ## TODO: Document
 - Each book is created from a default template
-- Every other thing created from another thing inherits all its properties
+- Every thing created from another thing inherits all its properties
 - If there is no prototype thing, then it uses `Something`
 - Supported commands and Written Word
 - event roles: object, subject, host, observer
@@ -49,7 +65,7 @@ This is an Excalibur+Electron/Node prototype of the TXTNET.
 11. [x] Interbook operations and limbo, entering and leaving
 12. [x] Push action and basic updates (both GUI and Written Word)
 13. [x] Inventory concept and actions (incl. use)
-14. [ ] Text editor and kneeling
+14. [x] Text editor and kneeling
 15. [ ] Create things easily
 16. [ ] Clean up and document; make graphics
 17. [ ] Design docs for `TN2 Release 1`

@@ -82,3 +82,14 @@ Guest visits:
 P.S.
 Here is a simple way to transfer any parameters around:
 #health 100`;
+
+
+
+
+template.plane.text = `
+Temporary testing summons
+==============================
+
+    summon{ id="Summon1", prototypeId="Indiana.Piano", source="local", plane="material", x=-50, y=-50 }
+
+`

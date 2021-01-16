@@ -60,26 +60,7 @@ export async function unEquip(B: BookServer, action: actions.ActionUnEquip) {
     const ownerId = action.equipThingId || actor.id;
     const thing = await equipment.thingInSlot(B, actor.id, ownerId, action.slotName);
     if (thing && ownerId) {
-        // find position
-        let dx=0, dy=0;
-        if (action.direction.dx < 0) {
-            dx = -actor.physics.box.w/2      -thing.physics.box.w/2
-                 +actor.physics.box.anchor.x -thing.physics.box.anchor.x;
-        }
-        if (action.direction.dx > 0) {
-            dx = +actor.physics.box.w/2      +thing.physics.box.w/2
-                 +actor.physics.box.anchor.x -thing.physics.box.anchor.x;
-        }
-        if (action.direction.dy < 0) {
-            dy = -actor.physics.box.h/2      -thing.physics.box.h/2
-                 +actor.physics.box.anchor.y -thing.physics.box.anchor.y;
-        } 
-        if (action.direction.dy > 0) {
-            dy = +actor.physics.box.h/2      +thing.physics.box.h/2
-                 +actor.physics.box.anchor.y -thing.physics.box.anchor.y;
-        }
-        const vector: geo.Direction = { dx: dx, dy: dy }
-        const position = geo.add(plane.things[actor.id], vector);
+        const position = findDirection(actor, plane, thing, action.direction);
         const success = await equipment.directTransferUnequip(B, actor.id, thing, action.planeId, position);
         if (success) {
             await events.emit(B, {
@@ -98,7 +79,31 @@ export async function unEquip(B: BookServer, action: actions.ActionUnEquip) {
 }
 
 
-
+export function findDirection(actor: interfaces.ThingData, 
+                              plane: interfaces.PlaneData,
+                              thing: interfaces.ThingData,
+                              direction: geo.Direction) {
+    let dx=0, dy=0;
+    if (direction.dx < 0) {
+        dx = -actor.physics.box.w/2      -thing.physics.box.w/2
+             +actor.physics.box.anchor.x -thing.physics.box.anchor.x;
+    }
+    if (direction.dx > 0) {
+        dx = +actor.physics.box.w/2      +thing.physics.box.w/2
+             +actor.physics.box.anchor.x -thing.physics.box.anchor.x;
+    }
+    if (direction.dy < 0) {
+        dy = -actor.physics.box.h/2      -thing.physics.box.h/2
+             +actor.physics.box.anchor.y -thing.physics.box.anchor.y;
+    } 
+    if (direction.dy > 0) {
+        dy = +actor.physics.box.h/2      +thing.physics.box.h/2
+             +actor.physics.box.anchor.y -thing.physics.box.anchor.y;
+    }
+    const vector: geo.Direction = { dx: dx, dy: dy }
+    const position = geo.add(plane.things[actor.id], vector);
+    return position;
+}
 
 
 
